@@ -54,17 +54,33 @@ android {
             dimension 'version'
         }
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
+    def lifecycle_version = "2.0.0"
+    def room_version = "2.0.0"
+
+    // ViewModel and LiveData
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$toolVersions.kotlinVersion"
 
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.appcompat:appcompat:$libVersions.appCompatVersion"
     implementation "androidx.constraintlayout:constraintlayout:$libVersions.constraintLayoutVersion"
     implementation "com.google.android.material:material:$libVersions.materialVersion"
+    implementation 'org.kodein.di:kodein-di-generic-jvm:5.3.0'
+    implementation 'org.kodein.di:kodein-di-framework-android-x:5.3.0'
 
     testImplementation "junit:junit:$libVersions.junitVersion"
+    testImplementation 'org.mockito:mockito-core:2.19.0'
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0-RC1"
 
     androidTestImplementation "androidx.test:runner:$libVersions.testRunnerVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$libVersions.espressoVersion"
+
 }
