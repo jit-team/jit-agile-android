@@ -13,7 +13,12 @@ buildscript {
                 materialVersion        : '1.0.0',
                 junitVersion           : '4.12',
                 testRunnerVersion      : '1.1.0-alpha4',
-                espressoVersion        : '3.1.0-alpha4'
+                espressoVersion        : '3.1.0-alpha4',
+                lifecycleVersion       : '2.0.0',
+                coroutinesVersion      : '0.30.1',
+                roomVersion            : '2.0.0',
+                kodeinVersion          : '5.3.0',
+                mockitoVersion         : '2.19.0'
         ]
     }
     repositories {
