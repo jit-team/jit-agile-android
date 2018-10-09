@@ -1,6 +1,8 @@
 package pl.jitsolutions.agile
 
 import android.app.Application
+import kotlinx.coroutines.experimental.CoroutineDispatcher
+import kotlinx.coroutines.experimental.Dispatchers
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.bind
@@ -14,8 +16,9 @@ import pl.jitsolutions.agile.repository.UserRepository
 
 class JITAgileApplication : Application(), KodeinAware {
     override val kodein = Kodein.lazy {
-        bind<UserRepository>() with singleton { MockUserRepository() }
-        bind<LoginUserUseCase>() with provider { LoginUserUseCase(instance()) }
+        bind<CoroutineDispatcher>() with singleton { Dispatchers.IO }
+        bind<UserRepository>() with singleton { MockUserRepository(instance()) }
+        bind<LoginUserUseCase>() with provider { LoginUserUseCase(instance(), instance()) }
         bind<LoginViewModelFactory>() with provider { LoginViewModelFactory(instance()) }
     }
 }
