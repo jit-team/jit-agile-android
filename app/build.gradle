@@ -85,7 +85,7 @@ dependencies {
 
     testImplementation "junit:junit:$libVersions.junitVersion"
     testImplementation "org.mockito:mockito-core:$libVersions.mockitoVersion"
-    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$libVersions.mockitoVersion"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$libVersions.mockitoKotlinVersion"
 
     androidTestImplementation "androidx.test:runner:$libVersions.testRunnerVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$libVersions.espressoVersion"
