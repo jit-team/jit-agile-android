@@ -31,6 +31,10 @@ class LoginActivity : AppCompatActivity(), KodeinAware {
                 is LoginState.Error -> showToast("Error")
             }
         })
+        viewModel.userName.observe(this, Observer { name ->
+            if (!name.isEmpty())
+                showToast(name)
+        })
     }
 
     private fun showToast(text: String) {

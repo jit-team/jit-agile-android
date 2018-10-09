@@ -1,44 +1,15 @@
 package pl.jitsolutions.agile.domain
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import kotlinx.coroutines.experimental.*
+import kotlinx.coroutines.experimental.CoroutineScope
+import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.channels.ReceiveChannel
+import kotlinx.coroutines.experimental.channels.produce
 import pl.jitsolutions.agile.repository.UserRepository
 
-class LoginUserUseCase(private val userRepository: UserRepository)
-    : UseCase<LoginUserUseCase.Params, User>(Dispatchers.Default, Dispatchers.Main) {
-    override fun run(params: Params): LiveData<User> {
-        return userRepository.login(params.email, params.password)
+class LoginUserUseCase (private val userRepository: UserRepository) {
+
+    fun execute(email: String, password: String): ReceiveChannel<User> = CoroutineScope(Dispatchers.IO).produce {
+        Thread.sleep(1000) //doing stuff
+        send(userRepository.login(email, password))
     }
-
-    data class Params(val email: String, val password: String)
-}
-
-abstract class UseCase<Params, Result>(private val executionDispatcher: CoroutineDispatcher,
-                                       private val postActionDispatcher: CoroutineDispatcher) {
-
-    private var resultLiveData: LiveData<Result>? = null
-    private var observer: Observer<Result>? = null
-
-    fun execute(params: Params): LiveData<Result> {
-        val liveData = MutableLiveData<Result>()
-
-        GlobalScope.launch(executionDispatcher) {
-            resultLiveData = run(params)
-            withContext(postActionDispatcher) {
-                observer = Observer {
-                    liveData.value = it
-                }
-                resultLiveData?.observeForever(observer!!)
-            }
-        }
-        return liveData
-    }
-
-    fun disconnect() {
-        resultLiveData?.removeObserver { observer }
-    }
-
-    abstract fun run(params: Params): LiveData<Result>
 }
