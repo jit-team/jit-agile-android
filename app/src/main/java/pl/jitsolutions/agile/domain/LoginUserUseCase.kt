@@ -1,25 +1,44 @@
 package pl.jitsolutions.agile.domain
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.GlobalScope
-import kotlinx.coroutines.experimental.launch
-import kotlinx.coroutines.experimental.withContext
+import androidx.lifecycle.Observer
+import kotlinx.coroutines.experimental.*
 import pl.jitsolutions.agile.repository.UserRepository
 
-class LoginUserUseCase(private val userRepository: UserRepository) {
-    fun execute(email: String, password: String): MutableLiveData<User> {
-        val userLiveData = MutableLiveData<User>()
+class LoginUserUseCase(private val userRepository: UserRepository)
+    : UseCase<LoginUserUseCase.Params, User>(Dispatchers.Default, Dispatchers.Main) {
+    override fun run(params: Params): LiveData<User> {
+        return userRepository.login(params.email, params.password)
+    }
 
-        GlobalScope.launch {
-            val user: User = withContext(Dispatchers.IO) {
-                Thread.sleep(1000)
-                userRepository.login(email, password)
-            }
-            withContext(Dispatchers.Main) {
-                userLiveData.value = user
+    data class Params(val email: String, val password: String)
+}
+
+abstract class UseCase<Params, Result>(private val executionDispatcher: CoroutineDispatcher,
+                                       private val postActionDispatcher: CoroutineDispatcher) {
+
+    private var resultLiveData: LiveData<Result>? = null
+    private var observer: Observer<Result>? = null
+
+    fun execute(params: Params): LiveData<Result> {
+        val liveData = MutableLiveData<Result>()
+
+        GlobalScope.launch(executionDispatcher) {
+            resultLiveData = run(params)
+            withContext(postActionDispatcher) {
+                observer = Observer {
+                    liveData.value = it
+                }
+                resultLiveData?.observeForever(observer!!)
             }
         }
-        return userLiveData
+        return liveData
     }
+
+    fun disconnect() {
+        resultLiveData?.removeObserver { observer }
+    }
+
+    abstract fun run(params: Params): LiveData<Result>
 }
