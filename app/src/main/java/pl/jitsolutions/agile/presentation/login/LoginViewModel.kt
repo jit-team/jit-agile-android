@@ -1,6 +1,5 @@
 package pl.jitsolutions.agile.presentation.login
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.GlobalScope
@@ -21,7 +20,7 @@ class LoginViewModel(private val loginUserUseCase: LoginUserUseCase) : ViewModel
 
     fun login() {
         GlobalScope.launch {
-            loginChannel = loginUserUseCase.execute(email.value!!, password.value!!)
+            loginChannel = loginUserUseCase.execute(LoginUserUseCase.Params(email.value!!, password.value!!))
             loginChannel!!.consumeEach {
                 withContext(Dispatchers.Main) {
                     loginState.value = LoginState.Success
