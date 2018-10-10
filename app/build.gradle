@@ -5,6 +5,7 @@ plugins {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.google.gms.google-services'
 
 def keystorePropertiesFile = rootProject.file("keys/keystore.properties")
 def keystoreProperties = new Properties()
@@ -79,6 +80,9 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$libVersions.appCompatVersion"
     implementation "androidx.constraintlayout:constraintlayout:$libVersions.constraintLayoutVersion"
     implementation "com.google.android.material:material:$libVersions.materialVersion"
+
+    implementation "com.google.firebase:firebase-core:$libVersions.firebaseVersion"
+    implementation "com.google.firebase:firebase-auth:$libVersions.firebaseVersion"
 
     implementation "org.kodein.di:kodein-di-generic-jvm:$libVersions.kodeinVersion"
     implementation "org.kodein.di:kodein-di-framework-android-x:$libVersions.kodeinVersion"

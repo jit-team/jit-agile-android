@@ -1,5 +1,6 @@
 package pl.jitsolutions.agile.presentation.login
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.GlobalScope
@@ -8,7 +9,6 @@ import kotlinx.coroutines.experimental.channels.consumeEach
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.withContext
 import pl.jitsolutions.agile.domain.LoginUserUseCase
-import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.utils.mutableLiveData
 
 class LoginViewModel(private val loginUserUseCase: LoginUserUseCase) : ViewModel() {
@@ -16,7 +16,7 @@ class LoginViewModel(private val loginUserUseCase: LoginUserUseCase) : ViewModel
     val email = mutableLiveData("")
     val loginState = mutableLiveData<LoginState>(LoginState.None)
     val userName = mutableLiveData("")
-    private var loginChannel: ReceiveChannel<User>? = null
+    private var loginChannel: ReceiveChannel<String>? = null
 
 
     fun login() {
@@ -25,7 +25,7 @@ class LoginViewModel(private val loginUserUseCase: LoginUserUseCase) : ViewModel
             loginChannel!!.consumeEach {
                 withContext(Dispatchers.Main) {
                     loginState.value = LoginState.Success
-                    userName.value = it.name
+                    userName.value = it
                 }
             }
         }

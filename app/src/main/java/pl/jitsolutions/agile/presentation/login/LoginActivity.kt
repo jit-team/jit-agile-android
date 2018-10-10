@@ -1,5 +1,6 @@
 package pl.jitsolutions.agile.presentation.login
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,7 @@ import org.kodein.di.android.closestKodein
 import org.kodein.di.generic.instance
 import pl.jitsolutions.agile.R
 import pl.jitsolutions.agile.databinding.ActivityMainBinding
+import pl.jitsolutions.agile.presentation.mainscreen.MainScreenActivity
 
 class LoginActivity : AppCompatActivity(), KodeinAware {
     override val kodein by closestKodein()
@@ -32,8 +34,10 @@ class LoginActivity : AppCompatActivity(), KodeinAware {
             }
         })
         viewModel.userName.observe(this, Observer { name ->
-            if (!name.isEmpty())
+            if (!name.isEmpty()) {
                 showToast(name)
+                startActivity(Intent(this@LoginActivity, MainScreenActivity::class.java))
+            }
         })
     }
 

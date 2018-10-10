@@ -1,11 +1,12 @@
 buildscript {
     ext {
         toolVersions = [
-                gradlePluginVersion: '3.2.0',
-                kotlinVersion      : '1.2.71',
-                compileSdkVersion  : 28,
-                minSdkVersion      : 21,
-                targetSdkVersion   : 28
+                gradlePluginVersion  : '3.2.0',
+                kotlinVersion        : '1.2.71',
+                googleServicesVersion: '4.1.0',
+                compileSdkVersion    : 28,
+                minSdkVersion        : 21,
+                targetSdkVersion     : 28
         ]
         libVersions = [
                 appCompatVersion       : '1.0.0',
@@ -19,7 +20,8 @@ buildscript {
                 roomVersion            : '2.0.0',
                 kodeinVersion          : '5.3.0',
                 mockitoVersion         : '2.19.0',
-                mockitoKotlinVersion   : '2.0.0-RC1'
+                mockitoKotlinVersion   : '2.0.0-RC1',
+                firebaseVersion        : '16.0.4'
         ]
     }
     repositories {
@@ -29,6 +31,7 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:$toolVersions.gradlePluginVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$toolVersions.kotlinVersion"
+        classpath "com.google.gms:google-services:$toolVersions.googleServicesVersion"
     }
 }
 
