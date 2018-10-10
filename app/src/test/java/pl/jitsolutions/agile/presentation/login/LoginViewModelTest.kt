@@ -25,10 +25,10 @@ class LoginViewModelTest {
         }
 
         val classUnderTest = LoginUserUseCase(mockUserRepository, mockProjectRepository, Dispatchers.Unconfined)
+        val params = LoginUserUseCase.Params("abc", "123")
+        val channel = classUnderTest.execute(params)
 
-        val channel = classUnderTest.execute("abc", "123")
         val userName = channel.receive()
-
         assertEquals("abc, groups: Test group", userName)
     }
 }
