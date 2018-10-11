@@ -30,9 +30,9 @@ class LoginViewModelTest {
         val params = LoginUserUseCase.Params("abc", "123")
         val channel = classUnderTest.execute(params)
 
-        val respose = channel.receive()
+        val response = channel.receive()
 
-        assertEquals(Response.Status.SUCCESS, respose.status)
-        assertEquals("abc, groups: Test group", respose.data)
+        assertEquals(Response.Status.SUCCESS, response.status)
+        assertEquals("abc, groups: Test group", response.data)
     }
 }
