@@ -5,6 +5,7 @@ plugins {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'io.fabric'
 
@@ -60,6 +61,17 @@ android {
         }
         prod {
             dimension 'version'
+        }
+    }
+
+    variantFilter { variant ->
+        def buildTypeName = variant.buildType*.name
+        def flavorName = variant.flavors*.name
+        if (flavorName.contains("dev") && buildTypeName.contains("release")) {
+            setIgnore(true)
+        }
+        if (flavorName.contains("prod") && buildTypeName.contains("debug")) {
+            setIgnore(true)
         }
     }
 
