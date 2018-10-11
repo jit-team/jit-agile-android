@@ -26,4 +26,14 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : User
             }
         }
     }
+    override fun register(email: String, password: String): ReceiveChannel<Response<User>> {
+        return CoroutineScope(dispatcher).produce {
+            try {
+                val task = Tasks.await(firebaseAuth.createUserWithEmailAndPassword(email, password))
+                send(response(User(task.user.email!!)))
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
 }

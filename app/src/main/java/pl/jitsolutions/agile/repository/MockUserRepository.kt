@@ -11,4 +11,9 @@ import pl.jitsolutions.agile.domain.response
 class MockUserRepository(private val dispatcher: CoroutineDispatcher) : UserRepository {
     override fun login(email: String, password: String): ReceiveChannel<Response<User>> =
             CoroutineScope(dispatcher).produce { send(response(User(email))) }
+
+    override fun register(email: String, password: String): ReceiveChannel<Response<User>> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
 }

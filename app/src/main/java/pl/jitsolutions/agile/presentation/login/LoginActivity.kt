@@ -11,8 +11,9 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.generic.instance
 import pl.jitsolutions.agile.R
-import pl.jitsolutions.agile.databinding.ActivityMainBinding
+import pl.jitsolutions.agile.databinding.ActivityLoginBinding
 import pl.jitsolutions.agile.presentation.mainscreen.MainScreenActivity
+import pl.jitsolutions.agile.presentation.register.RegisterActivity
 
 class LoginActivity : AppCompatActivity(), KodeinAware {
     override val kodein by closestKodein()
@@ -22,7 +23,7 @@ class LoginActivity : AppCompatActivity(), KodeinAware {
         super.onCreate(savedInstanceState)
 
         val viewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel::class.java)
-        val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        val binding = DataBindingUtil.setContentView<ActivityLoginBinding>(this, R.layout.activity_login)
         binding.viewModel = viewModel
 
         viewModel.loginState.observe(this, Observer { loginState ->
@@ -38,6 +39,9 @@ class LoginActivity : AppCompatActivity(), KodeinAware {
                 showToast(name)
                 startActivity(Intent(this@LoginActivity, MainScreenActivity::class.java))
             }
+        })
+        viewModel.register.observe(this, Observer{
+            startActivity(Intent(this@LoginActivity, RegisterActivity::class.java))
         })
     }
 

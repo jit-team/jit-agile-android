@@ -1,5 +1,6 @@
 package pl.jitsolutions.agile.presentation.login
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.GlobalScope
@@ -17,6 +18,7 @@ class LoginViewModel(private val loginUserUseCase: LoginUserUseCase) : ViewModel
     val loginState = mutableLiveData<LoginState>(LoginState.None)
     val userName = mutableLiveData("")
     private var loginChannel: ReceiveChannel<Response<String>>? = null
+    val register = MutableLiveData<Any>()
 
 
     fun login() {
@@ -37,6 +39,10 @@ class LoginViewModel(private val loginUserUseCase: LoginUserUseCase) : ViewModel
                 }
             }
         }
+    }
+
+    fun register() {
+        register.value = null
     }
 
     override fun onCleared() {
