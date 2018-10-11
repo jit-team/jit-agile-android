@@ -8,6 +8,7 @@ import kotlinx.coroutines.experimental.channels.consumeEach
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.withContext
 import pl.jitsolutions.agile.domain.LoginUserUseCase
+import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.utils.mutableLiveData
 
 class LoginViewModel(private val loginUserUseCase: LoginUserUseCase) : ViewModel() {
@@ -15,16 +16,24 @@ class LoginViewModel(private val loginUserUseCase: LoginUserUseCase) : ViewModel
     val email = mutableLiveData("")
     val loginState = mutableLiveData<LoginState>(LoginState.None)
     val userName = mutableLiveData("")
-    private var loginChannel: ReceiveChannel<String>? = null
+    private var loginChannel: ReceiveChannel<Response<String>>? = null
 
 
     fun login() {
         GlobalScope.launch {
             loginChannel = loginUserUseCase.execute(LoginUserUseCase.Params(email.value!!, password.value!!))
-            loginChannel!!.consumeEach {
+            loginChannel!!.consumeEach { response ->
                 withContext(Dispatchers.Main) {
-                    loginState.value = LoginState.Success
-                    userName.value = it
+                    when (response.status) {
+                        Response.Status.SUCCESS -> {
+                            loginState.value = LoginState.Success
+                            userName.value = response.data!!
+                        }
+                        Response.Status.ERROR -> {
+                            loginState.value = LoginState.Error
+                            userName.value = ""
+                        }
+                    }
                 }
             }
         }

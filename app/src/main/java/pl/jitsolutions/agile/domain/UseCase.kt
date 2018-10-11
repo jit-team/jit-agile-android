@@ -8,8 +8,8 @@ import kotlinx.coroutines.experimental.channels.produce
 
 abstract class UseCase<Params, Result>(private val dispatcher: CoroutineDispatcher) {
 
-    abstract suspend fun ProducerScope<Result>.buildLogic(params: Params)
+    abstract suspend fun ProducerScope<Response<Result>>.buildLogic(params: Params)
 
-    fun execute(params: Params): ReceiveChannel<Result> =
+    fun execute(params: Params): ReceiveChannel<Response<Result>> =
             CoroutineScope(dispatcher).produce { buildLogic(params) }
 }
