@@ -4,6 +4,7 @@ buildscript {
                 gradlePluginVersion  : '3.2.0',
                 kotlinVersion        : '1.2.71',
                 googleServicesVersion: '4.1.0',
+                crashlyticsVersion   : '1.25.4',
                 compileSdkVersion    : 28,
                 minSdkVersion        : 21,
                 targetSdkVersion     : 28
@@ -21,17 +22,22 @@ buildscript {
                 kodeinVersion          : '5.3.0',
                 mockitoVersion         : '2.19.0',
                 mockitoKotlinVersion   : '2.0.0-RC1',
-                firebaseVersion        : '16.0.4'
+                firebaseVersion        : '16.0.4',
+                crashlyticsVersion     : '2.9.5'
         ]
     }
     repositories {
         google()
         jcenter()
+        maven {
+            url 'https://maven.fabric.io/public'
+        }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$toolVersions.gradlePluginVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$toolVersions.kotlinVersion"
         classpath "com.google.gms:google-services:$toolVersions.googleServicesVersion"
+        classpath "io.fabric.tools:gradle:$toolVersions.crashlyticsVersion"
     }
 }
 
@@ -39,6 +45,9 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven {
+            url 'https://maven.google.com/'
+        }
     }
 }
 
