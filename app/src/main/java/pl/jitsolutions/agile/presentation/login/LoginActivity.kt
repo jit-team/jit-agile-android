@@ -25,13 +25,14 @@ class LoginActivity : AppCompatActivity(), KodeinAware {
         val viewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel::class.java)
         val binding = DataBindingUtil.setContentView<ActivityLoginBinding>(this, R.layout.activity_login)
         binding.viewModel = viewModel
+        binding.setLifecycleOwner(this)
 
         viewModel.loginState.observe(this, Observer { loginState ->
             when (loginState) {
-                is LoginState.None -> showToast("None")
-                is LoginState.InProgress -> showToast("InProgress")
-                is LoginState.Success -> showToast("Success")
-                is LoginState.Error -> showToast("Error")
+                is LoginViewModel.LoginState.None -> showToast("None")
+                is LoginViewModel.LoginState.InProgress -> showToast("InProgress")
+                is LoginViewModel.LoginState.Success -> showToast("Success")
+                is LoginViewModel.LoginState.Error -> showToast("Error")
             }
         })
         viewModel.userName.observe(this, Observer { name ->

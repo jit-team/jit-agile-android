@@ -18,10 +18,10 @@
         <activity
             android:name=".presentation.login.LoginActivity"
             android:label="@string/login_screen_title"
+            android:screenOrientation="sensorPortrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

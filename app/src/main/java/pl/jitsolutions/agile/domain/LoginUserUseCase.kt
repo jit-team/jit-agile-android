@@ -21,7 +21,8 @@ class LoginUserUseCase(private val userRepository: UserRepository,
                             fullNameChannel(loginResponse.data!!.name)
                                     .consumeEach { fullName -> send(response(fullName)) }
                         }
-                        Response.Status.ERROR -> send(errorResponse<String>(error = Response.ResponseError()))
+                        Response.Status.ERROR -> send(errorResponse(error = Unit))
+                        Response.Status.IN_PROGRESS -> send(inProgressResponse())
                     }
                 }
     }

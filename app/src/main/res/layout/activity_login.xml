@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="pl.jitsolutions.agile.presentation.login.LoginViewModel" />
@@ -20,7 +21,7 @@
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+                android:id="@+id/login_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
@@ -72,12 +73,13 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/login_login"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{() -> viewModel.login()}"
                 android:text="@string/login_screen_login_button_text"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/login_layout_password" />
+                app:layout_constraintTop_toBottomOf="@+id/login_layout_password"
+                app:loginButtonVisibility="@{viewModel.loginState}" />
 
             <View
                 android:id="@+id/login_divider"
@@ -85,17 +87,39 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="8dp"
                 android:background="?android:attr/dividerVertical"
-                app:layout_constraintTop_toBottomOf="@+id/login_login" />
+                app:layout_constraintTop_toBottomOf="@+id/login_login"
+                app:loginButtonVisibility="@{viewModel.loginState}" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/login_register"
-                app:layout_constraintTop_toBottomOf="@+id/login_divider"
-                app:layout_constraintRight_toRightOf="parent"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{() -> viewModel.register()}"
-                android:text="@string/login_screen_register_button_text" />
+                android:text="@string/login_screen_register_button_text"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/login_divider"
+                app:loginButtonVisibility="@{viewModel.loginState}" />
+
+            <androidx.core.widget.ContentLoadingProgressBar
+                android:id="@+id/login_progress"
+                style="@android:style/Widget.Material.Light.ProgressBar.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/login_layout_password"
+                app:loginProgressVisibility="@{viewModel.loginState}" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@color/login_screen_error_text"
+                app:layout_constraintTop_toBottomOf="@+id/login_register"
+                app:loginErrorText="@{viewModel.loginState}"
+                app:loginErrorVisibility="@{viewModel.loginState}" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

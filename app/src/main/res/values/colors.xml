@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@color/jit_logo</color>
-    <color name="colorPrimaryDark">@color/jit_logo_dark</color>
-    <color name="colorAccent">@color/jit_logo</color>
+    <color name="red_600">#e53935</color>
+
+    <color name="colorPrimary">#de6d37</color>
+    <color name="colorPrimaryDark">#a63f08</color>
+    <color name="colorAccent">#de6d37</color>
 
     <color name="jit_logo">#de6d37</color>
     <color name="jit_logo_dark">#a63f08</color>
+    <color name="login_screen_error_text">@color/red_600</color>
 </resources>
