@@ -7,3 +7,4 @@
 /captures
 .externalNativeBuild
 /keys/*
+/app/src/prod

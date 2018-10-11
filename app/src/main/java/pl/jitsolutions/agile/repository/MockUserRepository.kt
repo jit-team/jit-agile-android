@@ -1,13 +1,12 @@
 package pl.jitsolutions.agile.repository
 
+import kotlinx.coroutines.experimental.CoroutineDispatcher
+import kotlinx.coroutines.experimental.CoroutineScope
+import kotlinx.coroutines.experimental.channels.ReceiveChannel
+import kotlinx.coroutines.experimental.channels.produce
 import pl.jitsolutions.agile.domain.User
 
-class MockUserRepository : UserRepository {
-    override fun getCurrentUser(): User {
-        return User("FakeUser")
-    }
-
-    override fun login(email: String, password: String): User {
-        return User(email)
-    }
+class MockUserRepository(private val dispatcher: CoroutineDispatcher) : UserRepository {
+    override fun login(email: String, password: String): ReceiveChannel<User>
+            = CoroutineScope(dispatcher).produce { send(User(email)) }
 }

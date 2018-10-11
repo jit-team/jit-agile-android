@@ -5,6 +5,7 @@ plugins {
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.google.gms.google-services'
 
 def keystorePropertiesFile = rootProject.file("keys/keystore.properties")
 def keystoreProperties = new Properties()
@@ -67,33 +68,33 @@ android {
 }
 
 dependencies {
-    def lifecycle_version = "2.0.0"
-    def room_version = "2.0.0"
-
-    // ViewModel and LiveData
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-extensions:$libVersions.lifecycleVersion"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$toolVersions.kotlinVersion"
 
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:0.30.1'
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:0.30.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$libVersions.coroutinesVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$libVersions.coroutinesVersion"
 
-    implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-runtime:$libVersions.roomVersion"
+    kapt "androidx.room:room-compiler:$libVersions.roomVersion"
+
     implementation "androidx.appcompat:appcompat:$libVersions.appCompatVersion"
     implementation "androidx.constraintlayout:constraintlayout:$libVersions.constraintLayoutVersion"
-    implementation "com.google.android.material:material:1.0.0"
     implementation "com.google.android.material:material:$libVersions.materialVersion"
-    implementation 'org.kodein.di:kodein-di-generic-jvm:5.3.0'
-    implementation 'org.kodein.di:kodein-di-framework-android-x:5.3.0'
+
+    implementation "com.google.firebase:firebase-core:$libVersions.firebaseVersion"
+    implementation "com.google.firebase:firebase-auth:$libVersions.firebaseVersion"
+
+    implementation "org.kodein.di:kodein-di-generic-jvm:$libVersions.kodeinVersion"
+    implementation "org.kodein.di:kodein-di-framework-android-x:$libVersions.kodeinVersion"
 
     testImplementation "junit:junit:$libVersions.junitVersion"
-    testImplementation 'org.mockito:mockito-core:2.19.0'
-    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0-RC1"
+    testImplementation "org.mockito:mockito-core:$libVersions.mockitoVersion"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$libVersions.mockitoKotlinVersion"
 
     androidTestImplementation "androidx.test:runner:$libVersions.testRunnerVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$libVersions.espressoVersion"
-
 }
+
 kotlin {
     experimental {
         coroutines "enable"

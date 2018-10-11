@@ -8,10 +8,6 @@
         <variable
             name="viewModel"
             type="pl.jitsolutions.agile.presentation.login.LoginViewModel" />
-
-        <variable
-            name="onClick"
-            type="pl.jitsolutions.agile.utils.OnClick"/>
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -53,8 +49,8 @@
                     android:id="@+id/login_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@={viewModel.email}"
-                    android:hint="@string/email" />
+                    android:hint="@string/email"
+                    android:text="@={viewModel.email}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -70,8 +66,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/password"
-                    android:text="@={viewModel.password}"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:text="@={viewModel.password}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -79,8 +75,8 @@
                 android:id="@+id/material_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{() -> viewModel.login()}"
                 android:text="@string/login"
-                android:onClick="@{() -> onClick.click()}"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/login_layout_password" />
 

@@ -1,25 +1,25 @@
 package pl.jitsolutions.agile.domain
 
-import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.GlobalScope
-import kotlinx.coroutines.experimental.launch
-import kotlinx.coroutines.experimental.withContext
+import kotlinx.coroutines.experimental.CoroutineDispatcher
+import kotlinx.coroutines.experimental.channels.*
+import pl.jitsolutions.agile.repository.ProjectRepository
 import pl.jitsolutions.agile.repository.UserRepository
 
-class LoginUserUseCase(private val userRepository: UserRepository) {
-    fun execute(email: String, password: String): MutableLiveData<User> {
-        val userLiveData = MutableLiveData<User>()
+class LoginUserUseCase(private val userRepository: UserRepository,
+                       private val projectRepository: ProjectRepository,
+                       dispatcher: CoroutineDispatcher)
+    : UseCase<LoginUserUseCase.Params, String>(dispatcher) {
 
-        GlobalScope.launch {
-            val user: User = withContext(Dispatchers.IO) {
-                Thread.sleep(1000)
-                userRepository.login(email, password)
-            }
-            withContext(Dispatchers.Main) {
-                userLiveData.value = user
-            }
-        }
-        return userLiveData
+    override suspend fun ProducerScope<String>.buildLogic(params: Params) {
+        userRepository.login(params.email, params.password)
+                .flatMap { user -> fullNameChannel(user.name) }
+                .consumeEach { fullName -> send(fullName) }
     }
+
+    private fun fullNameChannel(userName: String): ReceiveChannel<String> {
+        return projectRepository.getGroups(userName)
+                .map { group -> "$userName, groups: $group" }
+    }
+
+    data class Params(val email: String, val password: String)
 }
