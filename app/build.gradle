@@ -62,6 +62,17 @@ android {
         }
     }
 
+    variantFilter { variant ->
+        def buildTypeName = variant.buildType*.name
+        def flavorName = variant.flavors*.name
+        if (flavorName.contains("dev") && buildTypeName.contains("release")) {
+            setIgnore(true)
+        }
+        if (flavorName.contains("prod") && buildTypeName.contains("debug")) {
+            setIgnore(true)
+        }
+    }
+
     dataBinding {
         enabled = true
     }
