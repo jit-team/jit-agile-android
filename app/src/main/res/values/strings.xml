@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">mobile-agile-android</string>
     <string name="action_settings">Settings</string>
-    <string name="email">email</string>
-    <string name="password">password</string>
-    <string name="login">login</string>
-    <string name="login_title">Login</string>
+    <string name="login_screen_email">email</string>
+    <string name="login_screen_password">password</string>
+    <string name="login_screen_login">login</string>
+    <string name="login_screen_title">Login</string>
+    <string name="login_screen_register">register</string>
     <string name="main_screen_title">Agile main screen</string>
+    <string name="register_screen_title">Register</string>
 </resources>
