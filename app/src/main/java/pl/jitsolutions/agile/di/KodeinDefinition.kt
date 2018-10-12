@@ -61,7 +61,7 @@ private val viewModelsModule = Kodein.Module(name = "ViewModels") {
         viewModelFactory { RegisterViewModel(instance()) }
     }
     bind<ViewModelProvider.Factory>(tag = LoginViewModel::class.java) with provider {
-        viewModelFactory { LoginViewModel(instance(tag = Tags.Dispatchers.MAIN), instance(), instance()) }
+        viewModelFactory { LoginViewModel(instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }
     }
 }
 

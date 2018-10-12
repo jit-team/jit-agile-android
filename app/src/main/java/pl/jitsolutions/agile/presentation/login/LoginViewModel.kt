@@ -1,6 +1,5 @@
 package pl.jitsolutions.agile.presentation.login
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.channels.consumeEach
@@ -19,7 +18,6 @@ class LoginViewModel(private val loginUserUseCase: LoginUserUseCase,
     val email = mutableLiveData("")
     val loginState = mutableLiveData<LoginState>(LoginState.None)
     val userName = mutableLiveData("")
-    val register = MutableLiveData<Any>()
 
     private val typedTextObserver = Observer<String> { loginState.value = LoginState.None }
 
