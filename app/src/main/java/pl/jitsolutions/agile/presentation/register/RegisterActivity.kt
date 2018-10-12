@@ -3,6 +3,7 @@ package pl.jitsolutions.agile.presentation.register
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -11,9 +12,9 @@ import org.kodein.di.generic.instance
 import pl.jitsolutions.agile.R
 import pl.jitsolutions.agile.databinding.ActivityRegisterBinding
 
-class RegisterActivity: AppCompatActivity(), KodeinAware {
+class RegisterActivity : AppCompatActivity(), KodeinAware {
     override val kodein: Kodein by closestKodein()
-    private val viewModelFactory: RegisterViewModelFactory by instance()
+    private val viewModelFactory: ViewModelProvider.Factory by instance(tag = RegisterViewModel::class.java)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

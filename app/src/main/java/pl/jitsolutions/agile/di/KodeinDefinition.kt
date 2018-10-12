@@ -1,5 +1,7 @@
 package pl.jitsolutions.agile.di
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.asCoroutineDispatcher
@@ -10,8 +12,10 @@ import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
 import pl.jitsolutions.agile.domain.LoginUserUseCase
 import pl.jitsolutions.agile.domain.RegisterUserUseCase
-import pl.jitsolutions.agile.presentation.login.LoginViewModelFactory
-import pl.jitsolutions.agile.presentation.register.RegisterViewModelFactory
+import pl.jitsolutions.agile.presentation.AndroidNavigator
+import pl.jitsolutions.agile.presentation.Navigator
+import pl.jitsolutions.agile.presentation.login.LoginViewModel
+import pl.jitsolutions.agile.presentation.register.RegisterViewModel
 import pl.jitsolutions.agile.repository.FirebaseUserRepository
 import pl.jitsolutions.agile.repository.MockProjectRepository
 import pl.jitsolutions.agile.repository.ProjectRepository
@@ -44,20 +48,29 @@ private val repositoriesModule = Kodein.Module(name = "Repositories") {
 }
 
 private val useCasesModule = Kodein.Module(name = "UseCases") {
-    bind<LoginUserUseCase>() with provider {
-        LoginUserUseCase(instance(), instance(), instance(tag = Tags.Dispatchers.USE_CASE))
-    }
     bind<RegisterUserUseCase>() with provider {
         RegisterUserUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
+    }
+    bind<LoginUserUseCase>() with provider {
+        LoginUserUseCase(instance(), instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
 }
 
 private val viewModelsModule = Kodein.Module(name = "ViewModels") {
-    bind<LoginViewModelFactory>() with provider {
-        LoginViewModelFactory(instance(tag = Tags.Dispatchers.MAIN), instance())
+    bind<ViewModelProvider.Factory>(tag = RegisterViewModel::class.java) with provider {
+        viewModelFactory { RegisterViewModel(instance()) }
     }
-    bind<RegisterViewModelFactory>() with provider {
-        RegisterViewModelFactory(instance())
+    bind<ViewModelProvider.Factory>(tag = LoginViewModel::class.java) with provider {
+        viewModelFactory { LoginViewModel(instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }
+    }
+}
+
+//TODO: move to utils file or something
+private fun viewModelFactory(factory: () -> ViewModel): ViewModelProvider.Factory {
+    return object : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            return factory.invoke() as T
+        }
     }
 }
 
@@ -66,4 +79,6 @@ val kodeinBuilder = Kodein.lazy {
     import(repositoriesModule)
     import(useCasesModule)
     import(viewModelsModule)
+
+    bind<Navigator>() with provider { AndroidNavigator(instance()) }
 }
