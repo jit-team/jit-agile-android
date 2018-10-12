@@ -26,6 +26,7 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : User
             }
         }
     }
+
     override fun register(email: String, password: String): ReceiveChannel<Response<User>> {
         return CoroutineScope(dispatcher).produce {
             try {

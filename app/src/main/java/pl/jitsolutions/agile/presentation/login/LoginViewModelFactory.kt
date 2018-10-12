@@ -10,6 +10,6 @@ class LoginViewModelFactory(private val mainDispatcher: CoroutineDispatcher,
                             private val loginUserUseCase: LoginUserUseCase
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return LoginViewModel(mainDispatcher, loginUserUseCase) as T
+        return LoginViewModel(loginUserUseCase, mainDispatcher) as T
     }
 }

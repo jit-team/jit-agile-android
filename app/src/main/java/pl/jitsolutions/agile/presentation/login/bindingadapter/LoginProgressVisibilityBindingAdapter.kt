@@ -1,4 +1,4 @@
-package pl.jitsolutions.agile.presentation.bindingadapter
+package pl.jitsolutions.agile.presentation.login.bindingadapter
 
 import android.view.View
 import android.widget.ProgressBar
