@@ -8,9 +8,11 @@ import kotlinx.coroutines.experimental.launch
 import pl.jitsolutions.agile.domain.LoginUserUseCase
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.presentation.CoroutineViewModel
+import pl.jitsolutions.agile.presentation.Navigator
 import pl.jitsolutions.agile.utils.mutableLiveData
 
 class LoginViewModel(private val loginUserUseCase: LoginUserUseCase,
+                     private val navigator: Navigator,
                      mainDispatcher: CoroutineDispatcher
 ) : CoroutineViewModel(mainDispatcher) {
     val password = mutableLiveData("")
@@ -46,7 +48,7 @@ class LoginViewModel(private val loginUserUseCase: LoginUserUseCase,
     }
 
     fun register() {
-        register.value = null
+        navigator.goToRegistration()
     }
 
     override fun onCleared() {
