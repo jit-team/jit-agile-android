@@ -1,5 +1,7 @@
 package pl.jitsolutions.agile.presentation.register
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -11,6 +13,10 @@ import org.kodein.di.android.closestKodein
 import org.kodein.di.generic.instance
 import pl.jitsolutions.agile.R
 import pl.jitsolutions.agile.databinding.ActivityRegisterBinding
+
+fun launchRegisterActivity(context: Context) {
+    context.startActivity(Intent(context, RegisterActivity::class.java))
+}
 
 class RegisterActivity : AppCompatActivity(), KodeinAware {
     override val kodein: Kodein by closestKodein()

@@ -17,7 +17,6 @@ class LoginViewModel(private val loginUserUseCase: LoginUserUseCase,
     val password = mutableLiveData("")
     val email = mutableLiveData("")
     val loginState = mutableLiveData<LoginState>(LoginState.None)
-    val userName = mutableLiveData("")
 
     private val typedTextObserver = Observer<String> { loginState.value = LoginState.None }
 
@@ -32,11 +31,10 @@ class LoginViewModel(private val loginUserUseCase: LoginUserUseCase,
             when (response.status) {
                 Response.Status.SUCCESS -> {
                     loginState.value = LoginState.Success
-                    userName.value = response.data!!
+                    navigator.goToMain()
                 }
                 Response.Status.ERROR -> {
                     loginState.value = LoginState.Error
-                    userName.value = ""
                 }
                 Response.Status.IN_PROGRESS -> {
                     loginState.value = LoginState.InProgress
