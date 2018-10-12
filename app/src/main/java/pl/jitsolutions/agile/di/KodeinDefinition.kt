@@ -19,7 +19,7 @@ import pl.jitsolutions.agile.repository.UserRepository
 import java.util.concurrent.Executors
 
 interface Tags {
-    enum class Dispatchers { USE_CASE, IO }
+    enum class Dispatchers { USE_CASE, IO, MAIN }
 }
 
 private val dispatchersModule = Kodein.Module(name = "Dispatchers") {
@@ -28,6 +28,9 @@ private val dispatchersModule = Kodein.Module(name = "Dispatchers") {
     }
     bind<CoroutineDispatcher>(tag = Tags.Dispatchers.IO) with singleton {
         Dispatchers.IO
+    }
+    bind<CoroutineDispatcher>(tag = Tags.Dispatchers.MAIN) with singleton {
+        Dispatchers.Main
     }
 }
 
@@ -51,7 +54,7 @@ private val useCasesModule = Kodein.Module(name = "UseCases") {
 
 private val viewModelsModule = Kodein.Module(name = "ViewModels") {
     bind<LoginViewModelFactory>() with provider {
-        LoginViewModelFactory(instance())
+        LoginViewModelFactory(instance(tag = Tags.Dispatchers.MAIN), instance())
     }
     bind<RegisterViewModelFactory>() with provider {
         RegisterViewModelFactory(instance())
