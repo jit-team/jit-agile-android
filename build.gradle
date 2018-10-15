@@ -1,7 +1,7 @@
 buildscript {
     ext {
         toolVersions = [
-                gradlePluginVersion  : '3.2.0',
+                gradlePluginVersion  : '3.2.1',
                 kotlinVersion        : '1.2.71',
                 googleServicesVersion: '4.1.0',
                 crashlyticsVersion   : '1.25.4',
