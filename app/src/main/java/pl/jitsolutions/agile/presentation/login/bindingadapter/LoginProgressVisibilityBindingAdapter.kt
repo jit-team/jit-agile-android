@@ -10,7 +10,7 @@ fun setLoginProgressVisibility(progressBar: ProgressBar, loginState: LoginViewMo
     progressBar.visibility = when (loginState) {
         LoginViewModel.LoginState.None -> View.INVISIBLE
         LoginViewModel.LoginState.InProgress -> View.VISIBLE
-        LoginViewModel.LoginState.Error -> View.INVISIBLE
+        is LoginViewModel.LoginState.Error -> View.INVISIBLE
         LoginViewModel.LoginState.Success -> View.INVISIBLE
     }
 }
