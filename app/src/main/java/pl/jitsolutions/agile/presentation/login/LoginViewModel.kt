@@ -2,7 +2,6 @@ package pl.jitsolutions.agile.presentation.login
 
 import androidx.lifecycle.Observer
 import kotlinx.coroutines.experimental.CoroutineDispatcher
-import kotlinx.coroutines.experimental.channels.consumeEach
 import kotlinx.coroutines.experimental.launch
 import pl.jitsolutions.agile.domain.LoginUserUseCase
 import pl.jitsolutions.agile.domain.Response
@@ -17,7 +16,6 @@ class LoginViewModel(private val loginUserUseCase: LoginUserUseCase,
     val password = mutableLiveData("")
     val email = mutableLiveData("")
     val loginState = mutableLiveData<LoginState>(LoginState.None)
-    val userName = mutableLiveData("")
 
     private val typedTextObserver = Observer<String> { loginState.value = LoginState.None }
 
@@ -27,20 +25,17 @@ class LoginViewModel(private val loginUserUseCase: LoginUserUseCase,
     }
 
     fun login() = launch {
+        loginState.value = LoginState.InProgress
+
         val params = LoginUserUseCase.Params(email.value!!, password.value!!)
-        loginUserUseCase.execute(params).consumeEach { response ->
-            when (response.status) {
-                Response.Status.SUCCESS -> {
-                    loginState.value = LoginState.Success
-                    userName.value = response.data!!
-                }
-                Response.Status.ERROR -> {
-                    loginState.value = LoginState.Error
-                    userName.value = ""
-                }
-                Response.Status.IN_PROGRESS -> {
-                    loginState.value = LoginState.InProgress
-                }
+        val response = loginUserUseCase.executeAsync(params).await()
+        when (response.status) {
+            Response.Status.SUCCESS -> {
+                loginState.value = LoginState.Success
+                navigator.goToMain()
+            }
+            Response.Status.ERROR -> {
+                loginState.value = LoginState.Error
             }
         }
     }

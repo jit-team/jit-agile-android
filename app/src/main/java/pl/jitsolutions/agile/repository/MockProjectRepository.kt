@@ -8,6 +8,10 @@ import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.response
 
 class MockProjectRepository(private val dispatcher: CoroutineDispatcher) : ProjectRepository {
-    override fun getGroups(userId: String): ReceiveChannel<Response<String>> =
+    override fun getProjectsWithChannel(userId: String): ReceiveChannel<Response<String>> =
             CoroutineScope(dispatcher).produce { send(response("test groups")) }
+
+    override suspend fun getProjects(userId: String): Response<String> {
+        return response("test groups")
+    }
 }

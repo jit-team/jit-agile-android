@@ -3,7 +3,6 @@ package pl.jitsolutions.agile.presentation.login
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.channels.produce
 import kotlinx.coroutines.experimental.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -19,20 +18,18 @@ class LoginViewModelTest {
     @Test
     fun doAction_doesSomething() = runBlocking<Unit>(Dispatchers.Default) {
         val mockUserRepository = mock<UserRepository> {
-            on { login("abc", "123") } doReturn produce { send(response(User("abc"))) }
+            onBlocking { login("abc", "123") } doReturn response(User("abc"))
         }
 
         val mockProjectRepository = mock<ProjectRepository> {
-            on { getGroups("abc") } doReturn produce { send(response("Test group")) }
+            onBlocking { getProjects("abc") } doReturn response("Test group")
         }
 
         val classUnderTest = LoginUserUseCase(mockUserRepository, mockProjectRepository, Dispatchers.Unconfined)
         val params = LoginUserUseCase.Params("abc", "123")
-        val channel = classUnderTest.execute(params)
-
-        val response = channel.receive()
+        val response = classUnderTest.executeAsync(params).await()
 
         assertEquals(Response.Status.SUCCESS, response.status)
-        assertEquals("abc, groups: Test group", response.data)
+        assertEquals("abc, projects: Test group", response.data)
     }
 }
