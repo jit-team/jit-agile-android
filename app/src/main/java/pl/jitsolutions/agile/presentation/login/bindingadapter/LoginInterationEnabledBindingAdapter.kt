@@ -9,7 +9,7 @@ fun setLoginCredentialsEditing(view: View, loginState: LoginViewModel.LoginState
     view.isEnabled = when (loginState) {
         LoginViewModel.LoginState.None -> true
         LoginViewModel.LoginState.InProgress -> false
-        LoginViewModel.LoginState.Error -> true
+        is LoginViewModel.LoginState.Error -> true
         LoginViewModel.LoginState.Success -> false
     }
 }

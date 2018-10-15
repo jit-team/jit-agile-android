@@ -35,7 +35,14 @@ class LoginViewModel(private val loginUserUseCase: LoginUserUseCase,
                 navigator.goToMain()
             }
             Response.Status.ERROR -> {
-                loginState.value = LoginState.Error
+                val type = when (response.error) {
+                    is LoginUserUseCase.Error.UnknownError -> LoginErrorType.SERVER
+                    is LoginUserUseCase.Error.ServerConnection -> LoginErrorType.SERVER
+                    is LoginUserUseCase.Error.WrongPassword -> LoginErrorType.PASSWORD
+                    is LoginUserUseCase.Error.UserEmailNotFound -> LoginErrorType.EMAIL
+                    else -> LoginErrorType.SERVER
+                }
+                loginState.value = LoginState.Error(type)
             }
         }
     }
@@ -51,9 +58,16 @@ class LoginViewModel(private val loginUserUseCase: LoginUserUseCase,
     }
 
     sealed class LoginState {
+        fun isErrorOfType(type: LoginErrorType): Boolean {
+            return this is Error && this.type == type
+        }
+
+
         object None : LoginState()
         object InProgress : LoginState()
-        object Error : LoginState()
+        data class Error(val type: LoginErrorType) : LoginState()
         object Success : LoginState()
     }
+
+    enum class LoginErrorType { EMAIL, PASSWORD, SERVER }
 }
