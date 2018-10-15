@@ -2,6 +2,7 @@ package pl.jitsolutions.agile.presentation.login
 
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import org.kodein.di.generic.instance
@@ -17,5 +18,11 @@ class LoginActivity : BaseActivity() {
         val binding = DataBindingUtil.setContentView<ActivityLoginBinding>(this, R.layout.activity_login)
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
+
+        viewModel.loginState.observe(this, Observer { loginState ->
+            if (loginState == LoginViewModel.LoginState.Success) {
+                finish()
+            }
+        })
     }
 }
