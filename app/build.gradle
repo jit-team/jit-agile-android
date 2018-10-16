@@ -8,6 +8,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'io.fabric'
+apply plugin: 'androidx.navigation.safeargs'
 
 def keystorePropertiesFile = rootProject.file("keys/keystore.properties")
 def keystoreProperties = new Properties()
@@ -81,6 +82,9 @@ android {
 }
 
 dependencies {
+    implementation "android.arch.navigation:navigation-fragment-ktx:$libVersions.navigationVersion"
+    implementation "android.arch.navigation:navigation-ui-ktx:$libVersions.navigationVersion"
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$toolVersions.kotlinVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$libVersions.coroutinesVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$libVersions.coroutinesVersion"
@@ -107,6 +111,7 @@ dependencies {
 
     androidTestImplementation "androidx.test:runner:$libVersions.testRunnerVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$libVersions.espressoVersion"
+    androidTestImplementation "android.arch.navigation:navigation-testing-ktx:$libVersions.navigationVersion"
 }
 
 kotlin {

@@ -5,6 +5,7 @@ buildscript {
                 kotlinVersion        : '1.2.71',
                 googleServicesVersion: '4.1.0',
                 crashlyticsVersion   : '1.25.4',
+                navigationVersion    : '1.0.0-alpha06',
                 compileSdkVersion    : 28,
                 minSdkVersion        : 21,
                 targetSdkVersion     : 28
@@ -23,7 +24,8 @@ buildscript {
                 mockitoVersion         : '2.19.0',
                 mockitoKotlinVersion   : '2.0.0-RC1',
                 firebaseVersion        : '16.0.4',
-                crashlyticsVersion     : '2.9.5'
+                crashlyticsVersion     : '2.9.5',
+                navigationVersion      : '1.0.0-alpha06'
         ]
     }
     repositories {
@@ -38,6 +40,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$toolVersions.kotlinVersion"
         classpath "com.google.gms:google-services:$toolVersions.googleServicesVersion"
         classpath "io.fabric.tools:gradle:$toolVersions.crashlyticsVersion"
+        classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:$toolVersions.navigationVersion"
     }
 }
 

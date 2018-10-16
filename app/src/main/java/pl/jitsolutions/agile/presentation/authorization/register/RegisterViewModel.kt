@@ -1,4 +1,4 @@
-package pl.jitsolutions.agile.presentation.register
+package pl.jitsolutions.agile.presentation.authorization.register
 
 import androidx.lifecycle.ViewModel
 import pl.jitsolutions.agile.domain.RegisterUserUseCase

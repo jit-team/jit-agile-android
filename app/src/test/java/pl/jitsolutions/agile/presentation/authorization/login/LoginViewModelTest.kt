@@ -1,4 +1,4 @@
-package pl.jitsolutions.agile.presentation.login
+package pl.jitsolutions.agile.presentation.authorization.login
 
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
