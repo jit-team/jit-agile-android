@@ -21,7 +21,10 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : User
                 try {
                     firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener { result ->
                         when {
-                            result.isSuccessful -> continuation.resume(response(User(result.result?.user?.email!!)))
+                            result.isSuccessful -> {
+                                val userName = getUserName(result.result!!)
+                                continuation.resume(response(User(userName)))
+                            }
                             result.exception != null -> {
                                 continuation.resume(errorResponse(error = retrieveErrorText(result.exception!!)))
                             }
@@ -38,24 +41,34 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : User
     override suspend fun register(userName: String, email: String, password: String): Response<User> {
         return CoroutineScope(dispatcher).async {
             try {
-                suspendCoroutine<Task<AuthResult>> { continuation ->
+                val registerTaskResult = suspendCoroutine<Task<AuthResult>> { continuation ->
                     firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
                         continuation.resume(it)
                     }
-                }.let {
-                    when {
-                        it.isSuccessful -> {
-                            updateUserName(userName, it.result?.user!!)
-                            response(User(userName))
-                        }
-                        it.exception != null -> errorResponse(error = retrieveErrorText(it.exception!!))
-                        else -> errorResponse(error = UserRepository.Error.UnknownError)
-                    }
                 }
+                handleRegisterResponse(userName, registerTaskResult)
             } catch (e: Exception) {
                 errorResponse<User>(error = UserRepository.Error.UnknownError)
             }
         }.await()
+    }
+
+    private fun getUserName(result: AuthResult): String {
+        return if (result.user?.displayName != null)
+            result.user?.displayName!!
+        else
+            result.user?.email!!
+    }
+
+    private suspend fun handleRegisterResponse(userName: String, taskResult: Task<AuthResult>): Response<User> {
+        return when {
+            taskResult.isSuccessful -> {
+                updateUserName(userName, taskResult.result?.user!!)
+                response(User(userName))
+            }
+            taskResult.exception != null -> errorResponse(error = retrieveErrorText(taskResult.exception!!))
+            else -> errorResponse(error = UserRepository.Error.UnknownError)
+        }
     }
 
     private suspend fun updateUserName(userName: String, firebaseUser: FirebaseUser) {

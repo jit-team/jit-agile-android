@@ -1,6 +1,5 @@
 package pl.jitsolutions.agile.presentation.register.bindingadapter
 
-import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import androidx.databinding.BindingAdapter
@@ -11,7 +10,7 @@ fun registerProgressVisibilityBindingAdapter(progressBar: ProgressBar, registerS
     progressBar.visibility = when (registerState) {
         RegisterViewModel.RegisterState.None -> View.INVISIBLE
         RegisterViewModel.RegisterState.InProgress -> View.VISIBLE
-        RegisterViewModel.RegisterState.Error -> View.INVISIBLE
+        is RegisterViewModel.RegisterState.Error -> View.INVISIBLE
         RegisterViewModel.RegisterState.Success -> View.INVISIBLE
     }
 }

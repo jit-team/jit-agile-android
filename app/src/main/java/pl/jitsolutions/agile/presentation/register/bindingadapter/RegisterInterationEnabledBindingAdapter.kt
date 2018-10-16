@@ -9,7 +9,7 @@ fun setRgisterCredentialsEditing(view: View, registerState: RegisterViewModel.Re
     view.isEnabled = when (registerState) {
         RegisterViewModel.RegisterState.None -> true
         RegisterViewModel.RegisterState.InProgress -> false
-        RegisterViewModel.RegisterState.Error -> true
+        is RegisterViewModel.RegisterState.Error -> true
         RegisterViewModel.RegisterState.Success -> false
     }
 }

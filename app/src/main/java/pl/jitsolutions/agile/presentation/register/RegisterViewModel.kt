@@ -1,11 +1,11 @@
 package pl.jitsolutions.agile.presentation.register
 
-import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.launch
 import pl.jitsolutions.agile.domain.RegisterUserUseCase
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.presentation.CoroutineViewModel
+import pl.jitsolutions.agile.presentation.login.LoginViewModel
 import pl.jitsolutions.agile.utils.mutableLiveData
 
 
@@ -16,14 +16,8 @@ class RegisterViewModel(private val registerUserUseCase: RegisterUserUseCase, ma
     val password = mutableLiveData("")
     val userName = mutableLiveData("")
     val registerState = mutableLiveData<RegisterState>(RegisterState.None)
-    val userNameError: MutableLiveData<String> = mutableLiveData("")
-    val emailError: MutableLiveData<String> = mutableLiveData("")
-    val passwordError: MutableLiveData<String> = mutableLiveData("")
 
     fun register() = launch {
-        userNameError.value = ""
-        emailError.value = ""
-        passwordError.value = ""
         registerState.value = RegisterState.InProgress
         val params = RegisterUserUseCase.Params(email.value!!, userName.value!!, password.value!!)
         val response = registerUserUseCase.executeAsync(params).await()
@@ -33,24 +27,30 @@ class RegisterViewModel(private val registerUserUseCase: RegisterUserUseCase, ma
                 registerState.value = RegisterState.Success
             }
             Response.Status.ERROR -> {
-                registerState.value = RegisterState.Error
-                when (response.error) {
-                    //todo: strings ...
-                    is RegisterUserUseCase.Error.WeakPassword -> passwordError.value = "weak password"
-                    is RegisterUserUseCase.Error.EmptyUserName -> userNameError.value = "empty username"
-                    is RegisterUserUseCase.Error.EmptyPassword -> passwordError.value = "empty password"
-                    is RegisterUserUseCase.Error.EmptyEmail -> emailError.value = "empty email"
-                    is RegisterUserUseCase.Error.InvalidCredentials -> emailError.value = "bad email"
-
+                val type = when (response.error) {
+                    is RegisterUserUseCase.Error.WeakPassword -> RegisterTypeError.PASSWORD
+                    is RegisterUserUseCase.Error.EmptyUserName -> RegisterTypeError.USERNAME
+                    is RegisterUserUseCase.Error.EmptyPassword -> RegisterTypeError.PASSWORD
+                    is RegisterUserUseCase.Error.EmptyEmail -> RegisterTypeError.EMAIL
+                    is RegisterUserUseCase.Error.InvalidCredentials -> RegisterTypeError.EMAIL
+                    else -> RegisterTypeError.SERVER
                 }
+                registerState.value = RegisterState.Error(type)
             }
         }
     }
 
     sealed class RegisterState {
+        fun isErrorOfType(type: RegisterTypeError): Boolean {
+            return this is RegisterState.Error && this.type == type
+        }
+
         object None : RegisterState()
         object InProgress : RegisterState()
-        object Error : RegisterState()
+        data class Error(val type: RegisterTypeError) : RegisterState()
         object Success : RegisterState()
+
     }
+
+    enum class RegisterTypeError { USERNAME, EMAIL, PASSWORD, SERVER }
 }
