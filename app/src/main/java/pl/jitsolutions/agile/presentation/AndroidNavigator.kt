@@ -1,10 +1,22 @@
 package pl.jitsolutions.agile.presentation
 
 import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
+import pl.jitsolutions.agile.R
 import pl.jitsolutions.agile.presentation.mainscreen.launchMainActivity
-import pl.jitsolutions.agile.presentation.register.launchRegisterActivity
 
-class AndroidNavigator(private val context: Context) : Navigator {
-    override fun goToRegistration() = launchRegisterActivity(context)
-    override fun goToMain() = launchMainActivity(context)
+class AndroidNavigator(context: Context) : Navigator {
+    private val activity = context as AppCompatActivity
+
+    override fun goToRegistration() {
+        findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+    }
+
+    override fun goToMain() {
+        activity.finish()
+        launchMainActivity(activity)
+    }
+
+    private fun findNavController() = activity.findNavController(android.R.id.content)
 }

@@ -7,13 +7,13 @@
 
         <variable
             name="viewModel"
-            type="pl.jitsolutions.agile.presentation.login.LoginViewModel" />
+            type="pl.jitsolutions.agile.presentation.authorization.login.LoginViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.login.LoginActivity">
+        tools:context="pl.jitsolutions.agile.presentation.authorization.AuthorizationActivity">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
