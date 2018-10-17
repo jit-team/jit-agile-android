@@ -10,6 +10,11 @@ class LoginUserUseCase(private val userRepository: UserRepository,
     : UseCase<LoginUserUseCase.Params, String>(dispatcher) {
 
     override suspend fun build(params: Params): Response<String> {
+        val validationError = params.validate()
+        if (validationError != null) {
+            return errorResponse(error = validationError)
+        }
+
         val response = userRepository.login(params.email, params.password)
         return when (response.status) {
             Response.Status.SUCCESS -> buildFullName(response.data!!.name)
@@ -41,11 +46,21 @@ class LoginUserUseCase(private val userRepository: UserRepository,
         }
     }
 
-    data class Params(val email: String, val password: String)
+    data class Params(val email: String, val password: String) {
+        fun validate(): Error? {
+            if (email.isEmpty())
+                return Error.EmptyEmail
+            if (password.isEmpty())
+                return Error.EmptyPassword
+            return null
+        }
+    }
 
     sealed class Error {
         object UserEmailNotFound : Error()
         object WrongPassword : Error()
+        object EmptyEmail : Error()
+        object EmptyPassword : Error()
         object ServerConnection : Error()
         object UnknownError : Error()
     }
