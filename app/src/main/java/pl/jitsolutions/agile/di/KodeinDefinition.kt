@@ -11,11 +11,11 @@ import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
 import pl.jitsolutions.agile.domain.LoginUserUseCase
-import pl.jitsolutions.agile.domain.RegisterUserUseCase
+import pl.jitsolutions.agile.domain.UserRegistrationUseCase
 import pl.jitsolutions.agile.presentation.AndroidNavigator
 import pl.jitsolutions.agile.presentation.Navigator
 import pl.jitsolutions.agile.presentation.authorization.login.LoginViewModel
-import pl.jitsolutions.agile.presentation.authorization.register.RegisterViewModel
+import pl.jitsolutions.agile.presentation.authorization.registration.RegistrationViewModel
 import pl.jitsolutions.agile.repository.FirebaseUserRepository
 import pl.jitsolutions.agile.repository.MockProjectRepository
 import pl.jitsolutions.agile.repository.ProjectRepository
@@ -48,8 +48,8 @@ private val repositoriesModule = Kodein.Module(name = "Repositories") {
 }
 
 private val useCasesModule = Kodein.Module(name = "UseCases") {
-    bind<RegisterUserUseCase>() with provider {
-        RegisterUserUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
+    bind<UserRegistrationUseCase>() with provider {
+        UserRegistrationUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
     bind<LoginUserUseCase>() with provider {
         LoginUserUseCase(instance(), instance(), instance(tag = Tags.Dispatchers.USE_CASE))
@@ -57,8 +57,8 @@ private val useCasesModule = Kodein.Module(name = "UseCases") {
 }
 
 private val viewModelsModule = Kodein.Module(name = "ViewModels") {
-    bind<ViewModelProvider.Factory>(tag = RegisterViewModel::class.java) with provider {
-        viewModelFactory { RegisterViewModel(instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }
+    bind<ViewModelProvider.Factory>(tag = RegistrationViewModel::class.java) with provider {
+        viewModelFactory { RegistrationViewModel(instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }
     }
     bind<ViewModelProvider.Factory>(tag = LoginViewModel::class.java) with provider {
         viewModelFactory { LoginViewModel(instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }
