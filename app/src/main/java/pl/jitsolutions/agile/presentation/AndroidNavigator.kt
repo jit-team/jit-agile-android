@@ -7,6 +7,7 @@ import pl.jitsolutions.agile.R
 import pl.jitsolutions.agile.presentation.mainscreen.launchMainActivity
 
 class AndroidNavigator(context: Context) : Navigator {
+
     private val activity = context as AppCompatActivity
 
     override fun goToRegistration() {
