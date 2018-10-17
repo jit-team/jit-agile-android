@@ -1,15 +1,17 @@
-package pl.jitsolutions.agile.presentation.register
+package pl.jitsolutions.agile.presentation.authorization.register
 
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.launch
 import pl.jitsolutions.agile.domain.RegisterUserUseCase
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.presentation.CoroutineViewModel
-import pl.jitsolutions.agile.presentation.login.LoginViewModel
+import pl.jitsolutions.agile.presentation.Navigator
 import pl.jitsolutions.agile.utils.mutableLiveData
 
 
-class RegisterViewModel(private val registerUserUseCase: RegisterUserUseCase, mainDispatcher: CoroutineDispatcher)
+class RegisterViewModel(private val registerUserUseCase: RegisterUserUseCase,
+                        private val navigator: Navigator,
+                        mainDispatcher: CoroutineDispatcher)
     : CoroutineViewModel(mainDispatcher) {
 
     val email = mutableLiveData("")

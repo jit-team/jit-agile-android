@@ -7,13 +7,13 @@
 
         <variable
             name="viewModel"
-            type="pl.jitsolutions.agile.presentation.register.RegisterViewModel" />
+            type="pl.jitsolutions.agile.presentation.authorization.register.RegisterViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.register.RegisterActivity">
+        tools:context="pl.jitsolutions.agile.presentation.authorization.AuthorizationActivity">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
@@ -119,9 +119,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/register_register"
-                app:registerProgressVisibility="@{viewModel.registerState}" />
+                app:bindRegisterProgressVisibility="@{viewModel.registerState}" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

@@ -1,4 +1,4 @@
-package pl.jitsolutions.agile.presentation.login
+package pl.jitsolutions.agile.presentation.authorization.login
 
 import androidx.lifecycle.Observer
 import kotlinx.coroutines.experimental.CoroutineDispatcher
