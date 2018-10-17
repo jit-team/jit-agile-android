@@ -45,8 +45,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nextFocusDown="@+id/login_layout_password"
-                app:bind_loginScreen_credentialsEditingEnabled="@{viewModel.loginState}"
-                app:bind_loginScreen_emailError="@{viewModel.loginState}">
+                app:bindLoginCredentialsEditingEnabled="@{viewModel.loginState}"
+                app:bindLoginEmailError="@{viewModel.loginState}">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/login_email"
@@ -64,8 +64,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nextFocusUp="@+id/login_layout_email"
-                app:bind_loginScreen_credentialsEditingEnabled="@{viewModel.loginState}"
-                app:bind_loginScreen_passwordError="@{viewModel.loginState}"
+                app:bindLoginCredentialsEditingEnabled="@{viewModel.loginState}"
+                app:bindLoginPasswordError="@{viewModel.loginState}"
                 app:layout_constraintTop_toBottomOf="@+id/login_layout_email">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -84,7 +84,7 @@
                 android:layout_height="?defaultButtonHeight"
                 android:onClick="@{() -> viewModel.login()}"
                 android:text="@string/login_screen_login_button_text"
-                app:bind_loginScreen_credentialsEditingEnabled="@{viewModel.loginState}"
+                app:bindLoginCredentialsEditingEnabled="@{viewModel.loginState}"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/login_layout_password" />
 
@@ -103,7 +103,7 @@
                 android:layout_height="?defaultButtonHeight"
                 android:onClick="@{() -> viewModel.register()}"
                 android:text="@string/login_screen_register_button_text"
-                app:bind_loginScreen_credentialsEditingEnabled="@{viewModel.loginState}"
+                app:bindLoginCredentialsEditingEnabled="@{viewModel.loginState}"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/login_divider" />
 
@@ -113,7 +113,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:indeterminate="true"
-                app:bind_loginScreen_progressVisibility="@{viewModel.loginState}"
+                app:bindLoginProgressVisibility="@{viewModel.loginState}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -127,7 +127,7 @@
                 android:text="@string/login_screen_error_unknown"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="@color/login_screen_error_text"
-                app:bind_loginScreen_unknownErrorVisibility="@{viewModel.loginState}"
+                app:bindLoginUnknownErrorVisibility="@{viewModel.loginState}"
                 app:layout_constraintTop_toBottomOf="@+id/login_register" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
