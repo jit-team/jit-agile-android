@@ -1,15 +1,17 @@
 <resources>
+    <!-- RENAME -->
     <string name="app_name">mobile-agile-android</string>
     <string name="action_settings">Settings</string>
+    <!-- -->
 
     <string name="login_screen_title">Login</string>
     <string name="login_screen_email_label">Email</string>
     <string name="login_screen_password_label">Password</string>
-    <string name="login_screen_login_button_text">login</string>
+    <string name="login_screen_login_button_text">log in</string>
     <string name="login_screen_register_button_text">register</string>
-    <string name="login_screen_error_unknown">Login failed: Unknown error</string>
-    <string name="login_screen_error_email">Email not found!</string>
-    <string name="login_screen_error_password">Wrong password!</string>
+    <string name="login_screen_error_unknown">Unknown error, please try again</string>
+    <string name="login_screen_error_invalid_email">Invalid email address</string>
+    <string name="login_screen_error_invalid_password">Invalid password</string>
 
     <string name="main_screen_title">Agile main screen</string>
 

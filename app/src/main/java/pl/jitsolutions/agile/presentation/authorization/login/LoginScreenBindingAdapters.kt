@@ -8,13 +8,13 @@ import pl.jitsolutions.agile.R
 
 @BindingAdapter("bindLoginEmailError")
 fun bindLoginEmailError(view: TextInputLayout, loginState: LoginViewModel.LoginState) {
-    view.error = view.resources.getString(R.string.login_screen_error_email)
+    view.error = view.resources.getString(R.string.login_screen_error_invalid_email)
     view.isErrorEnabled = loginState.isErrorOfType(LoginViewModel.LoginErrorType.EMAIL)
 }
 
 @BindingAdapter("bindLoginPasswordError")
 fun bindLoginPasswordError(view: TextInputLayout, loginState: LoginViewModel.LoginState) {
-    view.error = view.resources.getString(R.string.login_screen_error_password)
+    view.error = view.resources.getString(R.string.login_screen_error_invalid_password)
     view.isErrorEnabled = loginState.isErrorOfType(LoginViewModel.LoginErrorType.PASSWORD)
 }
 
