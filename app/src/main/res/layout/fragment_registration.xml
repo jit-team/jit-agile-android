@@ -49,7 +49,7 @@
                 app:bindRegistrationUsernameError="@{viewModel.registrationState}">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/register_username"
+                    android:id="@+id/registration_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/registration_screen_username_label"
