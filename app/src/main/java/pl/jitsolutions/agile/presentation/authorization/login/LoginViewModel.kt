@@ -40,6 +40,8 @@ class LoginViewModel(private val loginUserUseCase: LoginUserUseCase,
                     is LoginUserUseCase.Error.ServerConnection -> LoginErrorType.SERVER
                     is LoginUserUseCase.Error.WrongPassword -> LoginErrorType.PASSWORD
                     is LoginUserUseCase.Error.UserEmailNotFound -> LoginErrorType.EMAIL
+                    is LoginUserUseCase.Error.EmptyEmail -> LoginErrorType.EMAIL
+                    is LoginUserUseCase.Error.EmptyPassword -> LoginErrorType.PASSWORD
                     else -> LoginErrorType.SERVER
                 }
                 loginState.value = LoginState.Error(type)

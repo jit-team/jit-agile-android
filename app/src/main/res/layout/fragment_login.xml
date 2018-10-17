@@ -44,10 +44,9 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="@{viewModel.loginState}"
                 android:nextFocusDown="@+id/login_layout_password"
-                app:emailErrorText="@{viewModel.loginState}"
-                app:emailErrorVisibility="@{viewModel.loginState}">
+                app:bindLoginCredentialsEditingEnabled="@{viewModel.loginState}"
+                app:bindLoginEmailError="@{viewModel.loginState}">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/login_email"
@@ -64,11 +63,10 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:enabled="@{viewModel.loginState}"
                 android:nextFocusUp="@+id/login_layout_email"
-                app:layout_constraintTop_toBottomOf="@+id/login_layout_email"
-                app:passwordErrorText="@{viewModel.loginState}"
-                app:passwordErrorVisibility="@{viewModel.loginState}">
+                app:bindLoginCredentialsEditingEnabled="@{viewModel.loginState}"
+                app:bindLoginPasswordError="@{viewModel.loginState}"
+                app:layout_constraintTop_toBottomOf="@+id/login_layout_email">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/login_password"
@@ -84,9 +82,9 @@
                 android:id="@+id/login_login"
                 android:layout_width="match_parent"
                 android:layout_height="?defaultButtonHeight"
-                android:enabled="@{viewModel.loginState}"
                 android:onClick="@{() -> viewModel.login()}"
                 android:text="@string/login_screen_login_button_text"
+                app:bindLoginCredentialsEditingEnabled="@{viewModel.loginState}"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/login_layout_password" />
 
@@ -103,9 +101,9 @@
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="match_parent"
                 android:layout_height="?defaultButtonHeight"
-                android:enabled="@{viewModel.loginState}"
                 android:onClick="@{() -> viewModel.register()}"
                 android:text="@string/login_screen_register_button_text"
+                app:bindLoginCredentialsEditingEnabled="@{viewModel.loginState}"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/login_divider" />
 
@@ -115,11 +113,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:indeterminate="true"
+                app:bindLoginProgressVisibility="@{viewModel.loginState}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/login_unknown_error"
-                app:loginProgressVisibility="@{viewModel.loginState}" />
+                app:layout_constraintTop_toTopOf="@+id/login_unknown_error" />
 
             <TextView
                 android:id="@+id/login_unknown_error"
@@ -129,8 +127,8 @@
                 android:text="@string/login_screen_error_unknown"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="@color/login_screen_error_text"
-                app:layout_constraintTop_toBottomOf="@+id/login_register"
-                app:unknownErrorVisibility="@{viewModel.loginState}" />
+                app:bindLoginUnknownErrorVisibility="@{viewModel.loginState}"
+                app:layout_constraintTop_toBottomOf="@+id/login_register" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
