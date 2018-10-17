@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import org.kodein.di.generic.instance
@@ -19,6 +21,11 @@ class RegisterFragment : BaseFragment() {
         val binding = DataBindingUtil.inflate<FragmentRegisterBinding>(inflater, R.layout.fragment_register, container, false)
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
+        viewModel.registerState.observe(this, Observer {
+            if (it is RegisterViewModel.RegisterState.Success) {
+                Toast.makeText(context, R.string.register_successful_toast_text, Toast.LENGTH_SHORT).show()
+            }
+        })
         return binding.root
     }
 
