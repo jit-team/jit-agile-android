@@ -26,7 +26,7 @@ fun registerEmailErrorBindingAdapter(view: TextInputLayout, registerState: Regis
 fun registerPasswordErrorBindingAdapter(view: TextInputLayout, registerState: RegisterViewModel.RegisterState) {
     val error = registerState.isErrorOfType(RegisterViewModel.RegisterTypeError.PASSWORD)
     view.isErrorEnabled = error
-    view.error = if (error) view.context.getString(R.string.register_invalid_username_text) else null
+    view.error = if (error) view.context.getString(R.string.register_invalid_password_text) else null
 }
 
 @BindingAdapter("bindRegisterProgressVisibility")
