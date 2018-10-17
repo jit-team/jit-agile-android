@@ -19,5 +19,9 @@ class AndroidNavigator(context: Context) : Navigator {
         launchMainActivity(activity)
     }
 
+    override fun goToRegistrationSuccessful() {
+        findNavController().navigate(R.id.action_registrationFragment_to_registrationSuccessfulFragment)
+    }
+
     private fun findNavController() = activity.findNavController(android.R.id.content)
 }

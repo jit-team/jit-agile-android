@@ -11,10 +11,12 @@ import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
 import pl.jitsolutions.agile.domain.LoginUserUseCase
+import pl.jitsolutions.agile.domain.UserRegistrationSuccessFulUseCase
 import pl.jitsolutions.agile.domain.UserRegistrationUseCase
 import pl.jitsolutions.agile.presentation.AndroidNavigator
 import pl.jitsolutions.agile.presentation.Navigator
 import pl.jitsolutions.agile.presentation.authorization.login.LoginViewModel
+import pl.jitsolutions.agile.presentation.authorization.registration.RegistrationSuccessfulViewModel
 import pl.jitsolutions.agile.presentation.authorization.registration.RegistrationViewModel
 import pl.jitsolutions.agile.repository.FirebaseUserRepository
 import pl.jitsolutions.agile.repository.MockProjectRepository
@@ -54,6 +56,9 @@ private val useCasesModule = Kodein.Module(name = "UseCases") {
     bind<LoginUserUseCase>() with provider {
         LoginUserUseCase(instance(), instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
+    bind<UserRegistrationSuccessFulUseCase>() with provider {
+        UserRegistrationSuccessFulUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
+    }
 }
 
 private val viewModelsModule = Kodein.Module(name = "ViewModels") {
@@ -62,6 +67,9 @@ private val viewModelsModule = Kodein.Module(name = "ViewModels") {
     }
     bind<ViewModelProvider.Factory>(tag = LoginViewModel::class.java) with provider {
         viewModelFactory { LoginViewModel(instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }
+    }
+    bind<ViewModelProvider.Factory>(tag = RegistrationSuccessfulViewModel::class.java) with provider {
+        viewModelFactory { RegistrationSuccessfulViewModel(instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }
     }
 }
 

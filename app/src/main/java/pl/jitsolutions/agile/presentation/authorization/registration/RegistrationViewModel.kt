@@ -36,6 +36,7 @@ class RegistrationViewModel(private val userRegistrationUseCase: UserRegistratio
             Response.Status.SUCCESS -> {
                 userName.value = response.data
                 registrationState.value = RegistrationState.Success
+                navigator.goToRegistrationSuccessful()
             }
             Response.Status.ERROR -> {
                 val type = when (response.error) {

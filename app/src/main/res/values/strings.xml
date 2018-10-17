@@ -25,4 +25,10 @@
     <string name="registration_screen_error_invalid_username">Invalid username</string>
     <string name="registration_screen_error_invalid_password">Invalid password</string>
 
+    <string name="registration_successful_screen_title">Registration successful</string>
+    <string name="registration_successful_screen_welcome_label">welcome to Mobile Agile</string>
+    <string name="registration_successful_screen_success_label">Register successful</string>
+    <string name="registration_successful_screen_start_label">Let\'s start</string>
+
+
 </resources>

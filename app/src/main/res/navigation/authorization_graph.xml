@@ -18,5 +18,24 @@
         android:id="@+id/registerFragment"
         android:name="pl.jitsolutions.agile.presentation.authorization.registration.RegistrationFragment"
         android:label="RegisterFragment"
-        tools:layout="@layout/fragment_register" />
+        tools:layout="@layout/fragment_registration">
+
+        <action
+            android:id="@+id/action_registrationFragment_to_registrationSuccessfulFragment"
+            app:destination="@id/registrationSuccessfulFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/registrationSuccessfulFragment"
+        android:name="pl.jitsolutions.agile.presentation.authorization.registration.RegistrationSuccessfulFragment"
+        tools:layout="@layout/fragment_registration_successful"
+        app:defaultNavHost="false">
+
+        <action
+            android:id="@+id/action_back_from_registration_success"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
+            app:clearTask="true"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>
