@@ -3,14 +3,14 @@ package pl.jitsolutions.agile.presentation.authorization.registration
 import androidx.lifecycle.Observer
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.launch
-import pl.jitsolutions.agile.domain.RegistrationUserUseCase
+import pl.jitsolutions.agile.domain.UserRegistrationUseCase
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.presentation.CoroutineViewModel
 import pl.jitsolutions.agile.presentation.Navigator
 import pl.jitsolutions.agile.utils.mutableLiveData
 
 
-class RegistrationViewModel(private val registrationUserUseCase: RegistrationUserUseCase,
+class RegistrationViewModel(private val userRegistrationUseCase: UserRegistrationUseCase,
                             private val navigator: Navigator,
                             mainDispatcher: CoroutineDispatcher)
     : CoroutineViewModel(mainDispatcher) {
@@ -30,8 +30,8 @@ class RegistrationViewModel(private val registrationUserUseCase: RegistrationUse
 
     fun register() = launch {
         registrationState.value = RegistrationState.InProgress
-        val params = RegistrationUserUseCase.Params(email.value!!, userName.value!!, password.value!!)
-        val response = registrationUserUseCase.executeAsync(params).await()
+        val params = UserRegistrationUseCase.Params(email.value!!, userName.value!!, password.value!!)
+        val response = userRegistrationUseCase.executeAsync(params).await()
         when (response.status) {
             Response.Status.SUCCESS -> {
                 userName.value = response.data
@@ -39,11 +39,11 @@ class RegistrationViewModel(private val registrationUserUseCase: RegistrationUse
             }
             Response.Status.ERROR -> {
                 val type = when (response.error) {
-                    is RegistrationUserUseCase.Error.WeakPassword -> RegisterTypeError.PASSWORD
-                    is RegistrationUserUseCase.Error.EmptyUserName -> RegisterTypeError.USERNAME
-                    is RegistrationUserUseCase.Error.EmptyPassword -> RegisterTypeError.PASSWORD
-                    is RegistrationUserUseCase.Error.EmptyEmail -> RegisterTypeError.EMAIL
-                    is RegistrationUserUseCase.Error.InvalidCredentials -> RegisterTypeError.EMAIL
+                    is UserRegistrationUseCase.Error.WeakPassword -> RegisterTypeError.PASSWORD
+                    is UserRegistrationUseCase.Error.EmptyUserName -> RegisterTypeError.USERNAME
+                    is UserRegistrationUseCase.Error.EmptyPassword -> RegisterTypeError.PASSWORD
+                    is UserRegistrationUseCase.Error.EmptyEmail -> RegisterTypeError.EMAIL
+                    is UserRegistrationUseCase.Error.InvalidCredentials -> RegisterTypeError.EMAIL
                     else -> RegisterTypeError.SERVER
                 }
                 registrationState.value = RegistrationState.Error(type)

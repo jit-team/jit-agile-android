@@ -11,7 +11,7 @@ import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
 import pl.jitsolutions.agile.domain.LoginUserUseCase
-import pl.jitsolutions.agile.domain.RegistrationUserUseCase
+import pl.jitsolutions.agile.domain.UserRegistrationUseCase
 import pl.jitsolutions.agile.presentation.AndroidNavigator
 import pl.jitsolutions.agile.presentation.Navigator
 import pl.jitsolutions.agile.presentation.authorization.login.LoginViewModel
@@ -48,8 +48,8 @@ private val repositoriesModule = Kodein.Module(name = "Repositories") {
 }
 
 private val useCasesModule = Kodein.Module(name = "UseCases") {
-    bind<RegistrationUserUseCase>() with provider {
-        RegistrationUserUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
+    bind<UserRegistrationUseCase>() with provider {
+        UserRegistrationUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
     bind<LoginUserUseCase>() with provider {
         LoginUserUseCase(instance(), instance(), instance(tag = Tags.Dispatchers.USE_CASE))

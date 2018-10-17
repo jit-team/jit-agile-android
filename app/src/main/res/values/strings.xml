@@ -21,8 +21,8 @@
     <string name="registration_screen_password_label">Password</string>
     <string name="registration_screen_register_button_text">Register</string>
     <string name="registration_screen_successful_toast_text">Register successful</string>
-    <string name="registration_screen_invalid_email_text">Invalid email address</string>
-    <string name="registration_screen_invalid_username_text">Invalid username</string>
-    <string name="registration_screen_invalid_password_text">Invalid password</string>
+    <string name="registration_screen_error_invalid_email">Invalid email address</string>
+    <string name="registration_screen_error_invalid_username">Invalid username</string>
+    <string name="registration_screen_error_invalid_password">Invalid password</string>
 
 </resources>

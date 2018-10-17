@@ -10,14 +10,14 @@ import pl.jitsolutions.agile.R
 fun registrationUsernameErrorBindingAdapter(view: TextInputLayout, registrationState: RegistrationViewModel.RegistrationState) {
     val error = registrationState.isErrorOfType(RegistrationViewModel.RegisterTypeError.USERNAME)
     view.isErrorEnabled = error
-    view.error = if (error) view.context.getString(R.string.registration_screen_invalid_username_text) else null
+    view.error = if (error) view.context.getString(R.string.registration_screen_error_invalid_username) else null
 }
 
 @BindingAdapter("bindRegistrationEmailError")
 fun registrationEmailErrorBindingAdapter(view: TextInputLayout, registrationState: RegistrationViewModel.RegistrationState) {
     val error = registrationState.isErrorOfType(RegistrationViewModel.RegisterTypeError.EMAIL)
     view.isErrorEnabled = error
-    view.error = if (error) view.context.getString(R.string.registration_screen_invalid_email_text) else null
+    view.error = if (error) view.context.getString(R.string.registration_screen_error_invalid_email) else null
 
 }
 
@@ -25,7 +25,7 @@ fun registrationEmailErrorBindingAdapter(view: TextInputLayout, registrationStat
 fun registrationPasswordErrorBindingAdapter(view: TextInputLayout, registrationState: RegistrationViewModel.RegistrationState) {
     val error = registrationState.isErrorOfType(RegistrationViewModel.RegisterTypeError.PASSWORD)
     view.isErrorEnabled = error
-    view.error = if (error) view.context.getString(R.string.registration_screen_invalid_password_text) else null
+    view.error = if (error) view.context.getString(R.string.registration_screen_error_invalid_password) else null
 }
 
 @BindingAdapter("bindRegistrationProgressVisibility")
