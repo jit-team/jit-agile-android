@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="pl.jitsolutions.agile.presentation.authorization.register.RegisterFragment"
+        android:name="pl.jitsolutions.agile.presentation.authorization.registration.RegistrationFragment"
         android:label="RegisterFragment"
         tools:layout="@layout/fragment_register" />
 </navigation>

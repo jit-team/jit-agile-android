@@ -3,9 +3,9 @@ package pl.jitsolutions.agile.domain
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import pl.jitsolutions.agile.repository.UserRepository
 
-class RegisterUserUseCase(private val userRepository: UserRepository,
-                          dispatcher: CoroutineDispatcher)
-    : UseCase<RegisterUserUseCase.Params, String>(dispatcher) {
+class RegistrationUserUseCase(private val userRepository: UserRepository,
+                              dispatcher: CoroutineDispatcher)
+    : UseCase<RegistrationUserUseCase.Params, String>(dispatcher) {
 
     override suspend fun build(params: Params): Response<String> {
         if (params.validate() != null) {

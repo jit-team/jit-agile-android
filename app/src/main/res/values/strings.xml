@@ -13,14 +13,14 @@
 
     <string name="main_screen_title">Agile main screen</string>
 
-    <string name="register_screen_title">Register</string>
-    <string name="register_screen_username_label">Username</string>
-    <string name="register_screen_email_label">Email</string>
-    <string name="register_screen_password_label">Password</string>
-    <string name="register_screen_register_button_text">Register</string>
-    <string name="register_successful_toast_text">Register successful</string>
-    <string name="register_invalid_email_text">Invalid email address</string>
-    <string name="register_invalid_username_text">Invalid username</string>
-    <string name="register_invalid_password_text">Invalid password</string>
+    <string name="registration_screen_title">Register</string>
+    <string name="registration_screen_username_label">Username</string>
+    <string name="registration_screen_email_label">Email</string>
+    <string name="registration_screen_password_label">Password</string>
+    <string name="registration_screen_register_button_text">Register</string>
+    <string name="registration_screen_successful_toast_text">Register successful</string>
+    <string name="registration_screen_invalid_email_text">Invalid email address</string>
+    <string name="registration_screen_invalid_username_text">Invalid username</string>
+    <string name="registration_screen_invalid_password_text">Invalid password</string>
 
 </resources>
