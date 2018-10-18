@@ -41,7 +41,7 @@ fun registrationProgressVisibilityBindingAdapter(progressBar: ProgressBar, regis
     }
 }
 
-@BindingAdapter("android:enabled")
+@BindingAdapter("bindRegistrationCredentialsEditingEnabled")
 fun registrationCredentialsEditing(view: View, registrationState: RegistrationViewModel.RegistrationState) {
     view.isEnabled = when (registrationState) {
         RegistrationViewModel.RegistrationState.None -> true
