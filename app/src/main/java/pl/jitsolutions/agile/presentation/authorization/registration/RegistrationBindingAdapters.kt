@@ -1,7 +1,10 @@
 package pl.jitsolutions.agile.presentation.authorization.registration
 
+import android.content.ContextWrapper
 import android.view.View
 import android.widget.ProgressBar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.databinding.BindingAdapter
 import com.google.android.material.textfield.TextInputLayout
 import pl.jitsolutions.agile.R
@@ -38,12 +41,24 @@ fun registrationProgressVisibilityBindingAdapter(progressBar: ProgressBar, regis
     }
 }
 
-@BindingAdapter("android:enabled")
+@BindingAdapter("bindRegistrationCredentialsEditingEnabled")
 fun registrationCredentialsEditing(view: View, registrationState: RegistrationViewModel.RegistrationState) {
     view.isEnabled = when (registrationState) {
         RegistrationViewModel.RegistrationState.None -> true
         RegistrationViewModel.RegistrationState.InProgress -> false
         is RegistrationViewModel.RegistrationState.Error -> true
         RegistrationViewModel.RegistrationState.Success -> false
+    }
+}
+
+@BindingAdapter("bindRegistrationBackArrowVisibility")
+fun registrationBackArrowVisibilityBindingAdapter(view : View, bind: Boolean) {
+    if (bind) {
+        val wrapper = view.context as? ContextWrapper
+        val activity = wrapper?.baseContext as? AppCompatActivity
+        activity?.apply {
+            setSupportActionBar(view as? Toolbar)
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }
     }
 }
