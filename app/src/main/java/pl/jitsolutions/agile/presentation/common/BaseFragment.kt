@@ -1,4 +1,4 @@
-package pl.jitsolutions.agile.presentation
+package pl.jitsolutions.agile.presentation.common
 
 import android.content.Context
 import androidx.annotation.CallSuper

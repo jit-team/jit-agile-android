@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import org.kodein.di.generic.instance
 import pl.jitsolutions.agile.R
 import pl.jitsolutions.agile.databinding.FragmentRegistrationSuccessfulBinding
-import pl.jitsolutions.agile.presentation.BaseFragment
+import pl.jitsolutions.agile.presentation.common.BaseFragment
 
 class RegistrationSuccessfulFragment : BaseFragment() {
 

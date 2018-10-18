@@ -5,8 +5,9 @@ import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.launch
 import pl.jitsolutions.agile.domain.LoginUserUseCase
 import pl.jitsolutions.agile.domain.Response
-import pl.jitsolutions.agile.presentation.CoroutineViewModel
-import pl.jitsolutions.agile.presentation.Navigator
+import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
+import pl.jitsolutions.agile.presentation.navigation.Navigator
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.*
 import pl.jitsolutions.agile.utils.mutableLiveData
 
 class LoginViewModel(private val loginUserUseCase: LoginUserUseCase,
@@ -32,7 +33,7 @@ class LoginViewModel(private val loginUserUseCase: LoginUserUseCase,
         when (response.status) {
             Response.Status.SUCCESS -> {
                 loginState.value = LoginState.Success
-                navigator.goToMain()
+                navigator.navigate(from = LOGIN, to = PROJECT_LIST)
             }
             Response.Status.ERROR -> {
                 val type = when (response.error) {
@@ -50,7 +51,7 @@ class LoginViewModel(private val loginUserUseCase: LoginUserUseCase,
     }
 
     fun register() {
-        navigator.goToRegistration()
+        navigator.navigate(from = LOGIN, to = REGISTRATION)
     }
 
     override fun onCleared() {

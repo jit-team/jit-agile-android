@@ -1,4 +1,4 @@
-package pl.jitsolutions.agile.presentation.authorization.registration
+package pl.jitsolutions.agile.presentation.splash
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,17 +9,23 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import org.kodein.di.generic.instance
 import pl.jitsolutions.agile.R
-import pl.jitsolutions.agile.databinding.FragmentRegistrationBinding
+import pl.jitsolutions.agile.databinding.FragmentSplashBinding
 import pl.jitsolutions.agile.presentation.common.BaseFragment
 
-class RegistrationFragment : BaseFragment() {
+class SplashFragment : BaseFragment() {
+    lateinit var viewModel: SplashViewModel
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val viewModelFactory: ViewModelProvider.Factory by instance(tag = RegistrationViewModel::class.java)
-        val viewModel = ViewModelProviders.of(this, viewModelFactory).get(RegistrationViewModel::class.java)
-        val binding = DataBindingUtil.inflate<FragmentRegistrationBinding>(inflater, R.layout.fragment_registration, container, false)
+        val viewModelFactory: ViewModelProvider.Factory by instance(tag = SplashViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(SplashViewModel::class.java)
+        val binding = DataBindingUtil.inflate<FragmentSplashBinding>(inflater, R.layout.fragment_splash, container, false)
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
         return binding.root
     }
 
+    override fun onStart() {
+        super.onStart()
+        viewModel.login()
+    }
 }

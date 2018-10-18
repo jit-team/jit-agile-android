@@ -4,13 +4,15 @@ import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.launch
 import pl.jitsolutions.agile.domain.UserRegistrationSuccessFulUseCase
-import pl.jitsolutions.agile.presentation.CoroutineViewModel
-import pl.jitsolutions.agile.presentation.Navigator
+import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
+import pl.jitsolutions.agile.presentation.navigation.Navigator
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.PROJECT_LIST
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.REGISTRATION_SUCCESSFUL
 
 class RegistrationSuccessfulViewModel(private val userRegistrationSuccessFulUseCase: UserRegistrationSuccessFulUseCase,
                                       private val navigator: Navigator,
-                                      mainDispatcher: CoroutineDispatcher)
-    : CoroutineViewModel(mainDispatcher) {
+                                      mainDispatcher: CoroutineDispatcher
+) : CoroutineViewModel(mainDispatcher) {
 
     val userName = MutableLiveData<String>()
 
@@ -24,7 +26,7 @@ class RegistrationSuccessfulViewModel(private val userRegistrationSuccessFulUseC
         userName.value = user.data
     }
 
-    fun startMainScreen() {
-        navigator.goToMain()
+    fun finish() {
+        navigator.navigate(from = REGISTRATION_SUCCESSFUL, to = PROJECT_LIST)
     }
 }

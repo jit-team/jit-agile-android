@@ -3,10 +3,12 @@ package pl.jitsolutions.agile.presentation.authorization.registration
 import androidx.lifecycle.Observer
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.launch
-import pl.jitsolutions.agile.domain.UserRegistrationUseCase
 import pl.jitsolutions.agile.domain.Response
-import pl.jitsolutions.agile.presentation.CoroutineViewModel
-import pl.jitsolutions.agile.presentation.Navigator
+import pl.jitsolutions.agile.domain.UserRegistrationUseCase
+import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
+import pl.jitsolutions.agile.presentation.navigation.Navigator
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.REGISTRATION
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.REGISTRATION_SUCCESSFUL
 import pl.jitsolutions.agile.utils.mutableLiveData
 
 
@@ -36,7 +38,7 @@ class RegistrationViewModel(private val userRegistrationUseCase: UserRegistratio
             Response.Status.SUCCESS -> {
                 userName.value = response.data
                 registrationState.value = RegistrationState.Success
-                navigator.goToRegistrationSuccessful()
+                navigator.navigate(from = REGISTRATION, to = REGISTRATION_SUCCESSFUL)
             }
             Response.Status.ERROR -> {
                 val type = when (response.error) {
