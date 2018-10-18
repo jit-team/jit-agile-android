@@ -1,4 +1,4 @@
-package pl.jitsolutions.agile.presentation.authorization.registration
+package pl.jitsolutions.agile.presentation.authorization.registrationSuccessful
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.NavOptionsBuilder
 import org.kodein.di.generic.instance
 import pl.jitsolutions.agile.R
 import pl.jitsolutions.agile.databinding.FragmentRegistrationSuccessfulBinding
@@ -21,7 +20,6 @@ class RegistrationSuccessfulFragment : BaseFragment() {
         val binding = DataBindingUtil.inflate<FragmentRegistrationSuccessfulBinding>(layoutInflater, R.layout.fragment_registration_successful, container, false)
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
-        val nav = NavOptionsBuilder()
         return binding.root
     }
 }

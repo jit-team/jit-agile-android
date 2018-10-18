@@ -11,7 +11,7 @@ class AndroidNavigator(context: Context) : Navigator {
     private val activity = context as AppCompatActivity
 
     override fun goToRegistration() {
-        findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+        findNavController().navigate(R.id.action_loginFragment_to_registrationFragment)
     }
 
     override fun goToMain() {

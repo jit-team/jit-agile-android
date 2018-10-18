@@ -1,4 +1,4 @@
-package pl.jitsolutions.agile.presentation.authorization.registration
+package pl.jitsolutions.agile.presentation.authorization.registrationSuccessful
 
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.experimental.CoroutineDispatcher

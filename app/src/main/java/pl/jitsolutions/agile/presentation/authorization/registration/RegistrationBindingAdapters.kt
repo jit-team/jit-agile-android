@@ -1,6 +1,6 @@
 package pl.jitsolutions.agile.presentation.authorization.registration
 
-import android.view.ContextThemeWrapper
+import android.content.ContextWrapper
 import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
@@ -51,10 +51,10 @@ fun registrationCredentialsEditing(view: View, registrationState: RegistrationVi
     }
 }
 
-@BindingAdapter("bindBackArrowVisibility")
+@BindingAdapter("bindRegistrationBackArrowVisibility")
 fun registrationBackArrowVisibilityBindingAdapter(view : View, bind: Boolean) {
     if (bind) {
-        val wrapper = view.context as? ContextThemeWrapper
+        val wrapper = view.context as? ContextWrapper
         val activity = wrapper?.baseContext as? AppCompatActivity
         activity?.apply {
             setSupportActionBar(view as? Toolbar)

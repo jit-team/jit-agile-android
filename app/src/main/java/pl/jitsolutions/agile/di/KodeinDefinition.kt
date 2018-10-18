@@ -16,7 +16,7 @@ import pl.jitsolutions.agile.domain.UserRegistrationUseCase
 import pl.jitsolutions.agile.presentation.AndroidNavigator
 import pl.jitsolutions.agile.presentation.Navigator
 import pl.jitsolutions.agile.presentation.authorization.login.LoginViewModel
-import pl.jitsolutions.agile.presentation.authorization.registration.RegistrationSuccessfulViewModel
+import pl.jitsolutions.agile.presentation.authorization.registrationSuccessful.RegistrationSuccessfulViewModel
 import pl.jitsolutions.agile.presentation.authorization.registration.RegistrationViewModel
 import pl.jitsolutions.agile.repository.FirebaseUserRepository
 import pl.jitsolutions.agile.repository.MockProjectRepository
