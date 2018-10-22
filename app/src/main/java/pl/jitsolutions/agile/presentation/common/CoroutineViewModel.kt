@@ -1,4 +1,4 @@
-package pl.jitsolutions.agile.presentation
+package pl.jitsolutions.agile.presentation.common
 
 import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModel

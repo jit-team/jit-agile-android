@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="viewModel"
-            type="pl.jitsolutions.agile.presentation.authorization.registrationSuccessful.RegistrationSuccessfulViewModel"/>
+            type="pl.jitsolutions.agile.presentation.authorization.registrationSuccessful.RegistrationSuccessfulViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context="pl.jitsolutions.agile.presentation.authorization.AuthorizationActivity">
-
+        android:orientation="vertical">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
@@ -30,7 +27,7 @@
                 android:background="?attr/colorPrimary"
                 app:bindRegistrationSuccessFulBackArrowVisibility="@{true}"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:title="@string/registration_successful_screen_title"/>
+                app:title="@string/registration_successful_screen_title" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -54,7 +51,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.2"
                 app:layout_constraintVertical_chainStyle="packed"
-                tools:text="Marek Kondracki"/>
+                tools:text="Marek Kondracki" />
 
 
             <TextView
@@ -64,22 +61,22 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/registration_successful_screen_welcome_label"
-                app:layout_constraintBottom_toTopOf="@+id/materialButton"
+                app:layout_constraintBottom_toTopOf="@+id/registration_successful_start"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/register_successful_username"/>
+                app:layout_constraintTop_toBottomOf="@+id/register_successful_username" />
 
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/materialButton"
+                android:id="@+id/registration_successful_start"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:onClick="@{() -> viewModel.startMainScreen()}"
-                android:text="@string/registration_screen_register_button_text"
+                android:onClick="@{() -> viewModel.finish()}"
+                android:text="@string/registration_successful_screen_start_button_text"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/register_successful_welcome"/>
+                app:layout_constraintTop_toBottomOf="@+id/register_successful_welcome" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
