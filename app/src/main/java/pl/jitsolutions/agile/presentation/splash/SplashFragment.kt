@@ -11,8 +11,11 @@ import org.kodein.di.generic.instance
 import pl.jitsolutions.agile.R
 import pl.jitsolutions.agile.databinding.FragmentSplashBinding
 import pl.jitsolutions.agile.presentation.common.BaseFragment
+import pl.jitsolutions.agile.presentation.navigation.Navigator
 
 class SplashFragment : BaseFragment() {
+    override val destination = Navigator.Destination.SPLASH
+
     lateinit var viewModel: SplashViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -26,6 +29,6 @@ class SplashFragment : BaseFragment() {
 
     override fun onStart() {
         super.onStart()
-        viewModel.login()
+        viewModel.splashFinished()
     }
 }

@@ -10,8 +10,8 @@ import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
+import pl.jitsolutions.agile.domain.GetLoggedUserUseCase
 import pl.jitsolutions.agile.domain.LoginUserUseCase
-import pl.jitsolutions.agile.domain.UserRegistrationSuccessFulUseCase
 import pl.jitsolutions.agile.domain.UserRegistrationUseCase
 import pl.jitsolutions.agile.presentation.authorization.login.LoginViewModel
 import pl.jitsolutions.agile.presentation.authorization.registration.RegistrationViewModel
@@ -58,14 +58,14 @@ private val useCasesModule = Kodein.Module(name = "UseCases") {
     bind<LoginUserUseCase>() with provider {
         LoginUserUseCase(instance(), instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
-    bind<UserRegistrationSuccessFulUseCase>() with provider {
-        UserRegistrationSuccessFulUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
+    bind<GetLoggedUserUseCase>() with provider {
+        GetLoggedUserUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
 }
 
 private val viewModelsModule = Kodein.Module(name = "ViewModels") {
     bind<ViewModelProvider.Factory>(tag = SplashViewModel::class.java) with provider {
-        viewModelFactory { SplashViewModel(instance(), instance(tag = Tags.Dispatchers.MAIN)) }
+        viewModelFactory { SplashViewModel(instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }
     }
     bind<ViewModelProvider.Factory>(tag = RegistrationViewModel::class.java) with provider {
         viewModelFactory { RegistrationViewModel(instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }
@@ -77,7 +77,7 @@ private val viewModelsModule = Kodein.Module(name = "ViewModels") {
         viewModelFactory { RegistrationSuccessfulViewModel(instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }
     }
     bind<ViewModelProvider.Factory>(tag = ProjectListViewModel::class.java) with provider {
-        viewModelFactory { ProjectListViewModel(instance(), instance(tag = Tags.Dispatchers.MAIN)) }
+        viewModelFactory { ProjectListViewModel(instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }
     }
 }
 

@@ -6,8 +6,10 @@ import androidx.fragment.app.Fragment
 import org.kodein.di.KodeinAware
 import org.kodein.di.KodeinTrigger
 import org.kodein.di.android.x.closestKodein
+import pl.jitsolutions.agile.presentation.navigation.Navigator
 
 abstract class BaseFragment : Fragment(), KodeinAware {
+    abstract val destination: Navigator.Destination
     override val kodein by closestKodein()
     override val kodeinTrigger = KodeinTrigger()
 

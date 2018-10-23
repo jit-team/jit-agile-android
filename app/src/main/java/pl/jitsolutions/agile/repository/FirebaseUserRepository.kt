@@ -53,8 +53,9 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : User
         }.await()
     }
 
-    override suspend fun getLoggedInUser(): Response<User> {
-        return response(User(firebaseAuth.currentUser?.displayName!!))
+    override suspend fun getLoggedInUser(): Response<User?> {
+        val loggedUser = firebaseAuth.currentUser?.let { User(it.email!!) }
+        return response(loggedUser)
     }
 
     private fun getUserName(result: AuthResult): String {
