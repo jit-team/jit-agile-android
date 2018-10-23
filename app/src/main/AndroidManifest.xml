@@ -17,7 +17,7 @@
 
         <activity
             android:name="pl.jitsolutions.agile.presentation.MainActivity"
-            android:label="@string/login_screen_title"
+            android:label="@string/application_name"
             android:screenOrientation="sensorPortrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
