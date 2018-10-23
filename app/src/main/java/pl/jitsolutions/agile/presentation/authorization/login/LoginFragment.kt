@@ -12,8 +12,11 @@ import org.kodein.di.generic.instance
 import pl.jitsolutions.agile.R
 import pl.jitsolutions.agile.databinding.FragmentLoginBinding
 import pl.jitsolutions.agile.presentation.common.BaseFragment
+import pl.jitsolutions.agile.presentation.navigation.Navigator
 
 class LoginFragment : BaseFragment() {
+    override val destination = Navigator.Destination.LOGIN
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val viewModelFactory: ViewModelProvider.Factory by instance(tag = LoginViewModel::class.java)
         val viewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel::class.java)

@@ -15,3 +15,6 @@
 -keepclassmembers class * extends java.lang.Enum { *; }
 -keepclasseswithmembernames class android.**
 -keepclasseswithmembernames interface android.**
+
+# Kotlin coroutines
+-keepnames class kotlinx.** { *; }

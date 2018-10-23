@@ -11,8 +11,11 @@ import org.kodein.di.generic.instance
 import pl.jitsolutions.agile.R
 import pl.jitsolutions.agile.databinding.FragmentProjectListBinding
 import pl.jitsolutions.agile.presentation.common.BaseFragment
+import pl.jitsolutions.agile.presentation.navigation.Navigator
 
 class ProjectListFragment : BaseFragment() {
+    override val destination = Navigator.Destination.PROJECT_LIST
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val viewModelFactory: ViewModelProvider.Factory by instance(tag = ProjectListViewModel::class.java)
         val viewModel = ViewModelProviders.of(this, viewModelFactory).get(ProjectListViewModel::class.java)

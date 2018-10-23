@@ -15,6 +15,7 @@ class AndroidNavigator(context: Context) : Navigator {
         when (from) {
             SPLASH -> when (to) {
                 LOGIN -> navController.navigate(R.id.action_splashFragment_to_loginFragment)
+                PROJECT_LIST -> navController.navigate(R.id.action_splashFragment_to_projectListFragment)
                 else -> throw Navigator.InvalidNavigationException(from, to)
             }
             LOGIN -> when (to) {
@@ -31,6 +32,16 @@ class AndroidNavigator(context: Context) : Navigator {
                 else -> throw Navigator.InvalidNavigationException(from, to)
             }
             PROJECT_LIST -> throw Navigator.InvalidNavigationException(from, to)
+        }
+    }
+
+    override fun navigateBack(from: Navigator.Destination): Boolean {
+        return when (from) {
+            REGISTRATION_SUCCESSFUL -> {
+                navigate(REGISTRATION_SUCCESSFUL, PROJECT_LIST)
+                true
+            }
+            else -> false
         }
     }
 }
