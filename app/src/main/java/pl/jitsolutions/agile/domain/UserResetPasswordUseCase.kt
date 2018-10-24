@@ -23,7 +23,8 @@ class UserResetPasswordUseCase(private val userRepository: UserRepository,
 
     private fun errorResponse(response: Response<Void?>): Response<Void?> {
         return when (response.error) {
-            is UserRepository.Error.InvalidEmail -> errorResponse(error = Error.UserEmailNotFound)
+            is UserRepository.Error.InvalidEmail -> errorResponse(error = Error.InvalidEmail)
+            is UserRepository.Error.UserNotFound -> errorResponse(error = Error.UserEmailNotFound)
             is UserRepository.Error.ServerConnection -> errorResponse(error = Error.ServerConnection)
             else -> errorResponse(error = Error.UnknownError)
         }

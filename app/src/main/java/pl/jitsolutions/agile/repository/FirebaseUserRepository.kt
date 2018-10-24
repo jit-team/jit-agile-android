@@ -113,7 +113,7 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : User
     private fun retrieveErrorText(exception: Exception): UserRepository.Error {
         return when (exception) {
             is FirebaseAuthWeakPasswordException -> UserRepository.Error.WeakPassword
-            is FirebaseAuthInvalidUserException -> UserRepository.Error.InvalidEmail
+            is FirebaseAuthInvalidUserException -> UserRepository.Error.UserNotFound
             is FirebaseAuthInvalidCredentialsException -> UserRepository.Error.InvalidPassword
             is FirebaseAuthUserCollisionException -> UserRepository.Error.UserAlreadyExist
             is FirebaseNetworkException -> UserRepository.Error.ServerConnection

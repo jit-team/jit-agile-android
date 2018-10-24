@@ -12,6 +12,7 @@ interface UserRepository {
     sealed class Error(message: String? = null) : Throwable(message) {
         object InvalidEmail : Error()
         object InvalidPassword : Error()
+        object UserNotFound : Error()
         object WeakPassword: Error()
         object UserAlreadyExist : Error()
         object UnknownError : Error()
