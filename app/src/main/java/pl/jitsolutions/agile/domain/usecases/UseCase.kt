@@ -1,8 +1,9 @@
-package pl.jitsolutions.agile.domain
+package pl.jitsolutions.agile.domain.usecases
 
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.CoroutineScope
 import kotlinx.coroutines.experimental.async
+import pl.jitsolutions.agile.domain.Response
 
 abstract class UseCase<Params, Result>(private val dispatcher: CoroutineDispatcher) {
 

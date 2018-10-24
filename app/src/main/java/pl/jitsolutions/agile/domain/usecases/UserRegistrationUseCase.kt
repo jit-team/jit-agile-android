@@ -1,6 +1,10 @@
-package pl.jitsolutions.agile.domain
+package pl.jitsolutions.agile.domain.usecases
 
 import kotlinx.coroutines.experimental.CoroutineDispatcher
+import pl.jitsolutions.agile.domain.Response
+import pl.jitsolutions.agile.domain.User
+import pl.jitsolutions.agile.domain.errorResponse
+import pl.jitsolutions.agile.domain.response
 import pl.jitsolutions.agile.repository.UserRepository
 
 class UserRegistrationUseCase(private val userRepository: UserRepository,
@@ -30,7 +34,7 @@ class UserRegistrationUseCase(private val userRepository: UserRepository,
     }
 
     data class Params(val email: String, val userName: String, val password: String) {
-        fun validate() : Error? {
+        fun validate(): Error? {
             if (userName.isEmpty())
                 return Error.EmptyUserName
             if (email.isEmpty())
@@ -41,7 +45,7 @@ class UserRegistrationUseCase(private val userRepository: UserRepository,
         }
     }
 
-    sealed class Error {
+    sealed class Error(message: String? = null) : Throwable(message) {
         object InvalidCredentials : Error()
         object WeakPassword : Error()
         object ServerConnection : Error()
