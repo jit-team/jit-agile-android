@@ -5,7 +5,7 @@ import pl.jitsolutions.agile.domain.Response
 interface ProjectRepository {
     suspend fun getProjects(userId: String): Response<String>
 
-    sealed class Error {
+    sealed class Error(message: String? = null) : Throwable(message) {
         object UserNotFound : Error()
         object ServerConnection : Error()
     }

@@ -1,7 +1,8 @@
 <resources>
     <string name="application_name">JIT Agile</string>
 
-    <string name="splash_screen_title">Splash Screen</string>
+    <string name="splash_screen_logo_placeholder">JIT Solutions \nsp. z o.o.</string>
+    <string name="splash_screen_version">ver. %s</string>
 
     <string name="login_screen_title">Login</string>
     <string name="login_screen_email_label">Email</string>

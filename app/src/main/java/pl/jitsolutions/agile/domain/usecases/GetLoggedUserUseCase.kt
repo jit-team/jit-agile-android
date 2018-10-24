@@ -1,6 +1,8 @@
-package pl.jitsolutions.agile.domain
+package pl.jitsolutions.agile.domain.usecases
 
 import kotlinx.coroutines.experimental.CoroutineDispatcher
+import pl.jitsolutions.agile.domain.Response
+import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.repository.UserRepository
 
 class GetLoggedUserUseCase(private val userRepository: UserRepository,
@@ -13,8 +15,3 @@ class GetLoggedUserUseCase(private val userRepository: UserRepository,
 
     data class Params(val void: Void? = null)
 }
-
-
-
-
-

@@ -1,6 +1,10 @@
-package pl.jitsolutions.agile.domain
+package pl.jitsolutions.agile.domain.usecases
 
 import kotlinx.coroutines.experimental.CoroutineDispatcher
+import pl.jitsolutions.agile.domain.Response
+import pl.jitsolutions.agile.domain.User
+import pl.jitsolutions.agile.domain.errorResponse
+import pl.jitsolutions.agile.domain.response
 import pl.jitsolutions.agile.repository.ProjectRepository
 import pl.jitsolutions.agile.repository.UserRepository
 
@@ -56,7 +60,7 @@ class LoginUserUseCase(private val userRepository: UserRepository,
         }
     }
 
-    sealed class Error {
+    sealed class Error(message: String? = null) : Throwable(message) {
         object UserEmailNotFound : Error()
         object WrongPassword : Error()
         object EmptyEmail : Error()

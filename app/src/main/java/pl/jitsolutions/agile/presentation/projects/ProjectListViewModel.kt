@@ -2,9 +2,9 @@ package pl.jitsolutions.agile.presentation.projects
 
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.launch
-import pl.jitsolutions.agile.domain.GetLoggedUserUseCase
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.User
+import pl.jitsolutions.agile.domain.usecases.GetLoggedUserUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
 import pl.jitsolutions.agile.presentation.navigation.Navigator
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.LOGIN

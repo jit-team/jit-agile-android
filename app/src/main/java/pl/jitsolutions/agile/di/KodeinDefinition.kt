@@ -10,9 +10,10 @@ import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
-import pl.jitsolutions.agile.domain.GetLoggedUserUseCase
-import pl.jitsolutions.agile.domain.LoginUserUseCase
-import pl.jitsolutions.agile.domain.UserRegistrationUseCase
+import pl.jitsolutions.agile.domain.usecases.GetApplicationVersionUseCase
+import pl.jitsolutions.agile.domain.usecases.GetLoggedUserUseCase
+import pl.jitsolutions.agile.domain.usecases.LoginUserUseCase
+import pl.jitsolutions.agile.domain.usecases.UserRegistrationUseCase
 import pl.jitsolutions.agile.presentation.authorization.login.LoginViewModel
 import pl.jitsolutions.agile.presentation.authorization.registration.RegistrationViewModel
 import pl.jitsolutions.agile.presentation.authorization.registrationSuccessful.RegistrationSuccessfulViewModel
@@ -20,10 +21,7 @@ import pl.jitsolutions.agile.presentation.navigation.AndroidNavigator
 import pl.jitsolutions.agile.presentation.navigation.Navigator
 import pl.jitsolutions.agile.presentation.projects.ProjectListViewModel
 import pl.jitsolutions.agile.presentation.splash.SplashViewModel
-import pl.jitsolutions.agile.repository.FirebaseUserRepository
-import pl.jitsolutions.agile.repository.MockProjectRepository
-import pl.jitsolutions.agile.repository.ProjectRepository
-import pl.jitsolutions.agile.repository.UserRepository
+import pl.jitsolutions.agile.repository.*
 import java.util.concurrent.Executors
 
 interface Tags {
@@ -49,6 +47,9 @@ private val repositoriesModule = Kodein.Module(name = "Repositories") {
     bind<ProjectRepository>() with singleton {
         MockProjectRepository(instance(tag = Tags.Dispatchers.IO))
     }
+    bind<SystemInfoRepository>() with singleton {
+        AndroidSystemInfoRepository()
+    }
 }
 
 private val useCasesModule = Kodein.Module(name = "UseCases") {
@@ -61,11 +62,14 @@ private val useCasesModule = Kodein.Module(name = "UseCases") {
     bind<GetLoggedUserUseCase>() with provider {
         GetLoggedUserUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
+    bind<GetApplicationVersionUseCase>() with provider {
+        GetApplicationVersionUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
+    }
 }
 
 private val viewModelsModule = Kodein.Module(name = "ViewModels") {
     bind<ViewModelProvider.Factory>(tag = SplashViewModel::class.java) with provider {
-        viewModelFactory { SplashViewModel(instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }
+        viewModelFactory { SplashViewModel(instance(), instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }
     }
     bind<ViewModelProvider.Factory>(tag = RegistrationViewModel::class.java) with provider {
         viewModelFactory { RegistrationViewModel(instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }
