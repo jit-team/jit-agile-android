@@ -3,6 +3,7 @@ package pl.jitsolutions.agile.presentation.authorization.registration
 import android.content.ContextWrapper
 import android.view.View
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.BindingAdapter
@@ -18,9 +19,15 @@ fun registrationUsernameErrorBindingAdapter(view: TextInputLayout, registrationS
 
 @BindingAdapter("bindRegistrationEmailError")
 fun registrationEmailErrorBindingAdapter(view: TextInputLayout, registrationState: RegistrationViewModel.RegistrationState) {
-    val error = registrationState.isErrorOfType(RegistrationViewModel.RegisterTypeError.EMAIL)
-    view.isErrorEnabled = error
-    view.error = if (error) view.context.getString(R.string.registration_screen_error_invalid_email) else null
+    val errorText: String? = when {
+        registrationState.isErrorOfType(RegistrationViewModel.RegisterTypeError.EMAIL) ->
+            view.context.getString(R.string.registration_screen_error_invalid_email)
+        registrationState.isErrorOfType(RegistrationViewModel.RegisterTypeError.EMAIL_ALREADY_EXIST) ->
+            view.context.getString(R.string.registration_screen_error_email_already_exist)
+        else -> null
+    }
+    view.isErrorEnabled = errorText != null
+    view.error = errorText
 
 }
 
@@ -61,4 +68,17 @@ fun registrationBackArrowVisibilityBindingAdapter(view : View, bind: Boolean) {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
     }
+}
+
+@BindingAdapter("bindRegistrationUnknownErrorVisibility")
+fun bindRegistrationUnknownErrorVisibility(view: TextView, registrationState: RegistrationViewModel.RegistrationState) {
+    val errorText: String? = when {
+        registrationState.isErrorOfType(RegistrationViewModel.RegisterTypeError.SERVER) ->
+            view.context.getString(R.string.registration_screen_error_network)
+        registrationState.isErrorOfType(RegistrationViewModel.RegisterTypeError.UNKNOWN) ->
+            view.context.getString(R.string.registration_screen_error_unknown)
+        else -> null
+    }
+    view.text = errorText
+    view.visibility = if (errorText != null) View.VISIBLE else View.INVISIBLE
 }

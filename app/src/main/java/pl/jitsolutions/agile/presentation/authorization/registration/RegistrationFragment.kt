@@ -14,7 +14,6 @@ import pl.jitsolutions.agile.presentation.common.BaseFragment
 import pl.jitsolutions.agile.presentation.navigation.Navigator
 
 class RegistrationFragment : BaseFragment() {
-    override val destination = Navigator.Destination.REGISTRATION
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val viewModelFactory: ViewModelProvider.Factory by instance(tag = RegistrationViewModel::class.java)

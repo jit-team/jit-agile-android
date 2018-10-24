@@ -9,4 +9,6 @@
     <color name="jit_logo">#de6d37</color>
     <color name="jit_logo_dark">#a63f08</color>
     <color name="login_screen_error_text">@color/red_600</color>
+    <color name="registration_screen_error_text">@color/red_600</color>
+    <color name="reset_password_screen_error_text">@color/red_600</color>
 </resources>

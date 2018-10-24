@@ -2,6 +2,7 @@ package pl.jitsolutions.agile.presentation.common
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -44,10 +45,9 @@ abstract class BaseActivity : AppCompatActivity(), KodeinAware {
         }
     }
 
-    private fun findDestination(): Navigator.Destination {
+    private fun findDestination(): Navigator.Destination? {
         val navHost = supportFragmentManager.findFragmentByTag("NavHostFragment")!!
         val topFragment = navHost.childFragmentManager.fragments.last() as BaseFragment
-
         return topFragment.destination
     }
 }
