@@ -31,7 +31,10 @@ class AndroidNavigator(context: Context) : Navigator {
                 PROJECT_LIST -> navController.navigate(R.id.action_registrationSuccessfulFragment_to_projectListFragment)
                 else -> throw Navigator.InvalidNavigationException(from, to)
             }
-            PROJECT_LIST -> throw Navigator.InvalidNavigationException(from, to)
+            PROJECT_LIST -> when (to) {
+                LOGIN -> navController.navigate(R.id.action_projectListFragment_to_loginFragment)
+                else -> throw Navigator.InvalidNavigationException(from, to)
+            }
         }
     }
 

@@ -16,9 +16,9 @@ import pl.jitsolutions.agile.repository.UserRepository
 class LoginViewModelTest {
 
     @Test
-    fun doAction_doesSomething() = runBlocking<Unit>(Dispatchers.Default) {
+    fun doAction_doesSomething() = runBlocking {
         val mockUserRepository = mock<UserRepository> {
-            onBlocking { login("abc", "123") } doReturn response(User("abc"))
+            onBlocking { login("abc", "123") } doReturn response(User("abc", "email@email.com"))
         }
 
         val mockProjectRepository = mock<ProjectRepository> {

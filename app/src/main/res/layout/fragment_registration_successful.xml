@@ -44,14 +44,14 @@
                 style="@style/TextAppearance.AppCompat.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{viewModel.userName}"
+                android:text="@{viewModel.user.name}"
                 app:layout_constraintBottom_toTopOf="@+id/register_successful_welcome"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.2"
                 app:layout_constraintVertical_chainStyle="packed"
-                tools:text="Marek Kondracki" />
+                tools:text="Example User" />
 
 
             <TextView
@@ -70,7 +70,7 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/registration_successful_start"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="?defaultButtonHeight"
                 android:layout_marginTop="10dp"
                 android:onClick="@{() -> viewModel.confirmSuccess()}"
                 android:text="@string/registration_successful_screen_start_button_text"

@@ -64,6 +64,12 @@
         android:id="@+id/projectListFragment"
         android:name="pl.jitsolutions.agile.presentation.projects.ProjectListFragment"
         android:label="ProjectListFragment"
-        tools:layout="@layout/fragment_project_list" />
+        tools:layout="@layout/fragment_project_list">
+        <action
+            android:id="@+id/action_projectListFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/projectListFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 
 </navigation>

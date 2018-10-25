@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/project_list_drawer_log_out"
+            android:icon="@drawable/ic_logout"
+            android:title="@string/project_list_screen_drawer_menu_log_out" />
+    </group>
+</menu>
