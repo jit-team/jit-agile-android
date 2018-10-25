@@ -9,7 +9,7 @@ import org.kodein.di.android.x.closestKodein
 import pl.jitsolutions.agile.presentation.navigation.Navigator
 
 abstract class BaseFragment : Fragment(), KodeinAware {
-    abstract val destination: Navigator.Destination
+    var destination: Navigator.Destination? = null
     override val kodein by closestKodein()
     override val kodeinTrigger = KodeinTrigger()
 

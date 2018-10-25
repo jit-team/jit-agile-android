@@ -14,7 +14,6 @@ import pl.jitsolutions.agile.presentation.common.BaseFragment
 import pl.jitsolutions.agile.presentation.navigation.Navigator
 
 class SplashFragment : BaseFragment() {
-    override val destination = Navigator.Destination.SPLASH
 
     lateinit var viewModel: SplashViewModel
 

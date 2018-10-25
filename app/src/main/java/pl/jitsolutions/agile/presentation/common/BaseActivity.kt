@@ -44,10 +44,9 @@ abstract class BaseActivity : AppCompatActivity(), KodeinAware {
         }
     }
 
-    private fun findDestination(): Navigator.Destination {
+    private fun findDestination(): Navigator.Destination? {
         val navHost = supportFragmentManager.findFragmentByTag("NavHostFragment")!!
         val topFragment = navHost.childFragmentManager.fragments.last() as BaseFragment
-
         return topFragment.destination
     }
 }

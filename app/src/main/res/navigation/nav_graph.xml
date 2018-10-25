@@ -18,6 +18,9 @@
         <action
             android:id="@+id/action_loginFragment_to_registrationFragment"
             app:destination="@id/registrationFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_resetFragment"
+            app:destination="@id/resetPasswordFragment" />
     </fragment>
 
     <fragment
@@ -65,5 +68,11 @@
         android:name="pl.jitsolutions.agile.presentation.projects.ProjectListFragment"
         android:label="ProjectListFragment"
         tools:layout="@layout/fragment_project_list" />
+
+    <fragment
+        android:id="@+id/resetPasswordFragment"
+        android:name="pl.jitsolutions.agile.presentation.authorization.resetPassword.ResetPasswordFragment"
+        android:label="ResetPasswordFragment"
+        tools:layout="@layout/fragment_reset_password"/>
 
 </navigation>
