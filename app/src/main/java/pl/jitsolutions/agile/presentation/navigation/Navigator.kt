@@ -7,7 +7,15 @@ interface Navigator {
 
     fun navigateBack(from: Destination?): Boolean
 
-    enum class Destination { SPLASH, LOGIN, REGISTRATION, REGISTRATION_SUCCESSFUL, PROJECT_LIST, RESET_PASSWORD }
+    enum class Destination {
+        SPLASH,
+        LOGIN,
+        RESET_PASSWORD,
+        REGISTRATION,
+        REGISTRATION_SUCCESSFUL,
+        PROJECT_LIST,
+        PROJECT_DETAILS
+    }
 
     class InvalidNavigationException(from: Destination, to: Destination)
         : Exception("Invalid navigation from $from to $to")

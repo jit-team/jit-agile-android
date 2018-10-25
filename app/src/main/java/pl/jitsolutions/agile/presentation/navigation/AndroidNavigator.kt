@@ -34,6 +34,7 @@ class AndroidNavigator(context: Context) : Navigator {
             }
             PROJECT_LIST -> when (to) {
                 LOGIN -> navController.navigate(R.id.action_projectListFragment_to_loginFragment)
+                PROJECT_DETAILS -> navController.navigate(R.id.action_projectListFragment_to_projectDetailsFragment)
                 else -> throw Navigator.InvalidNavigationException(from, to)
             }
             RESET_PASSWORD -> when (to) {

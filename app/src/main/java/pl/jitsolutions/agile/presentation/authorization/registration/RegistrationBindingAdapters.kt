@@ -11,14 +11,14 @@ import com.google.android.material.textfield.TextInputLayout
 import pl.jitsolutions.agile.R
 
 @BindingAdapter("bindRegistrationUsernameError")
-fun registrationUsernameError(view: TextInputLayout, registrationState: RegistrationViewModel.RegistrationState) {
+fun bindRegistrationUsernameError(view: TextInputLayout, registrationState: RegistrationViewModel.RegistrationState) {
     val error = registrationState.isErrorOfType(RegistrationViewModel.RegisterTypeError.USERNAME)
     view.isErrorEnabled = error
     view.error = if (error) view.context.getString(R.string.registration_screen_error_invalid_username) else null
 }
 
 @BindingAdapter("bindRegistrationEmailError")
-fun registrationEmailError(view: TextInputLayout, registrationState: RegistrationViewModel.RegistrationState) {
+fun bindRegistrationEmailError(view: TextInputLayout, registrationState: RegistrationViewModel.RegistrationState) {
     val errorText: String? = when {
         registrationState.isErrorOfType(RegistrationViewModel.RegisterTypeError.EMAIL) ->
             view.context.getString(R.string.registration_screen_error_invalid_email)
@@ -32,14 +32,14 @@ fun registrationEmailError(view: TextInputLayout, registrationState: Registratio
 }
 
 @BindingAdapter("bindRegistrationPasswordError")
-fun registrationPasswordError(view: TextInputLayout, registrationState: RegistrationViewModel.RegistrationState) {
+fun bindRegistrationPasswordError(view: TextInputLayout, registrationState: RegistrationViewModel.RegistrationState) {
     val error = registrationState.isErrorOfType(RegistrationViewModel.RegisterTypeError.PASSWORD)
     view.isErrorEnabled = error
     view.error = if (error) view.context.getString(R.string.registration_screen_error_invalid_password) else null
 }
 
 @BindingAdapter("bindRegistrationProgressVisibility")
-fun registrationProgressVisibility(progressBar: ProgressBar, registrationState: RegistrationViewModel.RegistrationState) {
+fun bindRegistrationProgressVisibility(progressBar: ProgressBar, registrationState: RegistrationViewModel.RegistrationState) {
     progressBar.visibility = when (registrationState) {
         RegistrationViewModel.RegistrationState.None -> View.INVISIBLE
         RegistrationViewModel.RegistrationState.InProgress -> View.VISIBLE
@@ -49,7 +49,7 @@ fun registrationProgressVisibility(progressBar: ProgressBar, registrationState: 
 }
 
 @BindingAdapter("bindRegistrationCredentialsEditingEnabled")
-fun registrationCredentialsEditing(view: View, registrationState: RegistrationViewModel.RegistrationState) {
+fun bindRegistrationCredentialsEditing(view: View, registrationState: RegistrationViewModel.RegistrationState) {
     view.isEnabled = when (registrationState) {
         RegistrationViewModel.RegistrationState.None -> true
         RegistrationViewModel.RegistrationState.InProgress -> false
@@ -59,7 +59,7 @@ fun registrationCredentialsEditing(view: View, registrationState: RegistrationVi
 }
 
 @BindingAdapter("bindRegistrationBackArrowVisibility")
-fun registrationBackArrowVisibility(view : View, bind: Boolean) {
+fun bindRegistrationBackArrowVisibility(view: View, bind: Boolean) {
     if (bind) {
         val wrapper = view.context as? ContextWrapper
         val activity = wrapper?.baseContext as? AppCompatActivity

@@ -11,8 +11,7 @@ import pl.jitsolutions.agile.domain.usecases.GetLoggedUserUseCase
 import pl.jitsolutions.agile.domain.usecases.LogoutCurrentUserUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
 import pl.jitsolutions.agile.presentation.navigation.Navigator
-import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.LOGIN
-import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.PROJECT_LIST
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.*
 import pl.jitsolutions.agile.utils.mutableLiveData
 
 class ProjectListViewModel(private val getLoggedUserUseCase: GetLoggedUserUseCase,
@@ -36,6 +35,10 @@ class ProjectListViewModel(private val getLoggedUserUseCase: GetLoggedUserUseCas
             SUCCESS -> navigator.navigate(PROJECT_LIST, LOGIN)
             ERROR -> throw result.error!!
         }
+    }
+
+    fun showProjectDetails() {
+        navigator.navigate(from = PROJECT_LIST, to = PROJECT_DETAILS)
     }
 
     private fun executeGetLoggedUser() = launch {
