@@ -15,7 +15,6 @@ import pl.jitsolutions.agile.presentation.common.BaseFragment
 import pl.jitsolutions.agile.presentation.navigation.Navigator
 
 class ProjectListFragment : BaseFragment() {
-    override val destination = Navigator.Destination.PROJECT_LIST
     lateinit var binding: FragmentProjectListBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

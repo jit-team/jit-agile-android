@@ -45,8 +45,10 @@ class RegistrationViewModel(private val userRegistrationUseCase: UserRegistratio
                     is UserRegistrationUseCase.Error.WeakPassword -> RegisterTypeError.PASSWORD
                     is UserRegistrationUseCase.Error.EmptyUserName -> RegisterTypeError.USERNAME
                     is UserRegistrationUseCase.Error.EmptyPassword -> RegisterTypeError.PASSWORD
+                    is UserRegistrationUseCase.Error.UserAlreadyExist -> RegisterTypeError.EMAIL_ALREADY_EXIST
                     is UserRegistrationUseCase.Error.EmptyEmail -> RegisterTypeError.EMAIL
-                    is UserRegistrationUseCase.Error.InvalidCredentials -> RegisterTypeError.EMAIL
+                    is UserRegistrationUseCase.Error.InvalidEmail -> RegisterTypeError.EMAIL
+                    is UserRegistrationUseCase.Error.InvalidPassword -> RegisterTypeError.USERNAME
                     else -> RegisterTypeError.SERVER
                 }
                 registrationState.value = RegistrationState.Error(type)
@@ -73,5 +75,5 @@ class RegistrationViewModel(private val userRegistrationUseCase: UserRegistratio
 
     }
 
-    enum class RegisterTypeError { USERNAME, EMAIL, PASSWORD, SERVER }
+    enum class RegisterTypeError { USERNAME, EMAIL, EMAIL_ALREADY_EXIST, PASSWORD, SERVER, UNKNOWN }
 }

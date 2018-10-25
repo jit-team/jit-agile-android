@@ -5,9 +5,9 @@ import android.os.Bundle
 interface Navigator {
     fun navigate(from: Destination, to: Destination, arguments: Bundle? = null)
 
-    fun navigateBack(from: Destination): Boolean
+    fun navigateBack(from: Destination?): Boolean
 
-    enum class Destination { SPLASH, LOGIN, REGISTRATION, REGISTRATION_SUCCESSFUL, PROJECT_LIST }
+    enum class Destination { SPLASH, LOGIN, REGISTRATION, REGISTRATION_SUCCESSFUL, PROJECT_LIST, RESET_PASSWORD }
 
     class InvalidNavigationException(from: Destination, to: Destination)
         : Exception("Invalid navigation from $from to $to")

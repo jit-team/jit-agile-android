@@ -1,10 +1,8 @@
 package pl.jitsolutions.agile.domain.usecases
 
+import androidx.core.util.PatternsCompat
 import kotlinx.coroutines.experimental.CoroutineDispatcher
-import pl.jitsolutions.agile.domain.Response
-import pl.jitsolutions.agile.domain.User
-import pl.jitsolutions.agile.domain.errorResponse
-import pl.jitsolutions.agile.domain.response
+import pl.jitsolutions.agile.domain.*
 import pl.jitsolutions.agile.repository.ProjectRepository
 import pl.jitsolutions.agile.repository.UserRepository
 
@@ -28,7 +26,8 @@ class LoginUserUseCase(private val userRepository: UserRepository,
 
     private fun userErrorResponse(response: Response<User>): Response<String> {
         return when (response.error) {
-            is UserRepository.Error.InvalidCredentials -> errorResponse(error = Error.UserEmailNotFound)
+            is UserRepository.Error.InvalidEmail -> errorResponse(error = Error.UserEmailNotFound)
+            is UserRepository.Error.InvalidPassword -> errorResponse(error = Error.WrongPassword)
             is UserRepository.Error.ServerConnection -> errorResponse(error = Error.ServerConnection)
             else -> errorResponse(error = Error.UnknownError)
         }
@@ -52,11 +51,12 @@ class LoginUserUseCase(private val userRepository: UserRepository,
 
     data class Params(val email: String, val password: String) {
         fun validate(): Error? {
-            if (email.isEmpty())
-                return Error.EmptyEmail
-            if (password.isEmpty())
-                return Error.EmptyPassword
-            return null
+            return when {
+                email.isEmpty() -> Error.EmptyEmail
+                !PatternsCompat.EMAIL_ADDRESS.matcher(email).matches() -> Error.InvalidEmail
+                password.isEmpty() -> Error.EmptyPassword
+                else -> null
+            }
         }
     }
 
@@ -64,6 +64,7 @@ class LoginUserUseCase(private val userRepository: UserRepository,
         object UserEmailNotFound : Error()
         object WrongPassword : Error()
         object EmptyEmail : Error()
+        object InvalidEmail : Error()
         object EmptyPassword : Error()
         object ServerConnection : Error()
         object UnknownError : Error()

@@ -21,6 +21,7 @@ class AndroidNavigator(context: Context) : Navigator {
             LOGIN -> when (to) {
                 REGISTRATION -> navController.navigate(R.id.action_loginFragment_to_registrationFragment)
                 PROJECT_LIST -> navController.navigate(R.id.action_loginFragment_to_projectListFragment)
+                RESET_PASSWORD -> navController.navigate(R.id.action_loginFragment_to_resetFragment)
                 else -> throw Navigator.InvalidNavigationException(from, to)
             }
             REGISTRATION -> when (to) {
@@ -35,13 +36,21 @@ class AndroidNavigator(context: Context) : Navigator {
                 LOGIN -> navController.navigate(R.id.action_projectListFragment_to_loginFragment)
                 else -> throw Navigator.InvalidNavigationException(from, to)
             }
+            RESET_PASSWORD -> when (to) {
+                LOGIN -> navController.popBackStack()
+                else -> throw Navigator.InvalidNavigationException(from, to)
+            }
         }
     }
 
-    override fun navigateBack(from: Navigator.Destination): Boolean {
+    override fun navigateBack(from: Navigator.Destination?): Boolean {
         return when (from) {
             REGISTRATION_SUCCESSFUL -> {
                 navigate(REGISTRATION_SUCCESSFUL, PROJECT_LIST)
+                true
+            }
+            RESET_PASSWORD -> {
+                navigate(RESET_PASSWORD, LOGIN)
                 true
             }
             else -> false

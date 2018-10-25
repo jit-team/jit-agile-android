@@ -11,9 +11,15 @@ import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
 import pl.jitsolutions.agile.domain.usecases.*
+import pl.jitsolutions.agile.domain.usecases.GetApplicationVersionUseCase
+import pl.jitsolutions.agile.domain.usecases.GetLoggedUserUseCase
+import pl.jitsolutions.agile.domain.usecases.LoginUserUseCase
+import pl.jitsolutions.agile.domain.usecases.UserRegistrationUseCase
+import pl.jitsolutions.agile.domain.usecases.UserResetPasswordUseCase
 import pl.jitsolutions.agile.presentation.authorization.login.LoginViewModel
 import pl.jitsolutions.agile.presentation.authorization.registration.RegistrationViewModel
 import pl.jitsolutions.agile.presentation.authorization.registrationSuccessful.RegistrationSuccessfulViewModel
+import pl.jitsolutions.agile.presentation.authorization.resetPassword.ResetPasswordViewModel
 import pl.jitsolutions.agile.presentation.navigation.AndroidNavigator
 import pl.jitsolutions.agile.presentation.navigation.Navigator
 import pl.jitsolutions.agile.presentation.projects.ProjectListViewModel
@@ -65,6 +71,9 @@ private val useCasesModule = Kodein.Module(name = "UseCases") {
     bind<GetApplicationVersionUseCase>() with provider {
         GetApplicationVersionUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
+    bind<UserResetPasswordUseCase>() with provider {
+        UserResetPasswordUseCase(instance(), instance(Tags.Dispatchers.USE_CASE))
+    }
 }
 
 private val viewModelsModule = Kodein.Module(name = "ViewModels") {
@@ -82,6 +91,9 @@ private val viewModelsModule = Kodein.Module(name = "ViewModels") {
     }
     bind<ViewModelProvider.Factory>(tag = ProjectListViewModel::class.java) with provider {
         viewModelFactory { ProjectListViewModel(instance(), instance(), instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }
+    }
+    bind<ViewModelProvider.Factory>(tag = ResetPasswordViewModel::class.java) with provider {
+        viewModelFactory { ResetPasswordViewModel(instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }
     }
 }
 

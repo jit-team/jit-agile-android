@@ -1,6 +1,7 @@
 package pl.jitsolutions.agile.repository
 
 import com.google.android.gms.tasks.Task
+import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.*
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.CoroutineScope
@@ -28,8 +29,8 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : User
                             }
                         }
                     }
-                } catch (e: Exception) {
-                    continuation.resume(errorResponse(error = UserRepository.Error.UnknownError))
+                } catch (e: Exception)  {
+                    continuation.resume(errorResponse(error = retrieveErrorText(e)))
                 }
             }
         }
@@ -95,12 +96,32 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : User
         }
     }
 
+    override suspend fun resetPassword(email: String): Response<Void?> {
+        return CoroutineScope(dispatcher).async {
+            try {
+                suspendCoroutine<Response<Void?>> { continuation ->
+                    firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener {
+                        when {
+                            it.isSuccessful -> continuation.resume(response(null))
+                            it.exception != null -> continuation.resume(errorResponse(error = retrieveErrorText(it.exception!!)))
+                            else -> continuation.resume(errorResponse(error = UserRepository.Error.UnknownError))
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                //TODO: add timber, for debug error in logs, for release send to crashlytics
+                errorResponse<Void?>(error = UserRepository.Error.UnknownError)
+            }
+        }.await()
+    }
+
     private fun retrieveErrorText(exception: Exception): UserRepository.Error {
         return when (exception) {
             is FirebaseAuthWeakPasswordException -> UserRepository.Error.WeakPassword
-            is FirebaseAuthInvalidCredentialsException -> UserRepository.Error.InvalidCredentials
-            is FirebaseAuthInvalidUserException -> UserRepository.Error.InvalidCredentials
+            is FirebaseAuthInvalidUserException -> UserRepository.Error.UserNotFound
+            is FirebaseAuthInvalidCredentialsException -> UserRepository.Error.InvalidPassword
             is FirebaseAuthUserCollisionException -> UserRepository.Error.UserAlreadyExist
+            is FirebaseNetworkException -> UserRepository.Error.ServerConnection
             else -> UserRepository.Error.UnknownError
         }
     }

@@ -11,7 +11,10 @@
     <string name="login_screen_register_button_text">register</string>
     <string name="login_screen_error_unknown">Unknown error, please try again</string>
     <string name="login_screen_error_invalid_email">Invalid email address</string>
+    <string name="login_screen_error_email_not_found">Email not found</string>
     <string name="login_screen_error_invalid_password">Invalid password</string>
+    <string name="login_screen_error_network">Network error</string>
+    <string name="login_screen_forgot_password_label">Forgot your password?</string>
 
     <string name="registration_screen_title">Register</string>
     <string name="registration_screen_username_label">Username</string>
@@ -20,8 +23,11 @@
     <string name="registration_screen_register_button_text">Register</string>
     <string name="registration_screen_successful_toast_text">Register successful</string>
     <string name="registration_screen_error_invalid_email">Invalid email address</string>
+    <string name="registration_screen_error_email_already_exist">Email already exist</string>
     <string name="registration_screen_error_invalid_username">Invalid username</string>
     <string name="registration_screen_error_invalid_password">Invalid password</string>
+    <string name="registration_screen_error_unknown">Unknown error</string>
+    <string name="registration_screen_error_network">Network error</string>
 
     <string name="registration_successful_screen_title">Registration successful</string>
     <string name="registration_successful_screen_welcome_label">welcome to JIT Agile</string>
@@ -38,5 +44,14 @@
     <string name="project_list_screen_logout_confirmation_message">Are you sure you want to logout?</string>
     <string name="project_list_screen_logout_confirmation_positive_button_text">Logout</string>
     <string name="project_list_screen_logout_confirmation_negative_button_text">Cancel</string>
+
+    <string name="reset_password_screen_title">Reset password</string>
+    <string name="reset_password_screen_email_label">Email</string>
+    <string name="reset_password_screen_reset_button_text">Reset password</string>
+    <string name="reset_password_screen_error_invalid_email">Invalid email</string>
+    <string name="reset_password_screen_error_email_not_found">Email not found</string>
+    <string name="reset_password_screen_error_network">Network error</string>
+    <string name="reset_password_screen_error_unknown">Unknown error, please try again</string>
+    <string name="reset_password_screen_toast_email_sent">Reset link has been sent. Check mailbox</string>
 
 </resources>

@@ -40,7 +40,8 @@ class LoginViewModel(private val loginUserUseCase: LoginUserUseCase,
                     is LoginUserUseCase.Error.UnknownError -> LoginErrorType.SERVER
                     is LoginUserUseCase.Error.ServerConnection -> LoginErrorType.SERVER
                     is LoginUserUseCase.Error.WrongPassword -> LoginErrorType.PASSWORD
-                    is LoginUserUseCase.Error.UserEmailNotFound -> LoginErrorType.EMAIL
+                    is LoginUserUseCase.Error.InvalidEmail -> LoginErrorType.EMAIL
+                    is LoginUserUseCase.Error.UserEmailNotFound -> LoginErrorType.EMAIL_NOT_FOUND
                     is LoginUserUseCase.Error.EmptyEmail -> LoginErrorType.EMAIL
                     is LoginUserUseCase.Error.EmptyPassword -> LoginErrorType.PASSWORD
                     else -> LoginErrorType.SERVER
@@ -52,6 +53,10 @@ class LoginViewModel(private val loginUserUseCase: LoginUserUseCase,
 
     fun register() {
         navigator.navigate(from = LOGIN, to = REGISTRATION)
+    }
+
+    fun resetPassword() {
+        navigator.navigate(from = LOGIN, to = RESET_PASSWORD)
     }
 
     override fun onCleared() {
@@ -72,5 +77,5 @@ class LoginViewModel(private val loginUserUseCase: LoginUserUseCase,
         object Success : LoginState()
     }
 
-    enum class LoginErrorType { EMAIL, PASSWORD, SERVER }
+    enum class LoginErrorType { EMAIL, EMAIL_NOT_FOUND, PASSWORD, SERVER, UNKNOWN }
 }
