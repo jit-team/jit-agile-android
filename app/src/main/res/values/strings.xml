@@ -52,6 +52,7 @@
     <string name="reset_password_screen_error_email_not_found">Email not found</string>
     <string name="reset_password_screen_error_network">Network error</string>
     <string name="reset_password_screen_error_unknown">Unknown error, please try again</string>
-    <string name="reset_password_screen_toast_email_sent">Reset link has been sent. Check mailbox</string>
+    <string name="reset_password_screen_dialog_email_sent_text">Reset link has been sent. Check your mailbox</string>
+    <string name="reset_password_screen_dialog_positive_text">OK</string>
 
 </resources>
