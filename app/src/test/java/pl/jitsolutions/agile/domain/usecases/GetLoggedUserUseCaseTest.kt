@@ -4,7 +4,7 @@ import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.runBlocking
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.User
@@ -16,7 +16,7 @@ class GetLoggedUserUseCaseTest {
     @Test
     fun `logged in user successful`() = runBlocking(Dispatchers.Default) {
         val mockUserRepository = mock<UserRepository> {
-            onBlocking { getLoggedInUser() } doReturn response<User?>(User("tester"))
+            onBlocking { getLoggedInUser() } doReturn response<User?>(User("tester", "email@email.com"))
         }
         val params = GetLoggedUserUseCase.Params()
         val useCase = GetLoggedUserUseCase(mockUserRepository, Dispatchers.Unconfined)

@@ -4,7 +4,7 @@ import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.runBlocking
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.User
@@ -17,7 +17,7 @@ class UserRegistrationUseCaseTest {
     @Test
     fun `registration successful`() = runBlocking {
         val mockUserRepository = mock<UserRepository> {
-            onBlocking { register("tester", "tester@test.pl", "test123") } doReturn response(User("tester"))
+            onBlocking { register("tester", "tester@test.pl", "test123") } doReturn response(User("tester", "email@email.com"))
         }
         val params = UserRegistrationUseCase.Params("tester@test.pl", "tester", "test123")
         val useCase = UserRegistrationUseCase(mockUserRepository, Dispatchers.Unconfined)
