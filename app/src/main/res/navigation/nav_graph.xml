@@ -124,6 +124,11 @@
         android:id="@+id/projectDetailsFragment"
         android:name="pl.jitsolutions.agile.presentation.projects.details.ProjectDetailsFragment"
         android:label="ProjectDetailsFragment"
-        tools:layout="@layout/fragment_project_details" />
+        tools:layout="@layout/fragment_project_details">
+        <argument
+            android:name="projectId"
+            android:defaultValue='""'
+            app:argType="string" />
+    </fragment>
 
 </navigation>

@@ -25,6 +25,7 @@ import java.util.concurrent.Executors
 
 interface Tags {
     enum class Dispatchers { USE_CASE, IO, MAIN }
+    enum class Parameters { PROJECT_DETAILS_ID }
 }
 
 private val dispatchersModule = Kodein.Module(name = "Dispatchers") {
@@ -70,6 +71,9 @@ private val useCasesModule = Kodein.Module(name = "UseCases") {
     bind<UserResetPasswordUseCase>() with provider {
         UserResetPasswordUseCase(instance(), instance(Tags.Dispatchers.USE_CASE))
     }
+    bind<GetProjectUseCase>() with provider {
+        GetProjectUseCase(instance(), instance(Tags.Dispatchers.USE_CASE))
+    }
 }
 
 private val viewModelsModule = Kodein.Module(name = "ViewModels") {
@@ -92,7 +96,7 @@ private val viewModelsModule = Kodein.Module(name = "ViewModels") {
         viewModelFactory { ResetPasswordViewModel(instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }
     }
     bind<ViewModelProvider.Factory>(tag = ProjectDetailsViewModel::class.java) with provider {
-        viewModelFactory { ProjectDetailsViewModel(instance(), instance(tag = Tags.Dispatchers.MAIN)) }
+        viewModelFactory { ProjectDetailsViewModel(instance(), instance(), instance(Tags.Parameters.PROJECT_DETAILS_ID), instance(tag = Tags.Dispatchers.MAIN)) }
     }
 }
 

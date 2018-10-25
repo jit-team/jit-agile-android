@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -25,7 +26,8 @@
                 android:background="?attr/colorPrimary"
                 app:bindProjectDetailsBackArrowVisibility="@{true}"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:title="@string/project_details_screen_title" />
+                app:title="@{viewModel.project.name}"
+                tools:title="Example project" />
 
         </com.google.android.material.appbar.AppBarLayout>
 

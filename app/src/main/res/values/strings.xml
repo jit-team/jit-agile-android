@@ -34,8 +34,6 @@
     <string name="registration_successful_screen_success_label">Register successful</string>
     <string name="registration_successful_screen_start_button_text">Let\'s start</string>
 
-    <string name="main_screen_title">Agile main screen</string>
-
     <string name="project_list_screen_title">Project List</string>
     <string name="project_list_screen_drawer_menu_log_out">Log Out</string>
     <string name="project_list_screen_drawer_version">Ver. %s</string>
@@ -44,8 +42,6 @@
     <string name="project_list_screen_logout_confirmation_message">Are you sure you want to logout?</string>
     <string name="project_list_screen_logout_confirmation_positive_button_text">Logout</string>
     <string name="project_list_screen_logout_confirmation_negative_button_text">Cancel</string>
-
-    <string name="project_details_screen_title">Project Details</string>
 
     <string name="reset_password_screen_title">Reset password</string>
     <string name="reset_password_screen_email_label">Email</string>

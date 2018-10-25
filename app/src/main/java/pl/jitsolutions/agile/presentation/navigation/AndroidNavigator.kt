@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import pl.jitsolutions.agile.R
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.*
+import pl.jitsolutions.agile.presentation.projects.ProjectListFragmentDirections
 
 class AndroidNavigator(context: Context) : Navigator {
     private val activity = context as AppCompatActivity
@@ -34,13 +35,19 @@ class AndroidNavigator(context: Context) : Navigator {
             }
             PROJECT_LIST -> when (to) {
                 LOGIN -> navController.navigate(R.id.action_projectListFragment_to_loginFragment)
-                PROJECT_DETAILS -> navController.navigate(R.id.action_projectListFragment_to_projectDetailsFragment)
+                PROJECT_DETAILS -> {
+                    navController.navigate(ProjectListFragmentDirections
+                            .actionProjectListFragmentToProjectDetailsFragment()
+                            .setProjectId("exempleId")
+                    )
+                }
                 else -> throw Navigator.InvalidNavigationException(from, to)
             }
             RESET_PASSWORD -> when (to) {
                 LOGIN -> navController.popBackStack()
                 else -> throw Navigator.InvalidNavigationException(from, to)
             }
+            PROJECT_DETAILS -> throw Navigator.InvalidNavigationException(from, to)
         }
     }
 
