@@ -4,7 +4,7 @@ import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.runBlocking
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.User
@@ -18,7 +18,7 @@ class LoginUserUseCaseTest {
     @Test
     fun `login and get projects successful`() = runBlocking {
         val mockUserRepository = mock<UserRepository> {
-            onBlocking { login("test@test.pl", "123") } doReturn response(User("abc"))
+            onBlocking { login("test@test.pl", "123") } doReturn response(User("abc", "email@email.com"))
         }
         val mockProjectRepository = mock<ProjectRepository> {
             onBlocking { getProjects("abc") } doReturn response("Test group")

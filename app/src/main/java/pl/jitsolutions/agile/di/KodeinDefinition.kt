@@ -10,6 +10,7 @@ import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
+import pl.jitsolutions.agile.domain.usecases.*
 import pl.jitsolutions.agile.domain.usecases.GetApplicationVersionUseCase
 import pl.jitsolutions.agile.domain.usecases.GetLoggedUserUseCase
 import pl.jitsolutions.agile.domain.usecases.LoginUserUseCase
@@ -61,6 +62,9 @@ private val useCasesModule = Kodein.Module(name = "UseCases") {
     bind<LoginUserUseCase>() with provider {
         LoginUserUseCase(instance(), instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
+    bind<LogoutCurrentUserUseCase>() with provider {
+        LogoutCurrentUserUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
+    }
     bind<GetLoggedUserUseCase>() with provider {
         GetLoggedUserUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
@@ -86,7 +90,7 @@ private val viewModelsModule = Kodein.Module(name = "ViewModels") {
         viewModelFactory { RegistrationSuccessfulViewModel(instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }
     }
     bind<ViewModelProvider.Factory>(tag = ProjectListViewModel::class.java) with provider {
-        viewModelFactory { ProjectListViewModel(instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }
+        viewModelFactory { ProjectListViewModel(instance(), instance(), instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }
     }
     bind<ViewModelProvider.Factory>(tag = ResetPasswordViewModel::class.java) with provider {
         viewModelFactory { ResetPasswordViewModel(instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }

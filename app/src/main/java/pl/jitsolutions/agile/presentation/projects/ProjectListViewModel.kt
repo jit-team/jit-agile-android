@@ -3,8 +3,12 @@ package pl.jitsolutions.agile.presentation.projects
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.launch
 import pl.jitsolutions.agile.domain.Response
+import pl.jitsolutions.agile.domain.Response.Status.ERROR
+import pl.jitsolutions.agile.domain.Response.Status.SUCCESS
 import pl.jitsolutions.agile.domain.User
+import pl.jitsolutions.agile.domain.usecases.GetApplicationVersionUseCase
 import pl.jitsolutions.agile.domain.usecases.GetLoggedUserUseCase
+import pl.jitsolutions.agile.domain.usecases.LogoutCurrentUserUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
 import pl.jitsolutions.agile.presentation.navigation.Navigator
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.LOGIN
@@ -12,31 +16,51 @@ import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.PROJE
 import pl.jitsolutions.agile.utils.mutableLiveData
 
 class ProjectListViewModel(private val getLoggedUserUseCase: GetLoggedUserUseCase,
+                           private val logoutCurrentUserUseCase: LogoutCurrentUserUseCase,
+                           private val getApplicationVersionUseCase: GetApplicationVersionUseCase,
                            private val navigator: Navigator,
                            mainDispatcher: CoroutineDispatcher
 ) : CoroutineViewModel(mainDispatcher) {
-    val userName = mutableLiveData("")
+    val user = mutableLiveData<User?>(null)
+    val version = mutableLiveData("")
 
     init {
         executeGetLoggedUser()
+        executeGetApplicationVersion()
+    }
+
+    fun logout() = launch {
+        val params = LogoutCurrentUserUseCase.Params()
+        val result = logoutCurrentUserUseCase.executeAsync(params).await()
+        when (result.status) {
+            SUCCESS -> navigator.navigate(PROJECT_LIST, LOGIN)
+            ERROR -> throw result.error!!
+        }
     }
 
     private fun executeGetLoggedUser() = launch {
         val params = GetLoggedUserUseCase.Params()
-        val response = getLoggedUserUseCase.executeAsync(params).await()
-        when (response.status) {
-            Response.Status.SUCCESS -> handleGetLoggedUserSuccess(response)
-            Response.Status.ERROR -> {
-                /*TODO*/
-            }
+        val result = getLoggedUserUseCase.executeAsync(params).await()
+        when (result.status) {
+            SUCCESS -> handleGetLoggedUserSuccess(result)
+            ERROR -> throw result.error!!
         }
     }
 
     private fun handleGetLoggedUserSuccess(response: Response<User?>) {
         if (response.data != null) {
-            userName.value = response.data.name
+            user.value = response.data
         } else {
-            navigator.navigate(PROJECT_LIST, LOGIN)
+            navigator.navigate(from = PROJECT_LIST, to = LOGIN)
+        }
+    }
+
+    private fun executeGetApplicationVersion() = launch {
+        val params = GetApplicationVersionUseCase.Params()
+        val result = getApplicationVersionUseCase.executeAsync(params).await()
+        when (result.status) {
+            SUCCESS -> version.value = result.data!!
+            ERROR -> throw result.error!!
         }
     }
 }

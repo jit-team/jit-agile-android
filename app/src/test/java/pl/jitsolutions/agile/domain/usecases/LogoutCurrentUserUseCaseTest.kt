@@ -6,23 +6,23 @@ import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.response
 import pl.jitsolutions.agile.repository.UserRepository
 
-class GetLoggedUserUseCaseTest {
+class LogoutCurrentUserUseCaseTest {
+    private val params = LogoutCurrentUserUseCase.Params()
 
     @Test
-    fun `logged in user successful`() = runBlocking(Dispatchers.Default) {
+    fun `test successful logout`() = runBlocking {
         val mockUserRepository = mock<UserRepository> {
-            onBlocking { getLoggedInUser() } doReturn response<User?>(User("tester", "email@email.com"))
+            onBlocking { logout() } doReturn response(User("Name", "email@email.com"))
         }
-        val params = GetLoggedUserUseCase.Params()
-        val useCase = GetLoggedUserUseCase(mockUserRepository, Dispatchers.Unconfined)
+        val useCase = LogoutCurrentUserUseCase(mockUserRepository, Dispatchers.Unconfined)
 
         val actualResponse = useCase.executeAsync(params).await()
 
-        assertEquals(Response.Status.SUCCESS, actualResponse.status)
+        val expectedResponse = response(User(name = "Name", email = "email@email.com"))
+        assertEquals(expectedResponse, actualResponse)
     }
 }

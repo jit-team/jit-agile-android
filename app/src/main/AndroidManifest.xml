@@ -9,7 +9,7 @@
         android:label="@string/application_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.NoActionBar">
 
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"
@@ -18,8 +18,7 @@
         <activity
             android:name="pl.jitsolutions.agile.presentation.MainActivity"
             android:label="@string/application_name"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:screenOrientation="sensorPortrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

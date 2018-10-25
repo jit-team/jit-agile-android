@@ -13,7 +13,6 @@ import pl.jitsolutions.agile.domain.response
 import kotlin.coroutines.experimental.suspendCoroutine
 
 class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : UserRepository {
-
     private val firebaseAuth = FirebaseAuth.getInstance()
 
     override suspend fun login(email: String, password: String): Response<User> {
@@ -23,8 +22,7 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : User
                     firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener { result ->
                         when {
                             result.isSuccessful -> {
-                                val userName = getUserName(result.result!!)
-                                continuation.resume(response(User(userName)))
+                                continuation.resume(response(result.toUser()))
                             }
                             result.exception != null -> {
                                 continuation.resume(errorResponse(error = retrieveErrorText(result.exception!!)))
@@ -37,6 +35,20 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : User
             }
         }
         return loginResults.await()
+    }
+
+    override suspend fun logout() = CoroutineScope(dispatcher).async {
+        val currentUser = firebaseAuth.currentUser
+        firebaseAuth.signOut()
+        response(currentUser!!.toUser())
+    }.await()
+
+    private fun FirebaseUser.toUser(): User {
+        return User(name = displayName ?: "", email = email ?: "")
+    }
+
+    private fun Task<AuthResult>.toUser(): User {
+        return result!!.user.toUser()
     }
 
     override suspend fun register(userName: String, email: String, password: String): Response<User> {
@@ -55,8 +67,33 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : User
     }
 
     override suspend fun getLoggedInUser(): Response<User?> {
-        val loggedUser = firebaseAuth.currentUser?.let { User(it.email!!) }
+        val loggedUser = firebaseAuth.currentUser?.toUser()
         return response(loggedUser)
+    }
+
+    private suspend fun handleRegisterResponse(userName: String, taskResult: Task<AuthResult>): Response<User> {
+        return when {
+            taskResult.isSuccessful -> {
+                val firebaseUser = taskResult.result?.user!!
+                updateUserName(firebaseUser, userName)
+                response(firebaseUser.toUser())
+            }
+            taskResult.exception != null -> errorResponse(error = retrieveErrorText(taskResult.exception!!))
+            else -> errorResponse(error = UserRepository.Error.UnknownError)
+        }
+    }
+
+    private suspend fun updateUserName(firebaseUser: FirebaseUser, userName: String) {
+        suspendCoroutine<User> { continuation ->
+            firebaseUser.updateProfile(
+                    UserProfileChangeRequest.Builder()
+                            .setDisplayName(userName)
+                            .build()
+            ).addOnCompleteListener {
+                //todo: handling exception?
+                continuation.resume(firebaseUser.toUser())
+            }
+        }
     }
 
     override suspend fun resetPassword(email: String): Response<Void?> {
@@ -76,38 +113,6 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : User
                 errorResponse<Void?>(error = UserRepository.Error.UnknownError)
             }
         }.await()
-    }
-
-    fun res() : Response<Void?> {
-        return errorResponse(error = UserRepository.Error.UnknownError)
-    }
-
-    private fun getUserName(result: AuthResult): String {
-        return if (result.user?.displayName != null)
-            result.user?.displayName!!
-        else
-            result.user?.email!!
-    }
-
-    private suspend fun handleRegisterResponse(userName: String, taskResult: Task<AuthResult>): Response<User> {
-        return when {
-            taskResult.isSuccessful -> {
-                updateUserName(userName, taskResult.result?.user!!)
-                response(User(userName))
-            }
-            taskResult.exception != null -> errorResponse(error = retrieveErrorText(taskResult.exception!!))
-            else -> errorResponse(error = UserRepository.Error.UnknownError)
-        }
-    }
-
-    private suspend fun updateUserName(userName: String, firebaseUser: FirebaseUser) {
-        suspendCoroutine<String> { continuation ->
-            firebaseUser.updateProfile(UserProfileChangeRequest.Builder()
-                    .setDisplayName(userName).build()).addOnCompleteListener {
-                //todo: handling exception?
-                continuation.resume(userName)
-            }
-        }
     }
 
     private fun retrieveErrorText(exception: Exception): UserRepository.Error {

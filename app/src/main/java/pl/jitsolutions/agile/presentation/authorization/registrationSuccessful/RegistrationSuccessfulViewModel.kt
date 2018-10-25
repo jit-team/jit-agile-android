@@ -3,6 +3,7 @@ package pl.jitsolutions.agile.presentation.authorization.registrationSuccessful
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.launch
+import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.usecases.GetLoggedUserUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
 import pl.jitsolutions.agile.presentation.navigation.Navigator
@@ -14,16 +15,16 @@ class RegistrationSuccessfulViewModel(private val getLoggedUserUseCase: GetLogge
                                       mainDispatcher: CoroutineDispatcher
 ) : CoroutineViewModel(mainDispatcher) {
 
-    val userName = MutableLiveData<String?>()
+    val user = MutableLiveData<User>()
 
     init {
-        getUserName()
+        executeGetUserName()
     }
 
-    private fun getUserName() = launch {
+    private fun executeGetUserName() = launch {
         val params = GetLoggedUserUseCase.Params()
         val userResponse = getLoggedUserUseCase.executeAsync(params).await()
-        userName.value = userResponse.data?.name
+        user.value = userResponse.data!!
     }
 
     fun confirmSuccess() {
