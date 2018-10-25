@@ -1,8 +1,10 @@
-package pl.jitsolutions.agile.domain
+package pl.jitsolutions.agile.domain.usecases
 
 import androidx.core.util.PatternsCompat
 import kotlinx.coroutines.experimental.CoroutineDispatcher
-import pl.jitsolutions.agile.domain.usecases.UseCase
+import pl.jitsolutions.agile.domain.Response
+import pl.jitsolutions.agile.domain.errorResponse
+import pl.jitsolutions.agile.domain.response
 import pl.jitsolutions.agile.repository.UserRepository
 
 class UserResetPasswordUseCase(private val userRepository: UserRepository,
@@ -32,11 +34,11 @@ class UserResetPasswordUseCase(private val userRepository: UserRepository,
 
     data class Params(val email: String) {
         fun validate(): Error? {
-            if (email.isEmpty())
-                return Error.EmptyEmail
-            if (!PatternsCompat.EMAIL_ADDRESS.matcher(email).matches())
-                return Error.InvalidEmail
-            return null
+            return when {
+                email.isEmpty() -> Error.EmptyEmail
+                !PatternsCompat.EMAIL_ADDRESS.matcher(email).matches() -> Error.InvalidEmail
+                else -> null
+            }
         }
     }
 

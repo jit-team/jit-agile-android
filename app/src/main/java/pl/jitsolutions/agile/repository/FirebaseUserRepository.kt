@@ -72,7 +72,7 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : User
                     }
                 }
             } catch (e: Exception) {
-                e.printStackTrace()
+                //TODO: add timber, for debug error in logs, for release send to crashlytics
                 errorResponse<Void?>(error = UserRepository.Error.UnknownError)
             }
         }.await()

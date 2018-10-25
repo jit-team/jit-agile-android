@@ -47,7 +47,7 @@ fun resetPasswordEmailError(view: TextInputLayout, resetPasswordState: ResetPass
 
 
 @BindingAdapter("bindResetPasswordProgressVisibility")
-fun resetPasswordProgressVisibilityBindingAdapter(progressBar: ProgressBar, resetPasswordState: ResetPasswordViewModel.ResetPasswordState) {
+fun resetPasswordProgressVisibility(progressBar: ProgressBar, resetPasswordState: ResetPasswordViewModel.ResetPasswordState) {
     progressBar.visibility = when (resetPasswordState) {
         ResetPasswordViewModel.ResetPasswordState.None -> View.INVISIBLE
         ResetPasswordViewModel.ResetPasswordState.InProgress -> View.VISIBLE

@@ -14,7 +14,7 @@ import pl.jitsolutions.agile.domain.usecases.GetApplicationVersionUseCase
 import pl.jitsolutions.agile.domain.usecases.GetLoggedUserUseCase
 import pl.jitsolutions.agile.domain.usecases.LoginUserUseCase
 import pl.jitsolutions.agile.domain.usecases.UserRegistrationUseCase
-import pl.jitsolutions.agile.domain.UserResetPasswordUseCase
+import pl.jitsolutions.agile.domain.usecases.UserResetPasswordUseCase
 import pl.jitsolutions.agile.presentation.authorization.login.LoginViewModel
 import pl.jitsolutions.agile.presentation.authorization.registration.RegistrationViewModel
 import pl.jitsolutions.agile.presentation.authorization.registrationSuccessful.RegistrationSuccessfulViewModel

@@ -53,7 +53,6 @@
                 app:layout_constraintVertical_chainStyle="packed"
                 tools:text="Marek Kondracki" />
 
-
             <TextView
                 android:id="@+id/register_successful_welcome"
                 style="@style/TextAppearance.AppCompat.Subhead"
@@ -65,7 +64,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/register_successful_username" />
-
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/registration_successful_start"
@@ -79,7 +77,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/register_successful_welcome" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

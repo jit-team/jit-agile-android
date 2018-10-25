@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="viewModel"
-            type="pl.jitsolutions.agile.presentation.authorization.login.LoginViewModel"/>
+            type="pl.jitsolutions.agile.presentation.authorization.login.LoginViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -26,10 +26,9 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:title="@string/login_screen_title"/>
+                app:title="@string/login_screen_title" />
 
         </com.google.android.material.appbar.AppBarLayout>
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -54,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/login_screen_email_label"
                     android:inputType="textEmailAddress"
-                    android:text="@={viewModel.email}"/>
+                    android:text="@={viewModel.email}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -74,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/login_screen_password_label"
                     android:inputType="textPassword"
-                    android:text="@={viewModel.password}"/>
+                    android:text="@={viewModel.password}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -86,7 +85,7 @@
                 android:text="@string/login_screen_login_button_text"
                 app:bindLoginCredentialsEditingEnabled="@{viewModel.loginState}"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/login_layout_password"/>
+                app:layout_constraintTop_toBottomOf="@+id/login_layout_password" />
 
             <View
                 android:id="@+id/login_divider"
@@ -94,7 +93,7 @@
                 android:layout_height="1dp"
                 android:layout_marginTop="8dp"
                 android:background="?android:attr/dividerVertical"
-                app:layout_constraintTop_toBottomOf="@+id/login_login"/>
+                app:layout_constraintTop_toBottomOf="@+id/login_login" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/login_register"
@@ -105,7 +104,7 @@
                 android:text="@string/login_screen_register_button_text"
                 app:bindLoginCredentialsEditingEnabled="@{viewModel.loginState}"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/login_divider"/>
+                app:layout_constraintTop_toBottomOf="@+id/login_divider" />
 
             <androidx.core.widget.ContentLoadingProgressBar
                 android:id="@+id/login_progress"
@@ -117,7 +116,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/login_unknown_error"/>
+                app:layout_constraintTop_toTopOf="@+id/login_unknown_error" />
 
             <TextView
                 android:id="@+id/login_unknown_error"
@@ -128,7 +127,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="@color/login_screen_error_text"
                 app:bindLoginUnknownErrorVisibility="@{viewModel.loginState}"
-                app:layout_constraintTop_toBottomOf="@+id/login_register"/>
+                app:layout_constraintTop_toBottomOf="@+id/login_register" />
 
             <TextView
                 android:id="@+id/login_forgot_password"
@@ -139,7 +138,7 @@
                 android:text="@string/login_screen_forgot_password_label"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"/>
+                app:layout_constraintRight_toRightOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

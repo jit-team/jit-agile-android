@@ -51,13 +51,12 @@ class LoginUserUseCase(private val userRepository: UserRepository,
 
     data class Params(val email: String, val password: String) {
         fun validate(): Error? {
-            if (email.isEmpty())
-                return Error.EmptyEmail
-            if (!PatternsCompat.EMAIL_ADDRESS.matcher(email).matches())
-                return Error.InvalidEmail
-            if (password.isEmpty())
-                return Error.EmptyPassword
-            return null
+            return when {
+                email.isEmpty() -> Error.EmptyEmail
+                !PatternsCompat.EMAIL_ADDRESS.matcher(email).matches() -> Error.InvalidEmail
+                password.isEmpty() -> Error.EmptyPassword
+                else -> null
+            }
         }
     }
 
