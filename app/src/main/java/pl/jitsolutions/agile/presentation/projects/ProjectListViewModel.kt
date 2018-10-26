@@ -32,13 +32,13 @@ class ProjectListViewModel(private val getLoggedUserUseCase: GetLoggedUserUseCas
         val params = LogoutCurrentUserUseCase.Params()
         val result = logoutCurrentUserUseCase.executeAsync(params).await()
         when (result.status) {
-            SUCCESS -> navigator.navigate(PROJECT_LIST, LOGIN)
+            SUCCESS -> navigator.navigate(ProjectList, Login)
             ERROR -> throw result.error!!
         }
     }
 
-    fun showProjectDetails() {
-        navigator.navigate(from = PROJECT_LIST, to = PROJECT_DETAILS)
+    fun showProjectDetails(projectId: String) {
+        navigator.navigate(from = ProjectList, to = ProjectDetails(projectId))
     }
 
     private fun executeGetLoggedUser() = launch {
@@ -54,7 +54,7 @@ class ProjectListViewModel(private val getLoggedUserUseCase: GetLoggedUserUseCas
         if (response.data != null) {
             user.value = response.data
         } else {
-            navigator.navigate(from = PROJECT_LIST, to = LOGIN)
+            navigator.navigate(from = ProjectList, to = Login)
         }
     }
 

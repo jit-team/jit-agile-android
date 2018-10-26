@@ -33,7 +33,7 @@ class LoginViewModel(private val loginUserUseCase: LoginUserUseCase,
         when (response.status) {
             Response.Status.SUCCESS -> {
                 loginState.value = LoginState.Success
-                navigator.navigate(from = LOGIN, to = PROJECT_LIST)
+                navigator.navigate(from = Login, to = ProjectList)
             }
             Response.Status.ERROR -> {
                 val type = when (response.error) {
@@ -52,11 +52,11 @@ class LoginViewModel(private val loginUserUseCase: LoginUserUseCase,
     }
 
     fun register() {
-        navigator.navigate(from = LOGIN, to = REGISTRATION)
+        navigator.navigate(from = Login, to = Registration)
     }
 
     fun resetPassword() {
-        navigator.navigate(from = LOGIN, to = RESET_PASSWORD)
+        navigator.navigate(from = Login, to = ResetPassword)
     }
 
     override fun onCleared() {

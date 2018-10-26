@@ -11,9 +11,9 @@ import pl.jitsolutions.agile.presentation.navigation.Navigator
 
 abstract class BaseFragment : Fragment(), KodeinAware {
     var destination: Navigator.Destination? = null
-    private val activityKodein by closestKodein()
+    private val closestKodein by closestKodein()
     override val kodein = Kodein.lazy {
-        extend(activityKodein)
+        extend(closestKodein)
         fragmentModule?.let { import(it) }
     }
     override val kodeinTrigger = KodeinTrigger()

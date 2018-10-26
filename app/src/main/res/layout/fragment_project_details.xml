@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="androidx.recyclerview.widget.DividerItemDecoration" />
+
         <variable
             name="viewModel"
             type="pl.jitsolutions.agile.presentation.projects.details.ProjectDetailsViewModel" />
@@ -31,11 +33,16 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/project_details_members"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="match_parent"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:scrollbars="vertical"
+            app:bindProjectDetailsListOfUsers="@{viewModel.project.users}"
+            app:bindRecyclerViewDivider="@{DividerItemDecoration.VERTICAL}"
+            app:bindRecyclerViewHasFixedSize="@{true}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

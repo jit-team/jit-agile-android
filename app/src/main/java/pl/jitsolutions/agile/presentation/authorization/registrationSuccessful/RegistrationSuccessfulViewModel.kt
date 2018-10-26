@@ -7,8 +7,8 @@ import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.usecases.GetLoggedUserUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
 import pl.jitsolutions.agile.presentation.navigation.Navigator
-import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.PROJECT_LIST
-import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.REGISTRATION_SUCCESSFUL
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectList
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.RegistrationSuccessful
 
 class RegistrationSuccessfulViewModel(private val getLoggedUserUseCase: GetLoggedUserUseCase,
                                       private val navigator: Navigator,
@@ -28,6 +28,6 @@ class RegistrationSuccessfulViewModel(private val getLoggedUserUseCase: GetLogge
     }
 
     fun confirmSuccess() {
-        navigator.navigate(from = REGISTRATION_SUCCESSFUL, to = PROJECT_LIST)
+        navigator.navigate(from = RegistrationSuccessful, to = ProjectList)
     }
 }

@@ -7,8 +7,8 @@ import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.usecases.UserRegistrationUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
 import pl.jitsolutions.agile.presentation.navigation.Navigator
-import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.REGISTRATION
-import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.REGISTRATION_SUCCESSFUL
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Registration
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.RegistrationSuccessful
 import pl.jitsolutions.agile.utils.mutableLiveData
 
 
@@ -38,7 +38,7 @@ class RegistrationViewModel(private val userRegistrationUseCase: UserRegistratio
             Response.Status.SUCCESS -> {
                 userName.value = response.data
                 registrationState.value = RegistrationState.Success
-                navigator.navigate(from = REGISTRATION, to = REGISTRATION_SUCCESSFUL)
+                navigator.navigate(from = Registration, to = RegistrationSuccessful)
             }
             Response.Status.ERROR -> {
                 val type = when (response.error) {

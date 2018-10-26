@@ -15,6 +15,7 @@ import pl.jitsolutions.agile.databinding.FragmentProjectDetailsBinding
 import pl.jitsolutions.agile.di.Tags
 import pl.jitsolutions.agile.presentation.common.BaseFragment
 
+
 class ProjectDetailsFragment : BaseFragment() {
 
     override val fragmentModule = Kodein.Module("ProjectDetailsFragment") {

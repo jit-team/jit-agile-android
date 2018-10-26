@@ -31,10 +31,10 @@
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/project_list_toolbar"
-                    bindProjectListNavigationIconVisibility="@{true}"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:background="?attr/colorPrimary"
+                    app:bindProjectListNavigationIconVisibility="@{true}"
                     app:popupTheme="@style/AppTheme.PopupOverlay"
                     app:title="@string/project_list_screen_title" />
 
@@ -47,7 +47,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="@{() -> viewModel.showProjectDetails()}"
+                    android:onClick="@{() -> viewModel.showProjectDetails(`exampleId`)}"
                     android:text="@{viewModel.user.name}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

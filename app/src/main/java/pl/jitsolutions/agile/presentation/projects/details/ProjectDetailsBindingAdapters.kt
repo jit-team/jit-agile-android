@@ -5,6 +5,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.RecyclerView
+import pl.jitsolutions.agile.domain.User
 
 @BindingAdapter("bindProjectDetailsBackArrowVisibility")
 fun bindProjectDetailsBackArrowVisibility(view: View, bind: Boolean) {
@@ -16,4 +18,16 @@ fun bindProjectDetailsBackArrowVisibility(view: View, bind: Boolean) {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
     }
+}
+
+@BindingAdapter("bindProjectDetailsListOfUsers")
+fun bindProjectDetailsListOfUsers(recyclerView: RecyclerView, users: List<User>?) {
+    val adapter: ProjectDetailsUserAdapter
+    if (recyclerView.adapter == null) {
+        adapter = ProjectDetailsUserAdapter()
+        recyclerView.adapter = adapter
+    } else {
+        adapter = recyclerView.adapter as ProjectDetailsUserAdapter
+    }
+    adapter.users = users ?: emptyList()
 }

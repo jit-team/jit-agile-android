@@ -18,7 +18,7 @@ import pl.jitsolutions.agile.presentation.navigation.Navigator
 class ResetPasswordFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        destination = Navigator.Destination.RESET_PASSWORD
+        destination = Navigator.Destination.ResetPassword
         val viewModelFactory: ViewModelProvider.Factory by instance(tag = ResetPasswordViewModel::class.java)
         val viewModel = ViewModelProviders.of(this, viewModelFactory).get(ResetPasswordViewModel::class.java)
         val binding = DataBindingUtil.inflate<FragmentResetPasswordBinding>(layoutInflater, R.layout.fragment_reset_password, container, false)
