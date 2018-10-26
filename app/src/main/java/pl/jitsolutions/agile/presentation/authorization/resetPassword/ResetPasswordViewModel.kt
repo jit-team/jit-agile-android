@@ -47,6 +47,10 @@ class ResetPasswordViewModel(private val resetPasswordUseCase: UserResetPassword
         }
     }
 
+    fun confirmSuccess() {
+        navigator.navigateBack(Navigator.Destination.ResetPassword)
+    }
+
     sealed class ResetPasswordState {
         fun isErrorOfType(type: ResetPasswordTypeError): Boolean {
             return this is Error && this.type == type
@@ -58,5 +62,5 @@ class ResetPasswordViewModel(private val resetPasswordUseCase: UserResetPassword
         object Success : ResetPasswordState()
     }
 
-    enum class ResetPasswordTypeError { EMAIL, EMAIL_NOT_FOUND, SERVER, UNKNOWN}
+    enum class ResetPasswordTypeError { EMAIL, EMAIL_NOT_FOUND, SERVER, UNKNOWN }
 }

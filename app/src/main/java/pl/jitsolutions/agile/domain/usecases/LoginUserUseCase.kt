@@ -28,6 +28,7 @@ class LoginUserUseCase(private val userRepository: UserRepository,
         return when (response.error) {
             is UserRepository.Error.InvalidEmail -> errorResponse(error = Error.UserEmailNotFound)
             is UserRepository.Error.InvalidPassword -> errorResponse(error = Error.WrongPassword)
+            is UserRepository.Error.UserNotFound -> errorResponse(error = Error.UserEmailNotFound)
             is UserRepository.Error.ServerConnection -> errorResponse(error = Error.ServerConnection)
             else -> errorResponse(error = Error.UnknownError)
         }
