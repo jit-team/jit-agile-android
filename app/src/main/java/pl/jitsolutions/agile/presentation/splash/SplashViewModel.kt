@@ -52,9 +52,9 @@ class SplashViewModel(private val getLoggedUserUseCase: GetLoggedUserUseCase,
     private fun handleGetLoggedUserSuccess(response: Response<User?>) {
         val isUserLoggedIn = response.data != null
         if (isUserLoggedIn) {
-            navigator.navigate(SPLASH, PROJECT_LIST)
+            navigator.navigate(Splash, ProjectList)
         } else {
-            navigator.navigate(SPLASH, LOGIN)
+            navigator.navigate(Splash, Login)
         }
     }
 }

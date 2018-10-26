@@ -5,7 +5,7 @@ import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.repository.SystemInfoRepository
 
 class GetApplicationVersionUseCase(private val systemInfoRepository: SystemInfoRepository,
-                                   private val dispatcher: CoroutineDispatcher
+                                   dispatcher: CoroutineDispatcher
 ) : UseCase<GetApplicationVersionUseCase.Params, String>(dispatcher) {
 
     override suspend fun build(params: Params): Response<String> {

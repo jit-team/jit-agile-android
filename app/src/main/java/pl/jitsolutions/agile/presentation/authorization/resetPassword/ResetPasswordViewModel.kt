@@ -31,6 +31,7 @@ class ResetPasswordViewModel(private val resetPasswordUseCase: UserResetPassword
         when (response.status) {
             Response.Status.SUCCESS -> {
                 resetPasswordState.value = ResetPasswordState.Success
+                navigator.navigateBack(from = Navigator.Destination.ResetPassword)
             }
             Response.Status.ERROR -> {
                 val type = when (response.error) {
@@ -47,7 +48,7 @@ class ResetPasswordViewModel(private val resetPasswordUseCase: UserResetPassword
     }
 
     fun confirmSuccess() {
-        navigator.navigateBack(Navigator.Destination.RESET_PASSWORD)
+        navigator.navigateBack(Navigator.Destination.ResetPassword)
     }
 
     sealed class ResetPasswordState {
@@ -61,5 +62,5 @@ class ResetPasswordViewModel(private val resetPasswordUseCase: UserResetPassword
         object Success : ResetPasswordState()
     }
 
-    enum class ResetPasswordTypeError { EMAIL, EMAIL_NOT_FOUND, SERVER, UNKNOWN}
+    enum class ResetPasswordTypeError { EMAIL, EMAIL_NOT_FOUND, SERVER, UNKNOWN }
 }

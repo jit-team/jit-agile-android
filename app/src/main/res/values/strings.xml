@@ -34,8 +34,6 @@
     <string name="registration_successful_screen_success_label">Register successful</string>
     <string name="registration_successful_screen_start_button_text">Let\'s start</string>
 
-    <string name="main_screen_title">Agile main screen</string>
-
     <string name="project_list_screen_title">Project List</string>
     <string name="project_list_screen_drawer_menu_log_out">Log Out</string>
     <string name="project_list_screen_drawer_version">Ver. %s</string>

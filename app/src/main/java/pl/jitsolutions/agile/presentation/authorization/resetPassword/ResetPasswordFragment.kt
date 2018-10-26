@@ -20,8 +20,8 @@ class ResetPasswordFragment : BaseFragment() {
     lateinit var viewModel: ResetPasswordViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        destination = Navigator.Destination.RESET_PASSWORD
-        val viewModelFactory: ViewModelProvider.Factory by this.instance(tag = ResetPasswordViewModel::class.java)
+        destination = Navigator.Destination.ResetPassword
+        val viewModelFactory: ViewModelProvider.Factory by instance(tag = ResetPasswordViewModel::class.java)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ResetPasswordViewModel::class.java)
         val binding = DataBindingUtil.inflate<FragmentResetPasswordBinding>(layoutInflater, R.layout.fragment_reset_password, container, false)
         binding.viewModel = viewModel
