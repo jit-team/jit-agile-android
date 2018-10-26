@@ -46,4 +46,19 @@ class LoginUserUseCaseTest {
         assertEquals(Response.Status.ERROR, actualResponse.status)
         assertEquals(LoginUserUseCase.Error.ServerConnection, actualResponse.error)
     }
+
+    @Test
+    fun `user not found error`() = runBlocking {
+        val mockUserRepository = mock<UserRepository> {
+            onBlocking { login("test@test.pl", "123") } doReturn errorResponse(error = UserRepository.Error.UserNotFound)
+        }
+        val mockProjectRepository = mock<ProjectRepository> {}
+        val params = LoginUserUseCase.Params("test@test.pl", "123")
+        val useCase = LoginUserUseCase(mockUserRepository, mockProjectRepository, Dispatchers.Unconfined)
+
+        val actualResponse = useCase.executeAsync(params).await()
+
+        assertEquals(Response.Status.ERROR, actualResponse.status)
+        assertEquals(LoginUserUseCase.Error.UserEmailNotFound, actualResponse.error)
+    }
 }
