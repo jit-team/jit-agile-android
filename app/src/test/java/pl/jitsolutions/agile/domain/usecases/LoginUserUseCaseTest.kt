@@ -20,16 +20,17 @@ class LoginUserUseCaseTest {
             onBlocking {
                 login("test@test.pl", "123")
             } doReturn
-                    response(User("abc", "email@email.com"))
+                response(User("abc", "email@email.com"))
         }
         val mockProjectRepository = mock<ProjectRepository> {
             onBlocking {
                 getProjects("abc")
             } doReturn
-                    response("Test group")
+                response("Test group")
         }
         val params = LoginUserUseCase.Params("test@test.pl", "123")
-        val useCase = LoginUserUseCase(mockUserRepository, mockProjectRepository, Dispatchers.Unconfined)
+        val useCase =
+            LoginUserUseCase(mockUserRepository, mockProjectRepository, Dispatchers.Unconfined)
 
         val response = useCase.executeAsync(params).await()
 
@@ -45,12 +46,13 @@ class LoginUserUseCaseTest {
             onBlocking {
                 login("test@test.pl", "123")
             } doReturn
-                    errorResponse(error = UserRepository.Error.ServerConnection)
+                errorResponse(error = UserRepository.Error.ServerConnection)
         }
         val mockProjectRepository = mock<ProjectRepository>()
 
         val params = LoginUserUseCase.Params("test@test.pl", "123")
-        val useCase = LoginUserUseCase(mockUserRepository, mockProjectRepository, Dispatchers.Unconfined)
+        val useCase =
+            LoginUserUseCase(mockUserRepository, mockProjectRepository, Dispatchers.Unconfined)
 
         val response = useCase.executeAsync(params).await()
 
@@ -65,12 +67,13 @@ class LoginUserUseCaseTest {
             onBlocking {
                 login("test@test.pl", "123")
             } doReturn
-                    errorResponse(error = UserRepository.Error.UserNotFound)
+                errorResponse(error = UserRepository.Error.UserNotFound)
         }
         val mockProjectRepository = mock<ProjectRepository>()
 
         val params = LoginUserUseCase.Params("test@test.pl", "123")
-        val useCase = LoginUserUseCase(mockUserRepository, mockProjectRepository, Dispatchers.Unconfined)
+        val useCase =
+            LoginUserUseCase(mockUserRepository, mockProjectRepository, Dispatchers.Unconfined)
 
         val response = useCase.executeAsync(params).await()
 

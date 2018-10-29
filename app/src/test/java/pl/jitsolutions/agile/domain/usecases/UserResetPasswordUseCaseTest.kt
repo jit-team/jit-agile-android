@@ -43,7 +43,7 @@ class UserResetPasswordUseCaseTest {
             onBlocking {
                 resetPassword("test@test.pl")
             } doReturn
-                    errorResponse(error = UserRepository.Error.UserNotFound)
+                errorResponse(error = UserRepository.Error.UserNotFound)
         }
         val params = UserResetPasswordUseCase.Params("test@test.pl")
         val useCase = UserResetPasswordUseCase(userRepository, Dispatchers.Unconfined)

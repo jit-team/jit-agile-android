@@ -7,11 +7,13 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import pl.jitsolutions.agile.BR
 
-abstract class BaseBindableAdapter : RecyclerView.Adapter<BaseBindableAdapter.BindableViewHolder>() {
+abstract class BaseBindableAdapter :
+    RecyclerView.Adapter<BaseBindableAdapter.BindableViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindableViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = DataBindingUtil.inflate<ViewDataBinding>(layoutInflater, viewType, parent, false)
+        val binding =
+            DataBindingUtil.inflate<ViewDataBinding>(layoutInflater, viewType, parent, false)
         return BindableViewHolder(binding)
     }
 
@@ -28,7 +30,8 @@ abstract class BaseBindableAdapter : RecyclerView.Adapter<BaseBindableAdapter.Bi
 
     protected abstract fun getLayoutIdForPosition(position: Int): Int
 
-    inner class BindableViewHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class BindableViewHolder(private val binding: ViewDataBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(obj: Any) {
             binding.setVariable(BR.listItem, obj)
             binding.executePendingBindings()

@@ -11,14 +11,21 @@ import com.google.android.material.textfield.TextInputLayout
 import pl.jitsolutions.agile.R
 
 @BindingAdapter("bindRegistrationUsernameError")
-fun bindRegistrationUsernameError(view: TextInputLayout, registrationState: RegistrationViewModel.RegistrationState) {
+fun bindRegistrationUsernameError(
+    view: TextInputLayout,
+    registrationState: RegistrationViewModel.RegistrationState
+) {
     val error = registrationState.isErrorOfType(RegistrationViewModel.RegisterTypeError.USERNAME)
     view.isErrorEnabled = error
-    view.error = if (error) view.context.getString(R.string.registration_screen_error_invalid_username) else null
+    view.error =
+        if (error) view.context.getString(R.string.registration_screen_error_invalid_username) else null
 }
 
 @BindingAdapter("bindRegistrationEmailError")
-fun bindRegistrationEmailError(view: TextInputLayout, registrationState: RegistrationViewModel.RegistrationState) {
+fun bindRegistrationEmailError(
+    view: TextInputLayout,
+    registrationState: RegistrationViewModel.RegistrationState
+) {
     val errorText: String? = when {
         registrationState.isErrorOfType(RegistrationViewModel.RegisterTypeError.EMAIL) ->
             view.context.getString(R.string.registration_screen_error_invalid_email)
@@ -28,18 +35,24 @@ fun bindRegistrationEmailError(view: TextInputLayout, registrationState: Registr
     }
     view.isErrorEnabled = errorText != null
     view.error = errorText
-
 }
 
 @BindingAdapter("bindRegistrationPasswordError")
-fun bindRegistrationPasswordError(view: TextInputLayout, registrationState: RegistrationViewModel.RegistrationState) {
+fun bindRegistrationPasswordError(
+    view: TextInputLayout,
+    registrationState: RegistrationViewModel.RegistrationState
+) {
     val error = registrationState.isErrorOfType(RegistrationViewModel.RegisterTypeError.PASSWORD)
     view.isErrorEnabled = error
-    view.error = if (error) view.context.getString(R.string.registration_screen_error_invalid_password) else null
+    view.error =
+        if (error) view.context.getString(R.string.registration_screen_error_invalid_password) else null
 }
 
 @BindingAdapter("bindRegistrationProgressVisibility")
-fun bindRegistrationProgressVisibility(progressBar: ProgressBar, registrationState: RegistrationViewModel.RegistrationState) {
+fun bindRegistrationProgressVisibility(
+    progressBar: ProgressBar,
+    registrationState: RegistrationViewModel.RegistrationState
+) {
     progressBar.visibility = when (registrationState) {
         RegistrationViewModel.RegistrationState.None -> View.INVISIBLE
         RegistrationViewModel.RegistrationState.InProgress -> View.VISIBLE
@@ -49,7 +62,10 @@ fun bindRegistrationProgressVisibility(progressBar: ProgressBar, registrationSta
 }
 
 @BindingAdapter("bindRegistrationCredentialsEditingEnabled")
-fun bindRegistrationCredentialsEditing(view: View, registrationState: RegistrationViewModel.RegistrationState) {
+fun bindRegistrationCredentialsEditing(
+    view: View,
+    registrationState: RegistrationViewModel.RegistrationState
+) {
     view.isEnabled = when (registrationState) {
         RegistrationViewModel.RegistrationState.None -> true
         RegistrationViewModel.RegistrationState.InProgress -> false
@@ -71,7 +87,10 @@ fun bindRegistrationBackArrowVisibility(view: View, bind: Boolean) {
 }
 
 @BindingAdapter("bindRegistrationUnknownErrorVisibility")
-fun bindRegistrationUnknownErrorVisibility(view: TextView, registrationState: RegistrationViewModel.RegistrationState) {
+fun bindRegistrationUnknownErrorVisibility(
+    view: TextView,
+    registrationState: RegistrationViewModel.RegistrationState
+) {
     val errorText: String? = when {
         registrationState.isErrorOfType(RegistrationViewModel.RegisterTypeError.SERVER) ->
             view.context.getString(R.string.registration_screen_error_network)

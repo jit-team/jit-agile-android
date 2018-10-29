@@ -15,6 +15,6 @@ interface Navigator {
         class ProjectDetails(val projectId: String) : Destination()
     }
 
-    class InvalidNavigationException(from: Destination, to: Destination)
-        : Exception("Invalid navigation from $from to $to")
+    class InvalidNavigationException(from: Destination, to: Destination) :
+        Exception("Invalid navigation from $from to $to")
 }

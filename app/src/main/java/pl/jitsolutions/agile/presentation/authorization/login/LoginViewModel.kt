@@ -7,12 +7,16 @@ import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.usecases.LoginUserUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
 import pl.jitsolutions.agile.presentation.navigation.Navigator
-import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.*
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Login
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectList
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Registration
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ResetPassword
 import pl.jitsolutions.agile.utils.mutableLiveData
 
-class LoginViewModel(private val loginUserUseCase: LoginUserUseCase,
-                     private val navigator: Navigator,
-                     mainDispatcher: CoroutineDispatcher
+class LoginViewModel(
+    private val loginUserUseCase: LoginUserUseCase,
+    private val navigator: Navigator,
+    mainDispatcher: CoroutineDispatcher
 ) : CoroutineViewModel(mainDispatcher) {
     val password = mutableLiveData("")
     val email = mutableLiveData("")
@@ -69,7 +73,6 @@ class LoginViewModel(private val loginUserUseCase: LoginUserUseCase,
         fun isErrorOfType(type: LoginErrorType): Boolean {
             return this is Error && this.type == type
         }
-
 
         object None : LoginState()
         object InProgress : LoginState()

@@ -7,8 +7,8 @@ import kotlinx.coroutines.experimental.CoroutineScope
 import kotlinx.coroutines.experimental.Job
 import kotlin.coroutines.experimental.CoroutineContext
 
-abstract class CoroutineViewModel(private val mainDispatcher: CoroutineDispatcher)
-    : ViewModel(), CoroutineScope {
+abstract class CoroutineViewModel(private val mainDispatcher: CoroutineDispatcher) : ViewModel(),
+    CoroutineScope {
     private val compositeJob = Job()
     override val coroutineContext: CoroutineContext
         get() = mainDispatcher + compositeJob

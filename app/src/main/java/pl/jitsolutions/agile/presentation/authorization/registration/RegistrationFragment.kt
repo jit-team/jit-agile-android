@@ -11,17 +11,25 @@ import org.kodein.di.generic.instance
 import pl.jitsolutions.agile.R
 import pl.jitsolutions.agile.databinding.FragmentRegistrationBinding
 import pl.jitsolutions.agile.presentation.common.BaseFragment
-import pl.jitsolutions.agile.presentation.navigation.Navigator
 
 class RegistrationFragment : BaseFragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val viewModelFactory: ViewModelProvider.Factory by instance(tag = RegistrationViewModel::class.java)
-        val viewModel = ViewModelProviders.of(this, viewModelFactory).get(RegistrationViewModel::class.java)
-        val binding = DataBindingUtil.inflate<FragmentRegistrationBinding>(inflater, R.layout.fragment_registration, container, false)
+        val viewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(RegistrationViewModel::class.java)
+        val binding = DataBindingUtil.inflate<FragmentRegistrationBinding>(
+            inflater,
+            R.layout.fragment_registration,
+            container,
+            false
+        )
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
         return binding.root
     }
-
 }

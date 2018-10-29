@@ -8,8 +8,9 @@ import pl.jitsolutions.agile.domain.Response.Status.SUCCESS
 import pl.jitsolutions.agile.domain.errorResponse
 import pl.jitsolutions.agile.repository.ProjectRepository
 
-class GetProjectUseCase(private val projectRepository: ProjectRepository,
-                        dispatcher: CoroutineDispatcher
+class GetProjectUseCase(
+    private val projectRepository: ProjectRepository,
+    dispatcher: CoroutineDispatcher
 ) : UseCase<GetProjectUseCase.Params, Project>(dispatcher) {
 
     override suspend fun build(params: Params): Response<Project> {
@@ -29,7 +30,9 @@ class GetProjectUseCase(private val projectRepository: ProjectRepository,
     data class Params(val projectId: String)
 
     sealed class Error(message: String? = null) : Throwable(message) {
-        data class ProjectNotFound(val projectId: String) : Error("Project with id: $projectId not found!")
+        data class ProjectNotFound(val projectId: String) :
+            Error("Project with id: $projectId not found!")
+
         object ServerConnection : Error("Server connection error")
     }
 }
