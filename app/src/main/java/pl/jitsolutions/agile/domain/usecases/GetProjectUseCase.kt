@@ -19,6 +19,8 @@ class GetProjectUseCase(private val projectRepository: ProjectRepository,
             ERROR -> when (response.error) {
                 is ProjectRepository.Error.ProjectNotFound ->
                     errorResponse(error = Error.ProjectNotFound(response.error.projectId))
+                ProjectRepository.Error.ServerConnection ->
+                    errorResponse(error = Error.ServerConnection)
                 else -> throw response.error!!
             }
         }
@@ -28,5 +30,6 @@ class GetProjectUseCase(private val projectRepository: ProjectRepository,
 
     sealed class Error(message: String? = null) : Throwable(message) {
         data class ProjectNotFound(val projectId: String) : Error("Project with id: $projectId not found!")
+        object ServerConnection : Error("Server connection error")
     }
 }

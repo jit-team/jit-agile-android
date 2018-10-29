@@ -54,4 +54,38 @@ class GetProjectUseCaseTest {
             hasError(GetProjectUseCase.Error.ProjectNotFound("projectId"))
         }
     }
+
+    @Test
+    fun `server connection error`() = runBlocking {
+        val mockProjectRepository = mock<ProjectRepository> {
+            onBlocking {
+                getProject("projectId")
+            } doReturn
+                    errorResponse(error = ProjectRepository.Error.ServerConnection)
+        }
+
+        val params = GetProjectUseCase.Params("projectId")
+        val useCase = GetProjectUseCase(mockProjectRepository, Dispatchers.Unconfined)
+
+        val response = useCase.executeAsync(params).await()
+
+        assertThat(response) {
+            hasError(GetProjectUseCase.Error.ServerConnection)
+        }
+    }
+
+    @Test(expected = Throwable::class)
+    fun `throw exception if unknown error`() = runBlocking {
+        val mockProjectRepository = mock<ProjectRepository> {
+            onBlocking {
+                getProject("projectId")
+            } doReturn
+                    errorResponse(error = RuntimeException())
+        }
+
+        val params = GetProjectUseCase.Params("projectId")
+        val useCase = GetProjectUseCase(mockProjectRepository, Dispatchers.Unconfined)
+
+        val response = useCase.executeAsync(params).await()
+    }
 }
