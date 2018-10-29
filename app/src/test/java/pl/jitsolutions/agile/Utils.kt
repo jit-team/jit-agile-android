@@ -17,7 +17,10 @@ class ResponseAssertion<T>(val response: Response<T>) {
 
     fun isUnsuccessful() = assertEquals(Response.Status.ERROR, response.status)
 
-    fun hasError(error: Throwable?) = assertEquals(error, response.error)
+    fun hasError(error: Throwable?) {
+        isUnsuccessful()
+        assertEquals(error, response.error)
+    }
 
     fun hasString(string: String?) = assertEquals(string, response.data)
 }
@@ -36,4 +39,14 @@ class ProjectAssertion(val project: Project) {
 
 fun <T> ResponseAssertion<T>.hasProject(projectAssertion: ProjectAssertion.() -> Unit) {
     ProjectAssertion(response.data!! as Project).apply(projectAssertion)
+}
+
+class UserAssertion(val user: User) {
+    fun withName(name: String) = assertEquals(name, user.name)
+
+    fun withEmail(email: String) = assertEquals(email, user.email)
+}
+
+fun <T> ResponseAssertion<T>.hasUser(userAssertion: UserAssertion.() -> Unit) {
+    UserAssertion(response.data!! as User).apply(userAssertion)
 }

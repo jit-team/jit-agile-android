@@ -23,8 +23,6 @@ class GetLoggedUserUseCaseTest {
 
         val response = useCase.executeAsync(GetLoggedUserUseCase.Params()).await()
 
-        assertThat(response) {
-            isSuccessful()
-        }
+        assertThat(response) { isSuccessful() }
     }
 }

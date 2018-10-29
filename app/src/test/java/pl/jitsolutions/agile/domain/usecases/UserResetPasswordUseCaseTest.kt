@@ -20,7 +20,6 @@ class UserResetPasswordUseCaseTest {
         val response = useCase.executeAsync(params).await()
 
         assertThat(response) {
-            isUnsuccessful()
             hasError(UserResetPasswordUseCase.Error.InvalidEmail)
         }
     }
@@ -34,7 +33,6 @@ class UserResetPasswordUseCaseTest {
         val response = useCase.executeAsync(params).await()
 
         assertThat(response) {
-            isUnsuccessful()
             hasError(UserResetPasswordUseCase.Error.EmptyEmail)
         }
     }
@@ -53,7 +51,6 @@ class UserResetPasswordUseCaseTest {
         val response = useCase.executeAsync(params).await()
 
         assertThat(response) {
-            isUnsuccessful()
             hasError(UserResetPasswordUseCase.Error.UserEmailNotFound)
         }
     }

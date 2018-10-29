@@ -23,9 +23,7 @@ class UserRegistrationUseCaseTest {
 
         val response = useCase.executeAsync(params).await()
 
-        assertThat(response) {
-            isSuccessful()
-        }
+        assertThat(response) { isSuccessful() }
     }
 
     @Test
@@ -37,7 +35,6 @@ class UserRegistrationUseCaseTest {
         val response = useCase.executeAsync(params).await()
 
         assertThat(response) {
-            isUnsuccessful()
             hasError(UserRegistrationUseCase.Error.InvalidEmail)
         }
     }
@@ -51,7 +48,6 @@ class UserRegistrationUseCaseTest {
         val response = useCase.executeAsync(params).await()
 
         assertThat(response) {
-            isUnsuccessful()
             hasError(UserRegistrationUseCase.Error.EmptyEmail)
         }
     }
@@ -70,7 +66,6 @@ class UserRegistrationUseCaseTest {
         val response = useCase.executeAsync(params).await()
 
         assertThat(response) {
-            isUnsuccessful()
             hasError(UserRegistrationUseCase.Error.UserAlreadyExist)
         }
     }

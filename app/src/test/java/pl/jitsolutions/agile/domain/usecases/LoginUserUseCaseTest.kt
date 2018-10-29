@@ -55,7 +55,6 @@ class LoginUserUseCaseTest {
         val response = useCase.executeAsync(params).await()
 
         assertThat(response) {
-            isUnsuccessful()
             hasError(LoginUserUseCase.Error.ServerConnection)
         }
     }
@@ -76,7 +75,6 @@ class LoginUserUseCaseTest {
         val response = useCase.executeAsync(params).await()
 
         assertThat(response) {
-            isUnsuccessful()
             hasError(LoginUserUseCase.Error.UserEmailNotFound)
         }
     }

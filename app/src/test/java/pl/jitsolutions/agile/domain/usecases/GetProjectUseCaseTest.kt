@@ -51,7 +51,6 @@ class GetProjectUseCaseTest {
         val response = useCase.executeAsync(params).await()
 
         assertThat(response) {
-            isUnsuccessful()
             hasError(GetProjectUseCase.Error.ProjectNotFound("projectId"))
         }
     }
