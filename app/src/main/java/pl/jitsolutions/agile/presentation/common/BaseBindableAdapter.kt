@@ -28,10 +28,19 @@ abstract class BaseBindableAdapter : RecyclerView.Adapter<BaseBindableAdapter.Bi
 
     protected abstract fun getLayoutIdForPosition(position: Int): Int
 
+    protected abstract fun itemClicked(position: Int)
+
     inner class BindableViewHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(obj: Any) {
             binding.setVariable(BR.listItem, obj)
+            binding.setVariable(BR.clickHandler, clickHandler)
             binding.executePendingBindings()
+        }
+
+        private val clickHandler = object : RecyclerViewClickHandler {
+            override fun click() {
+                itemClicked(adapterPosition)
+            }
         }
     }
 }

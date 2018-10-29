@@ -37,7 +37,6 @@
             android:layout_height="match_parent"
             android:layout_marginTop="?attr/actionBarSize"
             android:scrollbars="vertical"
-            app:bindProjectDetailsListOfUsers="@{viewModel.project.users}"
             app:bindRecyclerViewDivider="@{DividerItemDecoration.VERTICAL}"
             app:bindRecyclerViewHasFixedSize="@{true}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />

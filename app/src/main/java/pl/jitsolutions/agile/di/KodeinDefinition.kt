@@ -45,7 +45,7 @@ private val repositoriesModule = Kodein.Module(name = "Repositories") {
         FirebaseUserRepository(instance(tag = Tags.Dispatchers.IO))
     }
     bind<ProjectRepository>() with singleton {
-        MockProjectRepository(instance(tag = Tags.Dispatchers.IO))
+        FirebaseProjectRepository(instance(tag = Tags.Dispatchers.IO))
     }
     bind<SystemInfoRepository>() with singleton {
         AndroidSystemInfoRepository()
@@ -74,6 +74,10 @@ private val useCasesModule = Kodein.Module(name = "UseCases") {
     bind<GetProjectUseCase>() with provider {
         GetProjectUseCase(instance(), instance(Tags.Dispatchers.USE_CASE))
     }
+
+    bind<GetCurrentUserProjects>() with provider {
+        GetCurrentUserProjects(instance(), instance(Tags.Dispatchers.USE_CASE))
+    }
 }
 
 private val viewModelsModule = Kodein.Module(name = "ViewModels") {
@@ -90,7 +94,7 @@ private val viewModelsModule = Kodein.Module(name = "ViewModels") {
         viewModelFactory { RegistrationSuccessfulViewModel(instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }
     }
     bind<ViewModelProvider.Factory>(tag = ProjectListViewModel::class.java) with provider {
-        viewModelFactory { ProjectListViewModel(instance(), instance(), instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }
+        viewModelFactory { ProjectListViewModel(instance(), instance(), instance(), instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }
     }
     bind<ViewModelProvider.Factory>(tag = ResetPasswordViewModel::class.java) with provider {
         viewModelFactory { ResetPasswordViewModel(instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }

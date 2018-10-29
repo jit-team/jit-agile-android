@@ -17,4 +17,8 @@ class ProjectDetailsUserAdapter : BaseBindableAdapter() {
     override fun getLayoutIdForPosition(position: Int) = R.layout.list_item_project_details_user
 
     override fun getItemCount() = users.size
+
+    override fun itemClicked(position: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }
