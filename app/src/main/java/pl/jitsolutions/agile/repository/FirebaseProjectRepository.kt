@@ -23,7 +23,7 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
         return CoroutineScope(dispatcher).async {
             suspendCoroutine<Response<List<Project>>> { continuation ->
                 firestore.collection("projects")
-                        .whereEqualTo("users.$userId", true)
+                    .whereEqualTo("users.KIErQa6q5bkJonzoLWdg", true)
                         .get()
                         .addOnCompleteListener { task ->
                             continuation.resume(handleResponse(task))

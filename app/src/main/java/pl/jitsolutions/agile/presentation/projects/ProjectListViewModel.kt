@@ -14,7 +14,9 @@ import pl.jitsolutions.agile.domain.usecases.GetLoggedUserUseCase
 import pl.jitsolutions.agile.domain.usecases.LogoutCurrentUserUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
 import pl.jitsolutions.agile.presentation.navigation.Navigator
-import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.*
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Login
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectDetails
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectList
 import pl.jitsolutions.agile.utils.mutableLiveData
 
 class ProjectListViewModel(private val getLoggedUserUseCase: GetLoggedUserUseCase,

@@ -21,7 +21,7 @@ class LoginUserUseCaseTest {
             onBlocking { login("test@test.pl", "123") } doReturn response(User("abc", "email@email.com"))
         }
         val mockProjectRepository = mock<ProjectRepository> {
-            onBlocking { getProjects("abc") } doReturn response("Test group")
+            onBlocking { getProjects("abc") } doReturn response(emptyList())
         }
         val params = LoginUserUseCase.Params("test@test.pl", "123")
         val useCase = LoginUserUseCase(mockUserRepository, mockProjectRepository, Dispatchers.Unconfined)
@@ -29,7 +29,7 @@ class LoginUserUseCaseTest {
         val actualResponse = useCase.executeAsync(params).await()
 
         assertEquals(Response.Status.SUCCESS, actualResponse.status)
-        assertEquals("abc, projects: Test group", actualResponse.data)
+        assertEquals("abc, projects: []", actualResponse.data)
     }
 
     @Test
