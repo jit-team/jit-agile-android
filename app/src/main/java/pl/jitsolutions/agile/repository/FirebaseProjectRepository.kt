@@ -23,11 +23,11 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
         return CoroutineScope(dispatcher).async {
             suspendCoroutine<Response<List<Project>>> { continuation ->
                 firestore.collection("projects")
-                    .whereEqualTo("users.KIErQa6q5bkJonzoLWdg", true)
-                        .get()
-                        .addOnCompleteListener { task ->
-                            continuation.resume(handleResponse(task))
-                        }
+                    .whereEqualTo("users.$userId", true)
+                    .get()
+                    .addOnCompleteListener { task ->
+                        continuation.resume(handleResponse(task))
+                    }
             }
         }.await()
     }
@@ -36,11 +36,11 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
         return CoroutineScope(dispatcher).async {
             suspendCoroutine<Response<Project>> { continuation ->
                 firestore.collection("projects")
-                        .document(projectId)
-                        .get()
-                        .addOnCompleteListener { task ->
-                            continuation.resume(handleProjectResponse(task))
-                        }
+                    .document(projectId)
+                    .get()
+                    .addOnCompleteListener { task ->
+                        continuation.resume(handleProjectResponse(task))
+                    }
             }
         }.await()
     }
@@ -49,10 +49,11 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
         return when {
             task.isSuccessful -> {
                 val project: ProjectFb? = task.result?.toFirebaseObject()
-                project?.let {
-                    response(Project(project.name))
+                if (project != null) {
+                    response(Project(project.id, project.name))
+                } else {
+                    errorResponse(error = Exception())
                 }
-                errorResponse(error = Exception())
             }
             else -> {
                 errorResponse(error = Exception())
@@ -72,8 +73,10 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
         }
     }
 
-    private inline fun <reified T> DocumentSnapshot.toFirebaseObject() = this.toObject(T::class.java)
+    private inline fun <reified T> DocumentSnapshot.toFirebaseObject() =
+        this.toObject(T::class.java)
 
-    private inline fun <reified T> QuerySnapshot?.toFirebaseObjects() = this?.toObjects(T::class.java)
+    private inline fun <reified T> QuerySnapshot?.toFirebaseObjects() =
+        this?.toObjects(T::class.java)
             ?: emptyList()
 }

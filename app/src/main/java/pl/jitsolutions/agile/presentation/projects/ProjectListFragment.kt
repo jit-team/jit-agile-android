@@ -16,16 +16,21 @@ import pl.jitsolutions.agile.presentation.common.BaseFragment
 class ProjectListFragment : BaseFragment() {
     lateinit var binding: FragmentProjectListBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         setHasOptionsMenu(true)
 
         val viewModelFactory: ViewModelProvider.Factory by instance(tag = ProjectListViewModel::class.java)
         val viewModel =
             ViewModelProviders.of(this, viewModelFactory).get(ProjectListViewModel::class.java)
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_project_list, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_project_list, container, false)
         binding.adapter =
-            ProjectListAdapter { project -> viewModel.showProjectDetails(project.name) }
+            ProjectListAdapter { project -> viewModel.showProjectDetails(project.id) }
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
         return binding.root
