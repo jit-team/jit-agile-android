@@ -25,7 +25,7 @@ fun bindProjectDetailsListOfUsers(recyclerView: RecyclerView, users: List<User>?
     val adapter: ProjectDetailsUserAdapter
     if (recyclerView.adapter == null) {
         adapter = ProjectDetailsUserAdapter()
-        recyclerView.adapter = adapter
+        recyclerView.adapter = adapter as RecyclerView.Adapter<RecyclerView.ViewHolder>
     } else {
         adapter = recyclerView.adapter as ProjectDetailsUserAdapter
     }

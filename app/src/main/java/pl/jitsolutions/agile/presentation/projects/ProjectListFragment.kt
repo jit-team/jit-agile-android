@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.RecyclerView
 import org.kodein.di.generic.instance
 import pl.jitsolutions.agile.R
 import pl.jitsolutions.agile.databinding.FragmentProjectListBinding
@@ -20,8 +21,13 @@ class ProjectListFragment : BaseFragment() {
         setHasOptionsMenu(true)
 
         val viewModelFactory: ViewModelProvider.Factory by instance(tag = ProjectListViewModel::class.java)
+        val viewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(ProjectListViewModel::class.java)
+
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_project_list, container, false)
-        binding.viewModel = ViewModelProviders.of(this, viewModelFactory).get(ProjectListViewModel::class.java)
+        binding.adapter =
+            ProjectListAdapter { project -> viewModel.showProjectDetails(project.name) } as RecyclerView.Adapter<RecyclerView.ViewHolder>
+        binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
         return binding.root
     }

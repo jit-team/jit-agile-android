@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="clickHandler"
-            type="pl.jitsolutions.agile.presentation.common.RecyclerViewClickHandler" />
+            name="clickListener"
+            type="pl.jitsolutions.agile.presentation.common.BaseBindableAdapter.OnItemClickListener&lt;pl.jitsolutions.agile.domain.Project>" />
 
         <variable
             name="listItem"
@@ -16,7 +16,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{() -> clickHandler.click()}"
+        android:onClick="@{() -> clickListener.onItemClick(listItem)}"
         android:orientation="vertical"
         android:paddingStart="16dp"
         android:paddingTop="8dp"
