@@ -16,7 +16,13 @@ class UserRegistrationUseCaseTest {
     @Test
     fun `registration successful`() = runBlocking {
         val mockUserRepository = mock<UserRepository> {
-            onBlocking { register("tester", "tester@test.pl", "test123") } doReturn response(User("tester", "email@email.com"))
+            onBlocking {
+                register(
+                    "tester",
+                    "tester@test.pl",
+                    "test123"
+                )
+            } doReturn response(User(name = "tester", email = "email@email.com"))
         }
         val params = UserRegistrationUseCase.Params("tester@test.pl", "tester", "test123")
         val useCase = UserRegistrationUseCase(mockUserRepository, Dispatchers.Unconfined)
@@ -58,7 +64,7 @@ class UserRegistrationUseCaseTest {
             onBlocking {
                 register("test", "test@test.pl", "123456")
             } doReturn
-                    errorResponse(error = UserRepository.Error.UserAlreadyExist)
+                errorResponse(error = UserRepository.Error.UserAlreadyExist)
         }
         val params = UserRegistrationUseCase.Params("test@test.pl", "test", "123456")
         val useCase = UserRegistrationUseCase(userRepository, Dispatchers.Default)

@@ -31,9 +31,9 @@ abstract class BaseActivity : AppCompatActivity(), KodeinAware {
 
         val navHost = NavHostFragment.create(navigationGraphResId)
         supportFragmentManager.beginTransaction()
-                .add(android.R.id.content, navHost, "NavHostFragment")
-                .setPrimaryNavigationFragment(navHost)
-                .commit()
+            .add(android.R.id.content, navHost, "NavHostFragment")
+            .setPrimaryNavigationFragment(navHost)
+            .commit()
     }
 
     override fun onSupportNavigateUp() = findNavController(this, android.R.id.content).navigateUp()

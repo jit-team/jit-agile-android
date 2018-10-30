@@ -19,7 +19,7 @@ class GetProjectUseCaseTest {
             onBlocking {
                 getProject("projectId")
             } doReturn
-                    response(Project(name = "Project", users = emptyList()))
+                response(Project(name = "Project"))
         }
 
         val params = GetProjectUseCase.Params("projectId")
@@ -31,7 +31,6 @@ class GetProjectUseCaseTest {
             isSuccessful()
             hasProject {
                 withName("Project")
-                withNoUsers()
             }
         }
     }
@@ -42,7 +41,7 @@ class GetProjectUseCaseTest {
             onBlocking {
                 getProject("projectId")
             } doReturn
-                    errorResponse(error = ProjectRepository.Error.ProjectNotFound("projectId"))
+                errorResponse(error = ProjectRepository.Error.ProjectNotFound("projectId"))
         }
 
         val params = GetProjectUseCase.Params("projectId")
@@ -61,7 +60,7 @@ class GetProjectUseCaseTest {
             onBlocking {
                 getProject("projectId")
             } doReturn
-                    errorResponse(error = ProjectRepository.Error.ServerConnection)
+                errorResponse(error = ProjectRepository.Error.ServerConnection)
         }
 
         val params = GetProjectUseCase.Params("projectId")
@@ -80,7 +79,7 @@ class GetProjectUseCaseTest {
             onBlocking {
                 getProject("projectId")
             } doReturn
-                    errorResponse(error = RuntimeException())
+                errorResponse(error = RuntimeException())
         }
 
         val params = GetProjectUseCase.Params("projectId")

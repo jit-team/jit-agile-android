@@ -12,5 +12,5 @@ abstract class ChannelUseCase<Params, Result>(private val dispatcher: CoroutineD
     protected abstract suspend fun ProducerScope<Response<Result>>.build(params: Params)
 
     fun execute(params: Params): ReceiveChannel<Response<Result>> =
-            CoroutineScope(dispatcher).produce { build(params) }
+        CoroutineScope(dispatcher).produce { build(params) }
 }

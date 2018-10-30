@@ -2,12 +2,16 @@ package pl.jitsolutions.agile.domain.usecases
 
 import androidx.core.util.PatternsCompat
 import kotlinx.coroutines.experimental.CoroutineDispatcher
-import pl.jitsolutions.agile.domain.*
+import pl.jitsolutions.agile.domain.Response
+import pl.jitsolutions.agile.domain.User
+import pl.jitsolutions.agile.domain.errorResponse
+import pl.jitsolutions.agile.domain.response
 import pl.jitsolutions.agile.repository.UserRepository
 
-class UserRegistrationUseCase(private val userRepository: UserRepository,
-                              dispatcher: CoroutineDispatcher)
-    : UseCase<UserRegistrationUseCase.Params, String>(dispatcher) {
+class UserRegistrationUseCase(
+    private val userRepository: UserRepository,
+    dispatcher: CoroutineDispatcher
+) : UseCase<UserRegistrationUseCase.Params, String>(dispatcher) {
 
     override suspend fun build(params: Params): Response<String> {
         if (params.validate() != null) {

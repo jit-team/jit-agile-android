@@ -1,9 +1,9 @@
 package pl.jitsolutions.agile.domain
 
 data class Response<T>(
-        val data: T?,
-        val status: Status,
-        val error: Throwable?
+    val data: T?,
+    val status: Status,
+    val error: Throwable?
 ) {
     enum class Status { SUCCESS, ERROR }
 }

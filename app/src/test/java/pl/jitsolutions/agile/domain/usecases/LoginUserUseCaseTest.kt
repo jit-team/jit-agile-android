@@ -4,6 +4,7 @@ import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.runBlocking
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import pl.jitsolutions.agile.assertThat
 import pl.jitsolutions.agile.domain.User
@@ -20,23 +21,20 @@ class LoginUserUseCaseTest {
             onBlocking {
                 login("test@test.pl", "123")
             } doReturn
-                    response(User("abc", "email@email.com"))
+                response(User(name = "abc", email = "email@email.com"))
         }
         val mockProjectRepository = mock<ProjectRepository> {
-            onBlocking {
-                getProjects("abc")
-            } doReturn
-                    response("Test group")
             onBlocking { getProjects("abc") } doReturn response(emptyList())
         }
         val params = LoginUserUseCase.Params("test@test.pl", "123")
-        val useCase = LoginUserUseCase(mockUserRepository, mockProjectRepository, Dispatchers.Unconfined)
+        val useCase =
+            LoginUserUseCase(mockUserRepository, mockProjectRepository, Dispatchers.Unconfined)
 
-        val response = useCase.executeAsync(params).await()
+        val actualResponse = useCase.executeAsync(params).await()
 
-        assertThat(response) {
+        assertThat(actualResponse) {
             isSuccessful()
-            hasString("abc, projects []")
+            hasString("abc, projects: []")
         }
     }
 
@@ -46,12 +44,13 @@ class LoginUserUseCaseTest {
             onBlocking {
                 login("test@test.pl", "123")
             } doReturn
-                    errorResponse(error = UserRepository.Error.ServerConnection)
+                errorResponse(error = UserRepository.Error.ServerConnection)
         }
         val mockProjectRepository = mock<ProjectRepository>()
 
         val params = LoginUserUseCase.Params("test@test.pl", "123")
-        val useCase = LoginUserUseCase(mockUserRepository, mockProjectRepository, Dispatchers.Unconfined)
+        val useCase =
+            LoginUserUseCase(mockUserRepository, mockProjectRepository, Dispatchers.Unconfined)
 
         val response = useCase.executeAsync(params).await()
 
@@ -66,12 +65,13 @@ class LoginUserUseCaseTest {
             onBlocking {
                 login("test@test.pl", "123")
             } doReturn
-                    errorResponse(error = UserRepository.Error.UserNotFound)
+                errorResponse(error = UserRepository.Error.UserNotFound)
         }
         val mockProjectRepository = mock<ProjectRepository>()
 
         val params = LoginUserUseCase.Params("test@test.pl", "123")
-        val useCase = LoginUserUseCase(mockUserRepository, mockProjectRepository, Dispatchers.Unconfined)
+        val useCase =
+            LoginUserUseCase(mockUserRepository, mockProjectRepository, Dispatchers.Unconfined)
 
         val response = useCase.executeAsync(params).await()
 

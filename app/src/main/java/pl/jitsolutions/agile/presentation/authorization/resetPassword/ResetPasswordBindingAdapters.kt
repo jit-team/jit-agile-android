@@ -23,7 +23,10 @@ fun resetPasswordBackArrowVisibility(view: View, bind: Boolean) {
 }
 
 @BindingAdapter("bindResetPasswordCredentialsEditingEnabled")
-fun resetPasswordCredentialsEditingEnabled(view: View, resetPasswordState: ResetPasswordViewModel.ResetPasswordState) {
+fun resetPasswordCredentialsEditingEnabled(
+    view: View,
+    resetPasswordState: ResetPasswordViewModel.ResetPasswordState
+) {
     view.isEnabled = when (resetPasswordState) {
         ResetPasswordViewModel.ResetPasswordState.None -> true
         ResetPasswordViewModel.ResetPasswordState.InProgress -> false
@@ -33,7 +36,10 @@ fun resetPasswordCredentialsEditingEnabled(view: View, resetPasswordState: Reset
 }
 
 @BindingAdapter("bindResetPasswordEmailError")
-fun resetPasswordEmailError(view: TextInputLayout, resetPasswordState: ResetPasswordViewModel.ResetPasswordState) {
+fun resetPasswordEmailError(
+    view: TextInputLayout,
+    resetPasswordState: ResetPasswordViewModel.ResetPasswordState
+) {
     val errorText: String? = when {
         resetPasswordState.isErrorOfType(ResetPasswordViewModel.ResetPasswordTypeError.EMAIL) ->
             view.context.getString(R.string.reset_password_screen_error_invalid_email)
@@ -45,9 +51,11 @@ fun resetPasswordEmailError(view: TextInputLayout, resetPasswordState: ResetPass
     view.error = errorText
 }
 
-
 @BindingAdapter("bindResetPasswordProgressVisibility")
-fun resetPasswordProgressVisibility(progressBar: ProgressBar, resetPasswordState: ResetPasswordViewModel.ResetPasswordState) {
+fun resetPasswordProgressVisibility(
+    progressBar: ProgressBar,
+    resetPasswordState: ResetPasswordViewModel.ResetPasswordState
+) {
     progressBar.visibility = when (resetPasswordState) {
         ResetPasswordViewModel.ResetPasswordState.None -> View.INVISIBLE
         ResetPasswordViewModel.ResetPasswordState.InProgress -> View.VISIBLE
@@ -57,7 +65,10 @@ fun resetPasswordProgressVisibility(progressBar: ProgressBar, resetPasswordState
 }
 
 @BindingAdapter("bindResetPasswordUnknownErrorVisibility")
-fun bindResetPasswordUnknownErrorVisibility(view: TextView, resetPasswordState: ResetPasswordViewModel.ResetPasswordState) {
+fun bindResetPasswordUnknownErrorVisibility(
+    view: TextView,
+    resetPasswordState: ResetPasswordViewModel.ResetPasswordState
+) {
     val errorText: String? = when {
         resetPasswordState.isErrorOfType(ResetPasswordViewModel.ResetPasswordTypeError.SERVER) ->
             view.context.getString(R.string.reset_password_screen_error_network)

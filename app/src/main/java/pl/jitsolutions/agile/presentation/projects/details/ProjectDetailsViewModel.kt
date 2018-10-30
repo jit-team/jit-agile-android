@@ -10,10 +10,11 @@ import pl.jitsolutions.agile.domain.usecases.GetProjectUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
 import pl.jitsolutions.agile.presentation.navigation.Navigator
 
-class ProjectDetailsViewModel(private val getProjectUseCase: GetProjectUseCase,
-                              private val navigator: Navigator,
-                              private val projectId: String,
-                              mainDispatcher: CoroutineDispatcher
+class ProjectDetailsViewModel(
+    private val getProjectUseCase: GetProjectUseCase,
+    private val navigator: Navigator,
+    private val projectId: String,
+    mainDispatcher: CoroutineDispatcher
 ) : CoroutineViewModel(mainDispatcher) {
     val project = MutableLiveData<Project>()
 

@@ -19,11 +19,21 @@ class ResetPasswordFragment : BaseFragment() {
 
     lateinit var viewModel: ResetPasswordViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         destination = Navigator.Destination.ResetPassword
         val viewModelFactory: ViewModelProvider.Factory by instance(tag = ResetPasswordViewModel::class.java)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ResetPasswordViewModel::class.java)
-        val binding = DataBindingUtil.inflate<FragmentResetPasswordBinding>(layoutInflater, R.layout.fragment_reset_password, container, false)
+        viewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(ResetPasswordViewModel::class.java)
+        val binding = DataBindingUtil.inflate<FragmentResetPasswordBinding>(
+            layoutInflater,
+            R.layout.fragment_reset_password,
+            container,
+            false
+        )
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
         viewModel.resetPasswordState.observe(this, Observer {
@@ -37,11 +47,11 @@ class ResetPasswordFragment : BaseFragment() {
     private fun showResetPasswordSuccessfulDialog() {
         this@ResetPasswordFragment.context?.let {
             AlertDialog.Builder(it)
-                    .setMessage(R.string.reset_password_screen_dialog_email_sent_text)
-                    .setPositiveButton(R.string.reset_password_screen_dialog_positive_text) { dialog, _ ->
-                        dialog.dismiss()
-                        viewModel.confirmSuccess()
-                    }.show()
+                .setMessage(R.string.reset_password_screen_dialog_email_sent_text)
+                .setPositiveButton(R.string.reset_password_screen_dialog_positive_text) { dialog, _ ->
+                    dialog.dismiss()
+                    viewModel.confirmSuccess()
+                }.show()
         }
     }
 }
