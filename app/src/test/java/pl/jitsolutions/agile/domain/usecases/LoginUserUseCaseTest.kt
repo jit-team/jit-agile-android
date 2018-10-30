@@ -27,6 +27,7 @@ class LoginUserUseCaseTest {
                 getProjects("abc")
             } doReturn
                     response("Test group")
+            onBlocking { getProjects("abc") } doReturn response(emptyList())
         }
         val params = LoginUserUseCase.Params("test@test.pl", "123")
         val useCase = LoginUserUseCase(mockUserRepository, mockProjectRepository, Dispatchers.Unconfined)
@@ -35,7 +36,7 @@ class LoginUserUseCaseTest {
 
         assertThat(response) {
             isSuccessful()
-            hasString("abc, projects: Test group")
+            hasString("abc, projects []")
         }
     }
 

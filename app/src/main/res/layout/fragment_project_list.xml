@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="adapter"
+            type="pl.jitsolutions.agile.presentation.projects.ProjectListAdapter" />
+
+        <variable
             name="menuItemId"
             type="int" />
 
@@ -42,17 +46,16 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="?attr/actionBarSize">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="@{() -> viewModel.showProjectDetails(`exampleId`)}"
-                    android:text="@{viewModel.user.name}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:bindProjectListProjects="@{viewModel.projects}"
+                    app:bindRecyclerViewAdapter="@{adapter}"
+                    app:bindRecyclerViewHasFixedSize="@{true}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
