@@ -28,6 +28,13 @@ class ProjectListFragment : BaseFragment() {
             DataBindingUtil.inflate(inflater, R.layout.fragment_project_list, container, false)
         binding.viewModel =
             ViewModelProviders.of(this, viewModelFactory).get(ProjectListViewModel::class.java)
+        val viewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(ProjectListViewModel::class.java)
+
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_project_list, container, false)
+        binding.adapter =
+            ProjectListAdapter { project -> viewModel.showProjectDetails(project.name) }
+        binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
         return binding.root
     }

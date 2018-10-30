@@ -9,8 +9,10 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.databinding.BindingAdapter
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.navigation.NavigationView
 import pl.jitsolutions.agile.R
+import pl.jitsolutions.agile.domain.Project
 import pl.jitsolutions.agile.domain.User
 
 @BindingAdapter("bindProjectListNavigationIconVisibility")
@@ -75,4 +77,10 @@ fun bindProjectListMenuItemSelected(view: DrawerLayout, menuItemId: Int) {
     if (android.R.id.home == menuItemId) {
         view.openDrawer(GravityCompat.START)
     }
+}
+
+@BindingAdapter("bindProjectListProjects")
+fun bindProjectListProjects(recyclerView: RecyclerView, projects: List<Project>?) {
+    val adapter = recyclerView.adapter as? ProjectListAdapter
+    adapter?.projects = projects ?: emptyList()
 }

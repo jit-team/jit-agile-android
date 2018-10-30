@@ -7,8 +7,8 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import pl.jitsolutions.agile.BR
 
-abstract class BaseBindableAdapter :
-    RecyclerView.Adapter<BaseBindableAdapter.BindableViewHolder>() {
+abstract class BaseBindableAdapter<T>(val clickListener: (T) -> Unit) :
+    RecyclerView.Adapter<BaseBindableAdapter<T>.BindableViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindableViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -19,22 +19,25 @@ abstract class BaseBindableAdapter :
 
     override fun onBindViewHolder(holder: BindableViewHolder, position: Int) {
         val obj = getObjForPosition(position)
-        holder.bind(obj)
+        holder.binding.setVariable(BR.listItem, obj)
+        holder.binding.setVariable(BR.clickListener, object : OnItemClickListener<T> {
+            override fun onItemClick(item: T) = clickListener.invoke(item)
+        })
+        holder.binding.executePendingBindings()
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return getLayoutIdForPosition(position)
-    }
+    open fun setupBinding(binding: ViewDataBinding) = Unit
+
+    override fun getItemViewType(position: Int) = getLayoutIdForPosition(position)
 
     protected abstract fun getObjForPosition(position: Int): Any
 
     protected abstract fun getLayoutIdForPosition(position: Int): Int
 
-    inner class BindableViewHolder(private val binding: ViewDataBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(obj: Any) {
-            binding.setVariable(BR.listItem, obj)
-            binding.executePendingBindings()
-        }
+    inner class BindableViewHolder(val binding: ViewDataBinding) :
+        RecyclerView.ViewHolder(binding.root)
+
+    interface OnItemClickListener<T> {
+        fun onItemClick(item: T)
     }
 }

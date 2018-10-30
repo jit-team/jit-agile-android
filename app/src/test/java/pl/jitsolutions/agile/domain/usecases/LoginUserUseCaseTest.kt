@@ -23,21 +23,15 @@ class LoginUserUseCaseTest {
                 response(User("abc", "email@email.com"))
         }
         val mockProjectRepository = mock<ProjectRepository> {
-            onBlocking {
-                getProjects("abc")
-            } doReturn
-                response("Test group")
+            onBlocking { getProjects("abc") } doReturn response(emptyList())
         }
         val params = LoginUserUseCase.Params("test@test.pl", "123")
-        val useCase =
-            LoginUserUseCase(mockUserRepository, mockProjectRepository, Dispatchers.Unconfined)
+        val useCase = LoginUserUseCase(mockUserRepository, mockProjectRepository, Dispatchers.Unconfined)
 
-        val response = useCase.executeAsync(params).await()
+        val actualResponse = useCase.executeAsync(params).await()
 
-        assertThat(response) {
-            isSuccessful()
-            hasString("abc, projects: Test group")
-        }
+        assertEquals(Response.Status.SUCCESS, actualResponse.status)
+        assertEquals("abc, projects: []", actualResponse.data)
     }
 
     @Test
