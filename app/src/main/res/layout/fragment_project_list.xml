@@ -7,7 +7,7 @@
 
         <variable
             name="adapter"
-            type="androidx.recyclerview.widget.RecyclerView.Adapter&lt;androidx.recyclerview.widget.RecyclerView.ViewHolder>" />
+            type="pl.jitsolutions.agile.presentation.projects.ProjectListAdapter" />
 
         <variable
             name="menuItemId"
