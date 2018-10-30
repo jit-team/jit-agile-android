@@ -11,6 +11,7 @@ import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
 import pl.jitsolutions.agile.domain.usecases.GetApplicationVersionUseCase
+import pl.jitsolutions.agile.domain.usecases.GetCurrentUserProjects
 import pl.jitsolutions.agile.domain.usecases.GetLoggedUserUseCase
 import pl.jitsolutions.agile.domain.usecases.GetProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.LoginUserUseCase
@@ -27,8 +28,8 @@ import pl.jitsolutions.agile.presentation.projects.ProjectListViewModel
 import pl.jitsolutions.agile.presentation.projects.details.ProjectDetailsViewModel
 import pl.jitsolutions.agile.presentation.splash.SplashViewModel
 import pl.jitsolutions.agile.repository.AndroidSystemInfoRepository
+import pl.jitsolutions.agile.repository.FirebaseProjectRepository
 import pl.jitsolutions.agile.repository.FirebaseUserRepository
-import pl.jitsolutions.agile.repository.MockProjectRepository
 import pl.jitsolutions.agile.repository.ProjectRepository
 import pl.jitsolutions.agile.repository.SystemInfoRepository
 import pl.jitsolutions.agile.repository.UserRepository
@@ -130,7 +131,16 @@ private val viewModelsModule = Kodein.Module(name = "ViewModels") {
         }
     }
     bind<ViewModelProvider.Factory>(tag = ProjectListViewModel::class.java) with provider {
-        viewModelFactory { ProjectListViewModel(instance(), instance(), instance(), instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }
+        viewModelFactory {
+            ProjectListViewModel(
+                instance(),
+                instance(),
+                instance(),
+                instance(),
+                instance(),
+                instance(tag = Tags.Dispatchers.MAIN)
+            )
+        }
     }
     bind<ViewModelProvider.Factory>(tag = ResetPasswordViewModel::class.java) with provider {
         viewModelFactory {

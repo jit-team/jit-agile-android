@@ -19,19 +19,20 @@ import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Proje
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectList
 import pl.jitsolutions.agile.utils.mutableLiveData
 
-class ProjectListViewModel(private val getLoggedUserUseCase: GetLoggedUserUseCase,
-                           private val logoutCurrentUserUseCase: LogoutCurrentUserUseCase,
-                           private val getApplicationVersionUseCase: GetApplicationVersionUseCase,
-                           private val getCurrentUserProjects: GetCurrentUserProjects,
-                           private val navigator: Navigator,
-                           mainDispatcher: CoroutineDispatcher
+class ProjectListViewModel(
+    private val getLoggedUserUseCase: GetLoggedUserUseCase,
+    private val logoutCurrentUserUseCase: LogoutCurrentUserUseCase,
+    private val getApplicationVersionUseCase: GetApplicationVersionUseCase,
+    private val getCurrentUserProjects: GetCurrentUserProjects,
+    private val navigator: Navigator,
+    mainDispatcher: CoroutineDispatcher
 ) : CoroutineViewModel(mainDispatcher) {
     val user = mutableLiveData<User?>(null)
     val version = mutableLiveData("")
     val projects = MutableLiveData<List<Project>>()
     val projectClick = object : ProjectListItemCallback {
         override fun click(project: Project) {
-            //TODO: proceed to details screen
+            // TODO: proceed to details screen
         }
     }
 

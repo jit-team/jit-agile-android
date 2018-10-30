@@ -3,7 +3,6 @@ package pl.jitsolutions.agile.repository
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import pl.jitsolutions.agile.domain.Project
 import pl.jitsolutions.agile.domain.Response
-import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.response
 
 class MockProjectRepository(private val dispatcher: CoroutineDispatcher) : ProjectRepository {

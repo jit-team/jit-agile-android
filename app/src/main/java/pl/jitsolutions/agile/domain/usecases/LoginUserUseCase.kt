@@ -2,6 +2,7 @@ package pl.jitsolutions.agile.domain.usecases
 
 import androidx.core.util.PatternsCompat
 import kotlinx.coroutines.experimental.CoroutineDispatcher
+import pl.jitsolutions.agile.domain.Project
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.errorResponse

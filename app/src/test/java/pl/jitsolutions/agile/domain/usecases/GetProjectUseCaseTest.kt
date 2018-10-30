@@ -19,7 +19,7 @@ class GetProjectUseCaseTest {
             onBlocking {
                 getProject("projectId")
             } doReturn
-                response(Project(name = "Project", users = emptyList()))
+                response(Project(name = "Project"))
         }
 
         val params = GetProjectUseCase.Params("projectId")
@@ -31,7 +31,6 @@ class GetProjectUseCaseTest {
             isSuccessful()
             hasProject {
                 withName("Project")
-                withNoUsers()
             }
         }
     }
