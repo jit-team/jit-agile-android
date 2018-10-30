@@ -31,7 +31,8 @@ class ProjectListFragment : BaseFragment() {
         val viewModel =
             ViewModelProviders.of(this, viewModelFactory).get(ProjectListViewModel::class.java)
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_project_list, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_project_list, container, false)
         binding.adapter =
             ProjectListAdapter { project -> viewModel.showProjectDetails(project.name) }
         binding.viewModel = viewModel

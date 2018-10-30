@@ -16,5 +16,5 @@ class GetCurrentUserProjects(
         return projectRepository.getProjects(FirebaseAuth.getInstance().currentUser?.uid!!)
     }
 
-class Params
+    class Params
 }
