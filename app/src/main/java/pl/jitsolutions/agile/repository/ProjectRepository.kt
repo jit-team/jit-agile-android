@@ -10,5 +10,7 @@ interface ProjectRepository {
     sealed class Error(message: String? = null) : Throwable(message) {
         object UserNotFound : Error()
         object ServerConnection : Error()
+        class ProjectNotFound(val projectId: String) :
+            Error("Project with id: $projectId not found!")
     }
 }

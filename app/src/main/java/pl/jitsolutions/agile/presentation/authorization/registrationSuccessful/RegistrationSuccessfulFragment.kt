@@ -11,14 +11,23 @@ import org.kodein.di.generic.instance
 import pl.jitsolutions.agile.R
 import pl.jitsolutions.agile.databinding.FragmentRegistrationSuccessfulBinding
 import pl.jitsolutions.agile.presentation.common.BaseFragment
-import pl.jitsolutions.agile.presentation.navigation.Navigator
 
 class RegistrationSuccessfulFragment : BaseFragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val viewModelFactory: ViewModelProvider.Factory by instance(tag = RegistrationSuccessfulViewModel::class.java)
-        val viewModel = ViewModelProviders.of(this, viewModelFactory).get(RegistrationSuccessfulViewModel::class.java)
-        val binding = DataBindingUtil.inflate<FragmentRegistrationSuccessfulBinding>(layoutInflater, R.layout.fragment_registration_successful, container, false)
+        val viewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(RegistrationSuccessfulViewModel::class.java)
+        val binding = DataBindingUtil.inflate<FragmentRegistrationSuccessfulBinding>(
+            layoutInflater,
+            R.layout.fragment_registration_successful,
+            container,
+            false
+        )
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
         return binding.root

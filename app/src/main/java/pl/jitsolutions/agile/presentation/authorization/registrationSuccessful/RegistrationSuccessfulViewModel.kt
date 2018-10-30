@@ -10,9 +10,10 @@ import pl.jitsolutions.agile.presentation.navigation.Navigator
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectList
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.RegistrationSuccessful
 
-class RegistrationSuccessfulViewModel(private val getLoggedUserUseCase: GetLoggedUserUseCase,
-                                      private val navigator: Navigator,
-                                      mainDispatcher: CoroutineDispatcher
+class RegistrationSuccessfulViewModel(
+    private val getLoggedUserUseCase: GetLoggedUserUseCase,
+    private val navigator: Navigator,
+    mainDispatcher: CoroutineDispatcher
 ) : CoroutineViewModel(mainDispatcher) {
 
     val user = MutableLiveData<User>()
