@@ -42,7 +42,7 @@ class LoginUserUseCase(private val userRepository: UserRepository,
         }
     }
 
-    private fun fullNameErrorResponse(response: Response<String>): Response<String> {
+    private fun fullNameErrorResponse(response: Response<List<Project>>): Response<String> {
         return when (response.error) {
             is ProjectRepository.Error.UserNotFound -> errorResponse(error = Error.ServerConnection)
             is ProjectRepository.Error.ServerConnection -> errorResponse(error = Error.ServerConnection)

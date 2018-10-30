@@ -13,3 +13,11 @@ fun bindRecyclerViewHasFixedSize(recyclerView: RecyclerView, hasFixedSize: Boole
 fun bindRecyclerViewDivider(recyclerView: RecyclerView, orientation: Int) {
     recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, orientation))
 }
+
+@BindingAdapter("bindRecyclerViewAdapter")
+fun bindRecyclerViewAdapter(
+    recyclerView: RecyclerView,
+    adapter: RecyclerView.Adapter<out RecyclerView.ViewHolder>
+) {
+    recyclerView.adapter = adapter
+}
