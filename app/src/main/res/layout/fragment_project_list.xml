@@ -52,8 +52,8 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    app:bindProjectListAdapter="@{adapter}"
                     app:bindProjectListProjects="@{viewModel.projects}"
-                    app:bindRecyclerViewAdapter="@{adapter}"
                     app:bindRecyclerViewHasFixedSize="@{true}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 

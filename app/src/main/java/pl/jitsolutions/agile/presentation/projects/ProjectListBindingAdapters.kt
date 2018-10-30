@@ -79,8 +79,16 @@ fun bindProjectListMenuItemSelected(view: DrawerLayout, menuItemId: Int) {
     }
 }
 
-@BindingAdapter("bindProjectListProjects")
-fun bindProjectListProjects(recyclerView: RecyclerView, projects: List<Project>?) {
-    val adapter = recyclerView.adapter as? ProjectListAdapter
-    adapter?.projects = projects ?: emptyList()
+@BindingAdapter(value = ["bindProjectListProjects", "bindProjectListAdapter"], requireAll = true)
+fun bindProjectListProjects(
+    recyclerView: RecyclerView,
+    projects: List<Project>?,
+    adapter: ProjectListAdapter?
+) {
+    if (adapter != null) {
+        recyclerView.adapter = adapter
+    } else {
+        return
+    }
+    adapter.projects = projects ?: emptyList()
 }

@@ -8,9 +8,7 @@ import pl.jitsolutions.agile.domain.response
 class MockProjectRepository(private val dispatcher: CoroutineDispatcher) : ProjectRepository {
     override suspend fun getProject(projectId: String): Response<Project> {
         return response(
-            Project(
-                name = "Example project"
-            )
+            Project(id = "id", name = "Example project")
         )
     }
 

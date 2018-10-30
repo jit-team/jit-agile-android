@@ -30,11 +30,6 @@ class ProjectListViewModel(
     val user = mutableLiveData<User?>(null)
     val version = mutableLiveData("")
     val projects = MutableLiveData<List<Project>>()
-    val projectClick = object : ProjectListItemCallback {
-        override fun click(project: Project) {
-            // TODO: proceed to details screen
-        }
-    }
 
     init {
         executeGetLoggedUser()

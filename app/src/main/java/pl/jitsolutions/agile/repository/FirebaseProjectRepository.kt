@@ -13,6 +13,7 @@ import pl.jitsolutions.agile.domain.errorResponse
 import pl.jitsolutions.agile.domain.response
 import pl.jitsolutions.agile.repository.firebase.ProjectFb
 import pl.jitsolutions.agile.repository.firebase.convertToDomainObject
+import pl.jitsolutions.agile.repository.firebase.toProject
 import kotlin.coroutines.experimental.suspendCoroutine
 
 class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRepository {
@@ -23,7 +24,7 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
         return CoroutineScope(dispatcher).async {
             suspendCoroutine<Response<List<Project>>> { continuation ->
                 firestore.collection("projects")
-                    .whereEqualTo("users.KIErQa6q5bkJonzoLWdg", true)
+                    .whereEqualTo("users.$userId", true)
                     .get()
                     .addOnCompleteListener { task ->
                         continuation.resume(handleResponse(task))
@@ -49,10 +50,11 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
         return when {
             task.isSuccessful -> {
                 val project: ProjectFb? = task.result?.toFirebaseObject()
-                project?.let {
-                    response(Project(name = project.name))
+                if (project != null) {
+                    response(project.toProject())
+                } else {
+                    errorResponse(error = Exception())
                 }
-                errorResponse(error = Exception())
             }
             else -> {
                 errorResponse(error = Exception())

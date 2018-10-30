@@ -19,7 +19,7 @@ class GetProjectUseCaseTest {
             onBlocking {
                 getProject("projectId")
             } doReturn
-                response(Project(name = "Project"))
+                response(Project(id = "id", name = "Project"))
         }
 
         val params = GetProjectUseCase.Params("projectId")

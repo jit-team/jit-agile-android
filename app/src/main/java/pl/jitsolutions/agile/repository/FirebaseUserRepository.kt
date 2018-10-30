@@ -58,7 +58,7 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : User
     }.await()
 
     private fun FirebaseUser.toUser(): User {
-        return User(name = displayName ?: "", email = email ?: "")
+        return User(id = uid, name = displayName ?: "", email = email ?: "")
     }
 
     private fun Task<AuthResult>.toUser(): User {
