@@ -22,7 +22,7 @@ class UserRegistrationUseCaseTest {
                     "tester@test.pl",
                     "test123"
                 )
-            } doReturn response(User("tester", "email@email.com"))
+            } doReturn response(User(name = "tester", email = "email@email.com"))
         }
         val params = UserRegistrationUseCase.Params("tester@test.pl", "tester", "test123")
         val useCase = UserRegistrationUseCase(mockUserRepository, Dispatchers.Unconfined)

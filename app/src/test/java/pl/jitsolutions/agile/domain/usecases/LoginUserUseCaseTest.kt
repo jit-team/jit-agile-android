@@ -20,7 +20,7 @@ class LoginUserUseCaseTest {
             onBlocking {
                 login("test@test.pl", "123")
             } doReturn
-                response(User("abc", "email@email.com"))
+                response(User(name = "abc", email = "email@email.com"))
         }
         val mockProjectRepository = mock<ProjectRepository> {
             onBlocking { getProjects("abc") } doReturn response(emptyList())
