@@ -26,7 +26,7 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
                     .whereEqualTo("users.$userId", true)
                     .get()
                     .addOnCompleteListener { task ->
-                        continuation.resume(handleResponse(task))
+                        continuation.resume(handleProjectsResponse(task))
                     }
             }
         }.await()
@@ -55,22 +55,37 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
                     errorResponse(error = Exception())
                 }
             }
+            task.exception != null -> errorResponse(error = task.exception!!)
             else -> {
                 errorResponse(error = Exception())
             }
         }
     }
 
-    private fun handleResponse(task: Task<QuerySnapshot>): Response<List<Project>> {
+    private fun handleProjectsResponse(task: Task<QuerySnapshot>): Response<List<Project>> {
         return when {
             task.isSuccessful -> {
-                val projects: List<ProjectFb> = task.result.toFirebaseObjects()
-                response(projects.convertToDomainObject())
+                if (task.result.isNetworkResponse()) {
+                    val projects: List<ProjectFb> = task.result.toFirebaseObjects()
+                    response(projects.convertToDomainObject())
+                } else {
+                    errorResponse(error = ProjectRepository.Error.ServerConnection)
+                }
             }
             else -> {
                 errorResponse(error = Exception())
             }
         }
+    }
+
+    private fun QuerySnapshot?.isNetworkResponse(): Boolean {
+        val cachedResponse = this?.metadata?.isFromCache ?: true
+        return !cachedResponse
+    }
+
+    private fun <T : DocumentSnapshot> Task<T>.isDocumentResultOk(): Boolean {
+        val cached = result?.metadata?.isFromCache ?: true
+        return isSuccessful && !cached
     }
 
     private inline fun <reified T> DocumentSnapshot.toFirebaseObject() =
@@ -80,3 +95,4 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
         this?.toObjects(T::class.java)
             ?: emptyList()
 }
+

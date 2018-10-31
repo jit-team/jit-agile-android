@@ -42,6 +42,7 @@
     <string name="project_list_screen_logout_confirmation_message">Are you sure you want to logout?</string>
     <string name="project_list_screen_logout_confirmation_positive_button_text">Logout</string>
     <string name="project_list_screen_logout_confirmation_negative_button_text">Cancel</string>
+    <string name="project_list_screen_empty_list_label">List is empty, add a project!</string>
 
     <string name="reset_password_screen_title">Reset password</string>
     <string name="reset_password_screen_email_label">Email</string>

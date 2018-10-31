@@ -75,8 +75,8 @@ private val useCasesModule = Kodein.Module(name = "UseCases") {
         GetProjectUseCase(instance(), instance(Tags.Dispatchers.USE_CASE))
     }
 
-    bind<GetCurrentUserProjects>() with provider {
-        GetCurrentUserProjects(instance(), instance(Tags.Dispatchers.USE_CASE))
+    bind<GetCurrentUserProjectsUseCase>() with provider {
+        GetCurrentUserProjectsUseCase(instance(), instance(), instance(Tags.Dispatchers.USE_CASE))
     }
 }
 

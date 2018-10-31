@@ -43,14 +43,17 @@ fun bindProjectListNavigationViewListener(view: NavigationView, onLogoutListener
 
 private fun NavigationView.showLogoutConfirmation(onLogoutListener: () -> Unit) {
     AlertDialog.Builder(context)
-            .setTitle(R.string.project_list_screen_logout_confirmation_title)
-            .setMessage(R.string.project_list_screen_logout_confirmation_message)
-            .setPositiveButton(R.string.project_list_screen_logout_confirmation_positive_button_text) { _, _ ->
-                onLogoutListener.invoke()
-            }
-            .setNegativeButton(R.string.project_list_screen_logout_confirmation_negative_button_text, null)
-            .setCancelable(true)
-            .show()
+        .setTitle(R.string.project_list_screen_logout_confirmation_title)
+        .setMessage(R.string.project_list_screen_logout_confirmation_message)
+        .setPositiveButton(R.string.project_list_screen_logout_confirmation_positive_button_text) { _, _ ->
+            onLogoutListener.invoke()
+        }
+        .setNegativeButton(
+            R.string.project_list_screen_logout_confirmation_negative_button_text,
+            null
+        )
+        .setCancelable(true)
+        .show()
 }
 
 @BindingAdapter("bindProjectListUserProfile")
@@ -80,4 +83,29 @@ fun bindProjectListMenuItemSelected(view: DrawerLayout, menuItemId: Int) {
 fun bindProjectListProjects(recyclerView: RecyclerView, projects: List<Project>?) {
     val adapter = recyclerView.adapter as? ProjectListAdapter
     adapter?.projects = projects ?: emptyList()
+}
+
+@BindingAdapter("bindProjectListProgressVisibility")
+fun bindProjectListProgressVisibility(
+    view: View,
+    projectListState: ProjectListViewModel.ProjectListState
+) {
+    view.visibility = when (projectListState) {
+        ProjectListViewModel.ProjectListState.None -> View.INVISIBLE
+        ProjectListViewModel.ProjectListState.InProgress -> View.VISIBLE
+        is ProjectListViewModel.ProjectListState.Error -> View.INVISIBLE
+        ProjectListViewModel.ProjectListState.Success -> View.INVISIBLE
+        ProjectListViewModel.ProjectListState.EmptyList -> View.INVISIBLE
+    }
+}
+
+@BindingAdapter("bindProjectListEmptyList")
+fun bindProjectListEmptyList(view: View, projectListState: ProjectListViewModel.ProjectListState) {
+    view.visibility = when (projectListState) {
+        ProjectListViewModel.ProjectListState.None -> View.INVISIBLE
+        ProjectListViewModel.ProjectListState.InProgress -> View.INVISIBLE
+        is ProjectListViewModel.ProjectListState.Error -> View.INVISIBLE
+        ProjectListViewModel.ProjectListState.Success -> View.INVISIBLE
+        ProjectListViewModel.ProjectListState.EmptyList -> View.VISIBLE
+    }
 }
