@@ -10,6 +10,8 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.CoroutineScope
 import kotlinx.coroutines.experimental.async
@@ -17,10 +19,14 @@ import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.errorResponse
 import pl.jitsolutions.agile.domain.response
+import pl.jitsolutions.agile.repository.firebase.UserFb
+import pl.jitsolutions.agile.repository.firebase.convertToDomainObjects
+import pl.jitsolutions.agile.repository.firebase.toFirebaseObjects
 import kotlin.coroutines.experimental.suspendCoroutine
 
 class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : UserRepository {
     private val firebaseAuth = FirebaseAuth.getInstance()
+    private val firestore = FirebaseFirestore.getInstance()
 
     override suspend fun login(email: String, password: String): Response<User> {
         val loginResults = CoroutineScope(dispatcher).async {
@@ -35,7 +41,7 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : User
                                 result.exception != null -> {
                                     continuation.resume(
                                         errorResponse(
-                                            error = retrieveErrorText(
+                                            error = retrieveError(
                                                 result.exception!!
                                             )
                                         )
@@ -44,7 +50,7 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : User
                             }
                         }
                 } catch (e: Exception) {
-                    continuation.resume(errorResponse(error = retrieveErrorText(e)))
+                    continuation.resume(errorResponse(error = retrieveError(e)))
                 }
             }
         }
@@ -85,11 +91,6 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : User
         }.await()
     }
 
-    override suspend fun getLoggedInUser(): Response<User?> {
-        val loggedUser = firebaseAuth.currentUser?.toUser()
-        return response(loggedUser)
-    }
-
     private suspend fun handleRegisterResponse(
         userName: String,
         taskResult: Task<AuthResult>
@@ -100,9 +101,40 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : User
                 updateUserName(firebaseUser, userName)
                 response(firebaseUser.toUser())
             }
-            taskResult.exception != null -> errorResponse(error = retrieveErrorText(taskResult.exception!!))
+            taskResult.exception != null -> errorResponse(error = retrieveError(taskResult.exception!!))
             else -> errorResponse(error = UserRepository.Error.UnknownError)
         }
+    }
+
+    override suspend fun getUsersAssignedToProject(projectId: String): Response<List<User>> {
+        return CoroutineScope(dispatcher).async {
+            suspendCoroutine<Response<List<User>>> { continuation ->
+                firestore.collection("users")
+                    .whereEqualTo("projects.$projectId", true)
+                    .get()
+                    .addOnCompleteListener { continuation.resume(handleUsersResponse(it)) }
+                    .addOnFailureListener {
+                        continuation.resume(errorResponse(error = retrieveError(it)))
+                    }
+            }
+        }.await()
+    }
+
+    private fun handleUsersResponse(task: Task<QuerySnapshot>): Response<List<User>> {
+        return when {
+            task.isSuccessful -> {
+                val users: List<UserFb> = task.result!!.toFirebaseObjects()
+                response(users.convertToDomainObjects())
+            }
+            else -> {
+                errorResponse(error = Exception())
+            }
+        }
+    }
+
+    override suspend fun getLoggedInUser(): Response<User?> {
+        val loggedUser = firebaseAuth.currentUser?.toUser()
+        return response(loggedUser)
     }
 
     private suspend fun updateUserName(firebaseUser: FirebaseUser, userName: String) {
@@ -126,11 +158,7 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : User
                         when {
                             it.isSuccessful -> continuation.resume(response(null))
                             it.exception != null -> continuation.resume(
-                                errorResponse(
-                                    error = retrieveErrorText(
-                                        it.exception!!
-                                    )
-                                )
+                                errorResponse(error = retrieveError(it.exception!!))
                             )
                             else -> continuation.resume(errorResponse(error = UserRepository.Error.UnknownError))
                         }
@@ -143,7 +171,7 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : User
         }.await()
     }
 
-    private fun retrieveErrorText(exception: Exception): UserRepository.Error {
+    private fun retrieveError(exception: Exception): UserRepository.Error {
         return when (exception) {
             is FirebaseAuthWeakPasswordException -> UserRepository.Error.WeakPassword
             is FirebaseAuthInvalidUserException -> UserRepository.Error.UserNotFound

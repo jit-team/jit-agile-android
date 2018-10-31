@@ -85,10 +85,8 @@ fun bindProjectListProjects(
     projects: List<Project>?,
     adapter: ProjectListAdapter?
 ) {
-    if (adapter != null) {
-        recyclerView.adapter = adapter
-    } else {
-        return
+    adapter?.let {
+        recyclerView.adapter = it
+        it.projects = projects ?: emptyList()
     }
-    adapter.projects = projects ?: emptyList()
 }

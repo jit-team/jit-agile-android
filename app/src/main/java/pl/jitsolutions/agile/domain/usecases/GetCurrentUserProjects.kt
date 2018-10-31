@@ -13,7 +13,7 @@ class GetCurrentUserProjects(
 ) : UseCase<GetCurrentUserProjects.Params, List<Project>>(dispatcher) {
 
     override suspend fun build(params: Params): Response<List<Project>> {
-        //TODO add error handling
+        // TODO add error handling
         val user = userRepository.getLoggedInUser()
         return projectRepository.getProjects(user.data?.id!!)
     }

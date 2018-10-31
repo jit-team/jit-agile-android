@@ -4,7 +4,6 @@ import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.runBlocking
-import org.junit.Assert.assertEquals
 import org.junit.Test
 import pl.jitsolutions.agile.assertThat
 import pl.jitsolutions.agile.domain.User

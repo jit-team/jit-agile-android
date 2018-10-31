@@ -18,9 +18,8 @@ import pl.jitsolutions.agile.presentation.common.BaseFragment
 class ProjectDetailsFragment : BaseFragment() {
 
     override val fragmentModule = Kodein.Module("ProjectDetailsFragment") {
-        constant(tag = Tags.Parameters.PROJECT_DETAILS_ID) with ProjectDetailsFragmentArgs.fromBundle(
-            arguments
-        ).projectId
+        constant(tag = Tags.Parameters.PROJECT_DETAILS_ID) with
+            ProjectDetailsFragmentArgs.fromBundle(arguments).projectId
     }
 
     override fun onCreateView(

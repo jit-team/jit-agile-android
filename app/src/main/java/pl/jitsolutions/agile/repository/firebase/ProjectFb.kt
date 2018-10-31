@@ -8,7 +8,7 @@ data class ProjectFb(
     var users: Map<String, Boolean> = emptyMap()
 )
 
-fun List<ProjectFb>.convertToDomainObject(): List<Project> {
+fun List<ProjectFb>.convertToDomainObjects(): List<Project> {
     return map { it.toProject() }
 }
 
