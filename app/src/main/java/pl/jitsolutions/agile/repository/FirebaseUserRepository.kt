@@ -11,7 +11,6 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.CoroutineScope
 import kotlinx.coroutines.experimental.async
@@ -19,9 +18,6 @@ import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.errorResponse
 import pl.jitsolutions.agile.domain.response
-import pl.jitsolutions.agile.repository.firebase.UserFb
-import pl.jitsolutions.agile.repository.firebase.convertToDomainObjects
-import pl.jitsolutions.agile.repository.firebase.toFirebaseObjects
 import kotlin.coroutines.experimental.suspendCoroutine
 
 class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : UserRepository {
@@ -103,32 +99,6 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : User
             }
             taskResult.exception != null -> errorResponse(error = retrieveError(taskResult.exception!!))
             else -> errorResponse(error = UserRepository.Error.UnknownError)
-        }
-    }
-
-    override suspend fun getUsersAssignedToProject(projectId: String): Response<List<User>> {
-        return CoroutineScope(dispatcher).async {
-            suspendCoroutine<Response<List<User>>> { continuation ->
-                firestore.collection("users")
-                    .whereEqualTo("projects.$projectId", true)
-                    .get()
-                    .addOnCompleteListener { continuation.resume(handleUsersResponse(it)) }
-                    .addOnFailureListener {
-                        continuation.resume(errorResponse(error = retrieveError(it)))
-                    }
-            }
-        }.await()
-    }
-
-    private fun handleUsersResponse(task: Task<QuerySnapshot>): Response<List<User>> {
-        return when {
-            task.isSuccessful -> {
-                val users: List<UserFb> = task.result!!.toFirebaseObjects()
-                response(users.convertToDomainObjects())
-            }
-            else -> {
-                errorResponse(error = Exception())
-            }
         }
     }
 

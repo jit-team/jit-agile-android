@@ -2,10 +2,12 @@ package pl.jitsolutions.agile.repository
 
 import pl.jitsolutions.agile.domain.Project
 import pl.jitsolutions.agile.domain.Response
+import pl.jitsolutions.agile.domain.User
 
 interface ProjectRepository {
     suspend fun getProjects(userId: String): Response<List<Project>>
     suspend fun getProject(projectId: String): Response<Project>
+    suspend fun getUsersAssignedToProject(projectId: String): Response<List<User>>
 
     sealed class Error(message: String? = null) : Throwable(message) {
         object UserNotFound : Error()

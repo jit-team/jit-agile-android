@@ -9,7 +9,6 @@ interface UserRepository {
     suspend fun register(userName: String, email: String, password: String): Response<User>
     suspend fun getLoggedInUser(): Response<User?>
     suspend fun resetPassword(email: String): Response<Void?>
-    suspend fun getUsersAssignedToProject(projectId: String): Response<List<User>>
 
     sealed class Error(message: String? = null) : Throwable(message) {
         object InvalidEmail : Error()
