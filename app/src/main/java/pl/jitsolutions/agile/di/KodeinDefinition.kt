@@ -14,6 +14,7 @@ import pl.jitsolutions.agile.domain.usecases.GetApplicationVersionUseCase
 import pl.jitsolutions.agile.domain.usecases.GetCurrentUserProjects
 import pl.jitsolutions.agile.domain.usecases.GetLoggedUserUseCase
 import pl.jitsolutions.agile.domain.usecases.GetProjectUseCase
+import pl.jitsolutions.agile.domain.usecases.GetUsersAssignedToProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.LoginUserUseCase
 import pl.jitsolutions.agile.domain.usecases.LogoutCurrentUserUseCase
 import pl.jitsolutions.agile.domain.usecases.UserRegistrationUseCase
@@ -88,7 +89,11 @@ private val useCasesModule = Kodein.Module(name = "UseCases") {
     }
 
     bind<GetCurrentUserProjects>() with provider {
-        GetCurrentUserProjects(instance(), instance(Tags.Dispatchers.USE_CASE))
+        GetCurrentUserProjects(instance(), instance(), instance(Tags.Dispatchers.USE_CASE))
+    }
+
+    bind<GetUsersAssignedToProjectUseCase>() with provider {
+        GetUsersAssignedToProjectUseCase(instance(), instance(Tags.Dispatchers.USE_CASE))
     }
 }
 
@@ -154,6 +159,7 @@ private val viewModelsModule = Kodein.Module(name = "ViewModels") {
     bind<ViewModelProvider.Factory>(tag = ProjectDetailsViewModel::class.java) with provider {
         viewModelFactory {
             ProjectDetailsViewModel(
+                instance(),
                 instance(),
                 instance(),
                 instance(Tags.Parameters.PROJECT_DETAILS_ID),

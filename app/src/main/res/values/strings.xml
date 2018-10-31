@@ -43,6 +43,11 @@
     <string name="project_list_screen_logout_confirmation_positive_button_text">Logout</string>
     <string name="project_list_screen_logout_confirmation_negative_button_text">Cancel</string>
 
+    <string name="project_details_screen_empty_state_label">No participants</string>
+    <string name="project_details_screen_error_connection">Server connection problem, please try again.</string>
+    <string name="project_details_screen_error_project_not_found">Selected project not found.</string>
+    <string name="project_details_screen_error_unknown">Something goes wrong…</string>
+
     <string name="reset_password_screen_title">Reset password</string>
     <string name="reset_password_screen_email_label">Email</string>
     <string name="reset_password_screen_reset_button_text">Reset password</string>

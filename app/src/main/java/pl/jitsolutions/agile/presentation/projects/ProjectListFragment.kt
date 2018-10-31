@@ -34,7 +34,7 @@ class ProjectListFragment : BaseFragment() {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_project_list, container, false)
         binding.adapter =
-            ProjectListAdapter { project -> viewModel.showProjectDetails(project.name) }
+            ProjectListAdapter { project -> viewModel.showProjectDetails(project.id) }
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
         return binding.root

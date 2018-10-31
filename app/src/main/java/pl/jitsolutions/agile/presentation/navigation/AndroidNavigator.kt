@@ -53,7 +53,10 @@ class AndroidNavigator(context: Context) : Navigator {
                 Login -> navController.popBackStack()
                 else -> throw Navigator.InvalidNavigationException(from, to)
             }
-            is ProjectDetails -> throw Navigator.InvalidNavigationException(from, to)
+            is ProjectDetails -> when (to) {
+                ProjectList -> navController.navigateUp()
+                else -> throw Navigator.InvalidNavigationException(from, to)
+            }
         }
     }
 
@@ -65,6 +68,10 @@ class AndroidNavigator(context: Context) : Navigator {
             }
             ResetPassword -> {
                 navigate(ResetPassword, Login)
+                true
+            }
+            is ProjectDetails -> {
+                navigate(from, ProjectList)
                 true
             }
             else -> false
