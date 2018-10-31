@@ -7,8 +7,10 @@ import pl.jitsolutions.agile.domain.errorResponse
 import pl.jitsolutions.agile.domain.response
 import pl.jitsolutions.agile.repository.UserRepository
 
-class UserResetPasswordUseCase(private val userRepository: UserRepository,
-                               dispatcher: CoroutineDispatcher) : UseCase<UserResetPasswordUseCase.Params, Void?>(dispatcher) {
+class UserResetPasswordUseCase(
+    private val userRepository: UserRepository,
+    dispatcher: CoroutineDispatcher
+) : UseCase<UserResetPasswordUseCase.Params, Void?>(dispatcher) {
 
     override suspend fun build(params: Params): Response<Void?> {
         val validationError = params.validate()
@@ -42,7 +44,7 @@ class UserResetPasswordUseCase(private val userRepository: UserRepository,
         }
     }
 
-    sealed class Error (message: String? = null) : Throwable(message) {
+    sealed class Error(message: String? = null) : Throwable(message) {
         object UserEmailNotFound : Error()
         object EmptyEmail : Error()
         object InvalidEmail : Error()

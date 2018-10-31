@@ -4,7 +4,13 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import pl.jitsolutions.agile.R
-import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.*
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Login
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectDetails
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectList
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Registration
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.RegistrationSuccessful
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ResetPassword
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Splash
 import pl.jitsolutions.agile.presentation.projects.ProjectListFragmentDirections
 
 class AndroidNavigator(context: Context) : Navigator {
@@ -35,7 +41,8 @@ class AndroidNavigator(context: Context) : Navigator {
             ProjectList -> when (to) {
                 Login -> navController.navigate(R.id.action_projectListFragment_to_loginFragment)
                 is ProjectDetails -> {
-                    navController.navigate(ProjectListFragmentDirections
+                    navController.navigate(
+                        ProjectListFragmentDirections
                             .showProjectDetails()
                             .setProjectId(to.projectId)
                     )
@@ -46,7 +53,10 @@ class AndroidNavigator(context: Context) : Navigator {
                 Login -> navController.popBackStack()
                 else -> throw Navigator.InvalidNavigationException(from, to)
             }
-            is ProjectDetails -> throw Navigator.InvalidNavigationException(from, to)
+            is ProjectDetails -> when (to) {
+                ProjectList -> navController.navigateUp()
+                else -> throw Navigator.InvalidNavigationException(from, to)
+            }
         }
     }
 
@@ -58,6 +68,10 @@ class AndroidNavigator(context: Context) : Navigator {
             }
             ResetPassword -> {
                 navigate(ResetPassword, Login)
+                true
+            }
+            is ProjectDetails -> {
+                navigate(from, ProjectList)
                 true
             }
             else -> false

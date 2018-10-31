@@ -7,7 +7,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.databinding.BindingAdapter
 
 @BindingAdapter("bindRegistrationSuccessFulBackArrowVisibility")
-fun registrationSuccessfulBackArrowVisibilityBindingAdapter(view : View, bind: Boolean) {
+fun registrationSuccessfulBackArrowVisibilityBindingAdapter(view: View, bind: Boolean) {
     if (bind) {
         val wrapper = view.context as? ContextThemeWrapper
         val activity = wrapper?.baseContext as? AppCompatActivity

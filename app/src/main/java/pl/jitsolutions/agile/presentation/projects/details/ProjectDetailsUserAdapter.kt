@@ -5,7 +5,7 @@ import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.presentation.common.BaseBindableAdapter
 
 class ProjectDetailsUserAdapter : BaseBindableAdapter<User>({}) {
-    //TODO: add DiffUtils
+    // TODO: add DiffUtils
     var users: List<User> = emptyList()
         set(value) {
             field = value

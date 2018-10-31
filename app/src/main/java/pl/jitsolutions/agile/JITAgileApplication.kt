@@ -20,8 +20,8 @@ class JITAgileApplication : Application(), KodeinAware {
 
     private fun setupCrashlytics() {
         val crashlyticsKit = Crashlytics.Builder()
-                .core(CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
-                .build()
+            .core(CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
+            .build()
 
         Fabric.with(this, crashlyticsKit)
     }

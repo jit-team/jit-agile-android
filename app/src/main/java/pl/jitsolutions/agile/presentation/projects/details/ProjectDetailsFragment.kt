@@ -15,17 +15,27 @@ import pl.jitsolutions.agile.databinding.FragmentProjectDetailsBinding
 import pl.jitsolutions.agile.di.Tags
 import pl.jitsolutions.agile.presentation.common.BaseFragment
 
-
 class ProjectDetailsFragment : BaseFragment() {
 
     override val fragmentModule = Kodein.Module("ProjectDetailsFragment") {
-        constant(tag = Tags.Parameters.PROJECT_DETAILS_ID) with ProjectDetailsFragmentArgs.fromBundle(arguments).projectId
+        constant(tag = Tags.Parameters.PROJECT_DETAILS_ID) with
+            ProjectDetailsFragmentArgs.fromBundle(arguments).projectId
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val viewModelFactory: ViewModelProvider.Factory by instance(tag = ProjectDetailsViewModel::class.java)
-        val binding = DataBindingUtil.inflate<FragmentProjectDetailsBinding>(inflater, R.layout.fragment_project_details, container, false)
-        binding.viewModel = ViewModelProviders.of(this, viewModelFactory).get(ProjectDetailsViewModel::class.java)
+        val binding = DataBindingUtil.inflate<FragmentProjectDetailsBinding>(
+            inflater,
+            R.layout.fragment_project_details,
+            container,
+            false
+        )
+        binding.viewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(ProjectDetailsViewModel::class.java)
         binding.setLifecycleOwner(this)
         return binding.root
     }

@@ -9,9 +9,11 @@ import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
 import pl.jitsolutions.agile.presentation.navigation.Navigator
 import pl.jitsolutions.agile.utils.mutableLiveData
 
-class ResetPasswordViewModel(private val resetPasswordUseCase: UserResetPasswordUseCase,
-                             val navigator: Navigator,
-                             dispatcher: CoroutineDispatcher) : CoroutineViewModel(dispatcher) {
+class ResetPasswordViewModel(
+    private val resetPasswordUseCase: UserResetPasswordUseCase,
+    val navigator: Navigator,
+    dispatcher: CoroutineDispatcher
+) : CoroutineViewModel(dispatcher) {
 
     val email = mutableLiveData("")
     val resetPasswordState = mutableLiveData<ResetPasswordState>(ResetPasswordState.None)

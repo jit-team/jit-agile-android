@@ -20,7 +20,12 @@ import pl.jitsolutions.agile.presentation.navigation.Navigator
 import pl.jitsolutions.agile.presentation.projects.ProjectListViewModel
 import pl.jitsolutions.agile.presentation.projects.details.ProjectDetailsViewModel
 import pl.jitsolutions.agile.presentation.splash.SplashViewModel
-import pl.jitsolutions.agile.repository.*
+import pl.jitsolutions.agile.repository.AndroidSystemInfoRepository
+import pl.jitsolutions.agile.repository.FirebaseProjectRepository
+import pl.jitsolutions.agile.repository.FirebaseUserRepository
+import pl.jitsolutions.agile.repository.ProjectRepository
+import pl.jitsolutions.agile.repository.SystemInfoRepository
+import pl.jitsolutions.agile.repository.UserRepository
 import java.util.concurrent.Executors
 
 interface Tags {
@@ -78,33 +83,84 @@ private val useCasesModule = Kodein.Module(name = "UseCases") {
     bind<GetCurrentUserProjectsUseCase>() with provider {
         GetCurrentUserProjectsUseCase(instance(), instance(), instance(Tags.Dispatchers.USE_CASE))
     }
+    bind<GetUsersAssignedToProjectUseCase>() with provider {
+        GetUsersAssignedToProjectUseCase(instance(), instance(Tags.Dispatchers.USE_CASE))
+    }
 }
 
 private val viewModelsModule = Kodein.Module(name = "ViewModels") {
     bind<ViewModelProvider.Factory>(tag = SplashViewModel::class.java) with provider {
-        viewModelFactory { SplashViewModel(instance(), instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }
+        viewModelFactory {
+            SplashViewModel(
+                instance(),
+                instance(),
+                instance(),
+                instance(tag = Tags.Dispatchers.MAIN)
+            )
+        }
     }
     bind<ViewModelProvider.Factory>(tag = RegistrationViewModel::class.java) with provider {
-        viewModelFactory { RegistrationViewModel(instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }
+        viewModelFactory {
+            RegistrationViewModel(
+                instance(),
+                instance(),
+                instance(tag = Tags.Dispatchers.MAIN)
+            )
+        }
     }
     bind<ViewModelProvider.Factory>(tag = LoginViewModel::class.java) with provider {
-        viewModelFactory { LoginViewModel(instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }
+        viewModelFactory {
+            LoginViewModel(
+                instance(),
+                instance(),
+                instance(tag = Tags.Dispatchers.MAIN)
+            )
+        }
     }
     bind<ViewModelProvider.Factory>(tag = RegistrationSuccessfulViewModel::class.java) with provider {
-        viewModelFactory { RegistrationSuccessfulViewModel(instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }
+        viewModelFactory {
+            RegistrationSuccessfulViewModel(
+                instance(),
+                instance(),
+                instance(tag = Tags.Dispatchers.MAIN)
+            )
+        }
     }
     bind<ViewModelProvider.Factory>(tag = ProjectListViewModel::class.java) with provider {
-        viewModelFactory { ProjectListViewModel(instance(), instance(), instance(), instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }
+        viewModelFactory {
+            ProjectListViewModel(
+                instance(),
+                instance(),
+                instance(),
+                instance(),
+                instance(),
+                instance(tag = Tags.Dispatchers.MAIN)
+            )
+        }
     }
     bind<ViewModelProvider.Factory>(tag = ResetPasswordViewModel::class.java) with provider {
-        viewModelFactory { ResetPasswordViewModel(instance(), instance(), instance(tag = Tags.Dispatchers.MAIN)) }
+        viewModelFactory {
+            ResetPasswordViewModel(
+                instance(),
+                instance(),
+                instance(tag = Tags.Dispatchers.MAIN)
+            )
+        }
     }
     bind<ViewModelProvider.Factory>(tag = ProjectDetailsViewModel::class.java) with provider {
-        viewModelFactory { ProjectDetailsViewModel(instance(), instance(), instance(Tags.Parameters.PROJECT_DETAILS_ID), instance(tag = Tags.Dispatchers.MAIN)) }
+        viewModelFactory {
+            ProjectDetailsViewModel(
+                instance(),
+                instance(),
+                instance(),
+                instance(Tags.Parameters.PROJECT_DETAILS_ID),
+                instance(tag = Tags.Dispatchers.MAIN)
+            )
+        }
     }
 }
 
-//TODO: move to utils file or something
+// TODO: move to utils file or something
 private fun viewModelFactory(factory: () -> ViewModel): ViewModelProvider.Factory {
     return object : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {

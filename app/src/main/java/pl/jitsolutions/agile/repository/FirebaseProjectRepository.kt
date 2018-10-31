@@ -1,6 +1,11 @@
 package pl.jitsolutions.agile.repository
 
 import com.google.android.gms.tasks.Task
+import com.google.firebase.FirebaseNetworkException
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
@@ -9,10 +14,15 @@ import kotlinx.coroutines.experimental.CoroutineScope
 import kotlinx.coroutines.experimental.async
 import pl.jitsolutions.agile.domain.Project
 import pl.jitsolutions.agile.domain.Response
+import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.errorResponse
 import pl.jitsolutions.agile.domain.response
 import pl.jitsolutions.agile.repository.firebase.ProjectFb
-import pl.jitsolutions.agile.repository.firebase.convertToDomainObject
+import pl.jitsolutions.agile.repository.firebase.UserFb
+import pl.jitsolutions.agile.repository.firebase.convertToDomainObjects
+import pl.jitsolutions.agile.repository.firebase.toFirebaseObject
+import pl.jitsolutions.agile.repository.firebase.toFirebaseObjects
+import pl.jitsolutions.agile.repository.firebase.toProject
 import kotlin.coroutines.experimental.suspendCoroutine
 
 class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRepository {
@@ -50,7 +60,7 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
             task.isSuccessful -> {
                 val project: ProjectFb? = task.result?.toFirebaseObject()
                 if (project != null) {
-                    response(Project(project.id, project.name))
+                    response(project.toProject())
                 } else {
                     errorResponse(error = Exception())
                 }
@@ -67,7 +77,7 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
             task.isSuccessful -> {
                 if (task.result.isNetworkResponse()) {
                     val projects: List<ProjectFb> = task.result.toFirebaseObjects()
-                    response(projects.convertToDomainObject())
+                    response(projects.convertToDomainObjects())
                 } else {
                     errorResponse(error = ProjectRepository.Error.ServerConnection)
                 }
@@ -88,11 +98,47 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
         return isSuccessful && !cached
     }
 
+    override suspend fun getUsersAssignedToProject(projectId: String): Response<List<User>> {
+        return CoroutineScope(dispatcher).async {
+            suspendCoroutine<Response<List<User>>> { continuation ->
+                firestore.collection("users")
+                    .whereEqualTo("projects.$projectId", true)
+                    .get()
+                    .addOnCompleteListener { continuation.resume(handleUsersResponse(it)) }
+                    .addOnFailureListener {
+                        continuation.resume(errorResponse(error = retrieveError(it)))
+                    }
+            }
+        }.await()
+    }
+
     private inline fun <reified T> DocumentSnapshot.toFirebaseObject() =
         this.toObject(T::class.java)
 
     private inline fun <reified T> QuerySnapshot?.toFirebaseObjects() =
         this?.toObjects(T::class.java)
             ?: emptyList()
-}
 
+    private fun handleUsersResponse(task: Task<QuerySnapshot>): Response<List<User>> {
+        return when {
+            task.isSuccessful -> {
+                val users: List<UserFb> = task.result!!.toFirebaseObjects()
+                response(users.convertToDomainObjects())
+            }
+            else -> {
+                errorResponse(error = Exception())
+            }
+        }
+    }
+
+    private fun retrieveError(exception: Exception): UserRepository.Error {
+        return when (exception) {
+            is FirebaseAuthWeakPasswordException -> UserRepository.Error.WeakPassword
+            is FirebaseAuthInvalidUserException -> UserRepository.Error.UserNotFound
+            is FirebaseAuthInvalidCredentialsException -> UserRepository.Error.InvalidPassword
+            is FirebaseAuthUserCollisionException -> UserRepository.Error.UserAlreadyExist
+            is FirebaseNetworkException -> UserRepository.Error.ServerConnection
+            else -> UserRepository.Error.UnknownError
+        }
+    }
+}
