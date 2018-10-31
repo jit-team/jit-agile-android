@@ -17,7 +17,7 @@ class GetLoggedUserUseCaseTest {
             onBlocking {
                 getLoggedInUser()
             } doReturn
-                response<User?>(User(name = "tester", email = "email@email.com"))
+                response<User?>(User(id = "", name = "tester", email = "email@email.com"))
         }
         val useCase = GetLoggedUserUseCase(mockUserRepository, Dispatchers.Unconfined)
 

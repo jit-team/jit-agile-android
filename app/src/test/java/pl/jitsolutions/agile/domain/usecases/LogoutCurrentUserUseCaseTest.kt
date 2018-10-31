@@ -17,6 +17,7 @@ class LogoutCurrentUserUseCaseTest {
         val mockUserRepository = mock<UserRepository> {
             onBlocking { logout() } doReturn response(
                 User(
+                    id = "",
                     name = "Name",
                     email = "email@email.com"
                 )
