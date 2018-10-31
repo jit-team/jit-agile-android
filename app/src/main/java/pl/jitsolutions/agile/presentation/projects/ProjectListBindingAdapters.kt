@@ -115,3 +115,26 @@ fun bindProjectListEmptyList(view: View, projectListState: ProjectListViewModel.
         ProjectListViewModel.ProjectListState.EmptyList -> View.VISIBLE
     }
 }
+
+@BindingAdapter("bindProjectListError")
+fun bindProjectListError(view: TextView, state: ProjectListViewModel.ProjectListState) {
+    if (state !is ProjectListViewModel.ProjectListState.Error)
+        return
+
+    val error: String? = when {
+        state.isErrorOfType(ProjectListViewModel.ProjectListError.SERVER) -> {
+            view.context.getString(R.string.project_list_screen_error_server)
+        }
+        state.isErrorOfType(ProjectListViewModel.ProjectListError.USER_NOT_FOUND) -> {
+            view.context.getString(R.string.project_list_screen_error_user_not_found)
+        }
+        state.isErrorOfType(ProjectListViewModel.ProjectListError.UNKNOWN) -> {
+            view.context.getString(R.string.project_list_screen_error_unknown)
+        }
+        else -> {
+            null
+        }
+    }
+    view.text = error
+    view.visibility = if (error != null) View.VISIBLE else View.GONE
+}

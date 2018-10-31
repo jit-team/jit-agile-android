@@ -20,8 +20,7 @@ import pl.jitsolutions.agile.domain.response
 import pl.jitsolutions.agile.repository.firebase.ProjectFb
 import pl.jitsolutions.agile.repository.firebase.UserFb
 import pl.jitsolutions.agile.repository.firebase.convertToDomainObjects
-import pl.jitsolutions.agile.repository.firebase.toFirebaseObject
-import pl.jitsolutions.agile.repository.firebase.toFirebaseObjects
+import pl.jitsolutions.agile.repository.firebase.isResponseOk
 import pl.jitsolutions.agile.repository.firebase.toProject
 import kotlin.coroutines.experimental.suspendCoroutine
 
@@ -57,7 +56,7 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
 
     private fun handleProjectResponse(task: Task<DocumentSnapshot>): Response<Project> {
         return when {
-            task.isSuccessful -> {
+            task.isResponseOk() -> {
                 val project: ProjectFb? = task.result?.toFirebaseObject()
                 if (project != null) {
                     response(project.toProject())
@@ -74,28 +73,17 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
 
     private fun handleProjectsResponse(task: Task<QuerySnapshot>): Response<List<Project>> {
         return when {
-            task.isSuccessful -> {
-                if (task.result.isNetworkResponse()) {
-                    val projects: List<ProjectFb> = task.result.toFirebaseObjects()
-                    response(projects.convertToDomainObjects())
-                } else {
-                    errorResponse(error = ProjectRepository.Error.ServerConnection)
-                }
+            task.isResponseOk() -> {
+                val projects: List<ProjectFb> = task.result.toFirebaseObjects()
+                response(projects.convertToDomainObjects())
+            }
+            task.exception != null -> {
+                errorResponse(error = task.exception!!)
             }
             else -> {
-                errorResponse(error = Exception())
+                errorResponse(error = ProjectRepository.Error.ServerConnection)
             }
         }
-    }
-
-    private fun QuerySnapshot?.isNetworkResponse(): Boolean {
-        val cachedResponse = this?.metadata?.isFromCache ?: true
-        return !cachedResponse
-    }
-
-    private fun <T : DocumentSnapshot> Task<T>.isDocumentResultOk(): Boolean {
-        val cached = result?.metadata?.isFromCache ?: true
-        return isSuccessful && !cached
     }
 
     override suspend fun getUsersAssignedToProject(projectId: String): Response<List<User>> {
@@ -121,7 +109,7 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
 
     private fun handleUsersResponse(task: Task<QuerySnapshot>): Response<List<User>> {
         return when {
-            task.isSuccessful -> {
+            task.isResponseOk() -> {
                 val users: List<UserFb> = task.result!!.toFirebaseObjects()
                 response(users.convertToDomainObjects())
             }

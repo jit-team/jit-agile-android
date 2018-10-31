@@ -9,7 +9,10 @@ import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.Response.Status.ERROR
 import pl.jitsolutions.agile.domain.Response.Status.SUCCESS
 import pl.jitsolutions.agile.domain.User
-import pl.jitsolutions.agile.domain.usecases.*
+import pl.jitsolutions.agile.domain.usecases.GetApplicationVersionUseCase
+import pl.jitsolutions.agile.domain.usecases.GetCurrentUserProjectsUseCase
+import pl.jitsolutions.agile.domain.usecases.GetLoggedUserUseCase
+import pl.jitsolutions.agile.domain.usecases.LogoutCurrentUserUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
 import pl.jitsolutions.agile.presentation.navigation.Navigator
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Login
@@ -77,7 +80,6 @@ class ProjectListViewModel(
                     GetCurrentUserProjectsUseCase.Error.ServerConnection -> ProjectListError.SERVER
                     GetCurrentUserProjectsUseCase.Error.UserNotFound -> ProjectListError.USER_NOT_FOUND
                     else -> ProjectListError.UNKNOWN
-
                 }
                 projectListState.value = ProjectListState.Error(type)
             }
@@ -102,6 +104,9 @@ class ProjectListViewModel(
     }
 
     sealed class ProjectListState {
+        fun isErrorOfType(type: ProjectListViewModel.ProjectListError): Boolean {
+            return this is ProjectListState.Error && this.type == type
+        }
         object None : ProjectListState()
         object InProgress : ProjectListState()
         object EmptyList : ProjectListState()

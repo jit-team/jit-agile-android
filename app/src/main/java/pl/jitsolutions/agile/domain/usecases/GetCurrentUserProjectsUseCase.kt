@@ -53,4 +53,3 @@ class GetCurrentUserProjectsUseCase(
         object UnknownError : Error()
     }
 }
-

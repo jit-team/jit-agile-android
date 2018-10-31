@@ -73,6 +73,18 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="@string/project_list_screen_empty_list_label" />
 
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Large"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/project_list_screen_error_text"
+                    app:bindProjectListError="@{viewModel.projectListState}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@string/project_list_screen_error_unknown" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
