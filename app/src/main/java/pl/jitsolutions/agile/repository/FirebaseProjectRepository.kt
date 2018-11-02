@@ -21,6 +21,8 @@ import pl.jitsolutions.agile.repository.firebase.ProjectFb
 import pl.jitsolutions.agile.repository.firebase.UserFb
 import pl.jitsolutions.agile.repository.firebase.convertToDomainObjects
 import pl.jitsolutions.agile.repository.firebase.isResponseOk
+import pl.jitsolutions.agile.repository.firebase.toFirebaseObject
+import pl.jitsolutions.agile.repository.firebase.toFirebaseObjects
 import pl.jitsolutions.agile.repository.firebase.toProject
 import kotlin.coroutines.experimental.suspendCoroutine
 
@@ -99,13 +101,6 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
             }
         }.await()
     }
-
-    private inline fun <reified T> DocumentSnapshot.toFirebaseObject() =
-        this.toObject(T::class.java)
-
-    private inline fun <reified T> QuerySnapshot?.toFirebaseObjects() =
-        this?.toObjects(T::class.java)
-            ?: emptyList()
 
     private fun handleUsersResponse(task: Task<QuerySnapshot>): Response<List<User>> {
         return when {

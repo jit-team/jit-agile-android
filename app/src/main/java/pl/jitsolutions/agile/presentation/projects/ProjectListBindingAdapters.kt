@@ -123,7 +123,7 @@ fun bindProjectListError(view: TextView, state: ProjectListViewModel.ProjectList
 
     val error: String? = when {
         state.isErrorOfType(ProjectListViewModel.ProjectListError.SERVER) -> {
-            view.context.getString(R.string.project_list_screen_error_server)
+            view.context.getString(R.string.project_list_screen_error_connection)
         }
         state.isErrorOfType(ProjectListViewModel.ProjectListError.USER_NOT_FOUND) -> {
             view.context.getString(R.string.project_list_screen_error_user_not_found)

@@ -2,7 +2,6 @@ package pl.jitsolutions.agile.presentation.projects
 
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.experimental.CoroutineDispatcher
-import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import pl.jitsolutions.agile.domain.Project
 import pl.jitsolutions.agile.domain.Response
@@ -63,7 +62,6 @@ class ProjectListViewModel(
     }
 
     private fun executeGetUserProjects() = launch {
-        delay(1000)
         val params = GetCurrentUserProjectsUseCase.Params()
         val result = getCurrentUserProjectsUseCase.executeAsync(params).await()
         when (result.status) {
