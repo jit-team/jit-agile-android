@@ -6,12 +6,13 @@ import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.asCoroutineDispatcher
 import org.kodein.di.Kodein
+import org.kodein.di.Kodein.Module
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
 import pl.jitsolutions.agile.domain.usecases.GetApplicationVersionUseCase
-import pl.jitsolutions.agile.domain.usecases.GetCurrentUserProjects
+import pl.jitsolutions.agile.domain.usecases.GetCurrentUserProjectsUseCase
 import pl.jitsolutions.agile.domain.usecases.GetLoggedUserUseCase
 import pl.jitsolutions.agile.domain.usecases.GetProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.GetUsersAssignedToProjectUseCase
@@ -41,7 +42,7 @@ interface Tags {
     enum class Parameters { PROJECT_DETAILS_ID }
 }
 
-private val dispatchersModule = Kodein.Module(name = "Dispatchers") {
+private val dispatchersModule = Module(name = "Dispatchers") {
     bind<CoroutineDispatcher>(tag = Tags.Dispatchers.USE_CASE) with singleton {
         Executors.newSingleThreadExecutor().asCoroutineDispatcher()
     }
@@ -53,7 +54,7 @@ private val dispatchersModule = Kodein.Module(name = "Dispatchers") {
     }
 }
 
-private val repositoriesModule = Kodein.Module(name = "Repositories") {
+private val repositoriesModule = Module(name = "Repositories") {
     bind<UserRepository>() with singleton {
         FirebaseUserRepository(instance(tag = Tags.Dispatchers.IO))
     }
@@ -65,7 +66,7 @@ private val repositoriesModule = Kodein.Module(name = "Repositories") {
     }
 }
 
-private val useCasesModule = Kodein.Module(name = "UseCases") {
+private val useCasesModule = Module(name = "UseCases") {
     bind<UserRegistrationUseCase>() with provider {
         UserRegistrationUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
@@ -88,16 +89,15 @@ private val useCasesModule = Kodein.Module(name = "UseCases") {
         GetProjectUseCase(instance(), instance(Tags.Dispatchers.USE_CASE))
     }
 
-    bind<GetCurrentUserProjects>() with provider {
-        GetCurrentUserProjects(instance(), instance(), instance(Tags.Dispatchers.USE_CASE))
+    bind<GetCurrentUserProjectsUseCase>() with provider {
+        GetCurrentUserProjectsUseCase(instance(), instance(), instance(Tags.Dispatchers.USE_CASE))
     }
-
     bind<GetUsersAssignedToProjectUseCase>() with provider {
         GetUsersAssignedToProjectUseCase(instance(), instance(Tags.Dispatchers.USE_CASE))
     }
 }
 
-private val viewModelsModule = Kodein.Module(name = "ViewModels") {
+private val viewModelsModule = Module(name = "ViewModels") {
     bind<ViewModelProvider.Factory>(tag = SplashViewModel::class.java) with provider {
         viewModelFactory {
             SplashViewModel(

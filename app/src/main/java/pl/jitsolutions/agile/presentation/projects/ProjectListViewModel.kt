@@ -9,7 +9,7 @@ import pl.jitsolutions.agile.domain.Response.Status.ERROR
 import pl.jitsolutions.agile.domain.Response.Status.SUCCESS
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.usecases.GetApplicationVersionUseCase
-import pl.jitsolutions.agile.domain.usecases.GetCurrentUserProjects
+import pl.jitsolutions.agile.domain.usecases.GetCurrentUserProjectsUseCase
 import pl.jitsolutions.agile.domain.usecases.GetLoggedUserUseCase
 import pl.jitsolutions.agile.domain.usecases.LogoutCurrentUserUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
@@ -23,15 +23,17 @@ class ProjectListViewModel(
     private val getLoggedUserUseCase: GetLoggedUserUseCase,
     private val logoutCurrentUserUseCase: LogoutCurrentUserUseCase,
     private val getApplicationVersionUseCase: GetApplicationVersionUseCase,
-    private val getCurrentUserProjects: GetCurrentUserProjects,
+    private val getCurrentUserProjectsUseCase: GetCurrentUserProjectsUseCase,
     private val navigator: Navigator,
     mainDispatcher: CoroutineDispatcher
 ) : CoroutineViewModel(mainDispatcher) {
     val user = mutableLiveData<User?>(null)
     val version = mutableLiveData("")
     val projects = MutableLiveData<List<Project>>()
+    val projectListState = mutableLiveData<ProjectListState>(ProjectListState.None)
 
     init {
+        projectListState.value = ProjectListState.InProgress
         executeGetLoggedUser()
         executeGetApplicationVersion()
         executeGetUserProjects()
@@ -60,10 +62,25 @@ class ProjectListViewModel(
     }
 
     private fun executeGetUserProjects() = launch {
-        val params = GetCurrentUserProjects.Params()
-        val result = getCurrentUserProjects.executeAsync(params).await()
+        val params = GetCurrentUserProjectsUseCase.Params()
+        val result = getCurrentUserProjectsUseCase.executeAsync(params).await()
         when (result.status) {
-            SUCCESS -> projects.value = result.data
+            SUCCESS -> {
+                if (result.data != null && !result.data.isEmpty()) {
+                    projectListState.value = ProjectListState.Success
+                    projects.value = result.data
+                } else {
+                    projectListState.value = ProjectListState.EmptyList
+                }
+            }
+            ERROR -> {
+                val type = when (result.error) {
+                    GetCurrentUserProjectsUseCase.Error.ServerConnection -> ProjectListError.SERVER
+                    GetCurrentUserProjectsUseCase.Error.UserNotFound -> ProjectListError.USER_NOT_FOUND
+                    else -> ProjectListError.UNKNOWN
+                }
+                projectListState.value = ProjectListState.Error(type)
+            }
         }
     }
 
@@ -83,4 +100,17 @@ class ProjectListViewModel(
             ERROR -> throw result.error!!
         }
     }
+
+    sealed class ProjectListState {
+        fun isErrorOfType(type: ProjectListViewModel.ProjectListError): Boolean {
+            return this is ProjectListState.Error && this.type == type
+        }
+        object None : ProjectListState()
+        object InProgress : ProjectListState()
+        object EmptyList : ProjectListState()
+        data class Error(val type: ProjectListError) : ProjectListState()
+        object Success : ProjectListState()
+    }
+
+    enum class ProjectListError { UNKNOWN, SERVER, USER_NOT_FOUND }
 }
