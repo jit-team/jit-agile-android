@@ -53,7 +53,6 @@ class ProjectDetailsViewModel(
     }
 
     private fun executeGetProjectDetails() = launch {
-
         var resultState = executeGetProject()
         if (resultState !is State.Error) {
             resultState = executeGetUsers()

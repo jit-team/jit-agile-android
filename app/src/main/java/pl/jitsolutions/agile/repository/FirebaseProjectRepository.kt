@@ -65,11 +65,11 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
                 functions
                     .getHttpsCallable("leaveProject")
                     .call(data)
-                    .addOnFailureListener {
-                        continuation.resume(errorResponse(error = retrieveError(it)))
-                    }
                     .addOnSuccessListener {
                         continuation.resume(response(Unit))
+                    }
+                    .addOnFailureListener {
+                        continuation.resume(errorResponse(error = retrieveError(it)))
                     }
             }
         }.await()
@@ -133,6 +133,7 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
         }
     }
 
+    //TODO need to be changed to ProjectRepository errors
     private fun retrieveError(exception: Exception): UserRepository.Error {
         return when (exception) {
             is FirebaseAuthWeakPasswordException -> UserRepository.Error.WeakPassword
