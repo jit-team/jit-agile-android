@@ -2,6 +2,9 @@ package pl.jitsolutions.agile.presentation.projects.details
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -17,6 +20,8 @@ import pl.jitsolutions.agile.presentation.common.BaseFragment
 
 class ProjectDetailsFragment : BaseFragment() {
 
+    private lateinit var binding: FragmentProjectDetailsBinding
+
     override val fragmentModule = Kodein.Module("ProjectDetailsFragment") {
         constant(tag = Tags.Parameters.PROJECT_DETAILS_ID) with
             ProjectDetailsFragmentArgs.fromBundle(arguments).projectId
@@ -27,16 +32,32 @@ class ProjectDetailsFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        setHasOptionsMenu(true)
+
         val viewModelFactory: ViewModelProvider.Factory by instance(tag = ProjectDetailsViewModel::class.java)
-        val binding = DataBindingUtil.inflate<FragmentProjectDetailsBinding>(
+        binding = DataBindingUtil.inflate<FragmentProjectDetailsBinding>(
             inflater,
             R.layout.fragment_project_details,
             container,
             false
         )
-        binding.viewModel =
-            ViewModelProviders.of(this, viewModelFactory).get(ProjectDetailsViewModel::class.java)
+        val viewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(ProjectDetailsViewModel::class.java)
+        binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_project_details, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return if (item!!.itemId != android.R.id.home) {
+            binding.menuItemId = item.itemId
+            true
+        } else {
+            return super.onOptionsItemSelected(item)
+        }
     }
 }
