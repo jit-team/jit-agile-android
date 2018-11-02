@@ -90,3 +90,51 @@ fun bindProjectListProjects(
         it.projects = projects ?: emptyList()
     }
 }
+
+@BindingAdapter("bindProjectListProgressVisibility")
+fun bindProjectListProgressVisibility(
+    view: View,
+    projectListState: ProjectListViewModel.ProjectListState
+) {
+    view.visibility = when (projectListState) {
+        ProjectListViewModel.ProjectListState.None -> View.INVISIBLE
+        ProjectListViewModel.ProjectListState.InProgress -> View.VISIBLE
+        is ProjectListViewModel.ProjectListState.Error -> View.INVISIBLE
+        ProjectListViewModel.ProjectListState.Success -> View.INVISIBLE
+        ProjectListViewModel.ProjectListState.EmptyList -> View.INVISIBLE
+    }
+}
+
+@BindingAdapter("bindProjectListEmptyList")
+fun bindProjectListEmptyList(view: View, projectListState: ProjectListViewModel.ProjectListState) {
+    view.visibility = when (projectListState) {
+        ProjectListViewModel.ProjectListState.None -> View.INVISIBLE
+        ProjectListViewModel.ProjectListState.InProgress -> View.INVISIBLE
+        is ProjectListViewModel.ProjectListState.Error -> View.INVISIBLE
+        ProjectListViewModel.ProjectListState.Success -> View.INVISIBLE
+        ProjectListViewModel.ProjectListState.EmptyList -> View.VISIBLE
+    }
+}
+
+@BindingAdapter("bindProjectListError")
+fun bindProjectListError(view: TextView, state: ProjectListViewModel.ProjectListState) {
+    if (state !is ProjectListViewModel.ProjectListState.Error)
+        return
+
+    val error: String? = when {
+        state.isErrorOfType(ProjectListViewModel.ProjectListError.SERVER) -> {
+            view.context.getString(R.string.project_list_screen_error_connection)
+        }
+        state.isErrorOfType(ProjectListViewModel.ProjectListError.USER_NOT_FOUND) -> {
+            view.context.getString(R.string.project_list_screen_error_user_not_found)
+        }
+        state.isErrorOfType(ProjectListViewModel.ProjectListError.UNKNOWN) -> {
+            view.context.getString(R.string.project_list_screen_error_unknown)
+        }
+        else -> {
+            null
+        }
+    }
+    view.text = error
+    view.visibility = if (error != null) View.VISIBLE else View.GONE
+}

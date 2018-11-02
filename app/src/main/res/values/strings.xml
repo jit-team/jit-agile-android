@@ -42,6 +42,10 @@
     <string name="project_list_screen_logout_confirmation_message">Are you sure you want to logout?</string>
     <string name="project_list_screen_logout_confirmation_positive_button_text">Logout</string>
     <string name="project_list_screen_logout_confirmation_negative_button_text">Cancel</string>
+    <string name="project_list_screen_empty_list_label">List is empty, add a project!</string>
+    <string name="project_list_screen_error_unknown">Unknown error</string>
+    <string name="project_list_screen_error_user_not_found">User not found</string>
+    <string name="project_list_screen_error_connection">Server connection error</string>
 
     <string name="project_details_screen_empty_state_label">No participants</string>
     <string name="project_details_screen_menu_leave_project">Leave</string>

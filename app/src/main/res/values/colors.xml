@@ -11,4 +11,5 @@
     <color name="login_screen_error_text">@color/red_600</color>
     <color name="registration_screen_error_text">@color/red_600</color>
     <color name="reset_password_screen_error_text">@color/red_600</color>
+    <color name="project_list_screen_error_text">@color/red_600</color>
 </resources>

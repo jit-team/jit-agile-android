@@ -10,7 +10,6 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
-import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.CoroutineScope
 import kotlinx.coroutines.experimental.async
@@ -18,11 +17,11 @@ import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.errorResponse
 import pl.jitsolutions.agile.domain.response
+import pl.jitsolutions.agile.repository.firebase.isResponseOk
 import kotlin.coroutines.experimental.suspendCoroutine
 
 class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : UserRepository {
     private val firebaseAuth = FirebaseAuth.getInstance()
-    private val firestore = FirebaseFirestore.getInstance()
 
     override suspend fun login(email: String, password: String): Response<User> {
         val loginResults = CoroutineScope(dispatcher).async {
@@ -31,7 +30,7 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : User
                     firebaseAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener { result ->
                             when {
-                                result.isSuccessful -> {
+                                result.isResponseOk() -> {
                                     continuation.resume(response(result.toUser()))
                                 }
                                 result.exception != null -> {
@@ -92,7 +91,7 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : User
         taskResult: Task<AuthResult>
     ): Response<User> {
         return when {
-            taskResult.isSuccessful -> {
+            taskResult.isResponseOk() -> {
                 val firebaseUser = taskResult.result?.user!!
                 updateUserName(firebaseUser, userName)
                 response(firebaseUser.toUser())
@@ -126,7 +125,7 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : User
                 suspendCoroutine<Response<Void?>> { continuation ->
                     firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener {
                         when {
-                            it.isSuccessful -> continuation.resume(response(null))
+                            it.isResponseOk() -> continuation.resume(response(null))
                             it.exception != null -> continuation.resume(
                                 errorResponse(error = retrieveError(it.exception!!))
                             )
