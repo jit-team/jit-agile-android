@@ -8,6 +8,10 @@
         <import type="androidx.recyclerview.widget.DividerItemDecoration" />
 
         <variable
+            name="menuItemId"
+            type="int" />
+
+        <variable
             name="viewModel"
             type="pl.jitsolutions.agile.presentation.projects.details.ProjectDetailsViewModel" />
     </data>
@@ -15,7 +19,9 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:bindProjectDetailsErrorState="@{viewModel.state}">
+        app:bindProjectDetailsErrorState="@{viewModel.state}"
+        app:bindProjectDetailsMenuItemSelected="@{menuItemId}"
+        app:bindProjectDetailsViewModel="@{viewModel}">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"

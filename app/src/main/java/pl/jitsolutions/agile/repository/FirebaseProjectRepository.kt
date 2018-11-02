@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.functions.FirebaseFunctions
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.CoroutineScope
 import kotlinx.coroutines.experimental.async
@@ -28,6 +29,7 @@ import kotlin.coroutines.experimental.suspendCoroutine
 class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRepository {
 
     private val firestore = FirebaseFirestore.getInstance()
+    private val functions = FirebaseFunctions.getInstance()
 
     override suspend fun getProjects(userId: String): Response<List<Project>> {
         return CoroutineScope(dispatcher).async {
@@ -50,6 +52,23 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
                     .get()
                     .addOnCompleteListener { task ->
                         continuation.resume(handleProjectResponse(task))
+                    }
+            }
+        }.await()
+    }
+
+    override suspend fun leaveProject(projectId: String): Response<Unit> {
+        return CoroutineScope(dispatcher).async {
+            suspendCoroutine<Response<Unit>> { continuation ->
+                val data = mutableMapOf("projectId" to projectId)
+                functions
+                    .getHttpsCallable("leaveProject")
+                    .call(data)
+                    .addOnFailureListener {
+                        continuation.resume(errorResponse(error = retrieveError(it)))
+                    }
+                    .addOnSuccessListener {
+                        continuation.resume(response(Unit))
                     }
             }
         }.await()

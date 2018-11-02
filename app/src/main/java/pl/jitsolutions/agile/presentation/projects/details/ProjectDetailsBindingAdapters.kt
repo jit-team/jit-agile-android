@@ -4,6 +4,7 @@ import android.content.ContextWrapper
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.BindingAdapter
@@ -72,4 +73,30 @@ fun bindProjectDetailsErrorState(view: View, state: ProjectDetailsViewModel.Stat
         else -> R.string.project_details_screen_error_unknown
     }
     Toast.makeText(view.context.applicationContext, messageResId, Toast.LENGTH_SHORT).show()
+}
+
+@BindingAdapter("bindProjectDetailsMenuItemSelected", "bindProjectDetailsViewModel")
+fun bindProjectDetailsMenuItemListener(
+    view: View,
+    menuItemId: Int,
+    viewModel: ProjectDetailsViewModel
+) {
+    if (R.id.menu_project_details_leave_project == menuItemId) {
+        view.showLeaveConfirmation { viewModel.leaveProject() }
+    }
+}
+
+private fun View.showLeaveConfirmation(onLeaveListener: () -> Unit) {
+    AlertDialog.Builder(context)
+        .setTitle(R.string.project_details_screen_leave_confirmation_title)
+        .setMessage(R.string.project_details_screen_leave_confirmation_message)
+        .setPositiveButton(R.string.project_details_screen_leave_confirmation_positive_button_text) { _, _ ->
+            onLeaveListener.invoke()
+        }
+        .setNegativeButton(
+            R.string.project_details_screen_leave_confirmation_negative_button_text,
+            null
+        )
+        .setCancelable(true)
+        .show()
 }

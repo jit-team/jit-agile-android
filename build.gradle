@@ -26,6 +26,7 @@ buildscript {
                 firebaseCoreVersion     : '16.0.4',
                 firebaseAuthVersion     : '16.0.5',
                 firebaseFirestoreVersion: '17.1.2',
+                firebaseFunctionsVersion: '16.1.2',
                 crashlyticsVersion      : '2.9.5',
                 navigationVersion       : '1.0.0-alpha06'
         ]

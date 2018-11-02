@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/menu_project_details_leave_project"
+            android:icon="@drawable/ic_logout_white"
+            android:title="@string/project_details_screen_menu_leave_project"
+            app:showAsAction="ifRoom" />
+    </group>
+</menu>
