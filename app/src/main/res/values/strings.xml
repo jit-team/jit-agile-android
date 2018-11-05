@@ -77,7 +77,7 @@
     <string name="new_project_screen_password_label">Password</string>
     <string name="new_project_screen_create_button_text">Create</string>
     <string name="new_project_screen_error_invalid_project_name">Invalid project name</string>
-    <string name="new_project_screen_error_project_exist">Project already exist</string>
+    <string name="new_project_screen_error_project_already_exist">Project already exist</string>
     <string name="new_project_screen_error_invalid_password">Invalid password</string>
 
 </resources>

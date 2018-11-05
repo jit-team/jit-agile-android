@@ -15,7 +15,7 @@ fun bindNewProjectNameError(
         newProjectState.isErrorOfType(NewProjectViewModel.NewProjectErrorType.PROJECT_NAME) ->
             view.context.getString(R.string.new_project_screen_error_invalid_project_name)
         newProjectState.isErrorOfType(NewProjectViewModel.NewProjectErrorType.PROJECT_ALREADY_EXIST) ->
-            view.context.getString(R.string.new_project_screen_error_project_exist)
+            view.context.getString(R.string.new_project_screen_error_project_already_exist)
         else -> null
     }
     view.isErrorEnabled = errorText != null
