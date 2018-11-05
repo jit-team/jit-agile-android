@@ -75,6 +75,23 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
         }.await()
     }
 
+    override suspend fun deleteProject(projectId: String): Response<Unit> {
+        return CoroutineScope(dispatcher).async {
+            suspendCoroutine<Response<Unit>> { continuation ->
+                val data = mutableMapOf("projectId" to projectId)
+                functions
+                    .getHttpsCallable("deleteProject")
+                    .call(data)
+                    .addOnSuccessListener {
+                        continuation.resume(response(Unit))
+                    }
+                    .addOnFailureListener {
+                        continuation.resume(errorResponse(error = retrieveError(it)))
+                    }
+            }
+        }.await()
+    }
+
     private fun handleProjectResponse(task: Task<DocumentSnapshot>): Response<Project> {
         return when {
             task.isResponseOk() -> {

@@ -49,10 +49,15 @@
 
     <string name="project_details_screen_empty_state_label">No participants</string>
     <string name="project_details_screen_menu_leave_project">Leave</string>
+    <string name="project_details_screen_menu_delete_project">Delete</string>
     <string name="project_details_screen_leave_confirmation_title">Leave confirmation</string>
     <string name="project_details_screen_leave_confirmation_message">Are you sure you want to leave the project?</string>
     <string name="project_details_screen_leave_confirmation_positive_button_text">Leave</string>
     <string name="project_details_screen_leave_confirmation_negative_button_text">Cancel</string>
+    <string name="project_details_screen_delete_confirmation_title">Delete confirmation</string>
+    <string name="project_details_screen_delete_confirmation_message">Are you sure you want to delete the project?</string>
+    <string name="project_details_screen_delete_confirmation_positive_button_text">Delete</string>
+    <string name="project_details_screen_delete_confirmation_negative_button_text">Cancel</string>
     <string name="project_details_screen_error_connection">Server connection problem, please try again.</string>
     <string name="project_details_screen_error_project_not_found">Selected project not found.</string>
     <string name="project_details_screen_error_unknown">Something goes wrong…</string>

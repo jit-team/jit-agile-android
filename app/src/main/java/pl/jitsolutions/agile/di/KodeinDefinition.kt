@@ -11,6 +11,7 @@ import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
+import pl.jitsolutions.agile.domain.usecases.DeleteProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.GetApplicationVersionUseCase
 import pl.jitsolutions.agile.domain.usecases.GetCurrentUserProjectsUseCase
 import pl.jitsolutions.agile.domain.usecases.GetLoggedUserUseCase
@@ -98,6 +99,9 @@ private val useCasesModule = Module(name = "UseCases") {
     bind<LeaveProjectUseCase>() with provider {
         LeaveProjectUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
+    bind<DeleteProjectUseCase>() with provider {
+        DeleteProjectUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
+    }
 }
 
 private val viewModelsModule = Module(name = "ViewModels") {
@@ -162,6 +166,7 @@ private val viewModelsModule = Module(name = "ViewModels") {
     bind<ViewModelProvider.Factory>(tag = ProjectDetailsViewModel::class.java) with provider {
         viewModelFactory {
             ProjectDetailsViewModel(
+                instance(),
                 instance(),
                 instance(),
                 instance(),
