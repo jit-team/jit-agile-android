@@ -81,8 +81,11 @@ fun bindProjectDetailsMenuItemListener(
     menuItemId: Int,
     viewModel: ProjectDetailsViewModel
 ) {
-    if (R.id.menu_project_details_leave_project == menuItemId) {
-        view.showLeaveConfirmation { viewModel.leaveProject() }
+    when (menuItemId) {
+        R.id.menu_project_details_leave_project ->
+            view.showLeaveConfirmation { viewModel.leaveProject() }
+        R.id.menu_project_details_delete_project ->
+            view.showDeleteConfirmation { viewModel.deleteProject() }
     }
 }
 
@@ -95,6 +98,21 @@ private fun View.showLeaveConfirmation(onLeaveListener: () -> Unit) {
         }
         .setNegativeButton(
             R.string.project_details_screen_leave_confirmation_negative_button_text,
+            null
+        )
+        .setCancelable(true)
+        .show()
+}
+
+private fun View.showDeleteConfirmation(onDeleteListener: () -> Unit) {
+    AlertDialog.Builder(context)
+        .setTitle(R.string.project_details_screen_delete_confirmation_title)
+        .setMessage(R.string.project_details_screen_delete_confirmation_message)
+        .setPositiveButton(R.string.project_details_screen_delete_confirmation_positive_button_text) { _, _ ->
+            onDeleteListener.invoke()
+        }
+        .setNegativeButton(
+            R.string.project_details_screen_delete_confirmation_negative_button_text,
             null
         )
         .setCancelable(true)

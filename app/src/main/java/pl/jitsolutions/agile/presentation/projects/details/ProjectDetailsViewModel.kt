@@ -8,6 +8,7 @@ import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.Response.Status.ERROR
 import pl.jitsolutions.agile.domain.Response.Status.SUCCESS
 import pl.jitsolutions.agile.domain.User
+import pl.jitsolutions.agile.domain.usecases.DeleteProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.GetProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.GetUsersAssignedToProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.LeaveProjectUseCase
@@ -19,6 +20,7 @@ class ProjectDetailsViewModel(
     private val getProjectUseCase: GetProjectUseCase,
     private val getUsersAssignedToProjectUseCase: GetUsersAssignedToProjectUseCase,
     private val leaveProjectUseCase: LeaveProjectUseCase,
+    private val deleteProjectUseCase: DeleteProjectUseCase,
     private val navigator: Navigator,
     private val projectId: String,
     mainDispatcher: CoroutineDispatcher
@@ -29,6 +31,27 @@ class ProjectDetailsViewModel(
 
     init {
         executeGetProjectDetails()
+    }
+
+    fun deleteProject() = launch {
+        state.value = State.InProgress
+        val params = DeleteProjectUseCase.Params(projectId)
+        val result = deleteProjectUseCase.executeAsync(params).await()
+        when (result.status) {
+            SUCCESS -> navigator.navigateBack(Navigator.Destination.ProjectDetails(projectId))
+            ERROR -> handleDeleteProjectError(result)
+        }
+    }
+
+    private fun handleDeleteProjectError(result: Response<Unit>) {
+        val errorState = when (result.error) {
+            DeleteProjectUseCase.Error.ServerConnection ->
+                State.Error(ErrorType.CONNECTION)
+            is DeleteProjectUseCase.Error.ProjectNotFound ->
+                State.Error(ErrorType.PROJECT_NOT_FOUND)
+            else -> State.Error(ErrorType.CONNECTION)
+        }
+        state.value = errorState
     }
 
     fun leaveProject() = launch {
