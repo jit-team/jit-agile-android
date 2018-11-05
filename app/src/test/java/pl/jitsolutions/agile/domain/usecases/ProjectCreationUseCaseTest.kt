@@ -5,21 +5,22 @@ import com.nhaarman.mockitokotlin2.mock
 import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.runBlocking
 import org.junit.Test
+import pl.jitsolutions.agile.assertThat
 import pl.jitsolutions.agile.domain.errorResponse
 import pl.jitsolutions.agile.repository.ProjectRepository
 
-class CreateNewProjectUseCaseTest {
+class ProjectCreationUseCaseTest {
 
     @Test
     fun `empty project name`() = runBlocking(Dispatchers.Default) {
         val projectRepository = mock<ProjectRepository>()
-        val params = CreateNewProjectUseCase.Params("", "")
-        val useCase = CreateNewProjectUseCase(projectRepository, Dispatchers.Default)
+        val params = ProjectCreationUseCase.Params("", "")
+        val useCase = ProjectCreationUseCase(projectRepository, Dispatchers.Default)
 
         val response = useCase.executeAsync(params).await()
 
-        pl.jitsolutions.agile.assertThat(response) {
-            hasError(CreateNewProjectUseCase.Error.EmptyProjectName)
+        assertThat(response) {
+            hasError(ProjectCreationUseCase.Error.EmptyProjectName)
         }
     }
 
@@ -31,13 +32,13 @@ class CreateNewProjectUseCaseTest {
             } doReturn
                 errorResponse(error = ProjectRepository.Error.ProjectAlreadyExist)
         }
-        val params = CreateNewProjectUseCase.Params("test", "password")
-        val useCase = CreateNewProjectUseCase(userRepository, Dispatchers.Default)
+        val params = ProjectCreationUseCase.Params("test", "password")
+        val useCase = ProjectCreationUseCase(userRepository, Dispatchers.Default)
 
         val response = useCase.executeAsync(params).await()
 
-        pl.jitsolutions.agile.assertThat(response) {
-            hasError(CreateNewProjectUseCase.Error.ProjectAlreadyExist)
+        assertThat(response) {
+            hasError(ProjectCreationUseCase.Error.ProjectAlreadyExist)
         }
     }
 }

@@ -6,10 +6,10 @@ import pl.jitsolutions.agile.domain.errorResponse
 import pl.jitsolutions.agile.domain.response
 import pl.jitsolutions.agile.repository.ProjectRepository
 
-class CreateNewProjectUseCase(
+class ProjectCreationUseCase(
     private val projectRepository: ProjectRepository,
     dispatcher: CoroutineDispatcher
-) : UseCase<CreateNewProjectUseCase.Params, String>(dispatcher) {
+) : UseCase<ProjectCreationUseCase.Params, String>(dispatcher) {
 
     override suspend fun build(params: Params): Response<String> {
         if (params.validate() != null)

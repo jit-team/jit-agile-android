@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|right"
                 android:layout_margin="16dp"
-                android:onClick="@{() -> viewModel.newProject()}"
+                android:onClick="@{() -> viewModel.createProject()}"
                 app:srcCompat="@drawable/ic_add" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -13,7 +13,7 @@ interface Navigator {
         object RegistrationSuccessful : Destination()
         object ProjectList : Destination()
         class ProjectDetails(val projectId: String) : Destination()
-        object NewProject : Destination()
+        object ProjectCreation : Destination()
     }
 
     class InvalidNavigationException(from: Destination, to: Destination) :
