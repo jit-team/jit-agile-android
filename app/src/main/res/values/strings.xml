@@ -67,4 +67,12 @@
     <string name="reset_password_screen_dialog_email_sent_text">Reset link has been sent. Check your mailbox</string>
     <string name="reset_password_screen_dialog_positive_text">OK</string>
 
+    <string name="new_project_screen_title">New project</string>
+    <string name="new_project_screen_project_label">Project name</string>
+    <string name="new_project_screen_password_label">Password</string>
+    <string name="new_project_screen_create_button_text">Create</string>
+    <string name="new_project_screen_error_invalid_project_name">Invalid project name</string>
+    <string name="new_project_screen_error_project_exist">Project already exist</string>
+    <string name="new_project_screen_error_invalid_password">Invalid password</string>
+
 </resources>

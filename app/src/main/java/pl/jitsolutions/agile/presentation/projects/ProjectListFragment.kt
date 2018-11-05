@@ -26,10 +26,9 @@ class ProjectListFragment : BaseFragment() {
         val viewModelFactory: ViewModelProvider.Factory by instance(tag = ProjectListViewModel::class.java)
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_project_list, container, false)
-        binding.viewModel =
-            ViewModelProviders.of(this, viewModelFactory).get(ProjectListViewModel::class.java)
         val viewModel =
             ViewModelProviders.of(this, viewModelFactory).get(ProjectListViewModel::class.java)
+        binding.viewModel = viewModel
 
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_project_list, container, false)

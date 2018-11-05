@@ -47,6 +47,9 @@ class AndroidNavigator(context: Context) : Navigator {
                             .setProjectId(to.projectId)
                     )
                 }
+                is Navigator.Destination.NewProject -> {
+                    navController.navigate(ProjectListFragmentDirections.newProject())
+                }
                 else -> throw Navigator.InvalidNavigationException(from, to)
             }
             ResetPassword -> when (to) {
