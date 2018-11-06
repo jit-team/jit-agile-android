@@ -2,6 +2,7 @@ package pl.jitsolutions.agile.presentation.projects.managing
 
 import android.view.View
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.google.android.material.textfield.TextInputLayout
 import pl.jitsolutions.agile.R
@@ -9,12 +10,12 @@ import pl.jitsolutions.agile.R
 @BindingAdapter("bindProjectCreationNameError")
 fun bindProjectCreationNameError(
     view: TextInputLayout,
-    projectCreationCreationState: ProjectCreationViewModel.ProjectCreationState
+    projectCreationState: ProjectCreationViewModel.ProjectCreationState
 ) {
     val errorText: String? = when {
-        projectCreationCreationState.isErrorOfType(ProjectCreationViewModel.ProjectCreationErrorType.PROJECT_NAME) ->
+        projectCreationState.isErrorOfType(ProjectCreationViewModel.ProjectCreationErrorType.PROJECT_NAME) ->
             view.context.getString(R.string.project_creation_screen_error_invalid_project_name)
-        projectCreationCreationState.isErrorOfType(ProjectCreationViewModel.ProjectCreationErrorType.PROJECT_ALREADY_EXIST) ->
+        projectCreationState.isErrorOfType(ProjectCreationViewModel.ProjectCreationErrorType.PROJECT_ALREADY_EXIST) ->
             view.context.getString(R.string.project_creation_screen_error_project_already_exist)
         else -> null
     }
@@ -25,19 +26,19 @@ fun bindProjectCreationNameError(
 @BindingAdapter("bindProjectCreationPasswordError")
 fun bindProjectCreationPasswordError(
     view: TextInputLayout,
-    projectCreationCreationState: ProjectCreationViewModel.ProjectCreationState
+    projectCreationState: ProjectCreationViewModel.ProjectCreationState
 ) {
     view.error = view.resources.getString(R.string.project_creation_screen_error_invalid_password)
     view.isErrorEnabled =
-        projectCreationCreationState.isErrorOfType(ProjectCreationViewModel.ProjectCreationErrorType.PASSWORD)
+        projectCreationState.isErrorOfType(ProjectCreationViewModel.ProjectCreationErrorType.PASSWORD)
 }
 
 @BindingAdapter("bindProjectCreationProgressVisibility")
 fun bindProjectCreationProgressVisibility(
     progressBar: ProgressBar,
-    projectCreationCreationState: ProjectCreationViewModel.ProjectCreationState
+    projectCreationState: ProjectCreationViewModel.ProjectCreationState
 ) {
-    progressBar.visibility = when (projectCreationCreationState) {
+    progressBar.visibility = when (projectCreationState) {
         ProjectCreationViewModel.ProjectCreationState.None -> View.INVISIBLE
         ProjectCreationViewModel.ProjectCreationState.InProgress -> View.VISIBLE
         is ProjectCreationViewModel.ProjectCreationState.Error -> View.INVISIBLE
@@ -46,11 +47,27 @@ fun bindProjectCreationProgressVisibility(
 }
 
 @BindingAdapter("bindProjectCreationEditingEnabled")
-fun bindProjectCreationEditingEnabled(view: View, projectCreationCreationState: ProjectCreationViewModel.ProjectCreationState) {
-    view.isEnabled = when (projectCreationCreationState) {
+fun bindProjectCreationEditingEnabled(
+    view: View,
+    projectCreationState: ProjectCreationViewModel.ProjectCreationState
+) {
+    view.isEnabled = when (projectCreationState) {
         ProjectCreationViewModel.ProjectCreationState.None -> true
         ProjectCreationViewModel.ProjectCreationState.InProgress -> false
         is ProjectCreationViewModel.ProjectCreationState.Error -> true
         ProjectCreationViewModel.ProjectCreationState.Success -> false
     }
+}
+
+@BindingAdapter("bindProjectCreationUnknownErrorVisibility")
+fun bindProjectCreationUnknownErrorVisibility(view: TextView, projectCreationState: ProjectCreationViewModel.ProjectCreationState) {
+    val errorText: String? = when {
+        projectCreationState.isErrorOfType(ProjectCreationViewModel.ProjectCreationErrorType.SERVER) ->
+            view.context.getString(R.string.project_creation_screen_error_network)
+        projectCreationState.isErrorOfType(ProjectCreationViewModel.ProjectCreationErrorType.UNKNOWN) ->
+            view.context.getString(R.string.project_creation_screen_error_unknown)
+        else -> null
+    }
+    view.text = errorText
+    view.visibility = if (errorText != null) View.VISIBLE else View.INVISIBLE
 }

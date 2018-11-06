@@ -13,6 +13,7 @@ import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Reset
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Splash
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectCreation
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectAdding
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectJoining
 import pl.jitsolutions.agile.presentation.projects.ProjectListFragmentDirections
 
 class AndroidNavigator(context: Context) : Navigator {
@@ -69,6 +70,10 @@ class AndroidNavigator(context: Context) : Navigator {
                 ProjectList -> navController.popBackStack()
                 else -> throw Navigator.InvalidNavigationException(from, to)
             }
+            ProjectJoining -> when(to) {
+                ProjectList -> navController.popBackStack()
+                else -> throw Navigator.InvalidNavigationException(from, to)
+            }
         }
     }
 
@@ -88,6 +93,10 @@ class AndroidNavigator(context: Context) : Navigator {
             }
             ProjectCreation -> {
                 navigate(ProjectCreation, ProjectList)
+                true
+            }
+            ProjectJoining -> {
+                navigate(ProjectJoining, ProjectList)
                 true
             }
             else -> false

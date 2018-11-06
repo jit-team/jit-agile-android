@@ -2,10 +2,6 @@ package pl.jitsolutions.agile.repository
 
 import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseNetworkException
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthInvalidUserException
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
@@ -25,6 +21,7 @@ import pl.jitsolutions.agile.repository.firebase.isResponseOk
 import pl.jitsolutions.agile.repository.firebase.toFirebaseObject
 import pl.jitsolutions.agile.repository.firebase.toFirebaseObjects
 import pl.jitsolutions.agile.repository.firebase.toProject
+import java.net.UnknownHostException
 import kotlin.coroutines.experimental.suspendCoroutine
 
 class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRepository {
@@ -92,6 +89,24 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
         }.await()
     }
 
+    override suspend fun joinProject(projectName: String, password: String): Response<Unit> {
+        return CoroutineScope(dispatcher).async {
+            suspendCoroutine<Response<Unit>> { continuation ->
+                val data = mutableMapOf("projectName" to projectName, "password" to password)
+                functions
+                    .getHttpsCallable("joinProject")
+                    .call(data)
+                    .addOnSuccessListener {
+                        continuation.resume(response(Unit))
+                    }
+                    .addOnFailureListener {
+                        it.printStackTrace()
+                        continuation.resume(errorResponse(error = retrieveError(it)))
+                    }
+            }
+        }.await()
+    }
+
     private fun handleProjectResponse(task: Task<DocumentSnapshot>): Response<Project> {
         return when {
             task.isResponseOk() -> {
@@ -138,15 +153,15 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
         }.await()
     }
 
-    override suspend fun createNewProject(projectName: String, password: String): Response<String> {
+    override suspend fun createNewProject(projectName: String, password: String): Response<Unit> {
         return CoroutineScope(dispatcher).async {
-            suspendCoroutine<Response<String>> { continuation ->
+            suspendCoroutine<Response<Unit>> { continuation ->
                 val data = mutableMapOf("projectName" to projectName, "password" to password)
                 functions
                     .getHttpsCallable("newProject")
                     .call(data)
                     .addOnSuccessListener {
-                        continuation.resume(response("newProject"))
+                        continuation.resume(response(Unit))
                     }
                     .addOnFailureListener {
                         it.printStackTrace()
@@ -169,14 +184,11 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
     }
 
     // TODO need to be changed to ProjectRepository errors
-    private fun retrieveError(exception: Exception): UserRepository.Error {
+    private fun retrieveError(exception: Exception): ProjectRepository.Error {
         return when (exception) {
-            is FirebaseAuthWeakPasswordException -> UserRepository.Error.WeakPassword
-            is FirebaseAuthInvalidUserException -> UserRepository.Error.UserNotFound
-            is FirebaseAuthInvalidCredentialsException -> UserRepository.Error.InvalidPassword
-            is FirebaseAuthUserCollisionException -> UserRepository.Error.UserAlreadyExist
-            is FirebaseNetworkException -> UserRepository.Error.ServerConnection
-            else -> UserRepository.Error.UnknownError
+            is FirebaseNetworkException -> ProjectRepository.Error.ServerConnection
+            is UnknownHostException -> ProjectRepository.Error.ServerConnection
+            else -> ProjectRepository.Error.UnknownError
         }
     }
 }

@@ -19,7 +19,7 @@
                 android:background="?attr/colorPrimary"
                 app:bindProjectAddingBackArrowVisibility="@{true}"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:title="@string/project_creation_screen_title" />
+                app:title="@string/project_adding_screen_title" />
 
         </com.google.android.material.appbar.AppBarLayout>
 

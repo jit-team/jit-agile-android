@@ -15,7 +15,7 @@ class ProjectAddingPagerAdapter(
     override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> ProjectCreationFragment()
-            1 -> ProjectCreationFragment()
+            1 -> ProjectJoiningFragment()
             else -> throw Exception()
         }
     }

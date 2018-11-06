@@ -9,8 +9,9 @@ interface ProjectRepository {
     suspend fun getProject(projectId: String): Response<Project>
     suspend fun getUsersAssignedToProject(projectId: String): Response<List<User>>
     suspend fun leaveProject(projectId: String): Response<Unit>
-    suspend fun createNewProject(projectName: String, password: String): Response<String>
+    suspend fun createNewProject(projectName: String, password: String): Response<Unit>
     suspend fun deleteProject(projectId: String): Response<Unit>
+    suspend fun joinProject(projectName: String, password: String): Response<Unit>
 
     sealed class Error(message: String? = null) : Throwable(message) {
         object UserNotFound : Error()
@@ -18,5 +19,6 @@ interface ProjectRepository {
         class ProjectNotFound(val projectId: String) :
             Error("Project with id: $projectId not found!")
         object ProjectAlreadyExist : Error()
+        object UnknownError : Error()
     }
 }
