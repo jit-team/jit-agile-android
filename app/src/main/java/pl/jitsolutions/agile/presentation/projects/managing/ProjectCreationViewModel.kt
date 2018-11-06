@@ -7,11 +7,12 @@ import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.usecases.ProjectCreationUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
 import pl.jitsolutions.agile.presentation.navigation.Navigator
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectCreation
 import pl.jitsolutions.agile.utils.mutableLiveData
 
 class ProjectCreationViewModel(
     private val projectCreationUseCase: ProjectCreationUseCase,
-    val navigator: Navigator,
+    private val navigator: Navigator,
     dispatcher: CoroutineDispatcher
 ) : CoroutineViewModel(dispatcher) {
     val projectName = mutableLiveData("")
@@ -53,7 +54,7 @@ class ProjectCreationViewModel(
     }
 
     fun confirmSuccess() {
-        navigator.navigateBack(Navigator.Destination.ProjectCreation)
+        navigator.navigateBack(ProjectCreation)
     }
 
     override fun onCleared() {
