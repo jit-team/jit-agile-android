@@ -31,10 +31,10 @@ class ProjectCreationFragment : BaseFragment() {
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
         viewModel.projectCreationState.observe(this, Observer {
-            if (it == ProjectCreationViewModel.ProjectCreationState.Success)
+            if (it == ProjectCreationViewModel.ProjectCreationState.Success) {
                 showProjectCreationSuccessfulDialog()
+            }
         })
-        showProjectCreationSuccessfulDialog()
         return binding.root
     }
 
