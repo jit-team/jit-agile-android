@@ -79,5 +79,7 @@
     <string name="project_creation_screen_error_invalid_project_name">Invalid project name</string>
     <string name="project_creation_screen_error_project_already_exist">Project already exist</string>
     <string name="project_creation_screen_error_invalid_password">Invalid password</string>
+    <string name="project_creation_screen_dialog_project_has_been_created_text">Project has been created</string>
+    <string name="project_creation_screen_dialog_positive_text">OK</string>
 
 </resources>

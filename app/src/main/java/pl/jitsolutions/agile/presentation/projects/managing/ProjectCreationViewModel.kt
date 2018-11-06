@@ -6,10 +6,13 @@ import kotlinx.coroutines.experimental.launch
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.usecases.ProjectCreationUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
+import pl.jitsolutions.agile.presentation.navigation.Navigator
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectCreation
 import pl.jitsolutions.agile.utils.mutableLiveData
 
 class ProjectCreationViewModel(
     private val projectCreationUseCase: ProjectCreationUseCase,
+    private val navigator: Navigator,
     dispatcher: CoroutineDispatcher
 ) : CoroutineViewModel(dispatcher) {
     val projectName = mutableLiveData("")
@@ -48,6 +51,10 @@ class ProjectCreationViewModel(
                 projectCreationState.value = ProjectCreationState.Error(error)
             }
         }
+    }
+
+    fun confirmSuccess() {
+        navigator.navigateBack(ProjectCreation)
     }
 
     override fun onCleared() {
