@@ -138,6 +138,24 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
         }.await()
     }
 
+    override suspend fun createNewProject(projectName: String, password: String): Response<String> {
+        return CoroutineScope(dispatcher).async {
+            suspendCoroutine<Response<String>> { continuation ->
+                val data = mutableMapOf("projectName" to projectName, "password" to password)
+                functions
+                    .getHttpsCallable("newProject")
+                    .call(data)
+                    .addOnSuccessListener {
+                        continuation.resume(response("newProject"))
+                    }
+                    .addOnFailureListener {
+                        it.printStackTrace()
+                        continuation.resume(errorResponse(error = retrieveError(it)))
+                    }
+            }
+        }.await()
+    }
+
     private fun handleUsersResponse(task: Task<QuerySnapshot>): Response<List<User>> {
         return when {
             task.isResponseOk() -> {

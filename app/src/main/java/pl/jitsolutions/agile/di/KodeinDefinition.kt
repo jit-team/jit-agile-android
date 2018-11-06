@@ -11,6 +11,7 @@ import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
+import pl.jitsolutions.agile.domain.usecases.ProjectCreationUseCase
 import pl.jitsolutions.agile.domain.usecases.DeleteProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.GetApplicationVersionUseCase
 import pl.jitsolutions.agile.domain.usecases.GetCurrentUserProjectsUseCase
@@ -30,6 +31,7 @@ import pl.jitsolutions.agile.presentation.navigation.AndroidNavigator
 import pl.jitsolutions.agile.presentation.navigation.Navigator
 import pl.jitsolutions.agile.presentation.projects.ProjectListViewModel
 import pl.jitsolutions.agile.presentation.projects.details.ProjectDetailsViewModel
+import pl.jitsolutions.agile.presentation.projects.managing.ProjectCreationViewModel
 import pl.jitsolutions.agile.presentation.splash.SplashViewModel
 import pl.jitsolutions.agile.repository.AndroidSystemInfoRepository
 import pl.jitsolutions.agile.repository.FirebaseProjectRepository
@@ -98,6 +100,10 @@ private val useCasesModule = Module(name = "UseCases") {
     }
     bind<LeaveProjectUseCase>() with provider {
         LeaveProjectUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
+    }
+
+    bind<ProjectCreationUseCase>() with provider {
+        ProjectCreationUseCase(instance(), instance(Tags.Dispatchers.USE_CASE))
     }
     bind<DeleteProjectUseCase>() with provider {
         DeleteProjectUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
@@ -172,6 +178,14 @@ private val viewModelsModule = Module(name = "ViewModels") {
                 instance(),
                 instance(),
                 instance(Tags.Parameters.PROJECT_DETAILS_ID),
+                instance(tag = Tags.Dispatchers.MAIN)
+            )
+        }
+    }
+    bind<ViewModelProvider.Factory>(tag = ProjectCreationViewModel::class.java) with provider {
+        viewModelFactory {
+            ProjectCreationViewModel(
+                instance(),
                 instance(tag = Tags.Dispatchers.MAIN)
             )
         }

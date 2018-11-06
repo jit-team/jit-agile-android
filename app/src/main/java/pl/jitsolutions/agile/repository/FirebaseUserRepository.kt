@@ -17,7 +17,6 @@ import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.errorResponse
 import pl.jitsolutions.agile.domain.response
-import pl.jitsolutions.agile.repository.firebase.isResponseOk
 import kotlin.coroutines.experimental.suspendCoroutine
 
 class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : UserRepository {
@@ -30,7 +29,7 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : User
                     firebaseAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener { result ->
                             when {
-                                result.isResponseOk() -> {
+                                result.isSuccessful -> {
                                     continuation.resume(response(result.toUser()))
                                 }
                                 result.exception != null -> {
@@ -91,7 +90,7 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : User
         taskResult: Task<AuthResult>
     ): Response<User> {
         return when {
-            taskResult.isResponseOk() -> {
+            taskResult.isSuccessful -> {
                 val firebaseUser = taskResult.result?.user!!
                 updateUserName(firebaseUser, userName)
                 response(firebaseUser.toUser())
@@ -125,7 +124,7 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : User
                 suspendCoroutine<Response<Void?>> { continuation ->
                     firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener {
                         when {
-                            it.isResponseOk() -> continuation.resume(response(null))
+                            it.isSuccessful -> continuation.resume(response(null))
                             it.exception != null -> continuation.resume(
                                 errorResponse(error = retrieveError(it.exception!!))
                             )

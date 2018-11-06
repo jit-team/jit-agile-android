@@ -48,6 +48,10 @@ class ProjectListViewModel(
         }
     }
 
+    fun createProject() {
+        navigator.navigate(from = ProjectList, to = Navigator.Destination.ProjectCreation)
+    }
+
     fun showProjectDetails(projectId: String) {
         navigator.navigate(from = ProjectList, to = ProjectDetails(projectId))
     }
