@@ -119,6 +119,13 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/projectAdding"
+            app:destination="@id/ProjectAddingFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -143,4 +150,10 @@
         android:name="pl.jitsolutions.agile.presentation.projects.managing.ProjectCreationFragment"
         android:label="ProjectCreationFragment"
         tools:layout="@layout/fragment_project_creation" />
+
+    <fragment
+        android:id="@+id/ProjectAddingFragment"
+        android:name="pl.jitsolutions.agile.presentation.projects.managing.ProjectAddingFragment"
+        android:label="ProjectAddingFragment"
+        tools:layout="@layout/fragment_project_adding" />
 </navigation>

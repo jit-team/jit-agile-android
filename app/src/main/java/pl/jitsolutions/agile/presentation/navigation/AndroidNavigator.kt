@@ -12,6 +12,7 @@ import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Regis
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ResetPassword
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Splash
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectCreation
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectAdding
 import pl.jitsolutions.agile.presentation.projects.ProjectListFragmentDirections
 
 class AndroidNavigator(context: Context) : Navigator {
@@ -50,6 +51,9 @@ class AndroidNavigator(context: Context) : Navigator {
                 }
                 is ProjectCreation -> {
                     navController.navigate(R.id.projectCreation)
+                }
+                is ProjectAdding -> {
+                    navController.navigate(R.id.projectAdding)
                 }
                 else -> throw Navigator.InvalidNavigationException(from, to)
             }

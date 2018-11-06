@@ -10,88 +10,64 @@
             type="pl.jitsolutions.agile.presentation.projects.managing.ProjectCreationViewModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:padding="16dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <com.google.android.material.appbar.AppBarLayout
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/project_creation_project_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            app:bindProjectCreationEditingEnabled="@{viewModel.projectCreationState}"
+            app:bindProjectCreationNameError="@{viewModel.projectCreationState}">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+            <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:bindResetPasswordBackArrowVisibility="@{true}"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:title="@string/project_creation_screen_title" />
+                android:layout_height="wrap_content"
+                android:hint="@string/project_creation_screen_project_label"
+                android:text="@={viewModel.projectName}" />
 
-        </com.google.android.material.appbar.AppBarLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/project_creation_password_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:layout_height="wrap_content"
+            app:bindProjectCreationEditingEnabled="@{viewModel.projectCreationState}"
+            app:bindProjectCreationPasswordError="@{viewModel.projectCreationState}"
+            app:layout_constraintTop_toBottomOf="@+id/project_creation_project_layout">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/project_creation_project_layout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:bindProjectCreationEditingEnabled="@{viewModel.projectCreationState}"
-                app:bindProjectCreationNameError="@{viewModel.projectCreationState}">
+                android:hint="@string/project_creation_screen_password_label"
+                android:inputType="textPassword"
+                android:text="@={viewModel.password}" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/project_creation_screen_project_label"
-                    android:text="@={viewModel.projectName}" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-            </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.createProject()}"
+            android:text="@string/project_creation_screen_create_button_text"
+            app:layout_constraintTop_toBottomOf="@+id/project_creation_password_layout" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/project_creation_password_layout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:bindProjectCreationEditingEnabled="@{viewModel.projectCreationState}"
-                app:bindProjectCreationPasswordError="@{viewModel.projectCreationState}"
-                app:layout_constraintTop_toBottomOf="@+id/project_creation_project_layout">
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/project_creation_progress"
+            style="@android:style/Widget.Material.Light.ProgressBar.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            app:bindProjectCreationProgressVisibility="@{viewModel.projectCreationState}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/project_creation_password_layout" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/project_creation_screen_password_label"
-                    android:inputType="textPassword"
-                    android:text="@={viewModel.password}" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.createProject()}"
-                android:text="@string/project_creation_screen_create_button_text"
-                app:layout_constraintTop_toBottomOf="@+id/project_creation_password_layout" />
-
-            <androidx.core.widget.ContentLoadingProgressBar
-                android:id="@+id/project_creation_progress"
-                style="@android:style/Widget.Material.Light.ProgressBar.Large"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:indeterminate="true"
-                app:bindProjectCreationProgressVisibility="@{viewModel.projectCreationState}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/project_creation_password_layout" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

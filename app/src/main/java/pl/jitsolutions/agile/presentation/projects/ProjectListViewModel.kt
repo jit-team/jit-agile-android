@@ -17,6 +17,7 @@ import pl.jitsolutions.agile.presentation.navigation.Navigator
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Login
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectDetails
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectList
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectAdding
 import pl.jitsolutions.agile.utils.mutableLiveData
 
 class ProjectListViewModel(
@@ -49,7 +50,7 @@ class ProjectListViewModel(
     }
 
     fun createProject() {
-        navigator.navigate(from = ProjectList, to = Navigator.Destination.ProjectCreation)
+        navigator.navigate(from = ProjectList, to = ProjectAdding)
     }
 
     fun showProjectDetails(projectId: String) {

@@ -31,6 +31,7 @@ import pl.jitsolutions.agile.presentation.navigation.AndroidNavigator
 import pl.jitsolutions.agile.presentation.navigation.Navigator
 import pl.jitsolutions.agile.presentation.projects.ProjectListViewModel
 import pl.jitsolutions.agile.presentation.projects.details.ProjectDetailsViewModel
+import pl.jitsolutions.agile.presentation.projects.managing.ProjectAddingViewModel
 import pl.jitsolutions.agile.presentation.projects.managing.ProjectCreationViewModel
 import pl.jitsolutions.agile.presentation.splash.SplashViewModel
 import pl.jitsolutions.agile.repository.AndroidSystemInfoRepository
@@ -187,6 +188,13 @@ private val viewModelsModule = Module(name = "ViewModels") {
             ProjectCreationViewModel(
                 instance(),
                 instance(),
+                instance(tag = Tags.Dispatchers.MAIN)
+            )
+        }
+    }
+    bind<ViewModelProvider.Factory>(tag = ProjectAddingViewModel::class.java) with provider {
+        viewModelFactory {
+            ProjectAddingViewModel(
                 instance(tag = Tags.Dispatchers.MAIN)
             )
         }

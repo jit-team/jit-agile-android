@@ -14,6 +14,7 @@ interface Navigator {
         object ProjectList : Destination()
         class ProjectDetails(val projectId: String) : Destination()
         object ProjectCreation : Destination()
+        object ProjectAdding : Destination()
     }
 
     class InvalidNavigationException(from: Destination, to: Destination) :

@@ -82,4 +82,7 @@
     <string name="project_creation_screen_dialog_project_has_been_created_text">Project has been created</string>
     <string name="project_creation_screen_dialog_positive_text">OK</string>
 
+    <string name="project_adding_screen_tab_create_text">Create</string>
+    <string name="project_adding_screen_tab_join_text">Join</string>
+
 </resources>
