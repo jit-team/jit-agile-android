@@ -186,6 +186,7 @@ private val viewModelsModule = Module(name = "ViewModels") {
         viewModelFactory {
             ProjectCreationViewModel(
                 instance(),
+                instance(),
                 instance(tag = Tags.Dispatchers.MAIN)
             )
         }

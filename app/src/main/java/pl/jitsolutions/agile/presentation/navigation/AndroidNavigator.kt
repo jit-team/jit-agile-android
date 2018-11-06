@@ -61,6 +61,10 @@ class AndroidNavigator(context: Context) : Navigator {
                 ProjectList -> navController.navigateUp()
                 else -> throw Navigator.InvalidNavigationException(from, to)
             }
+            ProjectCreation -> when (to) {
+                ProjectList -> navController.popBackStack()
+                else -> throw Navigator.InvalidNavigationException(from, to)
+            }
         }
     }
 
@@ -76,6 +80,10 @@ class AndroidNavigator(context: Context) : Navigator {
             }
             is ProjectDetails -> {
                 navigate(from, ProjectList)
+                true
+            }
+            ProjectCreation -> {
+                navigate(ProjectCreation, ProjectList)
                 true
             }
             else -> false
