@@ -70,7 +70,7 @@ class AndroidNavigator(context: Context) : Navigator {
                 ProjectList -> navController.popBackStack()
                 else -> throw Navigator.InvalidNavigationException(from, to)
             }
-            ProjectJoining -> when(to) {
+            ProjectJoining -> when (to) {
                 ProjectList -> navController.popBackStack()
                 else -> throw Navigator.InvalidNavigationException(from, to)
             }

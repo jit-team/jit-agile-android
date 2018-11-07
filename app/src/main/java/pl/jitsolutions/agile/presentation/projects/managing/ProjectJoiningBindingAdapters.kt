@@ -28,9 +28,16 @@ fun bindProjectJoiningPasswordError(
     view: TextInputLayout,
     projectJoiningState: ProjectJoiningViewModel.ProjectJoiningState
 ) {
-    view.error = view.resources.getString(R.string.project_joining_screen_error_invalid_password)
-    view.isErrorEnabled =
-        projectJoiningState.isErrorOfType(ProjectJoiningViewModel.ProjectJoiningErrorType.PASSWORD)
+    val errorText: String? = when {
+        projectJoiningState.isErrorOfType(ProjectJoiningViewModel.ProjectJoiningErrorType.PASSWORD) ->
+            view.context.getString(R.string.project_joining_screen_error_empty_password)
+        projectJoiningState.isErrorOfType(ProjectJoiningViewModel.ProjectJoiningErrorType.INVALID_PASSWORD) ->
+            view.context.getString(R.string.project_joining_screen_error_invalid_password)
+        else -> null
+    }
+
+    view.isErrorEnabled = errorText != null
+    view.error = errorText
 }
 
 @BindingAdapter("bindProjectJoiningProgressVisibility")
@@ -60,7 +67,10 @@ fun bindProjectJoiningEditingEnabled(
 }
 
 @BindingAdapter("bindProjectJoiningUnknownErrorVisibility")
-fun bindProjectJoiningUnknownErrorVisibility(view: TextView, projectJoiningState: ProjectJoiningViewModel.ProjectJoiningState) {
+fun bindProjectJoiningUnknownErrorVisibility(
+    view: TextView,
+    projectJoiningState: ProjectJoiningViewModel.ProjectJoiningState
+) {
     val errorText: String? = when {
         projectJoiningState.isErrorOfType(ProjectJoiningViewModel.ProjectJoiningErrorType.SERVER) ->
             view.context.getString(R.string.project_joining_screen_error_network)

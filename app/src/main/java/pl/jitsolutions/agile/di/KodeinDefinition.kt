@@ -103,7 +103,6 @@ private val useCasesModule = Module(name = "UseCases") {
     bind<LeaveProjectUseCase>() with provider {
         LeaveProjectUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
-
     bind<ProjectCreationUseCase>() with provider {
         ProjectCreationUseCase(instance(), instance(Tags.Dispatchers.USE_CASE))
     }

@@ -43,6 +43,7 @@ class ProjectCreationUseCase(
     sealed class Error : Throwable() {
         object EmptyProjectName : Error()
         object EmptyPassword : Error()
+        object InvalidPassword : Error()
         object ProjectAlreadyExist : Error()
         object ServerConnection : Error()
         object Unknown : Error()

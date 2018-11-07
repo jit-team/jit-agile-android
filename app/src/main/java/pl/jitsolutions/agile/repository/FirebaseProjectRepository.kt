@@ -6,6 +6,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.functions.FirebaseFunctions
+import com.google.firebase.functions.FirebaseFunctionsException
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.CoroutineScope
 import kotlinx.coroutines.experimental.async
@@ -186,8 +187,25 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
     // TODO need to be changed to ProjectRepository errors
     private fun retrieveError(exception: Exception): ProjectRepository.Error {
         return when (exception) {
+            is FirebaseFunctionsException -> retrieveCloudFunctionException(exception)
             is FirebaseNetworkException -> ProjectRepository.Error.ServerConnection
             is UnknownHostException -> ProjectRepository.Error.ServerConnection
+            else -> ProjectRepository.Error.UnknownError
+        }
+    }
+
+    private fun retrieveCloudFunctionException(e: FirebaseFunctionsException): ProjectRepository.Error {
+        return when (e.code) {
+            FirebaseFunctionsException.Code.ALREADY_EXISTS -> ProjectRepository.Error.ProjectAlreadyExist
+            FirebaseFunctionsException.Code.NOT_FOUND -> ProjectRepository.Error.ProjectNotFound("")
+            FirebaseFunctionsException.Code.INVALID_ARGUMENT -> retrieveCloudFunctionMessage(e)
+            else -> ProjectRepository.Error.UnknownError
+        }
+    }
+
+    private fun retrieveCloudFunctionMessage(e: FirebaseFunctionsException): ProjectRepository.Error {
+        return when (e.message) {
+            "invalid password" -> ProjectRepository.Error.InvalidPassword
             else -> ProjectRepository.Error.UnknownError
         }
     }

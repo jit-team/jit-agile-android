@@ -92,6 +92,7 @@
     <string name="project_joining_screen_join_button_text">Join</string>
     <string name="project_joining_screen_error_invalid_project_name">Invalid project name</string>
     <string name="project_joining_screen_error_project_not_found">Project not found</string>
+    <string name="project_joining_screen_error_empty_password">Empty password</string>
     <string name="project_joining_screen_error_invalid_password">Invalid password</string>
     <string name="project_joining_screen_dialog_user_has_been_joined_text">Join to project successful</string>
     <string name="project_joining_screen_dialog_positive_text">OK</string>

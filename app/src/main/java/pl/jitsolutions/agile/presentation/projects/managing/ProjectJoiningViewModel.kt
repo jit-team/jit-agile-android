@@ -47,6 +47,7 @@ class ProjectJoiningViewModel(
                     is ProjectJoiningUseCase.Error.EmptyPassword -> ProjectJoiningErrorType.PASSWORD
                     is ProjectJoiningUseCase.Error.ProjectNotFound -> ProjectJoiningErrorType.PROJECT_NOT_FOUND
                     is ProjectJoiningUseCase.Error.ServerConnection -> ProjectJoiningErrorType.SERVER
+                    is ProjectJoiningUseCase.Error.InvalidPassword -> ProjectJoiningErrorType.INVALID_PASSWORD
                     else -> ProjectJoiningErrorType.UNKNOWN
                 }
                 projectJoiningState.value = ProjectJoiningState.Error(error)
@@ -75,5 +76,5 @@ class ProjectJoiningViewModel(
         object Success : ProjectJoiningState()
     }
 
-    enum class ProjectJoiningErrorType { PROJECT_NAME, PROJECT_NOT_FOUND, PASSWORD, SERVER, UNKNOWN }
+    enum class ProjectJoiningErrorType { PROJECT_NAME, PROJECT_NOT_FOUND, PASSWORD, SERVER, UNKNOWN, INVALID_PASSWORD }
 }

@@ -26,6 +26,7 @@ class ProjectJoiningUseCase(
         return when (response.error) {
             is ProjectRepository.Error.ProjectNotFound -> errorResponse(error = Error.ProjectNotFound)
             is ProjectRepository.Error.ServerConnection -> errorResponse(error = Error.ServerConnection)
+            is ProjectRepository.Error.InvalidPassword -> errorResponse(error = Error.InvalidPassword)
             else -> errorResponse(error = Error.Unknown)
         }
     }
@@ -45,6 +46,7 @@ class ProjectJoiningUseCase(
         object EmptyPassword : Error()
         object ProjectNotFound : Error()
         object ServerConnection : Error()
+        object InvalidPassword : Error()
         object Unknown : Error()
     }
 }

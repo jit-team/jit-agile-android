@@ -20,5 +20,6 @@ interface ProjectRepository {
             Error("Project with id: $projectId not found!")
         object ProjectAlreadyExist : Error()
         object UnknownError : Error()
+        object InvalidPassword : Error()
     }
 }
