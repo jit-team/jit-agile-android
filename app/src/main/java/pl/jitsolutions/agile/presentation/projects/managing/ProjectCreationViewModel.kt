@@ -46,6 +46,7 @@ class ProjectCreationViewModel(
                     is ProjectCreationUseCase.Error.EmptyProjectName -> ProjectCreationErrorType.PROJECT_NAME
                     is ProjectCreationUseCase.Error.EmptyPassword -> ProjectCreationErrorType.PASSWORD
                     is ProjectCreationUseCase.Error.ProjectAlreadyExist -> ProjectCreationErrorType.PROJECT_ALREADY_EXIST
+                    is ProjectCreationUseCase.Error.ServerConnection -> ProjectCreationErrorType.SERVER
                     else -> ProjectCreationErrorType.UNKNOWN
                 }
                 projectCreationState.value = ProjectCreationState.Error(error)

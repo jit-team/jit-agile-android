@@ -12,6 +12,8 @@ import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Regis
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ResetPassword
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Splash
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectCreation
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectAdding
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectJoining
 import pl.jitsolutions.agile.presentation.projects.ProjectListFragmentDirections
 
 class AndroidNavigator(context: Context) : Navigator {
@@ -51,6 +53,9 @@ class AndroidNavigator(context: Context) : Navigator {
                 is ProjectCreation -> {
                     navController.navigate(R.id.projectCreation)
                 }
+                is ProjectAdding -> {
+                    navController.navigate(R.id.projectAdding)
+                }
                 else -> throw Navigator.InvalidNavigationException(from, to)
             }
             ResetPassword -> when (to) {
@@ -62,6 +67,10 @@ class AndroidNavigator(context: Context) : Navigator {
                 else -> throw Navigator.InvalidNavigationException(from, to)
             }
             ProjectCreation -> when (to) {
+                ProjectList -> navController.popBackStack()
+                else -> throw Navigator.InvalidNavigationException(from, to)
+            }
+            ProjectJoining -> when (to) {
                 ProjectList -> navController.popBackStack()
                 else -> throw Navigator.InvalidNavigationException(from, to)
             }
@@ -84,6 +93,10 @@ class AndroidNavigator(context: Context) : Navigator {
             }
             ProjectCreation -> {
                 navigate(ProjectCreation, ProjectList)
+                true
+            }
+            ProjectJoining -> {
+                navigate(ProjectJoining, ProjectList)
                 true
             }
             else -> false

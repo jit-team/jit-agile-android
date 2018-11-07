@@ -21,6 +21,7 @@ import pl.jitsolutions.agile.domain.usecases.GetUsersAssignedToProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.LeaveProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.LoginUserUseCase
 import pl.jitsolutions.agile.domain.usecases.LogoutCurrentUserUseCase
+import pl.jitsolutions.agile.domain.usecases.ProjectJoiningUseCase
 import pl.jitsolutions.agile.domain.usecases.UserRegistrationUseCase
 import pl.jitsolutions.agile.domain.usecases.UserResetPasswordUseCase
 import pl.jitsolutions.agile.presentation.authorization.login.LoginViewModel
@@ -32,6 +33,7 @@ import pl.jitsolutions.agile.presentation.navigation.Navigator
 import pl.jitsolutions.agile.presentation.projects.ProjectListViewModel
 import pl.jitsolutions.agile.presentation.projects.details.ProjectDetailsViewModel
 import pl.jitsolutions.agile.presentation.projects.managing.ProjectCreationViewModel
+import pl.jitsolutions.agile.presentation.projects.managing.ProjectJoiningViewModel
 import pl.jitsolutions.agile.presentation.splash.SplashViewModel
 import pl.jitsolutions.agile.repository.AndroidSystemInfoRepository
 import pl.jitsolutions.agile.repository.FirebaseProjectRepository
@@ -101,12 +103,14 @@ private val useCasesModule = Module(name = "UseCases") {
     bind<LeaveProjectUseCase>() with provider {
         LeaveProjectUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
-
     bind<ProjectCreationUseCase>() with provider {
         ProjectCreationUseCase(instance(), instance(Tags.Dispatchers.USE_CASE))
     }
     bind<DeleteProjectUseCase>() with provider {
         DeleteProjectUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
+    }
+    bind<ProjectJoiningUseCase>() with provider {
+        ProjectJoiningUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
 }
 
@@ -185,6 +189,15 @@ private val viewModelsModule = Module(name = "ViewModels") {
     bind<ViewModelProvider.Factory>(tag = ProjectCreationViewModel::class.java) with provider {
         viewModelFactory {
             ProjectCreationViewModel(
+                instance(),
+                instance(),
+                instance(tag = Tags.Dispatchers.MAIN)
+            )
+        }
+    }
+    bind<ViewModelProvider.Factory>(tag = ProjectJoiningViewModel::class.java) with provider {
+        viewModelFactory {
+            ProjectJoiningViewModel(
                 instance(),
                 instance(),
                 instance(tag = Tags.Dispatchers.MAIN)
