@@ -39,7 +39,7 @@ class ProjectJoiningFragment : BaseFragment() {
     }
 
     private fun showProjectJoiningSuccessfulDialog() {
-        this@ProjectJoiningFragment.context?.let {
+        context?.let {
             AlertDialog.Builder(it)
                 .setMessage(R.string.project_joining_screen_dialog_user_has_been_joined_text)
                 .setPositiveButton(R.string.project_joining_screen_dialog_positive_text) { dialog, _ ->
