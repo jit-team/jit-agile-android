@@ -34,7 +34,7 @@ class ProjectAssertion(val project: Project) {
 }
 
 fun <T> ResponseAssertion<T>.hasProject(projectAssertion: ProjectAssertion.() -> Unit) {
-    ProjectAssertion(response.data!! as Project).apply(projectAssertion)
+    ProjectAssertion((response.data!! as Pair<Project, List<User>>).first).apply(projectAssertion)
 }
 
 class UserAssertion(val user: User) {
