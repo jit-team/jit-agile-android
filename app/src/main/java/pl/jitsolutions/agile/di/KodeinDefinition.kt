@@ -11,16 +11,15 @@ import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
-import pl.jitsolutions.agile.domain.usecases.ProjectCreationUseCase
 import pl.jitsolutions.agile.domain.usecases.DeleteProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.GetApplicationVersionUseCase
 import pl.jitsolutions.agile.domain.usecases.GetCurrentUserProjectsUseCase
 import pl.jitsolutions.agile.domain.usecases.GetLoggedUserUseCase
 import pl.jitsolutions.agile.domain.usecases.GetProjectUseCase
-import pl.jitsolutions.agile.domain.usecases.GetUsersAssignedToProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.LeaveProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.LoginUserUseCase
 import pl.jitsolutions.agile.domain.usecases.LogoutCurrentUserUseCase
+import pl.jitsolutions.agile.domain.usecases.ProjectCreationUseCase
 import pl.jitsolutions.agile.domain.usecases.ProjectJoiningUseCase
 import pl.jitsolutions.agile.domain.usecases.UserRegistrationUseCase
 import pl.jitsolutions.agile.domain.usecases.UserResetPasswordUseCase
@@ -96,9 +95,6 @@ private val useCasesModule = Module(name = "UseCases") {
     }
     bind<GetCurrentUserProjectsUseCase>() with provider {
         GetCurrentUserProjectsUseCase(instance(), instance(), instance(Tags.Dispatchers.USE_CASE))
-    }
-    bind<GetUsersAssignedToProjectUseCase>() with provider {
-        GetUsersAssignedToProjectUseCase(instance(), instance(Tags.Dispatchers.USE_CASE))
     }
     bind<LeaveProjectUseCase>() with provider {
         LeaveProjectUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
@@ -176,7 +172,6 @@ private val viewModelsModule = Module(name = "ViewModels") {
     bind<ViewModelProvider.Factory>(tag = ProjectDetailsViewModel::class.java) with provider {
         viewModelFactory {
             ProjectDetailsViewModel(
-                instance(),
                 instance(),
                 instance(),
                 instance(),

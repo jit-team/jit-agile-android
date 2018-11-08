@@ -56,14 +56,31 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
         )
     }
 
-    override suspend fun getProject(projectId: String): Response<Project> {
+    private fun Map<String, Any>.toDomainUser(): User {
+        return User(
+            id = this["id"] as String,
+            name = this["displayName"] as? String ?: "",
+            email = this["email"] as String
+        )
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    override suspend fun getProject(projectId: String): Response<Pair<Project, List<User>>> {
         return CoroutineScope(dispatcher).async {
-            suspendCoroutine<Response<Project>> { continuation ->
-                firestore.collection("projects")
-                    .document(projectId)
-                    .get()
-                    .addOnCompleteListener { task ->
-                        continuation.resume(handleProjectResponse(task))
+            suspendCoroutine<Response<Pair<Project, List<User>>>> { continuation ->
+                val data = mutableMapOf("projectId" to projectId)
+                functions
+                    .getHttpsCallable("getProject")
+                    .call(data)
+                    .addOnSuccessListener { result ->
+                        val dataMap = result.data as Map<String, Any>
+                        val project = dataMap.toDomainProject()
+                        val users = (dataMap["users"] as List<Map<String, Any>>)
+                            .map { it.toDomainUser() }
+                        continuation.resume(response(Pair(project, users)))
+                    }
+                    .addOnFailureListener {
+                        continuation.resume(errorResponse(error = retrieveError(it)))
                     }
             }
         }.await()

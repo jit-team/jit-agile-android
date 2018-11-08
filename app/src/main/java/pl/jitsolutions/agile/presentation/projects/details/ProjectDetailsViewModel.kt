@@ -10,7 +10,6 @@ import pl.jitsolutions.agile.domain.Response.Status.SUCCESS
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.usecases.DeleteProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.GetProjectUseCase
-import pl.jitsolutions.agile.domain.usecases.GetUsersAssignedToProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.LeaveProjectUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
 import pl.jitsolutions.agile.presentation.navigation.Navigator
@@ -18,7 +17,6 @@ import pl.jitsolutions.agile.utils.mutableLiveData
 
 class ProjectDetailsViewModel(
     private val getProjectUseCase: GetProjectUseCase,
-    private val getUsersAssignedToProjectUseCase: GetUsersAssignedToProjectUseCase,
     private val leaveProjectUseCase: LeaveProjectUseCase,
     private val deleteProjectUseCase: DeleteProjectUseCase,
     private val navigator: Navigator,
@@ -76,10 +74,8 @@ class ProjectDetailsViewModel(
     }
 
     private fun executeGetProjectDetails() = launch {
-        var resultState = executeGetProject()
-        if (resultState !is State.Error) {
-            resultState = executeGetUsers()
-        }
+        state.value = State.InProgress
+        val resultState = executeGetProject()
         state.value = resultState
 
         if (resultState is State.Error) {
@@ -92,7 +88,10 @@ class ProjectDetailsViewModel(
         val result = getProjectUseCase.executeAsync(params).await()
         return when (result.status) {
             SUCCESS -> {
-                project.value = result.data!!
+                with(result.data!!) {
+                    project.value = first
+                    users.value = second
+                }
                 State.Idle
             }
             ERROR -> when (result.error!!) {
@@ -102,18 +101,6 @@ class ProjectDetailsViewModel(
                     State.Error(ErrorType.PROJECT_NOT_FOUND)
                 else -> State.Error(ErrorType.CONNECTION)
             }
-        }
-    }
-
-    private suspend fun executeGetUsers(): State {
-        val params = GetUsersAssignedToProjectUseCase.Params(projectId)
-        val result = getUsersAssignedToProjectUseCase.executeAsync(params).await()
-        return when (result.status) {
-            SUCCESS -> {
-                users.value = result.data!!
-                if (users.value!!.isEmpty()) State.Empty else State.Idle
-            }
-            ERROR -> State.Error(ErrorType.CONNECTION)
         }
     }
 
