@@ -6,7 +6,7 @@ import pl.jitsolutions.agile.domain.User
 
 interface ProjectRepository {
     suspend fun getProjects(userId: String): Response<List<Project>>
-    suspend fun getProject(projectId: String): Response<Project>
+    suspend fun getProject(projectId: String): Response<Pair<Project, List<User>>>
     suspend fun getUsersAssignedToProject(projectId: String): Response<List<User>>
     suspend fun leaveProject(projectId: String): Response<Unit>
     suspend fun createNewProject(projectName: String, password: String): Response<Unit>

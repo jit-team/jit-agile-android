@@ -5,15 +5,16 @@ import pl.jitsolutions.agile.domain.Project
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.Response.Status.ERROR
 import pl.jitsolutions.agile.domain.Response.Status.SUCCESS
+import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.errorResponse
 import pl.jitsolutions.agile.repository.ProjectRepository
 
 class GetProjectUseCase(
     private val projectRepository: ProjectRepository,
     dispatcher: CoroutineDispatcher
-) : UseCase<GetProjectUseCase.Params, Project>(dispatcher) {
+) : UseCase<GetProjectUseCase.Params, Pair<Project, List<User>>>(dispatcher) {
 
-    override suspend fun build(params: Params): Response<Project> {
+    override suspend fun build(params: Params): Response<Pair<Project, List<User>>> {
         val response = projectRepository.getProject(params.projectId)
         return when (response.status) {
             SUCCESS -> response
