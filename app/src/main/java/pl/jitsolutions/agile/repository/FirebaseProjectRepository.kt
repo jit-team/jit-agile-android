@@ -30,17 +30,30 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
     private val firestore = FirebaseFirestore.getInstance()
     private val functions = FirebaseFunctions.getInstance()
 
+    @Suppress("UNCHECKED_CAST")
     override suspend fun getProjects(userId: String): Response<List<Project>> {
         return CoroutineScope(dispatcher).async {
             suspendCoroutine<Response<List<Project>>> { continuation ->
-                firestore.collection("projects")
-                    .whereEqualTo("users.$userId", true)
-                    .get()
-                    .addOnCompleteListener { task ->
-                        continuation.resume(handleProjectsResponse(task))
+                functions
+                    .getHttpsCallable("getProjects")
+                    .call()
+                    .addOnSuccessListener { result ->
+                        val projects = (result.data as ArrayList<HashMap<String, Any>>)
+                            .map { it.toDomainProject() }
+                        continuation.resume(response(projects))
+                    }
+                    .addOnFailureListener {
+                        continuation.resume(errorResponse(error = retrieveError(it)))
                     }
             }
         }.await()
+    }
+
+    private fun Map<String, Any>.toDomainProject(): Project {
+        return Project(
+            id = this["id"] as String,
+            name = this["name"] as String
+        )
     }
 
     override suspend fun getProject(projectId: String): Response<Project> {
