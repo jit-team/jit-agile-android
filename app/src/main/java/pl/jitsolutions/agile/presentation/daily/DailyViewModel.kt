@@ -9,9 +9,7 @@ import pl.jitsolutions.agile.utils.mutableLiveData
 class DailyViewModel(dispatcher: CoroutineDispatcher) : CoroutineViewModel(dispatcher) {
 
     val users = MutableLiveData<List<User>>()
-
     val project = mutableLiveData("Project name")
-
     val dailyState = mutableLiveData<DailyState>(DailyState.Prepare)
 
     init {

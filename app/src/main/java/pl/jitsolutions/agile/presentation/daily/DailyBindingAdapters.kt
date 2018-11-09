@@ -50,8 +50,9 @@ fun bindFirstButton(button: Button, dailyState: DailyViewModel.DailyState) {
 
 @BindingAdapter("bindDailyCountDownTimer")
 fun bindCountDownTimer(chronometer: Chronometer, dailyState: DailyViewModel.DailyState) {
-    if (dailyState is DailyViewModel.DailyState.Prepare)
+    if (dailyState is DailyViewModel.DailyState.Prepare) {
         return
+    }
     chronometer.setBase(System.currentTimeMillis())
     chronometer.start()
 }

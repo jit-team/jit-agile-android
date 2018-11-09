@@ -11,50 +11,50 @@ class Chronometer(context: Context, attributes: AttributeSet) : TextView(
     attributes
 ) {
 
-    private var mBase = 0L
+    private var based = 0L
     private val timeElapsed = StringBuilder()
-    private var mRunning = false
-    private var mStarted = false
+    private var running = false
+    private var started = false
 
     init {
         text = context.getString(R.string.daily_screen_duration_label)
     }
 
     fun setBase(dailyStartInMillis: Long) {
-        mBase = dailyStartInMillis + (15 * 60 * 1000)
+        based = dailyStartInMillis + (15 * 60 * 1000)
     }
 
     fun start() {
-        mStarted = true
+        started = true
         updateRunning()
     }
 
     fun stop() {
-        mStarted = false
+        started = false
         updateRunning()
     }
 
     private fun updateText(now: Long) {
-        val seconds = (mBase - now) / 1000
+        val seconds = (based - now) / 1000
         text = DateUtils.formatElapsedTime(timeElapsed, seconds)
     }
 
     private fun updateRunning() {
-        val running = isShown && mStarted
-        if (running != mRunning) {
+        val running = isShown && started
+        if (running != this.running) {
             if (running) {
                 updateText(System.currentTimeMillis())
                 postDelayed(mTickRunnable, 500)
             } else {
                 removeCallbacks(mTickRunnable)
             }
-            mRunning = running
+            this.running = running
         }
     }
 
     private val mTickRunnable = object : Runnable {
         override fun run() {
-            if (mRunning) {
+            if (running) {
                 updateText(System.currentTimeMillis())
                 postDelayed(this, 1000)
             }

@@ -4,8 +4,7 @@ import pl.jitsolutions.agile.R
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.presentation.common.BaseBindableAdapter
 
-class DailyListAdapter(onUserClick: (User) -> Unit) :
-    BaseBindableAdapter<User>(onUserClick) {
+class DailyListAdapter : BaseBindableAdapter<User>({}) {
 
     var users: List<User> = emptyList()
         set(value) {
