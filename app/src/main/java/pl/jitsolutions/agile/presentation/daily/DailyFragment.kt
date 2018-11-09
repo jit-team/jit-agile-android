@@ -29,7 +29,7 @@ class DailyFragment : BaseFragment() {
         val viewModel =
             ViewModelProviders.of(this, viewModelFactory).get(DailyViewModel::class.java)
         binding.viewModel = viewModel
-        binding.adapter = DailyListAdapter {}
+        binding.adapter = DailyListAdapter()
         binding.setLifecycleOwner(this)
         return binding.root
     }
