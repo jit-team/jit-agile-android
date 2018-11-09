@@ -14,6 +14,8 @@ import pl.jitsolutions.agile.domain.usecases.LeaveProjectUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
 import pl.jitsolutions.agile.presentation.navigation.Navigator
 import pl.jitsolutions.agile.utils.mutableLiveData
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectDetails
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Daily
 
 class ProjectDetailsViewModel(
     private val getProjectUseCase: GetProjectUseCase,
@@ -60,6 +62,13 @@ class ProjectDetailsViewModel(
             SUCCESS -> navigator.navigateBack(Navigator.Destination.ProjectDetails(projectId))
             ERROR -> handleLeaveProjectError(result)
         }
+    }
+
+    fun proceedToDaily() {
+        navigator.navigate(
+            from = ProjectDetails(""),
+            to = Daily
+        )
     }
 
     private fun handleLeaveProjectError(result: Response<Unit>) {

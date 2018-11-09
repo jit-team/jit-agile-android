@@ -14,6 +14,7 @@ import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Splas
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectCreation
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectAdding
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectJoining
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Daily
 import pl.jitsolutions.agile.presentation.projects.ProjectListFragmentDirections
 
 class AndroidNavigator(context: Context) : Navigator {
@@ -64,6 +65,7 @@ class AndroidNavigator(context: Context) : Navigator {
             }
             is ProjectDetails -> when (to) {
                 ProjectList -> navController.navigateUp()
+                is Daily -> navController.navigate(R.id.daily)
                 else -> throw Navigator.InvalidNavigationException(from, to)
             }
             ProjectCreation -> when (to) {
