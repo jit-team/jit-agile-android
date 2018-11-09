@@ -1,7 +1,7 @@
 <resources>
     <string name="application_name">JIT Agile</string>
 
-    <string name="splash_screen_logo_placeholder">JIT Solutions \nsp. z o.o.</string>
+    <string name="splash_screen_logo_placeholder">JIT Team</string>
     <string name="splash_screen_version">Ver. %s</string>
 
     <string name="login_screen_title">Login</string>
@@ -98,4 +98,10 @@
     <string name="project_joining_screen_dialog_positive_text">OK</string>
     <string name="project_joining_screen_error_unknown">Unknown error, please try again</string>
     <string name="project_joining_screen_error_network">Network error</string>
+
+    <string name="daily_screen_start_button_text">Start</string>
+    <string name="daily_screen_next_button_text">Next</string>
+    <string name="daily_screen_skip_button_text">Skip</string>
+    <string name="daily_screen_end_button_text">End</string>
+    <string name="daily_screen_duration_label">15:00</string>
 </resources>

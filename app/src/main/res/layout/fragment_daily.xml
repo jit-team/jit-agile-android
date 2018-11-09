@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="adapter"
+            type="pl.jitsolutions.agile.presentation.daily.DailyListAdapter" />
+
+        <variable
+            name="viewModel"
+            type="pl.jitsolutions.agile.presentation.daily.DailyViewModel" />
+
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:bindDailyBackgroundColor="@{viewModel.dailyState}">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <ImageButton
+                android:id="@+id/daily_leave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="16dp"
+                android:src="@drawable/ic_arrow_back"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/daily_project_name"
+                style="@style/TextAppearance.AppCompat.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.project}"
+                app:layout_constraintBottom_toBottomOf="@+id/daily_leave"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/daily_leave"
+                tools:text="Jit Agile Project" />
+
+            <pl.jitsolutions.agile.presentation.daily.Chronometer
+                android:id="@+id/count_down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="70sp"
+                android:text="prol"
+                app:bindDailyCountDownTimer="@{viewModel.dailyState}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/daily_leave" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:bindDailyUserList="@{viewModel.users}"
+                app:bindDailyUserListAdapter="@{adapter}"
+                app:bindRecyclerViewHasFixedSize="@{true}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toTopOf="@id/daily_bottom_buttons"
+                app:layout_constraintTop_toBottomOf="@id/count_down" />
+
+            <LinearLayout
+                android:id="@+id/daily_bottom_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal"
+                android:weightSum="100"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/daily_button_1"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="25"
+                    android:onClick="@{() -> viewModel.firstButtonClick()}"
+                    android:textSize="20sp"
+                    app:bindDailyFirstButton="@{viewModel.dailyState}"
+                    tools:text="end" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="3" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/daily_button_2"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight="72"
+                    android:onClick="@{() -> viewModel.secondButtonClick()}"
+                    android:textSize="20sp"
+                    app:bindDailySecondButton="@{viewModel.dailyState}"
+                    tools:text="next" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

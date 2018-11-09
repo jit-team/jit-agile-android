@@ -14,4 +14,8 @@
     <color name="project_list_screen_error_text">@color/red_600</color>
     <color name="project_joining_screen_error_text">@color/red_600</color>
     <color name="project_creation_screen_error_text">@color/red_600</color>
+    <color name="daily_prepare">#ffeb91</color>
+    <color name="daily_wait">#91d9ff</color>
+    <color name="daily_turn">#a5ff91</color>
+    <color name="daily_end">#fbfdb7d6</color>
 </resources>

@@ -27,6 +27,7 @@ import pl.jitsolutions.agile.presentation.authorization.login.LoginViewModel
 import pl.jitsolutions.agile.presentation.authorization.registration.RegistrationViewModel
 import pl.jitsolutions.agile.presentation.authorization.registrationSuccessful.RegistrationSuccessfulViewModel
 import pl.jitsolutions.agile.presentation.authorization.resetPassword.ResetPasswordViewModel
+import pl.jitsolutions.agile.presentation.daily.DailyViewModel
 import pl.jitsolutions.agile.presentation.navigation.AndroidNavigator
 import pl.jitsolutions.agile.presentation.navigation.Navigator
 import pl.jitsolutions.agile.presentation.projects.ProjectListViewModel
@@ -197,6 +198,11 @@ private val viewModelsModule = Module(name = "ViewModels") {
                 instance(),
                 instance(tag = Tags.Dispatchers.MAIN)
             )
+        }
+    }
+    bind<ViewModelProvider.Factory>(tag = DailyViewModel::class.java) with provider {
+        viewModelFactory {
+            DailyViewModel(instance(tag = Tags.Dispatchers.MAIN))
         }
     }
 }

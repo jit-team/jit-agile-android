@@ -16,6 +16,7 @@ interface Navigator {
         object ProjectCreation : Destination()
         object ProjectAdding : Destination()
         object ProjectJoining : Destination()
+        object Daily : Destination()
     }
 
     class InvalidNavigationException(from: Destination, to: Destination) :
