@@ -24,4 +24,8 @@ abstract class BaseFragment : Fragment(), KodeinAware {
         super.onAttach(context)
         kodeinTrigger.trigger()
     }
+
+    open fun onBackPressed(): Boolean {
+        return false
+    }
 }

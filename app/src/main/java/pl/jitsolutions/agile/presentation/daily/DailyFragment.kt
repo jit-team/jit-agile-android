@@ -16,6 +16,7 @@ import pl.jitsolutions.agile.di.Tags
 import pl.jitsolutions.agile.presentation.common.BaseFragment
 
 class DailyFragment : BaseFragment() {
+    lateinit var viewModel: DailyViewModel
 
     override val fragmentModule = Kodein.Module("DailyFragment") {
         constant(tag = Tags.Parameters.DAILY_ID) with
@@ -34,11 +35,16 @@ class DailyFragment : BaseFragment() {
             false
         )
         val viewModelFactory: ViewModelProvider.Factory by instance(tag = DailyViewModel::class.java)
-        val viewModel =
+        viewModel =
             ViewModelProviders.of(this, viewModelFactory).get(DailyViewModel::class.java)
         binding.viewModel = viewModel
         binding.adapter = DailyListAdapter()
         binding.setLifecycleOwner(this)
         return binding.root
+    }
+
+    override fun onBackPressed(): Boolean {
+        showDailyLeaveConfirmation(view!!) { viewModel.leaveDaily() }
+        return true
     }
 }

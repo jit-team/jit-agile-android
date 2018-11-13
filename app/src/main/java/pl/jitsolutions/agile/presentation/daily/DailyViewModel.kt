@@ -7,12 +7,16 @@ import pl.jitsolutions.agile.domain.Response.Status.ERROR
 import pl.jitsolutions.agile.domain.Response.Status.SUCCESS
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.usecases.GetDailyUseCase
+import pl.jitsolutions.agile.domain.usecases.LeaveDailyUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
+import pl.jitsolutions.agile.presentation.navigation.Navigator
 import pl.jitsolutions.agile.utils.mutableLiveData
 
 class DailyViewModel(
     private val getDailyUseCase: GetDailyUseCase,
+    private val leaveDailyUseCase: LeaveDailyUseCase,
     private val dailyId: String,
+    private val navigator: Navigator,
     dispatcher: CoroutineDispatcher
 ) : CoroutineViewModel(dispatcher) {
 
@@ -37,6 +41,21 @@ class DailyViewModel(
                 dailyState.value = DailyState.Prepare
                 users.value = daily.users
             }
+            ERROR -> {
+                // TODO
+            }
+        }
+
+        state.value = State.Idle
+    }
+
+    fun leaveDaily() = launch {
+        state.value = State.InProgress
+
+        val params = LeaveDailyUseCase.Params(dailyId)
+        val result = leaveDailyUseCase.executeAsync(params).await()
+        when (result.status) {
+            SUCCESS -> navigator.navigateBack(Navigator.Destination.Daily(dailyId))
             ERROR -> {
                 // TODO
             }

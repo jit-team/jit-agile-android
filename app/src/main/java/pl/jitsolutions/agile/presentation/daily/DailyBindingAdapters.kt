@@ -11,6 +11,7 @@ import android.text.style.StyleSpan
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
@@ -139,4 +140,29 @@ fun bindDailyProgressVisibility(view: View, state: DailyViewModel.State) {
         DailyViewModel.State.Idle -> View.INVISIBLE
         DailyViewModel.State.InProgress -> View.VISIBLE
     }
+}
+
+@BindingAdapter("bindDailyLeave")
+fun bindDailyLeave(view: View, onLeaveListener: () -> Unit) {
+    view.setOnClickListener {
+        showDailyLeaveConfirmation(view, onLeaveListener)
+    }
+}
+
+fun showDailyLeaveConfirmation(
+    view: View,
+    onLeaveListener: () -> Unit
+) {
+    AlertDialog.Builder(view.context)
+        .setTitle(R.string.daily_screen_leave_confirmation_title)
+        .setMessage(R.string.daily_screen_leave_confirmation_message)
+        .setPositiveButton(R.string.daily_screen_leave_confirmation_positive_button_text) { _, _ ->
+            onLeaveListener.invoke()
+        }
+        .setNegativeButton(
+            R.string.daily_screen_leave_confirmation_negative_button_text,
+            null
+        )
+        .setCancelable(true)
+        .show()
 }

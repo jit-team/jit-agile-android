@@ -87,6 +87,7 @@ class AndroidNavigator(context: Context) : Navigator {
     }
 
     override fun navigateBack(from: Navigator.Destination?): Boolean {
+        val navController = activity.findNavController(android.R.id.content)
         return when (from) {
             RegistrationSuccessful -> {
                 navigate(RegistrationSuccessful, ProjectList)
@@ -106,6 +107,10 @@ class AndroidNavigator(context: Context) : Navigator {
             }
             ProjectJoining -> {
                 navigate(ProjectJoining, ProjectList)
+                true
+            }
+            is Daily -> {
+                navController.navigateUp()
                 true
             }
             else -> false

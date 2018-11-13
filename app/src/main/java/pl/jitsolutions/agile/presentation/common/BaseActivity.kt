@@ -39,14 +39,15 @@ abstract class BaseActivity : AppCompatActivity(), KodeinAware {
     override fun onSupportNavigateUp() = findNavController(this, android.R.id.content).navigateUp()
 
     override fun onBackPressed() {
-        if (!navigator.navigateBack(findDestination())) {
-            super.onBackPressed()
-        }
-    }
-
-    private fun findDestination(): Navigator.Destination? {
         val navHost = supportFragmentManager.findFragmentByTag("NavHostFragment")!!
         val topFragment = navHost.childFragmentManager.fragments.last() as BaseFragment
-        return topFragment.destination
+
+        if (topFragment.onBackPressed()) {
+            return
+        }
+
+        if (!navigator.navigateBack(topFragment.destination)) {
+            super.onBackPressed()
+        }
     }
 }
