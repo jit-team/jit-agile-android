@@ -11,10 +11,11 @@ import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
+import pl.jitsolutions.agile.domain.usecases.ObserveDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.DeleteProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.GetApplicationVersionUseCase
 import pl.jitsolutions.agile.domain.usecases.GetCurrentUserProjectsUseCase
-import pl.jitsolutions.agile.domain.usecases.GetDailyUseCase
+import pl.jitsolutions.agile.domain.usecases.EndDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.GetLoggedUserUseCase
 import pl.jitsolutions.agile.domain.usecases.GetProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.JoinDailyUseCase
@@ -24,6 +25,7 @@ import pl.jitsolutions.agile.domain.usecases.LoginUserUseCase
 import pl.jitsolutions.agile.domain.usecases.LogoutCurrentUserUseCase
 import pl.jitsolutions.agile.domain.usecases.ProjectCreationUseCase
 import pl.jitsolutions.agile.domain.usecases.ProjectJoiningUseCase
+import pl.jitsolutions.agile.domain.usecases.StartDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.UserRegistrationUseCase
 import pl.jitsolutions.agile.domain.usecases.UserResetPasswordUseCase
 import pl.jitsolutions.agile.presentation.authorization.login.LoginViewModel
@@ -117,14 +119,20 @@ private val useCasesModule = Module(name = "UseCases") {
     bind<ProjectJoiningUseCase>() with provider {
         ProjectJoiningUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
-    bind<GetDailyUseCase>() with provider {
-        GetDailyUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
+    bind<EndDailyUseCase>() with provider {
+        EndDailyUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
     bind<JoinDailyUseCase>() with provider {
         JoinDailyUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
     bind<LeaveDailyUseCase>() with provider {
         LeaveDailyUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
+    }
+    bind<StartDailyUseCase>() with provider {
+        StartDailyUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
+    }
+    bind<ObserveDailyUseCase>() with provider {
+        ObserveDailyUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
 }
 
@@ -221,6 +229,8 @@ private val viewModelsModule = Module(name = "ViewModels") {
     bind<ViewModelProvider.Factory>(tag = DailyViewModel::class.java) with provider {
         viewModelFactory {
             DailyViewModel(
+                instance(),
+                instance(),
                 instance(),
                 instance(),
                 instance(tag = Tags.Parameters.DAILY_ID),

@@ -53,6 +53,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="70sp"
                 app:bindDailyCountDownTimer="@{viewModel.dailyState}"
+                app:bindDailyStartTime="@{viewModel.startTime}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/daily_leave" />

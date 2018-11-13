@@ -55,12 +55,16 @@ fun bindFirstButton(button: Button, dailyState: DailyViewModel.DailyState) {
     }
 }
 
-@BindingAdapter("bindDailyCountDownTimer")
-fun bindCountDownTimer(chronometer: Chronometer, dailyState: DailyViewModel.DailyState) {
-    if (dailyState is DailyViewModel.DailyState.Prepare) {
+@BindingAdapter("bindDailyCountDownTimer", "bindDailyStartTime")
+fun bindCountDownTimer(
+    chronometer: Chronometer,
+    dailyState: DailyViewModel.DailyState,
+    startTime: Long
+) {
+    if (dailyState is DailyViewModel.DailyState.Prepare || startTime == 0L) {
         return
     }
-    chronometer.setBase(System.currentTimeMillis())
+    chronometer.setBase(startTime)
     chronometer.start()
 }
 
@@ -104,6 +108,11 @@ fun bindBackgroundColor(
         DailyViewModel.DailyState.Turn -> {
             val colorFrom = (coordinatorLayout.background as ColorDrawable).color
             val colorTo = ContextCompat.getColor(coordinatorLayout.context, R.color.daily_turn)
+            transform(coordinatorLayout, colorFrom, colorTo)
+        }
+        DailyViewModel.DailyState.End -> {
+            val colorFrom = (coordinatorLayout.background as ColorDrawable).color
+            val colorTo = ContextCompat.getColor(coordinatorLayout.context, R.color.daily_end)
             transform(coordinatorLayout, colorFrom, colorTo)
         }
     }
