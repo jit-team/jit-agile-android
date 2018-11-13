@@ -18,6 +18,7 @@ import pl.jitsolutions.agile.domain.usecases.GetDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.GetLoggedUserUseCase
 import pl.jitsolutions.agile.domain.usecases.GetProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.JoinDailyUseCase
+import pl.jitsolutions.agile.domain.usecases.LeaveDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.LeaveProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.LoginUserUseCase
 import pl.jitsolutions.agile.domain.usecases.LogoutCurrentUserUseCase
@@ -122,6 +123,9 @@ private val useCasesModule = Module(name = "UseCases") {
     bind<JoinDailyUseCase>() with provider {
         JoinDailyUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
+    bind<LeaveDailyUseCase>() with provider {
+        LeaveDailyUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
+    }
 }
 
 private val viewModelsModule = Module(name = "ViewModels") {
@@ -218,7 +222,9 @@ private val viewModelsModule = Module(name = "ViewModels") {
         viewModelFactory {
             DailyViewModel(
                 instance(),
+                instance(),
                 instance(tag = Tags.Parameters.DAILY_ID),
+                instance(),
                 instance(tag = Tags.Dispatchers.MAIN)
             )
         }

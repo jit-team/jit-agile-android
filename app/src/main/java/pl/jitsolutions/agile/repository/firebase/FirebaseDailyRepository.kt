@@ -52,6 +52,23 @@ class FirebaseDailyRepository(private val dispatcher: CoroutineDispatcher) : Dai
         }.await()
     }
 
+    override suspend fun leaveDaily(dailyId: String): Response<Unit> {
+        return CoroutineScope(dispatcher).async {
+            suspendCoroutine<Response<Unit>> { continuation ->
+                val data = mutableMapOf("projectId" to dailyId)
+                functions
+                    .getHttpsCallable("leaveDaily")
+                    .call(data)
+                    .addOnSuccessListener {
+                        continuation.resume(response(Unit))
+                    }
+                    .addOnFailureListener {
+                        continuation.resume(errorResponse(error = it))
+                    }
+            }
+        }.await()
+    }
+
     @Suppress("UNCHECKED_CAST")
     private fun Any?.toDomainDaily(): Daily {
         val dailyMap = this as Map<String, Any>

@@ -32,6 +32,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:padding="16dp"
                 android:src="@drawable/ic_arrow_back"
+                app:bindDailyLeave="@{() -> viewModel.leaveDaily()}"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
