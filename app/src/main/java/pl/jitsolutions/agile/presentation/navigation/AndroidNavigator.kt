@@ -4,7 +4,17 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import pl.jitsolutions.agile.R
-import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.*
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Splash
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Login
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectList
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Registration
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ResetPassword
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.RegistrationSuccessful
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectDetails
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectCreation
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectAdding
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Daily
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectJoining
 import pl.jitsolutions.agile.presentation.projects.ProjectListFragmentDirections
 import pl.jitsolutions.agile.presentation.projects.details.ProjectDetailsFragmentDirections
 
