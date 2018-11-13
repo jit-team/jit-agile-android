@@ -2,23 +2,47 @@ package pl.jitsolutions.agile.presentation.daily
 
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.experimental.CoroutineDispatcher
+import kotlinx.coroutines.experimental.launch
+import pl.jitsolutions.agile.domain.Response.Status.ERROR
+import pl.jitsolutions.agile.domain.Response.Status.SUCCESS
 import pl.jitsolutions.agile.domain.User
+import pl.jitsolutions.agile.domain.usecases.GetDailyUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
 import pl.jitsolutions.agile.utils.mutableLiveData
 
-class DailyViewModel(dispatcher: CoroutineDispatcher) : CoroutineViewModel(dispatcher) {
+class DailyViewModel(
+    private val getDailyUseCase: GetDailyUseCase,
+    private val dailyId: String,
+    dispatcher: CoroutineDispatcher
+) : CoroutineViewModel(dispatcher) {
 
     val users = MutableLiveData<List<User>>()
-    val project = mutableLiveData("Project name")
+    val project = mutableLiveData("")
     val dailyState = mutableLiveData<DailyState>(DailyState.Prepare)
+    val state = mutableLiveData<State>(State.Idle)
 
     init {
-        val userList = arrayListOf(
-            User("id", "Marek", "marek@o2.pl"),
-            User("id", "Andrzej", "andrzej@o2.pl"),
-            User("id", "Bronek", "bronek@o2.pl")
-        )
-        users.value = userList
+        executeGetDaily()
+    }
+
+    private fun executeGetDaily() = launch {
+        state.value = State.InProgress
+
+        val params = GetDailyUseCase.Params(dailyId)
+        val result = getDailyUseCase.executeAsync(params).await()
+        when (result.status) {
+            SUCCESS -> {
+                val daily = result.data!!
+                project.value = daily.project.name
+                dailyState.value = DailyState.Prepare
+                users.value = daily.users
+            }
+            ERROR -> {
+                // TODO
+            }
+        }
+
+        state.value = State.Idle
     }
 
     fun firstButtonClick() {
@@ -34,5 +58,10 @@ class DailyViewModel(dispatcher: CoroutineDispatcher) : CoroutineViewModel(dispa
         object Wait : DailyState()
         object Turn : DailyState()
         object End : DailyState()
+    }
+
+    sealed class State {
+        object Idle : State()
+        object InProgress : State()
     }
 }

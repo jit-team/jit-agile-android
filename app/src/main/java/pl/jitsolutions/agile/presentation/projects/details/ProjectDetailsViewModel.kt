@@ -10,17 +10,17 @@ import pl.jitsolutions.agile.domain.Response.Status.SUCCESS
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.usecases.DeleteProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.GetProjectUseCase
+import pl.jitsolutions.agile.domain.usecases.JoinDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.LeaveProjectUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
 import pl.jitsolutions.agile.presentation.navigation.Navigator
 import pl.jitsolutions.agile.utils.mutableLiveData
-import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectDetails
-import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Daily
 
 class ProjectDetailsViewModel(
     private val getProjectUseCase: GetProjectUseCase,
     private val leaveProjectUseCase: LeaveProjectUseCase,
     private val deleteProjectUseCase: DeleteProjectUseCase,
+    private val joinDailyUseCase: JoinDailyUseCase,
     private val navigator: Navigator,
     private val projectId: String,
     mainDispatcher: CoroutineDispatcher
@@ -64,11 +64,23 @@ class ProjectDetailsViewModel(
         }
     }
 
-    fun proceedToDaily() {
-        navigator.navigate(
-            from = ProjectDetails(""),
-            to = Daily
-        )
+    fun joinDaily() = launch {
+        state.value = State.InProgress
+        val params = JoinDailyUseCase.Params(projectId)
+        val result = joinDailyUseCase.executeAsync(params).await()
+
+        when (result.status) {
+            SUCCESS -> {
+                navigator.navigate(
+                    from = Navigator.Destination.ProjectDetails(projectId),
+                    to = Navigator.Destination.Daily(projectId)
+                )
+                state.value = State.Idle
+            }
+            ERROR -> {
+                state.value = State.Error(ErrorType.CONNECTION)
+            }
+        }
     }
 
     private fun handleLeaveProjectError(result: Response<Unit>) {

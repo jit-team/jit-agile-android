@@ -169,5 +169,10 @@
         android:id="@+id/DailyFragment"
         android:name="pl.jitsolutions.agile.presentation.daily.DailyFragment"
         android:label="DailyFragment"
-        tools:layout="@layout/fragment_daily" />
+        tools:layout="@layout/fragment_daily" >
+        <argument
+            android:name="dailyId"
+            android:defaultValue='""'
+            app:argType="string" />
+    </fragment>
 </navigation>
