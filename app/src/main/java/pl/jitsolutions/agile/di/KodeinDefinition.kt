@@ -14,8 +14,10 @@ import org.kodein.di.generic.singleton
 import pl.jitsolutions.agile.domain.usecases.DeleteProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.GetApplicationVersionUseCase
 import pl.jitsolutions.agile.domain.usecases.GetCurrentUserProjectsUseCase
+import pl.jitsolutions.agile.domain.usecases.GetDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.GetLoggedUserUseCase
 import pl.jitsolutions.agile.domain.usecases.GetProjectUseCase
+import pl.jitsolutions.agile.domain.usecases.JoinDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.LeaveProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.LoginUserUseCase
 import pl.jitsolutions.agile.domain.usecases.LogoutCurrentUserUseCase
@@ -36,16 +38,18 @@ import pl.jitsolutions.agile.presentation.projects.managing.ProjectCreationViewM
 import pl.jitsolutions.agile.presentation.projects.managing.ProjectJoiningViewModel
 import pl.jitsolutions.agile.presentation.splash.SplashViewModel
 import pl.jitsolutions.agile.repository.AndroidSystemInfoRepository
-import pl.jitsolutions.agile.repository.FirebaseProjectRepository
-import pl.jitsolutions.agile.repository.FirebaseUserRepository
+import pl.jitsolutions.agile.repository.DailyRepository
 import pl.jitsolutions.agile.repository.ProjectRepository
 import pl.jitsolutions.agile.repository.SystemInfoRepository
 import pl.jitsolutions.agile.repository.UserRepository
+import pl.jitsolutions.agile.repository.firebase.FirebaseDailyRepository
+import pl.jitsolutions.agile.repository.firebase.FirebaseProjectRepository
+import pl.jitsolutions.agile.repository.firebase.FirebaseUserRepository
 import java.util.concurrent.Executors
 
 interface Tags {
     enum class Dispatchers { USE_CASE, IO, MAIN }
-    enum class Parameters { PROJECT_DETAILS_ID }
+    enum class Parameters { PROJECT_DETAILS_ID, DAILY_ID }
 }
 
 private val dispatchersModule = Module(name = "Dispatchers") {
@@ -66,6 +70,9 @@ private val repositoriesModule = Module(name = "Repositories") {
     }
     bind<ProjectRepository>() with singleton {
         FirebaseProjectRepository(instance(tag = Tags.Dispatchers.IO))
+    }
+    bind<DailyRepository>() with singleton {
+        FirebaseDailyRepository(instance(tag = Tags.Dispatchers.IO))
     }
     bind<SystemInfoRepository>() with singleton {
         AndroidSystemInfoRepository()
@@ -108,6 +115,12 @@ private val useCasesModule = Module(name = "UseCases") {
     }
     bind<ProjectJoiningUseCase>() with provider {
         ProjectJoiningUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
+    }
+    bind<GetDailyUseCase>() with provider {
+        GetDailyUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
+    }
+    bind<JoinDailyUseCase>() with provider {
+        JoinDailyUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
 }
 
@@ -177,6 +190,7 @@ private val viewModelsModule = Module(name = "ViewModels") {
                 instance(),
                 instance(),
                 instance(),
+                instance(),
                 instance(Tags.Parameters.PROJECT_DETAILS_ID),
                 instance(tag = Tags.Dispatchers.MAIN)
             )
@@ -202,7 +216,11 @@ private val viewModelsModule = Module(name = "ViewModels") {
     }
     bind<ViewModelProvider.Factory>(tag = DailyViewModel::class.java) with provider {
         viewModelFactory {
-            DailyViewModel(instance(tag = Tags.Dispatchers.MAIN))
+            DailyViewModel(
+                instance(),
+                instance(tag = Tags.Parameters.DAILY_ID),
+                instance(tag = Tags.Dispatchers.MAIN)
+            )
         }
     }
 }

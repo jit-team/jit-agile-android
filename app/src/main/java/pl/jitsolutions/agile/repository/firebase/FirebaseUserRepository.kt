@@ -1,4 +1,4 @@
-package pl.jitsolutions.agile.repository
+package pl.jitsolutions.agile.repository.firebase
 
 import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseNetworkException
@@ -17,9 +17,11 @@ import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.errorResponse
 import pl.jitsolutions.agile.domain.response
+import pl.jitsolutions.agile.repository.UserRepository
 import kotlin.coroutines.experimental.suspendCoroutine
 
-class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) : UserRepository {
+class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
+    UserRepository {
     private val firebaseAuth = FirebaseAuth.getInstance()
 
     override suspend fun login(email: String, password: String): Response<User> {

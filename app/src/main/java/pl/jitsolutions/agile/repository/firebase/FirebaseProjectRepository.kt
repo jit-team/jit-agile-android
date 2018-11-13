@@ -1,10 +1,6 @@
-package pl.jitsolutions.agile.repository
+package pl.jitsolutions.agile.repository.firebase
 
-import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseNetworkException
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.functions.FirebaseFunctionsException
 import kotlinx.coroutines.experimental.CoroutineDispatcher
@@ -15,19 +11,13 @@ import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.errorResponse
 import pl.jitsolutions.agile.domain.response
-import pl.jitsolutions.agile.repository.firebase.ProjectFb
-import pl.jitsolutions.agile.repository.firebase.UserFb
-import pl.jitsolutions.agile.repository.firebase.convertToDomainObjects
-import pl.jitsolutions.agile.repository.firebase.isResponseOk
-import pl.jitsolutions.agile.repository.firebase.toFirebaseObject
-import pl.jitsolutions.agile.repository.firebase.toFirebaseObjects
-import pl.jitsolutions.agile.repository.firebase.toProject
+import pl.jitsolutions.agile.repository.ProjectRepository
 import java.net.UnknownHostException
 import kotlin.coroutines.experimental.suspendCoroutine
 
-class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRepository {
+class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) :
+    ProjectRepository {
 
-    private val firestore = FirebaseFirestore.getInstance()
     private val functions = FirebaseFunctions.getInstance()
 
     @Suppress("UNCHECKED_CAST")
@@ -138,52 +128,6 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
         }.await()
     }
 
-    private fun handleProjectResponse(task: Task<DocumentSnapshot>): Response<Project> {
-        return when {
-            task.isResponseOk() -> {
-                val project: ProjectFb? = task.result?.toFirebaseObject()
-                if (project != null) {
-                    response(project.toProject())
-                } else {
-                    errorResponse(error = Exception())
-                }
-            }
-            task.exception != null -> errorResponse(error = task.exception!!)
-            else -> {
-                errorResponse(error = Exception())
-            }
-        }
-    }
-
-    private fun handleProjectsResponse(task: Task<QuerySnapshot>): Response<List<Project>> {
-        return when {
-            task.isResponseOk() -> {
-                val projects: List<ProjectFb> = task.result.toFirebaseObjects()
-                response(projects.convertToDomainObjects())
-            }
-            task.exception != null -> {
-                errorResponse(error = task.exception!!)
-            }
-            else -> {
-                errorResponse(error = ProjectRepository.Error.ServerConnection)
-            }
-        }
-    }
-
-    override suspend fun getUsersAssignedToProject(projectId: String): Response<List<User>> {
-        return CoroutineScope(dispatcher).async {
-            suspendCoroutine<Response<List<User>>> { continuation ->
-                firestore.collection("users")
-                    .whereEqualTo("projects.$projectId", true)
-                    .get()
-                    .addOnCompleteListener { continuation.resume(handleUsersResponse(it)) }
-                    .addOnFailureListener {
-                        continuation.resume(errorResponse(error = retrieveError(it)))
-                    }
-            }
-        }.await()
-    }
-
     override suspend fun createNewProject(projectName: String, password: String): Response<Unit> {
         return CoroutineScope(dispatcher).async {
             suspendCoroutine<Response<Unit>> { continuation ->
@@ -202,18 +146,6 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
         }.await()
     }
 
-    private fun handleUsersResponse(task: Task<QuerySnapshot>): Response<List<User>> {
-        return when {
-            task.isResponseOk() -> {
-                val users: List<UserFb> = task.result!!.toFirebaseObjects()
-                response(users.convertToDomainObjects())
-            }
-            else -> {
-                errorResponse(error = Exception())
-            }
-        }
-    }
-
     // TODO need to be changed to ProjectRepository errors
     private fun retrieveError(exception: Exception): ProjectRepository.Error {
         return when (exception) {
@@ -227,7 +159,9 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
     private fun retrieveCloudFunctionException(e: FirebaseFunctionsException): ProjectRepository.Error {
         return when (e.code) {
             FirebaseFunctionsException.Code.ALREADY_EXISTS -> ProjectRepository.Error.ProjectAlreadyExist
-            FirebaseFunctionsException.Code.NOT_FOUND -> ProjectRepository.Error.ProjectNotFound("")
+            FirebaseFunctionsException.Code.NOT_FOUND -> ProjectRepository.Error.ProjectNotFound(
+                ""
+            )
             FirebaseFunctionsException.Code.INVALID_ARGUMENT -> retrieveCloudFunctionMessage(e)
             else -> ProjectRepository.Error.UnknownError
         }

@@ -69,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:layout_margin="16dp"
-            android:onClick="@{() -> viewModel.proceedToDaily()}"
+            android:onClick="@{() -> viewModel.joinDaily()}"
             android:src="@drawable/ic_daily" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

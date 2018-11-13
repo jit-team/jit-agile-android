@@ -3,8 +3,14 @@ package pl.jitsolutions.agile.presentation.daily
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.graphics.Color
+import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.StyleSpan
+import android.view.View
 import android.widget.Button
+import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
@@ -111,4 +117,26 @@ private fun transform(coordinatorLayout: CoordinatorLayout, fromColor: Int, toCo
         )
     }
     colorAnimation.start()
+}
+
+@BindingAdapter("bindDailyUser")
+fun bindDailyUser(textView: TextView, user: User) {
+    val name = if (user.name.isBlank()) user.email else user.name
+    if (user.active) {
+        textView.text = SpannableStringBuilder().append(
+            name,
+            StyleSpan(Typeface.BOLD),
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+    } else {
+        textView.text = name
+    }
+}
+
+@BindingAdapter("bindDailyProgressVisibility")
+fun bindDailyProgressVisibility(view: View, state: DailyViewModel.State) {
+    view.visibility = when (state) {
+        DailyViewModel.State.Idle -> View.INVISIBLE
+        DailyViewModel.State.InProgress -> View.VISIBLE
+    }
 }

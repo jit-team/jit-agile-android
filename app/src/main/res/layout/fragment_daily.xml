@@ -51,7 +51,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="70sp"
-                android:text="prol"
                 app:bindDailyCountDownTimer="@{viewModel.dailyState}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -107,6 +106,14 @@
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            style="@android:style/Widget.Material.Light.ProgressBar.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            app:bindDailyProgressVisibility="@{viewModel.state}" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
