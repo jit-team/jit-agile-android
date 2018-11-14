@@ -25,9 +25,10 @@ class FirebaseDailyRepository(private val dispatcher: CoroutineDispatcher) : Dai
     override suspend fun endDaily(dailyId: String): Response<Unit> {
         return CoroutineScope(dispatcher).async {
             suspendCoroutine<Response<Unit>> { continuation ->
-                firestore.collection("dailies")
-                    .document(dailyId)
-                    .get()
+                val data = mutableMapOf("projectId" to dailyId)
+                functions
+                    .getHttpsCallable("finishDaily")
+                    .call(data)
                     .addOnSuccessListener {
                         continuation.resume(response(Unit))
                     }
@@ -55,6 +56,22 @@ class FirebaseDailyRepository(private val dispatcher: CoroutineDispatcher) : Dai
         return channel
     }
 
+    override suspend fun nextDaily(dailyId: String): Response<Unit> {
+        return CoroutineScope(dispatcher).async {
+            suspendCoroutine<Response<Unit>> { continuation ->
+                val data = mutableMapOf("projectId" to dailyId)
+                functions
+                    .getHttpsCallable("nextDailyUser")
+                    .call(data)
+                    .addOnSuccessListener {
+                        continuation.resume(response(Unit))
+                    }
+                    .addOnFailureListener {
+                        continuation.resume(errorResponse(error = it))
+                    }
+            }
+        }.await()
+    }
     private fun handleDailyDocument(document: DocumentSnapshot): Response<Daily?> {
         return when {
             document.data != null -> {

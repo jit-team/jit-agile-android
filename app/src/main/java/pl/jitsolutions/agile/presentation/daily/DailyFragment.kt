@@ -44,7 +44,11 @@ class DailyFragment : BaseFragment() {
     }
 
     override fun onBackPressed(): Boolean {
-        showDailyLeaveConfirmation(view!!) { viewModel.leaveDaily() }
+        if (viewModel.dailyState.value == DailyViewModel.DailyState.End) {
+            viewModel.quitDaily()
+        } else {
+            showDailyLeaveConfirmation(view!!) { viewModel.leaveDaily() }
+        }
         return true
     }
 }
