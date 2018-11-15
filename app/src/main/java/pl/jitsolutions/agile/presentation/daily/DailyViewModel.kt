@@ -2,19 +2,29 @@ package pl.jitsolutions.agile.presentation.daily
 
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.experimental.CoroutineDispatcher
+import kotlinx.coroutines.experimental.channels.consumeEach
 import kotlinx.coroutines.experimental.launch
+import pl.jitsolutions.agile.domain.Daily
 import pl.jitsolutions.agile.domain.Response.Status.ERROR
 import pl.jitsolutions.agile.domain.Response.Status.SUCCESS
 import pl.jitsolutions.agile.domain.User
-import pl.jitsolutions.agile.domain.usecases.GetDailyUseCase
+import pl.jitsolutions.agile.domain.usecases.EndDailyUseCase
+import pl.jitsolutions.agile.domain.usecases.GetLoggedUserUseCase
 import pl.jitsolutions.agile.domain.usecases.LeaveDailyUseCase
+import pl.jitsolutions.agile.domain.usecases.NextDailyUserUseCase
+import pl.jitsolutions.agile.domain.usecases.ObserveDailyUseCase
+import pl.jitsolutions.agile.domain.usecases.StartDailyUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
 import pl.jitsolutions.agile.presentation.navigation.Navigator
 import pl.jitsolutions.agile.utils.mutableLiveData
 
 class DailyViewModel(
-    private val getDailyUseCase: GetDailyUseCase,
+    private val observeDailyUseCase: ObserveDailyUseCase,
     private val leaveDailyUseCase: LeaveDailyUseCase,
+    private val startDailyUseCase: StartDailyUseCase,
+    private val endDailyUseCase: EndDailyUseCase,
+    private val getLoggedUserUseCase: GetLoggedUserUseCase,
+    private val nextDailyUserUseCase: NextDailyUserUseCase,
     private val dailyId: String,
     private val navigator: Navigator,
     dispatcher: CoroutineDispatcher
@@ -22,54 +32,143 @@ class DailyViewModel(
 
     val users = MutableLiveData<List<User>>()
     val project = mutableLiveData("")
+    val startTime = mutableLiveData(0L)
     val dailyState = mutableLiveData<DailyState>(DailyState.Prepare)
     val state = mutableLiveData<State>(State.Idle)
+    val queue = MutableLiveData<List<String>>()
+    private var userId: String? = null
 
     init {
-        executeGetDaily()
+        executeGetLoggedUser()
+    }
+
+    private fun executeGetLoggedUser() = launch {
+        state.value = State.InProgress
+        val result = getLoggedUserUseCase.executeAsync(GetLoggedUserUseCase.Params()).await()
+        when (result.status) {
+            SUCCESS -> {
+                userId = result.data?.id
+                executeGetDaily()
+            }
+            ERROR -> {
+            }
+        }
+        state.value = State.Idle
     }
 
     private fun executeGetDaily() = launch {
         state.value = State.InProgress
 
-        val params = GetDailyUseCase.Params(dailyId)
-        val result = getDailyUseCase.executeAsync(params).await()
-        when (result.status) {
-            SUCCESS -> {
-                val daily = result.data!!
-                project.value = daily.project.name
-                dailyState.value = DailyState.Prepare
-                users.value = daily.users
-            }
-            ERROR -> {
-                // TODO
+        val params = ObserveDailyUseCase.Params(dailyId)
+        observeDailyUseCase.execute(params).consumeEach {
+            state.value = State.Idle
+            when (it.status) {
+                SUCCESS -> {
+                    handleDailyState(it.data)
+                }
+                ERROR -> {
+                    TODO()
+                }
             }
         }
+    }
 
-        state.value = State.Idle
+    private fun handleDailyState(daily: Daily?) {
+        if (daily != null) {
+            project.value = daily.project.name
+            users.value = daily.users
+            queue.value = daily.queue
+            if (daily.state == "idle") {
+                dailyState.value = DailyState.Prepare
+            } else if (daily.state == "in-progress") {
+                handleDailyOnAir(daily)
+            }
+        } else {
+            dailyState.value = DailyState.End
+            startTime.value = -1L
+        }
+    }
+
+    private fun handleDailyOnAir(daily: Daily) {
+        val currentUserId = daily.queue[0]
+        daily.users.forEach {
+            it.current = it.id == currentUserId
+        }
+        if (userId == currentUserId) {
+            dailyState.value = DailyState.Turn
+        } else {
+            dailyState.value = DailyState.Wait
+        }
+        startTime.value = daily.startTime
+    }
+
+    fun quitDaily() {
+        navigator.navigateBack(Navigator.Destination.Daily(dailyId))
     }
 
     fun leaveDaily() = launch {
         state.value = State.InProgress
-
         val params = LeaveDailyUseCase.Params(dailyId)
         val result = leaveDailyUseCase.executeAsync(params).await()
         when (result.status) {
             SUCCESS -> navigator.navigateBack(Navigator.Destination.Daily(dailyId))
             ERROR -> {
-                // TODO
+                TODO()
             }
         }
-
         state.value = State.Idle
     }
 
-    fun firstButtonClick() {
-        dailyState.value = DailyState.Wait
+    fun endDaily() = launch {
+        state.value = State.InProgress
+        val params = EndDailyUseCase.Params(dailyId)
+        val result = endDailyUseCase.executeAsync(params).await()
+        when (result.status) {
+            SUCCESS -> {
+            }
+            ERROR -> {
+                TODO()
+            }
+        }
+        state.value = State.Idle
     }
 
-    fun secondButtonClick() {
-        dailyState.value = DailyState.Turn
+    fun nextTurn() {
+        state.value = State.InProgress
+        when (dailyState.value) {
+            DailyState.Prepare -> {
+                startDaily()
+                state.value = State.Idle
+            }
+            DailyState.Wait, DailyState.Turn -> {
+                nextTurnDaily()
+                state.value = State.Idle
+            }
+        }
+    }
+
+    private fun startDaily() = launch {
+        val params = StartDailyUseCase.Params(dailyId)
+        val result = startDailyUseCase.executeAsync(params).await()
+        when (result.status) {
+            SUCCESS -> {
+            }
+            ERROR -> {
+                TODO()
+            }
+        }
+    }
+
+    private fun nextTurnDaily() = launch {
+        val params = NextDailyUserUseCase.Params(dailyId)
+        val result = nextDailyUserUseCase.executeAsync(params).await()
+        when (result.status) {
+            SUCCESS -> {
+            }
+            ERROR -> {
+                TODO()
+            }
+        }
     }
 
     sealed class DailyState {
