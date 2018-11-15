@@ -114,7 +114,7 @@
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_weight="72"
-                    android:onClick="@{() -> viewModel.nextTurnClick()}"
+                    android:onClick="@{() -> viewModel.nextTurn()}"
                     android:textSize="20sp"
                     app:bindDailyNextTurnButton="@{viewModel.dailyState}"
                     tools:text="next" />

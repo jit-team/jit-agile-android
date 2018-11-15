@@ -133,7 +133,7 @@ class DailyViewModel(
         state.value = State.Idle
     }
 
-    fun nextTurnClick() {
+    fun nextTurn() {
         state.value = State.InProgress
         when (dailyState.value) {
             DailyState.Prepare -> {
