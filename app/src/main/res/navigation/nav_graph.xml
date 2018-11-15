@@ -143,14 +143,6 @@
             android:name="projectId"
             android:defaultValue='""'
             app:argType="string" />
-
-        <action
-            android:id="@+id/daily"
-            app:destination="@id/DailyFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -169,10 +161,18 @@
         android:id="@+id/DailyFragment"
         android:name="pl.jitsolutions.agile.presentation.daily.DailyFragment"
         android:label="DailyFragment"
-        tools:layout="@layout/fragment_daily" >
+        tools:layout="@layout/fragment_daily">
         <argument
             android:name="dailyId"
             android:defaultValue='""'
             app:argType="string" />
     </fragment>
+
+    <action
+        android:id="@+id/daily"
+        app:destination="@id/DailyFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
 </navigation>

@@ -4,19 +4,19 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import pl.jitsolutions.agile.R
-import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Splash
+import pl.jitsolutions.agile.presentation.daily.DailyFragmentDirections
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Daily
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Login
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectAdding
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectCreation
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectDetails
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectJoining
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectList
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Registration
-import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ResetPassword
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.RegistrationSuccessful
-import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectDetails
-import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectCreation
-import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectAdding
-import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Daily
-import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectJoining
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ResetPassword
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Splash
 import pl.jitsolutions.agile.presentation.projects.ProjectListFragmentDirections
-import pl.jitsolutions.agile.presentation.projects.details.ProjectDetailsFragmentDirections
 
 class AndroidNavigator(context: Context) : Navigator {
     private val activity = context as AppCompatActivity
@@ -58,6 +58,12 @@ class AndroidNavigator(context: Context) : Navigator {
                 is ProjectAdding -> {
                     navController.navigate(R.id.projectAdding)
                 }
+                is Daily -> {
+                    navController.navigate(
+                        DailyFragmentDirections.daily()
+                            .setDailyId(to.dailyId)
+                    )
+                }
                 else -> throw Navigator.InvalidNavigationException(from, to)
             }
             ResetPassword -> when (to) {
@@ -68,8 +74,7 @@ class AndroidNavigator(context: Context) : Navigator {
                 ProjectList -> navController.navigateUp()
                 is Daily -> {
                     navController.navigate(
-                        ProjectDetailsFragmentDirections
-                            .daily()
+                        DailyFragmentDirections.daily()
                             .setDailyId(to.dailyId)
                     )
                 }

@@ -30,7 +30,10 @@ class ProjectListFragment : BaseFragment() {
             ViewModelProviders.of(this, viewModelFactory).get(ProjectListViewModel::class.java)
         binding.viewModel = viewModel
         binding.adapter =
-            ProjectListAdapter { project -> viewModel.showProjectDetails(project.id) }
+            ProjectListAdapter(
+                onJoinDailyClick = { projectWithDaily -> viewModel.joinDaily(projectWithDaily.project.id) },
+                onProjectClick = { projectWithDaily -> viewModel.showProjectDetails(projectWithDaily.project.id) }
+            )
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
         return binding.root

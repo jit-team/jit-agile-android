@@ -7,6 +7,7 @@ import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.CoroutineScope
 import kotlinx.coroutines.experimental.async
 import pl.jitsolutions.agile.domain.Project
+import pl.jitsolutions.agile.domain.ProjectWithDaily
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.errorResponse
@@ -19,6 +20,30 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) :
     ProjectRepository {
 
     private val functions = FirebaseFunctions.getInstance()
+
+    @Suppress("UNCHECKED_CAST")
+    override suspend fun getProjectsWithDailyState(userId: String): Response<List<ProjectWithDaily>> {
+        return CoroutineScope(dispatcher).async {
+            suspendCoroutine<Response<List<ProjectWithDaily>>> { continuation ->
+                functions
+                    .getHttpsCallable("getProjectsWithDailyState")
+                    .call()
+                    .addOnSuccessListener { result ->
+                        val projectsWithDaily = (result.data as ArrayList<Map<String, Any>>)
+                            .map {
+                                val project = (it["project"] as Map<String, Any>).toDomainProject()
+                                val daily = (it["daily"] as? Map<String, Any>)?.toDomainDaily()
+                                val membersCount = it["membersCount"] as Int
+                                ProjectWithDaily(project, membersCount, daily)
+                            }
+                        continuation.resume(response(projectsWithDaily))
+                    }
+                    .addOnFailureListener {
+                        continuation.resume(errorResponse(error = retrieveError(it)))
+                    }
+            }
+        }.await()
+    }
 
     @Suppress("UNCHECKED_CAST")
     override suspend fun getProjects(userId: String): Response<List<Project>> {
