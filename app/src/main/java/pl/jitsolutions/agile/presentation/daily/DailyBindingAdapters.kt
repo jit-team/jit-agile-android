@@ -2,7 +2,6 @@ package pl.jitsolutions.agile.presentation.daily
 
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
-import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.text.Spannable
@@ -34,8 +33,8 @@ fun bindDailyWaitingUserList(
     }
 }
 
-@BindingAdapter("bindDailyFirstButton")
-fun bindFirstButton(button: Button, dailyState: DailyViewModel.DailyState) {
+@BindingAdapter("bindDailyEndButton")
+fun bindDailyEndButton(button: Button, dailyState: DailyViewModel.DailyState) {
     when (dailyState) {
         DailyViewModel.DailyState.Prepare -> {
             with(button) {
@@ -52,20 +51,34 @@ fun bindFirstButton(button: Button, dailyState: DailyViewModel.DailyState) {
                 text = button.context.getString(R.string.daily_screen_end_button_text)
             }
         }
+        DailyViewModel.DailyState.End -> {
+            with(button) {
+                visibility = View.INVISIBLE
+            }
+        }
     }
 }
 
-@BindingAdapter("bindDailyCountDownTimer")
-fun bindCountDownTimer(chronometer: Chronometer, dailyState: DailyViewModel.DailyState) {
-    if (dailyState is DailyViewModel.DailyState.Prepare) {
+@BindingAdapter("bindDailyCountDownTimer", "bindDailyStartTime")
+fun bindDailyCountDownTimer(
+    chronometer: Chronometer,
+    dailyState: DailyViewModel.DailyState,
+    startTime: Long
+) {
+    if (dailyState is DailyViewModel.DailyState.Prepare || startTime == 0L) {
         return
     }
-    chronometer.setBase(System.currentTimeMillis())
+    if (startTime == -1L) {
+        chronometer.stop()
+        return
+    }
+
+    chronometer.setBase(startTime)
     chronometer.start()
 }
 
-@BindingAdapter("bindDailySecondButton")
-fun bindSecondButton(button: Button, dailyState: DailyViewModel.DailyState) {
+@BindingAdapter("bindDailyNextTurnButton")
+fun bindDailyNextTurnButton(button: Button, dailyState: DailyViewModel.DailyState) {
     when (dailyState) {
         DailyViewModel.DailyState.Prepare -> {
             with(button) {
@@ -82,6 +95,11 @@ fun bindSecondButton(button: Button, dailyState: DailyViewModel.DailyState) {
                 text = button.context.getString(R.string.daily_screen_next_button_text)
             }
         }
+        DailyViewModel.DailyState.End -> {
+            with(button) {
+                visibility = View.INVISIBLE
+            }
+        }
     }
 }
 
@@ -92,7 +110,7 @@ fun bindBackgroundColor(
 ) {
     when (dailyState) {
         DailyViewModel.DailyState.Prepare -> {
-            val colorFrom = Color.WHITE
+            val colorFrom = (coordinatorLayout.background as ColorDrawable).color
             val colorTo = ContextCompat.getColor(coordinatorLayout.context, R.color.daily_prepare)
             transform(coordinatorLayout, colorFrom, colorTo)
         }
@@ -104,6 +122,11 @@ fun bindBackgroundColor(
         DailyViewModel.DailyState.Turn -> {
             val colorFrom = (coordinatorLayout.background as ColorDrawable).color
             val colorTo = ContextCompat.getColor(coordinatorLayout.context, R.color.daily_turn)
+            transform(coordinatorLayout, colorFrom, colorTo)
+        }
+        DailyViewModel.DailyState.End -> {
+            val colorFrom = (coordinatorLayout.background as ColorDrawable).color
+            val colorTo = ContextCompat.getColor(coordinatorLayout.context, R.color.daily_end)
             transform(coordinatorLayout, colorFrom, colorTo)
         }
     }
@@ -123,14 +146,21 @@ private fun transform(coordinatorLayout: CoordinatorLayout, fromColor: Int, toCo
 @BindingAdapter("bindDailyUser")
 fun bindDailyUser(textView: TextView, user: User) {
     val name = if (user.name.isBlank()) user.email else user.name
-    if (user.active) {
-        textView.text = SpannableStringBuilder().append(
+    when {
+        user.current -> {
+            textView.text = SpannableStringBuilder().append(
+                name,
+                StyleSpan(Typeface.BOLD),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            textView.setTextColor(ContextCompat.getColor(textView.context, R.color.daily_current_user))
+        }
+        user.active -> textView.text = SpannableStringBuilder().append(
             name,
             StyleSpan(Typeface.BOLD),
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
-    } else {
-        textView.text = name
+        else -> textView.text = name
     }
 }
 
@@ -142,11 +172,25 @@ fun bindDailyProgressVisibility(view: View, state: DailyViewModel.State) {
     }
 }
 
-@BindingAdapter("bindDailyLeave")
-fun bindDailyLeave(view: View, onLeaveListener: () -> Unit) {
+@BindingAdapter(value = ["bindDailyLeave", "bindDailyLeaveVisibility"], requireAll = false)
+fun bindDailyLeave(view: View, onLeaveListener: () -> Unit, dailyState: DailyViewModel.DailyState) {
+    val visibility = when (dailyState) {
+        DailyViewModel.DailyState.End -> View.INVISIBLE
+        else -> View.VISIBLE
+    }
+    view.visibility = visibility
     view.setOnClickListener {
         showDailyLeaveConfirmation(view, onLeaveListener)
     }
+}
+
+@BindingAdapter("bindDailyQuitVisibility")
+fun bindDailyQuitVisibility(view: View, dailyState: DailyViewModel.DailyState) {
+    val visibility = when (dailyState) {
+        DailyViewModel.DailyState.End -> View.VISIBLE
+        else -> View.GONE
+    }
+    view.visibility = visibility
 }
 
 fun showDailyLeaveConfirmation(

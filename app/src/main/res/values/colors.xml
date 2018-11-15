@@ -19,4 +19,6 @@
     <color name="daily_wait">#91d9ff</color>
     <color name="daily_turn">#a5ff91</color>
     <color name="daily_end">#fbfdb7d6</color>
+    <color name="daily_default">#FFFFFF</color>
+    <color name="daily_current_user">#e1841b</color>
 </resources>

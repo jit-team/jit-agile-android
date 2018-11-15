@@ -29,6 +29,7 @@ class JITAgileApplication : Application(), KodeinAware {
     private fun setupFirebase() {
         val settings = FirebaseFirestoreSettings.Builder()
             .setTimestampsInSnapshotsEnabled(true)
+            .setPersistenceEnabled(false)
             .build()
         FirebaseFirestore.getInstance().firestoreSettings = settings
     }
