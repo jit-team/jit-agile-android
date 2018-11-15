@@ -10,9 +10,10 @@ import androidx.core.view.GravityCompat
 import androidx.databinding.BindingAdapter
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.navigation.NavigationView
 import pl.jitsolutions.agile.R
-import pl.jitsolutions.agile.domain.Project
+import pl.jitsolutions.agile.domain.ProjectWithDaily
 import pl.jitsolutions.agile.domain.User
 
 @BindingAdapter("bindProjectListNavigationIconVisibility")
@@ -79,46 +80,35 @@ fun bindProjectListMenuItemSelected(view: DrawerLayout, menuItemId: Int) {
     }
 }
 
-@BindingAdapter(value = ["bindProjectListProjects", "bindProjectListAdapter"], requireAll = true)
-fun bindProjectListProjects(
+@BindingAdapter(
+    value = ["bindProjectListProjectsWithDaily", "bindProjectListAdapter"],
+    requireAll = true
+)
+fun bindProjectListProjectsWithDaily(
     recyclerView: RecyclerView,
-    projects: List<Project>?,
+    projectsWithDaily: List<ProjectWithDaily>?,
     adapter: ProjectListAdapter?
 ) {
     adapter?.let {
         recyclerView.adapter = it
-        it.projects = projects ?: emptyList()
-    }
-}
-
-@BindingAdapter("bindProjectListProgressVisibility")
-fun bindProjectListProgressVisibility(
-    view: View,
-    projectListState: ProjectListViewModel.ProjectListState
-) {
-    view.visibility = when (projectListState) {
-        ProjectListViewModel.ProjectListState.None -> View.INVISIBLE
-        ProjectListViewModel.ProjectListState.InProgress -> View.VISIBLE
-        is ProjectListViewModel.ProjectListState.Error -> View.INVISIBLE
-        ProjectListViewModel.ProjectListState.Success -> View.INVISIBLE
-        ProjectListViewModel.ProjectListState.EmptyList -> View.INVISIBLE
+        it.projectsWithDaily = projectsWithDaily ?: emptyList()
     }
 }
 
 @BindingAdapter("bindProjectListEmptyList")
-fun bindProjectListEmptyList(view: View, projectListState: ProjectListViewModel.ProjectListState) {
-    view.visibility = when (projectListState) {
-        ProjectListViewModel.ProjectListState.None -> View.INVISIBLE
-        ProjectListViewModel.ProjectListState.InProgress -> View.INVISIBLE
-        is ProjectListViewModel.ProjectListState.Error -> View.INVISIBLE
-        ProjectListViewModel.ProjectListState.Success -> View.INVISIBLE
-        ProjectListViewModel.ProjectListState.EmptyList -> View.VISIBLE
+fun bindProjectListEmptyList(view: View, state: ProjectListViewModel.State) {
+    view.visibility = when (state) {
+        ProjectListViewModel.State.None -> View.INVISIBLE
+        ProjectListViewModel.State.InProgress -> View.INVISIBLE
+        is ProjectListViewModel.State.Error -> View.INVISIBLE
+        ProjectListViewModel.State.Success -> View.INVISIBLE
+        ProjectListViewModel.State.EmptyList -> View.VISIBLE
     }
 }
 
 @BindingAdapter("bindProjectListError")
-fun bindProjectListError(view: TextView, state: ProjectListViewModel.ProjectListState) {
-    if (state !is ProjectListViewModel.ProjectListState.Error)
+fun bindProjectListError(view: TextView, state: ProjectListViewModel.State) {
+    if (state !is ProjectListViewModel.State.Error)
         return
 
     val error: String? = when {
@@ -137,4 +127,31 @@ fun bindProjectListError(view: TextView, state: ProjectListViewModel.ProjectList
     }
     view.text = error
     view.visibility = if (error != null) View.VISIBLE else View.GONE
+}
+
+@BindingAdapter("bindProjectDailyVisibility")
+fun bindProjectDailyVisibility(view: View, projectWithDaily: ProjectWithDaily) {
+    view.visibility = if (projectWithDaily.daily == null) View.INVISIBLE else View.VISIBLE
+}
+
+@BindingAdapter("bindProjectListRefreshListener")
+fun bindProjectListRefreshListener(
+    swipeRefreshLayout: SwipeRefreshLayout,
+    viewModel: ProjectListViewModel
+) {
+    swipeRefreshLayout.setOnRefreshListener { viewModel.refresh() }
+}
+
+@BindingAdapter("bindProjectListRefreshState")
+fun bindProjectListRefreshState(
+    swipeRefreshLayout: SwipeRefreshLayout,
+    state: ProjectListViewModel.State
+) {
+    swipeRefreshLayout.isRefreshing = when (state) {
+        ProjectListViewModel.State.None -> false
+        ProjectListViewModel.State.InProgress -> true
+        is ProjectListViewModel.State.Error -> false
+        ProjectListViewModel.State.Success -> false
+        ProjectListViewModel.State.EmptyList -> false
+    }
 }

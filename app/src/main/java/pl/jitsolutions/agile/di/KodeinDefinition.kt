@@ -15,6 +15,7 @@ import pl.jitsolutions.agile.domain.usecases.ObserveDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.DeleteProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.GetApplicationVersionUseCase
 import pl.jitsolutions.agile.domain.usecases.GetCurrentUserProjectsUseCase
+import pl.jitsolutions.agile.domain.usecases.GetCurrentUserProjectsWithDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.EndDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.GetLoggedUserUseCase
 import pl.jitsolutions.agile.domain.usecases.GetProjectUseCase
@@ -108,6 +109,9 @@ private val useCasesModule = Module(name = "UseCases") {
     bind<GetCurrentUserProjectsUseCase>() with provider {
         GetCurrentUserProjectsUseCase(instance(), instance(), instance(Tags.Dispatchers.USE_CASE))
     }
+    bind<GetCurrentUserProjectsWithDailyUseCase>() with provider {
+        GetCurrentUserProjectsWithDailyUseCase(instance(), instance(), instance(Tags.Dispatchers.USE_CASE))
+    }
     bind<LeaveProjectUseCase>() with provider {
         LeaveProjectUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
@@ -181,6 +185,7 @@ private val viewModelsModule = Module(name = "ViewModels") {
     bind<ViewModelProvider.Factory>(tag = ProjectListViewModel::class.java) with provider {
         viewModelFactory {
             ProjectListViewModel(
+                instance(),
                 instance(),
                 instance(),
                 instance(),

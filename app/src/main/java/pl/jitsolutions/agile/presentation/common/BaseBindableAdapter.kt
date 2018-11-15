@@ -23,10 +23,11 @@ abstract class BaseBindableAdapter<T>(val clickListener: (T) -> Unit) :
         holder.binding.setVariable(BR.clickListener, object : OnItemClickListener<T> {
             override fun onItemClick(item: T) = clickListener.invoke(item)
         })
+        setupBinding(holder.binding, obj as T)
         holder.binding.executePendingBindings()
     }
 
-    open fun setupBinding(binding: ViewDataBinding) = Unit
+    open fun setupBinding(binding: ViewDataBinding, item: T) = Unit
 
     override fun getItemViewType(position: Int) = getLayoutIdForPosition(position)
 

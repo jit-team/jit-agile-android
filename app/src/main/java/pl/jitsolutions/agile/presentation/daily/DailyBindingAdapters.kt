@@ -66,7 +66,7 @@ fun bindDailyEnd(
         }
         DailyViewModel.DailyState.End -> {
             with(button) {
-                visibility = android.view.View.INVISIBLE
+                visibility = View.INVISIBLE
             }
         }
     }
