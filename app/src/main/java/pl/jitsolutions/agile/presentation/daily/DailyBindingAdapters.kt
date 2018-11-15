@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatButton
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
@@ -19,43 +20,58 @@ import pl.jitsolutions.agile.R
 import pl.jitsolutions.agile.domain.User
 
 @BindingAdapter(
-    value = ["bindDailyUserList", "bindDailyUserListAdapter"],
+    value = ["bindDailyUserList", "bindDailyUserListAdapter", "bindDailyUserListState"],
     requireAll = true
 )
 fun bindDailyWaitingUserList(
     recyclerView: RecyclerView,
     users: List<User>?,
-    adapter: DailyListAdapter?
+    adapter: DailyListAdapter?,
+    dailyState: DailyViewModel.DailyState
 ) {
     adapter?.let {
         recyclerView.adapter = it
         it.users = users ?: emptyList()
+        when (dailyState) {
+            DailyViewModel.DailyState.End -> recyclerView.visibility = View.GONE
+            else -> recyclerView.visibility = View.VISIBLE
+        }
     }
 }
 
-@BindingAdapter("bindDailyEndButton")
-fun bindDailyEndButton(button: Button, dailyState: DailyViewModel.DailyState) {
+@BindingAdapter(value = ["bindDailyEnd", "bindDailyEndVisibility"], requireAll = true)
+fun bindDailyEnd(
+    button: AppCompatButton,
+    viewModel: DailyViewModel,
+    dailyState: DailyViewModel.DailyState
+) {
     when (dailyState) {
         DailyViewModel.DailyState.Prepare -> {
             with(button) {
-                text = button.context.getString(R.string.daily_screen_end_button_text)
+                text =
+                    button.context.getString(pl.jitsolutions.agile.R.string.daily_screen_end_button_text)
             }
         }
         DailyViewModel.DailyState.Wait -> {
             with(button) {
-                text = button.context.getString(R.string.daily_screen_end_button_text)
+                text =
+                    button.context.getString(pl.jitsolutions.agile.R.string.daily_screen_end_button_text)
             }
         }
         DailyViewModel.DailyState.Turn -> {
             with(button) {
-                text = button.context.getString(R.string.daily_screen_end_button_text)
+                text =
+                    button.context.getString(pl.jitsolutions.agile.R.string.daily_screen_end_button_text)
             }
         }
         DailyViewModel.DailyState.End -> {
             with(button) {
-                visibility = View.INVISIBLE
+                visibility = android.view.View.INVISIBLE
             }
         }
+    }
+    button.setOnClickListener {
+        showDailyEndConfirmation(button) { viewModel.endDaily() }
     }
 }
 
@@ -153,7 +169,12 @@ fun bindDailyUser(textView: TextView, user: User) {
                 StyleSpan(Typeface.BOLD),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
             )
-            textView.setTextColor(ContextCompat.getColor(textView.context, R.color.daily_current_user))
+            textView.setTextColor(
+                ContextCompat.getColor(
+                    textView.context,
+                    R.color.daily_current_user
+                )
+            )
         }
         user.active -> textView.text = SpannableStringBuilder().append(
             name,
@@ -193,6 +214,17 @@ fun bindDailyQuitVisibility(view: View, dailyState: DailyViewModel.DailyState) {
     view.visibility = visibility
 }
 
+@BindingAdapter("bindDailyQuotaState")
+fun bindDailyQuotaState(textView: TextView, dailyState: DailyViewModel.DailyState) {
+    when (dailyState) {
+        DailyViewModel.DailyState.End -> with(textView) {
+            text = getQuote(context)
+            visibility = View.VISIBLE
+        }
+        else -> textView.visibility = View.GONE
+    }
+}
+
 fun showDailyLeaveConfirmation(
     view: View,
     onLeaveListener: () -> Unit
@@ -205,6 +237,24 @@ fun showDailyLeaveConfirmation(
         }
         .setNegativeButton(
             R.string.daily_screen_leave_confirmation_negative_button_text,
+            null
+        )
+        .setCancelable(true)
+        .show()
+}
+
+private fun showDailyEndConfirmation(
+    view: View,
+    onEndListener: () -> Unit
+) {
+    AlertDialog.Builder(view.context)
+        .setTitle(R.string.daily_screen_end_confirmation_title)
+        .setMessage(R.string.daily_screen_end_confirmation_message)
+        .setPositiveButton(R.string.daily_screen_end_confirmation_positive_button_text) { _, _ ->
+            onEndListener.invoke()
+        }
+        .setNegativeButton(
+            R.string.daily_screen_end_confirmation_negative_button_text,
             null
         )
         .setCancelable(true)

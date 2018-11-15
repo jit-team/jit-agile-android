@@ -109,4 +109,16 @@
     <string name="daily_screen_leave_confirmation_message">Are you sure you want to leave the daily?</string>
     <string name="daily_screen_leave_confirmation_positive_button_text">Leave</string>
     <string name="daily_screen_leave_confirmation_negative_button_text">Cancel</string>
+    <string name="daily_screen_end_confirmation_title">End confirmation</string>
+    <string name="daily_screen_end_confirmation_message">Are you sure you want to end the daily?</string>
+    <string name="daily_screen_end_confirmation_positive_button_text">End</string>
+    <string name="daily_screen_end_confirmation_negative_button_text">Cancel</string>
+
+    <string name="daily_screen_quota1">“Learn from yesterday, live for today, hope for tomorrow. The important thing is not to stop questioning.” – Albert Einstein</string>
+    <string name="daily_screen_quota2">“Perfection is not attainable, but if we chase perfection we can catch excellence.” – Vince Lombardi</string>
+    <string name="daily_screen_quota3">“Unless someone like you cares a whole awful lot, nothing is going to get better.It’s not.” – Dr. Seuss</string>
+    <string name="daily_screen_quota4">“Service to others is the rent you pay for your room here on earth.” – Muhammad Ali</string>
+    <string name="daily_screen_quota5">“You simply have to put one foot in front of the other and keep going. Put blinders on and plow right ahead.” – George Lucas</string>
+    <string name="daily_screen_quota6">“It does not matter how slowly you go as long as you do not stop.”– Confucius</string>
+    <string name="daily_screen_quota7">“We may encounter many defeats but we must not be defeated.”– Maya Angelou</string>
 </resources>
