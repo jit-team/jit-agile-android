@@ -40,7 +40,7 @@ class ProjectListViewModel(
         state.value = State.InProgress
         executeGetLoggedUser()
         executeGetApplicationVersion()
-        executeGetUserProjects()
+        executeGetUserProjects(moveToDaily = true)
     }
 
     fun logout() = launch {
@@ -82,14 +82,16 @@ class ProjectListViewModel(
         }
     }
 
-    private fun executeGetUserProjects() = launch {
+    private fun executeGetUserProjects(moveToDaily: Boolean = false) = launch {
         val params = GetCurrentUserProjectsWithDailyUseCase.Params()
         val result = getCurrentUserProjectsWithDailyUseCase.executeAsync(params).await()
         when (result.status) {
             SUCCESS -> {
                 if (result.data != null && !result.data.isEmpty()) {
                     state.value = State.Success
-                    projects.value = result.data
+                    val projectsWithDaily = result.data
+                    projects.value = projectsWithDaily
+                    moveToDailyIfActive(moveToDaily, projectsWithDaily)
                 } else {
                     state.value = State.EmptyList
                 }
@@ -102,6 +104,16 @@ class ProjectListViewModel(
                 }
                 state.value = State.Error(type)
             }
+        }
+    }
+
+    private fun moveToDailyIfActive(
+        moveToDaily: Boolean,
+        projectsWithDaily: List<ProjectWithDaily>
+    ) {
+        if (moveToDaily && projectsWithDaily.any { it.daily != null }) {
+            val dailyId = projectsWithDaily.first { it.daily != null }.project.id
+            joinDaily(dailyId)
         }
     }
 
