@@ -35,7 +35,8 @@ class DailyViewModel(
     val startTime = mutableLiveData(0L)
     val dailyState = mutableLiveData<DailyState>(DailyState.Prepare)
     val state = mutableLiveData<State>(State.Idle)
-    val queue = MutableLiveData<List<String>>()
+    val quota = mutableLiveData(false)
+    private var queue = emptyList<String>()
     private var userId: String? = null
 
     init {
@@ -77,7 +78,7 @@ class DailyViewModel(
         if (daily != null) {
             project.value = daily.project.name
             users.value = daily.users
-            queue.value = daily.queue
+            queue = daily.queue
             if (daily.state == "idle") {
                 dailyState.value = DailyState.Prepare
             } else if (daily.state == "in-progress") {
@@ -86,20 +87,35 @@ class DailyViewModel(
         } else {
             dailyState.value = DailyState.End
             startTime.value = -1L
+            quota.value = true
         }
     }
 
     private fun handleDailyOnAir(daily: Daily) {
         val currentUserId = daily.queue[0]
-        daily.users.forEach {
-            it.current = it.id == currentUserId
-        }
+        users.value = sortQueueAndSelectCurrentUser(queue, daily.users)
         if (userId == currentUserId) {
             dailyState.value = DailyState.Turn
         } else {
             dailyState.value = DailyState.Wait
         }
         startTime.value = daily.startTime
+    }
+
+    private fun sortQueueAndSelectCurrentUser(queue: List<String>, users: List<User>): List<User> {
+        val orderById = queue
+            .asSequence()
+            .withIndex()
+            .associate { it.value to it.index }
+        return users.asSequence()
+            .filter { queue.contains(it.id) }
+            .sortedBy { orderById[it.id] }
+            .map { user ->
+                val currentUserId = queue[0]
+                user.current = user.id == currentUserId
+                user
+            }
+            .toList()
     }
 
     fun quitDaily() {
@@ -138,11 +154,9 @@ class DailyViewModel(
         when (dailyState.value) {
             DailyState.Prepare -> {
                 startDaily()
-                state.value = State.Idle
             }
             DailyState.Wait, DailyState.Turn -> {
                 nextTurnDaily()
-                state.value = State.Idle
             }
         }
     }
@@ -157,6 +171,7 @@ class DailyViewModel(
                 TODO()
             }
         }
+        state.value = State.Idle
     }
 
     private fun nextTurnDaily() = launch {
@@ -169,6 +184,7 @@ class DailyViewModel(
                 TODO()
             }
         }
+        state.value = State.Idle
     }
 
     sealed class DailyState {

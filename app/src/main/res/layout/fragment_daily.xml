@@ -66,10 +66,24 @@
                 android:layout_height="0dp"
                 app:bindDailyUserList="@{viewModel.users}"
                 app:bindDailyUserListAdapter="@{adapter}"
+                app:bindDailyUserListState="@{viewModel.dailyState}"
                 app:bindRecyclerViewHasFixedSize="@{true}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toTopOf="@id/daily_bottom_buttons"
                 app:layout_constraintTop_toBottomOf="@id/count_down" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textSize="20sp"
+                app:bindDailyQuotaState="@{viewModel.dailyState}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/count_down"
+                tools:text="@string/daily_screen_quota1" />
 
             <com.google.android.material.button.MaterialButton
                 android:layout_width="match_parent"
@@ -99,9 +113,9 @@
                     android:layout_width="0dp"
                     android:layout_height="60dp"
                     android:layout_weight="25"
-                    android:onClick="@{() -> viewModel.endDaily()}"
                     android:textSize="20sp"
-                    app:bindDailyEndButton="@{viewModel.dailyState}"
+                    app:bindDailyEnd="@{viewModel}"
+                    app:bindDailyEndVisibility="@{viewModel.dailyState}"
                     tools:text="end" />
 
                 <View
