@@ -27,7 +27,7 @@ fun bindDailyWaitingUserList(
 ) {
     adapter?.let {
         recyclerView.adapter = it
-        it.users = users ?: emptyList()
+        adapter.submitList(users)
         when (dailyState) {
             DailyViewModel.DailyState.End -> recyclerView.visibility = View.GONE
             else -> recyclerView.visibility = View.VISIBLE
