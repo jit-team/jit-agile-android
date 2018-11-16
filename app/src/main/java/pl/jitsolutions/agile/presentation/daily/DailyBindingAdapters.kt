@@ -46,18 +46,26 @@ fun bindDailyEnd(
             with(button) {
                 text =
                     button.context.getString(pl.jitsolutions.agile.R.string.daily_screen_end_button_text)
+                visibility = View.VISIBLE
             }
         }
         DailyViewModel.DailyState.Wait -> {
             with(button) {
                 text =
                     button.context.getString(pl.jitsolutions.agile.R.string.daily_screen_end_button_text)
+                visibility = View.VISIBLE
             }
         }
         DailyViewModel.DailyState.Turn -> {
             with(button) {
                 text =
                     button.context.getString(pl.jitsolutions.agile.R.string.daily_screen_end_button_text)
+                visibility = View.VISIBLE
+            }
+        }
+        DailyViewModel.DailyState.Last -> {
+            with(button) {
+                visibility = View.GONE
             }
         }
         DailyViewModel.DailyState.End -> {
@@ -95,16 +103,25 @@ fun bindDailyNextTurnButton(button: Button, dailyState: DailyViewModel.DailyStat
         DailyViewModel.DailyState.Prepare -> {
             with(button) {
                 text = button.context.getString(R.string.daily_screen_start_button_text)
+                visibility = View.VISIBLE
             }
         }
         DailyViewModel.DailyState.Wait -> {
             with(button) {
                 text = button.context.getString(R.string.daily_screen_skip_button_text)
+                visibility = View.VISIBLE
             }
         }
         DailyViewModel.DailyState.Turn -> {
             with(button) {
                 text = button.context.getString(R.string.daily_screen_next_button_text)
+                visibility = View.VISIBLE
+            }
+        }
+        DailyViewModel.DailyState.Last -> {
+            with(button) {
+                text = button.context.getString(R.string.daily_screen_end_daily_button_text)
+                visibility = View.VISIBLE
             }
         }
         DailyViewModel.DailyState.End -> {
