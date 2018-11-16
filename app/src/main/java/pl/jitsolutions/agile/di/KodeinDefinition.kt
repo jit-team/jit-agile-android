@@ -11,12 +11,11 @@ import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
-import pl.jitsolutions.agile.domain.usecases.ObserveDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.DeleteProjectUseCase
+import pl.jitsolutions.agile.domain.usecases.EndDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.GetApplicationVersionUseCase
 import pl.jitsolutions.agile.domain.usecases.GetCurrentUserProjectsUseCase
 import pl.jitsolutions.agile.domain.usecases.GetCurrentUserProjectsWithDailyUseCase
-import pl.jitsolutions.agile.domain.usecases.EndDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.GetLoggedUserUseCase
 import pl.jitsolutions.agile.domain.usecases.GetProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.JoinDailyUseCase
@@ -25,6 +24,7 @@ import pl.jitsolutions.agile.domain.usecases.LeaveProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.LoginUserUseCase
 import pl.jitsolutions.agile.domain.usecases.LogoutCurrentUserUseCase
 import pl.jitsolutions.agile.domain.usecases.NextDailyUserUseCase
+import pl.jitsolutions.agile.domain.usecases.ObserveDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.ProjectCreationUseCase
 import pl.jitsolutions.agile.domain.usecases.ProjectJoiningUseCase
 import pl.jitsolutions.agile.domain.usecases.StartDailyUseCase
@@ -35,8 +35,6 @@ import pl.jitsolutions.agile.presentation.authorization.registration.Registratio
 import pl.jitsolutions.agile.presentation.authorization.registrationSuccessful.RegistrationSuccessfulViewModel
 import pl.jitsolutions.agile.presentation.authorization.resetPassword.ResetPasswordViewModel
 import pl.jitsolutions.agile.presentation.daily.DailyViewModel
-import pl.jitsolutions.agile.presentation.navigation.AndroidNavigator
-import pl.jitsolutions.agile.presentation.navigation.Navigator
 import pl.jitsolutions.agile.presentation.projects.ProjectListViewModel
 import pl.jitsolutions.agile.presentation.projects.details.ProjectDetailsViewModel
 import pl.jitsolutions.agile.presentation.projects.managing.ProjectCreationViewModel
@@ -266,6 +264,4 @@ val kodeinBuilder = Kodein.lazy {
     import(repositoriesModule)
     import(useCasesModule)
     import(viewModelsModule)
-
-    bind<Navigator>() with provider { AndroidNavigator(instance()) }
 }
