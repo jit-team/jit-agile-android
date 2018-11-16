@@ -2,6 +2,7 @@ package pl.jitsolutions.agile.presentation.projects
 
 import android.view.View
 import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.DiffUtil
 import pl.jitsolutions.agile.BR
 import pl.jitsolutions.agile.R
 import pl.jitsolutions.agile.domain.ProjectWithDaily
@@ -11,25 +12,28 @@ class ProjectListAdapter(
     private val onJoinDailyClick: (ProjectWithDaily) -> Unit,
     onProjectClick: (ProjectWithDaily) -> Unit
 ) :
-    BaseBindableAdapter<ProjectWithDaily>(onProjectClick) {
+    BaseBindableAdapter<ProjectWithDaily>(onProjectClick, DiffCallback()) {
 
-    var projectsWithDaily: List<ProjectWithDaily> = emptyList()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
-
-    override fun getObjForPosition(position: Int) = projectsWithDaily[position]
-
-    override fun getLayoutIdForPosition(position: Int) = R.layout.list_item_project_project
-
-    override fun getItemCount() = projectsWithDaily.size
+    override fun getItemViewType(position: Int): Int = R.layout.list_item_project_project
 
     override fun setupBinding(binding: ViewDataBinding, item: ProjectWithDaily) {
-        binding.setVariable(BR.joinDailyClickListener, object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                onJoinDailyClick.invoke(item)
-            }
-        })
+        binding.setVariable(BR.joinDailyClickListener,
+            View.OnClickListener { onJoinDailyClick.invoke(item) })
+    }
+
+    class DiffCallback : DiffUtil.ItemCallback<ProjectWithDaily>() {
+        override fun areItemsTheSame(
+            oldItem: ProjectWithDaily,
+            newItem: ProjectWithDaily
+        ): Boolean {
+            return oldItem.project.id == newItem.project.id
+        }
+
+        override fun areContentsTheSame(
+            oldItem: ProjectWithDaily,
+            newItem: ProjectWithDaily
+        ): Boolean {
+            return true
+        }
     }
 }

@@ -91,7 +91,7 @@ fun bindProjectListProjectsWithDaily(
 ) {
     adapter?.let {
         recyclerView.adapter = it
-        it.projectsWithDaily = projectsWithDaily ?: emptyList()
+        it.submitList(projectsWithDaily ?: emptyList())
     }
 }
 
