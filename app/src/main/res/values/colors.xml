@@ -2,12 +2,13 @@
 <resources>
     <color name="red_600">#e53935</color>
 
-    <color name="colorPrimary">#de6d37</color>
-    <color name="colorPrimaryDark">#a63f08</color>
-    <color name="colorAccent">#de6d37</color>
+    <color name="colorPrimary">#78777C</color>
+    <color name="colorPrimaryDark">#4E4D52</color>
+    <color name="colorAccent">#F9D267</color>
 
-    <color name="jit_logo">#de6d37</color>
-    <color name="jit_logo_dark">#a63f08</color>
+    <color name="dark_text_color">#000</color>
+    <color name="light_text_color">#FFF</color>
+
     <color name="login_screen_error_text">@color/red_600</color>
     <color name="registration_screen_error_text">@color/red_600</color>
     <color name="reset_password_screen_error_text">@color/red_600</color>
@@ -15,10 +16,17 @@
     <color name="project_item_divider">#e7e7e7</color>
     <color name="project_joining_screen_error_text">@color/red_600</color>
     <color name="project_creation_screen_error_text">@color/red_600</color>
-    <color name="daily_prepare">#ffeb91</color>
-    <color name="daily_wait">#91d9ff</color>
-    <color name="daily_turn">#a5ff91</color>
-    <color name="daily_end">#fbfdb7d6</color>
+
+    <color name="daily_prepare">#fffae2</color>
+    <color name="daily_wait">#d0efff</color>
+    <color name="daily_turn">#ddffd6</color>
+    <color name="daily_end">#fbffe2e5</color>
     <color name="daily_default">#FFFFFF</color>
-    <color name="daily_current_user">#e1841b</color>
+
+    <color name="daily_current_user_text">@color/light_text_color</color>
+    <color name="daily_current_user_background">@color/colorPrimary</color>
+    <color name="daily_active_user_text">#30b300</color>
+    <color name="daily_active_user_background">@android:color/transparent</color>
+    <color name="daily_other_user">@color/dark_text_color</color>
+    <color name="daily_other_user_background">@android:color/transparent</color>
 </resources>

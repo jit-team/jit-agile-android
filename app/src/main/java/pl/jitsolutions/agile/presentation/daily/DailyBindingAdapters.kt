@@ -2,11 +2,7 @@ package pl.jitsolutions.agile.presentation.daily
 
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
-import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
-import android.text.Spannable
-import android.text.SpannableStringBuilder
-import android.text.style.StyleSpan
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -161,27 +157,21 @@ private fun transform(coordinatorLayout: CoordinatorLayout, fromColor: Int, toCo
 
 @BindingAdapter("bindDailyUser")
 fun bindDailyUser(textView: TextView, user: User) {
-    val name = if (user.name.isBlank()) user.email else user.name
-    when {
-        user.current -> {
-            textView.text = SpannableStringBuilder().append(
-                name,
-                StyleSpan(Typeface.BOLD),
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-            )
-            textView.setTextColor(
-                ContextCompat.getColor(
-                    textView.context,
-                    R.color.daily_current_user
-                )
-            )
-        }
-        user.active -> textView.text = SpannableStringBuilder().append(
-            name,
-            StyleSpan(Typeface.BOLD),
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        else -> textView.text = name
+    val textColor = when {
+        user.current -> R.color.daily_current_user_text
+        user.active -> R.color.daily_active_user_text
+        else -> R.color.daily_other_user
+    }
+    val backgroundColor = when {
+        user.current -> R.color.daily_current_user_background
+        user.active -> R.color.daily_active_user_background
+        else -> R.color.daily_other_user_background
+    }
+
+    with(textView) {
+        text = if (user.name.isBlank()) user.email else user.name
+        setTextColor(ContextCompat.getColor(textView.context, textColor))
+        setBackgroundColor(ContextCompat.getColor(textView.context, backgroundColor))
     }
 }
 

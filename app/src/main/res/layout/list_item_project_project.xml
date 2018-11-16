@@ -7,7 +7,7 @@
 
         <variable
             name="joinDailyClickListener"
-            type="android.view.View.OnClickListener"/>
+            type="android.view.View.OnClickListener" />
 
         <variable
             name="clickListener"
@@ -63,8 +63,8 @@
                 android:id="@+id/project_join_daily"
                 android:layout_width="72dp"
                 android:layout_height="0dp"
-                android:onClick="@{joinDailyClickListener}"
                 android:background="?selectableItemBackground"
+                android:onClick="@{joinDailyClickListener}"
                 android:src="@drawable/ic_daily_48dp_black"
                 app:bindProjectDailyVisibility="@{listItem}"
                 app:layout_constraintBottom_toBottomOf="parent"
