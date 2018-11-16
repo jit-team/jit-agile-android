@@ -10,7 +10,6 @@ class UserDiffCallback : DiffUtil.ItemCallback<User>() {
     }
 
     override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
-        return oldItem.current == newItem.current
-            && oldItem.active == newItem.active
+        return oldItem.current == newItem.current && oldItem.active == newItem.active
     }
 }
