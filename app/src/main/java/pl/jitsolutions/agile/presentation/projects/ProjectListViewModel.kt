@@ -36,11 +36,22 @@ class ProjectListViewModel(
     val projects = MutableLiveData<List<ProjectWithDaily>>()
     val state = mutableLiveData<State>(State.None)
 
+    private val navigationObserver = object : Navigator.NavigationObserver {
+        override fun onNavigation(destination: Navigator.Destination) = refresh()
+    }
+
     init {
         state.value = State.InProgress
         executeGetLoggedUser()
         executeGetApplicationVersion()
         executeGetUserProjects(moveToDaily = true)
+
+        navigator.addDestinationObserver(ProjectList, navigationObserver)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        navigator.removeDestinationObserver(ProjectList, navigationObserver)
     }
 
     fun logout() = launch {
@@ -90,7 +101,7 @@ class ProjectListViewModel(
                 if (result.data != null && !result.data.isEmpty()) {
                     state.value = State.Success
                     val projectsWithDaily = result.data
-                    projects.value = projectsWithDaily
+                    projects.value = projectsWithDaily.sortedBy { it.project.name }
                     moveToDailyIfActive(moveToDaily, projectsWithDaily)
                 } else {
                     state.value = State.EmptyList

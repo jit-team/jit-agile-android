@@ -1,24 +1,52 @@
 package pl.jitsolutions.agile.presentation.navigation
 
+import pl.jitsolutions.agile.R
+
 interface Navigator {
     fun navigate(from: Destination, to: Destination)
 
     fun navigateBack(from: Destination?): Boolean
 
-    sealed class Destination {
-        object Splash : Destination()
-        object Login : Destination()
-        object ResetPassword : Destination()
-        object Registration : Destination()
-        object RegistrationSuccessful : Destination()
-        object ProjectList : Destination()
-        class ProjectDetails(val projectId: String) : Destination()
-        object ProjectCreation : Destination()
-        object ProjectAdding : Destination()
-        object ProjectJoining : Destination()
-        class Daily(val dailyId: String) : Destination()
+    fun addDestinationObserver(destination: Destination, observer: NavigationObserver)
+
+    fun removeDestinationObserver(destination: Destination, observer: NavigationObserver)
+
+    sealed class Destination(val id: Int) {
+        object Splash : Destination(R.id.splashFragment)
+        object Login : Destination(R.id.loginFragment)
+        object ResetPassword : Destination(R.id.resetPasswordFragment)
+        object Registration : Destination(R.id.registrationFragment)
+        object RegistrationSuccessful : Destination(R.id.registrationSuccessfulFragment)
+        object ProjectList : Destination(R.id.projectListFragment)
+        class ProjectDetails(val projectId: String) : Destination(R.id.projectDetailsFragment)
+        object ProjectCreation : Destination(R.id.projectCreation)
+        object ProjectAdding : Destination(R.id.projectAdding)
+        object ProjectJoining : Destination(R.id.projectCreation)
+        class Daily(val dailyId: String) : Destination(R.id.dailyFragment)
+
+        companion object {
+            fun forId(id: Int): Destination? {
+                return when (id) {
+                    R.id.splashFragment -> Splash
+                    R.id.loginFragment -> Login
+                    R.id.resetPasswordFragment -> ResetPassword
+                    R.id.registrationFragment -> Registration
+                    R.id.registrationSuccessfulFragment -> RegistrationSuccessful
+                    R.id.projectListFragment -> ProjectList
+                    R.id.projectDetailsFragment -> ProjectDetails("")
+                    R.id.projectCreation -> ProjectCreation
+                    R.id.projectAdding -> ProjectAdding
+                    R.id.dailyFragment -> Daily("")
+                    else -> null
+                }
+            }
+        }
     }
 
     class InvalidNavigationException(from: Destination, to: Destination) :
         Exception("Invalid navigation from $from to $to")
+
+    interface NavigationObserver {
+        fun onNavigation(destination: Destination)
+    }
 }

@@ -19,10 +19,44 @@ import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Splas
 import pl.jitsolutions.agile.presentation.projects.ProjectListFragmentDirections
 
 class AndroidNavigator(context: Context) : Navigator {
-    private val activity = context as AppCompatActivity
+    private val observers = mutableMapOf<Int, MutableSet<Navigator.NavigationObserver>>()
+    private val navController by lazy {
+        val activity = context as AppCompatActivity
+        activity.findNavController(android.R.id.content).apply {
+            addOnNavigatedListener { _, destination ->
+                observers[destination.id]?.forEach { observer ->
+                    Navigator.Destination.forId(destination.id)?.let {
+                        observer.onNavigation(it)
+                    }
+                }
+            }
+        }
+    }
+
+    override fun addDestinationObserver(
+        destination: Navigator.Destination,
+        observer: Navigator.NavigationObserver
+    ) {
+        var observersForDestination = observers[destination.id]
+        if (observersForDestination == null) {
+            observersForDestination = mutableSetOf()
+        }
+        observersForDestination.add(observer)
+        observers[destination.id] = observersForDestination
+    }
+
+    override fun removeDestinationObserver(
+        destination: Navigator.Destination,
+        observer: Navigator.NavigationObserver
+    ) {
+        val observersForDestination = observers[destination.id]
+        if (observersForDestination != null) {
+            observersForDestination.remove(observer)
+            observers[destination.id] = observersForDestination
+        }
+    }
 
     override fun navigate(from: Navigator.Destination, to: Navigator.Destination) {
-        val navController = activity.findNavController(android.R.id.content)
         when (from) {
             Splash -> when (to) {
                 Login -> navController.navigate(R.id.action_splashFragment_to_loginFragment)
@@ -92,7 +126,6 @@ class AndroidNavigator(context: Context) : Navigator {
     }
 
     override fun navigateBack(from: Navigator.Destination?): Boolean {
-        val navController = activity.findNavController(android.R.id.content)
         return when (from) {
             RegistrationSuccessful -> {
                 navigate(RegistrationSuccessful, ProjectList)

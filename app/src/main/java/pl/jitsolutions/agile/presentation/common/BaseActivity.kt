@@ -11,7 +11,8 @@ import org.kodein.di.KodeinTrigger
 import org.kodein.di.android.closestKodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
-import org.kodein.di.generic.provider
+import org.kodein.di.generic.singleton
+import pl.jitsolutions.agile.presentation.navigation.AndroidNavigator
 import pl.jitsolutions.agile.presentation.navigation.Navigator
 
 abstract class BaseActivity : AppCompatActivity(), KodeinAware {
@@ -19,7 +20,8 @@ abstract class BaseActivity : AppCompatActivity(), KodeinAware {
     private val appKodein by closestKodein()
     override val kodein = Kodein.lazy {
         extend(appKodein)
-        bind<Context>() with provider { this@BaseActivity }
+        bind<Context>() with singleton { this@BaseActivity }
+        bind<Navigator>() with singleton { AndroidNavigator(instance()) }
     }
     override val kodeinTrigger = KodeinTrigger()
 
