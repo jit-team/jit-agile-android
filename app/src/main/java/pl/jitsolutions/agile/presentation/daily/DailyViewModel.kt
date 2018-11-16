@@ -35,7 +35,6 @@ class DailyViewModel(
     val startTime = mutableLiveData(0L)
     val dailyState = mutableLiveData<DailyState>(DailyState.Prepare)
     val state = mutableLiveData<State>(State.Idle)
-    val quota = mutableLiveData(false)
     private var queue = emptyList<String>()
     private var userId: String? = null
 
@@ -87,7 +86,6 @@ class DailyViewModel(
         } else {
             dailyState.value = DailyState.End
             startTime.value = -1L
-            quota.value = true
         }
     }
 

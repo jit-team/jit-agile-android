@@ -6,6 +6,8 @@ import android.util.AttributeSet
 import android.widget.TextView
 import pl.jitsolutions.agile.R
 
+private const val DAILY_LENGTH = 15 * 60 * 1000L
+
 class Chronometer(context: Context, attributes: AttributeSet) : TextView(
     context,
     attributes
@@ -21,7 +23,7 @@ class Chronometer(context: Context, attributes: AttributeSet) : TextView(
     }
 
     fun setBase(dailyStartInMillis: Long) {
-        based = dailyStartInMillis + (15 * 60 * 1000)
+        based = dailyStartInMillis + DAILY_LENGTH
     }
 
     fun start() {
@@ -32,6 +34,9 @@ class Chronometer(context: Context, attributes: AttributeSet) : TextView(
     fun stop() {
         started = false
         updateRunning()
+        val dailyLength = System.currentTimeMillis() - based + DAILY_LENGTH
+        val seconds = dailyLength / 1000
+        text = DateUtils.formatElapsedTime(timeElapsed, seconds)
     }
 
     private fun updateText(now: Long) {

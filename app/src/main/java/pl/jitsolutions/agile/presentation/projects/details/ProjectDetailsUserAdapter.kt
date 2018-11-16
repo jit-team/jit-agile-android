@@ -3,18 +3,9 @@ package pl.jitsolutions.agile.presentation.projects.details
 import pl.jitsolutions.agile.R
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.presentation.common.BaseBindableAdapter
+import pl.jitsolutions.agile.presentation.common.UserDiffCallback
 
-class ProjectDetailsUserAdapter : BaseBindableAdapter<User>({}) {
-    // TODO: add DiffUtils
-    var users: List<User> = emptyList()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+class ProjectDetailsUserAdapter : BaseBindableAdapter<User>({}, UserDiffCallback()) {
 
-    override fun getObjForPosition(position: Int) = users[position]
-
-    override fun getLayoutIdForPosition(position: Int) = R.layout.list_item_project_details_user
-
-    override fun getItemCount() = users.size
+    override fun getItemViewType(position: Int): Int = R.layout.list_item_project_details_user
 }

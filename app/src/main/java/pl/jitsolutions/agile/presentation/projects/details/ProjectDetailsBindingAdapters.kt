@@ -33,7 +33,7 @@ fun bindProjectDetailsListOfUsers(recyclerView: RecyclerView, users: List<User>?
     } else {
         adapter = recyclerView.adapter as ProjectDetailsUserAdapter
     }
-    adapter.users = users ?: emptyList()
+    adapter.submitList(users ?: emptyList())
 }
 
 @BindingAdapter("bindProjectDetailsProgressVisibility")
