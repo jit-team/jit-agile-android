@@ -41,41 +41,20 @@ fun bindDailyEnd(
     viewModel: DailyViewModel,
     dailyState: DailyViewModel.DailyState
 ) {
-    when (dailyState) {
-        DailyViewModel.DailyState.Prepare -> {
-            with(button) {
-                text =
-                    button.context.getString(pl.jitsolutions.agile.R.string.daily_screen_end_button_text)
-                visibility = View.VISIBLE
-            }
-        }
-        DailyViewModel.DailyState.Wait -> {
-            with(button) {
-                text =
-                    button.context.getString(pl.jitsolutions.agile.R.string.daily_screen_end_button_text)
-                visibility = View.VISIBLE
-            }
-        }
-        DailyViewModel.DailyState.Turn -> {
-            with(button) {
-                text =
-                    button.context.getString(pl.jitsolutions.agile.R.string.daily_screen_end_button_text)
-                visibility = View.VISIBLE
-            }
-        }
-        DailyViewModel.DailyState.Last -> {
-            with(button) {
-                visibility = View.GONE
-            }
-        }
-        DailyViewModel.DailyState.End -> {
-            with(button) {
-                visibility = View.INVISIBLE
-            }
-        }
+    val buttonVisibility = when (dailyState) {
+        DailyViewModel.DailyState.End,
+        DailyViewModel.DailyState.LastTurn,
+        DailyViewModel.DailyState.LastWait -> View.GONE
+        else -> View.VISIBLE
     }
-    button.setOnClickListener {
-        showDailyEndConfirmation(button) { viewModel.endDaily() }
+    val buttonText = button.context.getString(R.string.daily_screen_end_button_text)
+
+    with(button) {
+        visibility = buttonVisibility
+        text = buttonText
+        setOnClickListener {
+            showDailyEndConfirmation(button) { viewModel.endDaily() }
+        }
     }
 }
 
@@ -99,36 +78,22 @@ fun bindDailyCountDownTimer(
 
 @BindingAdapter("bindDailyNextTurnButton")
 fun bindDailyNextTurnButton(button: Button, dailyState: DailyViewModel.DailyState) {
-    when (dailyState) {
-        DailyViewModel.DailyState.Prepare -> {
-            with(button) {
-                text = button.context.getString(R.string.daily_screen_start_button_text)
-                visibility = View.VISIBLE
-            }
-        }
-        DailyViewModel.DailyState.Wait -> {
-            with(button) {
-                text = button.context.getString(R.string.daily_screen_skip_button_text)
-                visibility = View.VISIBLE
-            }
-        }
-        DailyViewModel.DailyState.Turn -> {
-            with(button) {
-                text = button.context.getString(R.string.daily_screen_next_button_text)
-                visibility = View.VISIBLE
-            }
-        }
-        DailyViewModel.DailyState.Last -> {
-            with(button) {
-                text = button.context.getString(R.string.daily_screen_end_daily_button_text)
-                visibility = View.VISIBLE
-            }
-        }
-        DailyViewModel.DailyState.End -> {
-            with(button) {
-                visibility = View.INVISIBLE
-            }
-        }
+    val buttonVisibility = when (dailyState) {
+        DailyViewModel.DailyState.End -> View.GONE
+        else -> View.VISIBLE
+    }
+    val buttonText = when (dailyState) {
+        DailyViewModel.DailyState.Prepare -> button.context.getString(R.string.daily_screen_start_button_text)
+        DailyViewModel.DailyState.Wait -> button.context.getString(R.string.daily_screen_skip_button_text)
+        DailyViewModel.DailyState.Turn -> button.context.getString(R.string.daily_screen_next_button_text)
+        DailyViewModel.DailyState.LastWait,
+        DailyViewModel.DailyState.LastTurn -> button.context.getString(R.string.daily_screen_end_daily_button_text)
+        DailyViewModel.DailyState.End -> null
+    }
+
+    with(button) {
+        visibility = buttonVisibility
+        text = buttonText
     }
 }
 
@@ -143,12 +108,12 @@ fun bindBackgroundColor(
             val colorTo = ContextCompat.getColor(coordinatorLayout.context, R.color.daily_prepare)
             transform(coordinatorLayout, colorFrom, colorTo)
         }
-        DailyViewModel.DailyState.Wait -> {
+        DailyViewModel.DailyState.Wait, DailyViewModel.DailyState.LastWait -> {
             val colorFrom = (coordinatorLayout.background as ColorDrawable).color
             val colorTo = ContextCompat.getColor(coordinatorLayout.context, R.color.daily_wait)
             transform(coordinatorLayout, colorFrom, colorTo)
         }
-        DailyViewModel.DailyState.Turn -> {
+        DailyViewModel.DailyState.Turn, DailyViewModel.DailyState.LastTurn -> {
             val colorFrom = (coordinatorLayout.background as ColorDrawable).color
             val colorTo = ContextCompat.getColor(coordinatorLayout.context, R.color.daily_turn)
             transform(coordinatorLayout, colorFrom, colorTo)

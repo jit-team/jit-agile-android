@@ -13,7 +13,7 @@ class Chronometer(context: Context, attributes: AttributeSet) : TextView(
     attributes
 ) {
 
-    private var based = 0L
+    private var based = -1L
     private val timeElapsed = StringBuilder()
     private var running = false
     private var started = false
@@ -34,6 +34,10 @@ class Chronometer(context: Context, attributes: AttributeSet) : TextView(
     fun stop() {
         started = false
         updateRunning()
+        if (based == -1L) {
+            text = DateUtils.formatElapsedTime(timeElapsed, 0)
+            return
+        }
         val dailyLength = System.currentTimeMillis() - based + DAILY_LENGTH
         val seconds = dailyLength / 1000
         text = DateUtils.formatElapsedTime(timeElapsed, seconds)
