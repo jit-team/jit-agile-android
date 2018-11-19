@@ -92,10 +92,10 @@ class DailyViewModel(
     private fun handleDailyOnAir(daily: Daily) {
         val currentUserId = daily.queue[0]
         users.value = sortQueueAndSelectCurrentUser(queue, daily.users)
-        if (userId == currentUserId) {
-            dailyState.value = DailyState.Turn
-        } else {
-            dailyState.value = DailyState.Wait
+        dailyState.value = when {
+            queue.size == 1 -> DailyState.Last
+            userId == currentUserId -> DailyState.Turn
+            else -> DailyState.Wait
         }
         startTime.value = daily.startTime
     }
@@ -153,7 +153,7 @@ class DailyViewModel(
             DailyState.Prepare -> {
                 startDaily()
             }
-            DailyState.Wait, DailyState.Turn -> {
+            DailyState.Wait, DailyState.Turn, DailyState.Last -> {
                 nextTurnDaily()
             }
         }
@@ -189,6 +189,7 @@ class DailyViewModel(
         object Prepare : DailyState()
         object Wait : DailyState()
         object Turn : DailyState()
+        object Last : DailyState()
         object End : DailyState()
     }
 

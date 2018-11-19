@@ -103,6 +103,7 @@
     <string name="daily_screen_next_button_text">Next</string>
     <string name="daily_screen_skip_button_text">Skip</string>
     <string name="daily_screen_end_button_text">End</string>
+    <string name="daily_screen_end_daily_button_text">End daily</string>
     <string name="daily_screen_quit_button_text">Quit</string>
     <string name="daily_screen_duration_label" tools:ignore="ExtraTranslation">15:00</string>
     <string name="daily_screen_leave_confirmation_title">Leave confirmation</string>

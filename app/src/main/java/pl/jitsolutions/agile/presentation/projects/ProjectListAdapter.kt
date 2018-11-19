@@ -33,7 +33,8 @@ class ProjectListAdapter(
             oldItem: ProjectWithDaily,
             newItem: ProjectWithDaily
         ): Boolean {
-            return true
+            return oldItem.daily == newItem.daily && oldItem.project == newItem.project &&
+                oldItem.membersCount == oldItem.membersCount
         }
     }
 }
