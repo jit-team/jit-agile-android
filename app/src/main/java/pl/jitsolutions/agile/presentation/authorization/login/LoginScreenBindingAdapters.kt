@@ -26,22 +26,12 @@ fun bindLoginPasswordError(view: TextInputLayout, loginState: LoginViewModel.Log
     view.isErrorEnabled = loginState.isErrorOfType(LoginViewModel.LoginErrorType.PASSWORD)
 }
 
-@BindingAdapter("bindLoginCredentialsEditingEnabled")
-fun bindLoginCredentialsEditingEnabled(view: View, loginState: LoginViewModel.LoginState) {
-    view.isEnabled = when (loginState) {
-        LoginViewModel.LoginState.None -> true
-        LoginViewModel.LoginState.InProgress -> false
-        is LoginViewModel.LoginState.Error -> true
-        LoginViewModel.LoginState.Success -> false
-    }
-}
-
 @BindingAdapter("bindLoginProgressVisibility")
 fun bindLoginProgressVisibility(progressBar: ProgressBar, loginState: LoginViewModel.LoginState) {
     progressBar.visibility = when (loginState) {
         LoginViewModel.LoginState.None -> View.INVISIBLE
         LoginViewModel.LoginState.InProgress -> View.VISIBLE
-        is LoginViewModel.LoginState.Error -> View.INVISIBLE
+        is LoginViewModel.LoginState.Fail -> View.INVISIBLE
         LoginViewModel.LoginState.Success -> View.INVISIBLE
     }
 }
@@ -57,4 +47,10 @@ fun bindLoginUnknownErrorVisibility(view: TextView, loginState: LoginViewModel.L
     }
     view.text = errorText
     view.visibility = if (errorText != null) View.VISIBLE else View.INVISIBLE
+}
+
+@BindingAdapter("bindLoginViewEnabled")
+fun bindLoginViewEnabled(view: View, loginState: LoginViewModel.LoginState) {
+    view.isEnabled = loginState != LoginViewModel.LoginState.InProgress ||
+        loginState != LoginViewModel.LoginState.Success
 }

@@ -20,9 +20,9 @@ class LoginViewModel(
 ) : CoroutineViewModel(mainDispatcher) {
     val password = mutableLiveData("")
     val email = mutableLiveData("")
-    val loginState = mutableLiveData<LoginState>(LoginState.None)
+    val state = mutableLiveData<LoginState>(LoginState.None)
 
-    private val typedTextObserver = Observer<String> { loginState.value = LoginState.None }
+    private val typedTextObserver = Observer<String> { state.value = LoginState.None }
 
     init {
         email.observeForever(typedTextObserver)
@@ -30,13 +30,12 @@ class LoginViewModel(
     }
 
     fun login() = launch {
-        loginState.value = LoginState.InProgress
-
+        state.value = LoginState.InProgress
         val params = LoginUserUseCase.Params(email.value!!, password.value!!)
         val response = loginUserUseCase.executeAsync(params).await()
         when (response.status) {
             Response.Status.SUCCESS -> {
-                loginState.value = LoginState.Success
+                state.value = LoginState.Success
                 navigator.navigate(from = Login, to = ProjectList)
             }
             Response.Status.ERROR -> {
@@ -50,7 +49,7 @@ class LoginViewModel(
                     is LoginUserUseCase.Error.EmptyPassword -> LoginErrorType.PASSWORD
                     else -> LoginErrorType.SERVER
                 }
-                loginState.value = LoginState.Error(type)
+                state.value = LoginState.Fail(type)
             }
         }
     }
@@ -71,12 +70,12 @@ class LoginViewModel(
 
     sealed class LoginState {
         fun isErrorOfType(type: LoginErrorType): Boolean {
-            return this is Error && this.type == type
+            return this is Fail && this.type == type
         }
 
         object None : LoginState()
         object InProgress : LoginState()
-        data class Error(val type: LoginErrorType) : LoginState()
+        data class Fail(val type: LoginErrorType) : LoginState()
         object Success : LoginState()
     }
 
