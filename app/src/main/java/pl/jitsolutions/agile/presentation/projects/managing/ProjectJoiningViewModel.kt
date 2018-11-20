@@ -7,6 +7,7 @@ import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.usecases.ProjectJoiningUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
 import pl.jitsolutions.agile.presentation.navigation.Navigator
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectDetails
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectJoining
 import pl.jitsolutions.agile.utils.mutableLiveData
 
@@ -35,11 +36,12 @@ class ProjectJoiningViewModel(
                     projectName.value!!,
                     password.value!!
                 )
-            )
-                .await()
+            ).await()
         when (result.status) {
             Response.Status.SUCCESS -> {
                 projectJoiningState.value = ProjectJoiningState.Success
+                val projectId = result.data!!
+                navigator.navigate(ProjectJoining, ProjectDetails(projectId))
             }
             Response.Status.ERROR -> {
                 val error = when (result.error) {
@@ -53,10 +55,6 @@ class ProjectJoiningViewModel(
                 projectJoiningState.value = ProjectJoiningState.Error(error)
             }
         }
-    }
-
-    fun confirmSuccess() {
-        navigator.navigateBack(ProjectJoining)
     }
 
     override fun onCleared() {

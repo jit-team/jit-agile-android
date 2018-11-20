@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -32,20 +32,13 @@ class ProjectJoiningFragment : BaseFragment() {
         binding.setLifecycleOwner(this)
         viewModel.projectJoiningState.observe(this, Observer {
             if (it == ProjectJoiningViewModel.ProjectJoiningState.Success) {
-                showProjectJoiningSuccessfulDialog()
+                Toast.makeText(
+                    context,
+                    R.string.project_joining_screen_success_message,
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
         return binding.root
-    }
-
-    private fun showProjectJoiningSuccessfulDialog() {
-        context?.let {
-            AlertDialog.Builder(it)
-                .setMessage(R.string.project_joining_screen_dialog_user_has_been_joined_text)
-                .setPositiveButton(R.string.project_joining_screen_dialog_positive_text) { dialog, _ ->
-                    dialog.dismiss()
-                    viewModel.confirmSuccess()
-                }.show()
-        }
     }
 }

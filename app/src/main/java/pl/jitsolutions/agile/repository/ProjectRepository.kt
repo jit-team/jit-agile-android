@@ -9,9 +9,9 @@ interface ProjectRepository {
     suspend fun getProjects(userId: String): Response<List<Project>>
     suspend fun getProject(projectId: String): Response<Pair<Project, List<User>>>
     suspend fun leaveProject(projectId: String): Response<Unit>
-    suspend fun createNewProject(projectName: String, password: String): Response<Unit>
+    suspend fun createNewProject(projectName: String, password: String): Response<String>
     suspend fun deleteProject(projectId: String): Response<Unit>
-    suspend fun joinProject(projectName: String, password: String): Response<Unit>
+    suspend fun joinProject(projectName: String, password: String): Response<String>
     suspend fun getProjectsWithDailyState(userId: String): Response<List<ProjectWithDaily>>
 
     sealed class Error(message: String? = null) : Throwable(message) {

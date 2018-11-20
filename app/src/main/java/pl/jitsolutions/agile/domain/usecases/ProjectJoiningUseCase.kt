@@ -3,15 +3,15 @@ package pl.jitsolutions.agile.domain.usecases
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.errorResponse
-import pl.jitsolutions.agile.repository.ProjectRepository
 import pl.jitsolutions.agile.domain.usecases.ProjectJoiningUseCase.Params
+import pl.jitsolutions.agile.repository.ProjectRepository
 
 class ProjectJoiningUseCase(
     private val projectRepository: ProjectRepository,
     dispatcher: CoroutineDispatcher
-) : UseCase<Params, Unit>(dispatcher) {
+) : UseCase<Params, String>(dispatcher) {
 
-    override suspend fun build(params: Params): Response<Unit> {
+    override suspend fun build(params: Params): Response<String> {
         if (params.validate() != null)
             return errorResponse(error = params.validate()!!)
         val response = projectRepository.joinProject(params.name, params.password)
@@ -22,7 +22,7 @@ class ProjectJoiningUseCase(
         }
     }
 
-    private fun projectErrorResponse(response: Response<Unit>): Response<Unit> {
+    private fun projectErrorResponse(response: Response<String>): Response<String> {
         return when (response.error) {
             is ProjectRepository.Error.ProjectNotFound -> errorResponse(error = Error.ProjectNotFound)
             is ProjectRepository.Error.ServerConnection -> errorResponse(error = Error.ServerConnection)

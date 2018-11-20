@@ -135,15 +135,16 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) :
         }.await()
     }
 
-    override suspend fun joinProject(projectName: String, password: String): Response<Unit> {
+    override suspend fun joinProject(projectName: String, password: String): Response<String> {
         return CoroutineScope(dispatcher).async {
-            suspendCoroutine<Response<Unit>> { continuation ->
+            suspendCoroutine<Response<String>> { continuation ->
                 val data = mutableMapOf("projectName" to projectName, "password" to password)
                 functions
                     .getHttpsCallable("joinProject")
                     .call(data)
                     .addOnSuccessListener {
-                        continuation.resume(response(Unit))
+                        val projectId = (it.data as Map<String, Any>)["projectId"] as String
+                        continuation.resume(response(projectId))
                     }
                     .addOnFailureListener {
                         it.printStackTrace()
@@ -153,15 +154,16 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) :
         }.await()
     }
 
-    override suspend fun createNewProject(projectName: String, password: String): Response<Unit> {
+    override suspend fun createNewProject(projectName: String, password: String): Response<String> {
         return CoroutineScope(dispatcher).async {
-            suspendCoroutine<Response<Unit>> { continuation ->
+            suspendCoroutine<Response<String>> { continuation ->
                 val data = mutableMapOf("projectName" to projectName, "password" to password)
                 functions
                     .getHttpsCallable("newProject")
                     .call(data)
                     .addOnSuccessListener {
-                        continuation.resume(response(Unit))
+                        val projectId = (it.data as Map<String, Any>)["projectId"] as String
+                        continuation.resume(response(projectId))
                     }
                     .addOnFailureListener {
                         it.printStackTrace()
