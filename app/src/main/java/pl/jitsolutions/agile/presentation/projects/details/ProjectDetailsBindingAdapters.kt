@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import pl.jitsolutions.agile.R
 import pl.jitsolutions.agile.domain.User
 
@@ -42,26 +43,28 @@ fun bindProjectDetailsProgressVisibility(
     state: ProjectDetailsViewModel.State
 ) {
     progressBar.visibility = when (state) {
+        ProjectDetailsViewModel.State.Success -> View.INVISIBLE
         ProjectDetailsViewModel.State.Idle -> View.INVISIBLE
         ProjectDetailsViewModel.State.InProgress -> View.VISIBLE
         ProjectDetailsViewModel.State.Empty -> View.INVISIBLE
-        is ProjectDetailsViewModel.State.Error -> View.INVISIBLE
+        is ProjectDetailsViewModel.State.Fail -> View.INVISIBLE
     }
 }
 
 @BindingAdapter("bindProjectDetailsEmptyState")
 fun bindProjectDetailsEmptyState(view: View, state: ProjectDetailsViewModel.State) {
     view.visibility = when (state) {
+        ProjectDetailsViewModel.State.Success -> View.INVISIBLE
         ProjectDetailsViewModel.State.Idle -> View.INVISIBLE
         ProjectDetailsViewModel.State.InProgress -> View.INVISIBLE
         ProjectDetailsViewModel.State.Empty -> View.VISIBLE
-        is ProjectDetailsViewModel.State.Error -> View.INVISIBLE
+        is ProjectDetailsViewModel.State.Fail -> View.INVISIBLE
     }
 }
 
 @BindingAdapter("bindProjectDetailsErrorState")
 fun bindProjectDetailsErrorState(view: View, state: ProjectDetailsViewModel.State) {
-    if (state !is ProjectDetailsViewModel.State.Error) {
+    if (state !is ProjectDetailsViewModel.State.Fail) {
         return
     }
 
@@ -86,6 +89,15 @@ fun bindProjectDetailsMenuItemListener(
             view.showLeaveConfirmation { viewModel.leaveProject() }
         R.id.menu_project_details_delete_project ->
             view.showDeleteConfirmation { viewModel.deleteProject() }
+    }
+}
+
+@BindingAdapter("bindProjectDetailsFab")
+fun bindProjectListFab(fab: FloatingActionButton, state: ProjectDetailsViewModel.State) {
+    when (state) {
+        ProjectDetailsViewModel.State.Success -> fab.show()
+        ProjectDetailsViewModel.State.Empty -> fab.show()
+        else -> fab.hide()
     }
 }
 

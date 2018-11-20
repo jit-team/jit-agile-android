@@ -44,8 +44,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nextFocusDown="@+id/login_layout_password"
-                app:bindLoginViewEnabled="@{viewModel.state}"
-                app:bindLoginEmailError="@{viewModel.state}">
+                app:bindLoginEmailError="@{viewModel.state}"
+                app:bindLoginViewEnabled="@{viewModel.state}">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/login_email"
@@ -63,8 +63,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nextFocusUp="@+id/login_layout_email"
-                app:bindLoginViewEnabled="@{viewModel.state}"
                 app:bindLoginPasswordError="@{viewModel.state}"
+                app:bindLoginViewEnabled="@{viewModel.state}"
                 app:layout_constraintTop_toBottomOf="@+id/login_layout_email">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -134,9 +134,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:bindLoginViewEnabled="@{viewModel.state}"
                 android:onClick="@{() -> viewModel.resetPassword()}"
                 android:text="@string/login_screen_forgot_password_label"
+                app:bindLoginViewEnabled="@{viewModel.state}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent" />

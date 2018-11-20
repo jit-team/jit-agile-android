@@ -104,7 +104,7 @@ class ProjectListViewModel(
                     projects.value = projectsWithDaily.sortedBy { it.project.name }
                     moveToDailyIfActive(moveToDaily, projectsWithDaily)
                 } else {
-                    state.value = State.EmptyList
+                    state.value = State.Empty
                 }
             }
             ERROR -> {
@@ -152,7 +152,7 @@ class ProjectListViewModel(
 
         object None : State()
         object InProgress : State()
-        object EmptyList : State()
+        object Empty : State()
         data class Fail(val type: ProjectListError) : State()
         object Success : State()
     }

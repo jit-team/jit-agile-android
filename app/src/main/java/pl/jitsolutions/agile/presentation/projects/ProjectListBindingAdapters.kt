@@ -103,7 +103,7 @@ fun bindProjectListEmptyList(view: View, state: ProjectListViewModel.State) {
         ProjectListViewModel.State.InProgress -> View.INVISIBLE
         is ProjectListViewModel.State.Fail -> View.INVISIBLE
         ProjectListViewModel.State.Success -> View.INVISIBLE
-        ProjectListViewModel.State.EmptyList -> View.VISIBLE
+        ProjectListViewModel.State.Empty -> View.VISIBLE
     }
 }
 
@@ -153,7 +153,7 @@ fun bindProjectListRefreshState(
         ProjectListViewModel.State.InProgress -> true
         is ProjectListViewModel.State.Fail -> false
         ProjectListViewModel.State.Success -> false
-        ProjectListViewModel.State.EmptyList -> false
+        ProjectListViewModel.State.Empty -> false
     }
 }
 
@@ -161,7 +161,7 @@ fun bindProjectListRefreshState(
 fun bindProjectListFab(fab: FloatingActionButton, state: ProjectListViewModel.State) {
     when (state) {
         ProjectListViewModel.State.Success -> fab.show()
-        ProjectListViewModel.State.EmptyList -> fab.show()
+        ProjectListViewModel.State.Empty -> fab.show()
         else -> fab.hide()
     }
 }
