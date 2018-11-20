@@ -1,8 +1,13 @@
 package pl.jitsolutions.agile.repository.firebase
 
+import com.google.firebase.auth.FirebaseUser
 import pl.jitsolutions.agile.domain.Daily
 import pl.jitsolutions.agile.domain.Project
 import pl.jitsolutions.agile.domain.User
+
+fun FirebaseUser.toUser(): User {
+    return User(id = uid, name = displayName ?: "", email = email ?: "")
+}
 
 @Suppress("UNCHECKED_CAST")
 fun Any?.toDomainDaily(): Daily {

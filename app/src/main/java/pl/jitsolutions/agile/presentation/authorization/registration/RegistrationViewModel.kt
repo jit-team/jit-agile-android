@@ -3,6 +3,7 @@ package pl.jitsolutions.agile.presentation.authorization.registration
 import androidx.lifecycle.Observer
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.launch
+import pl.jitsolutions.agile.JitError
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.usecases.UserRegistrationUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
@@ -22,8 +23,7 @@ class RegistrationViewModel(
     val userName = mutableLiveData("")
     val state = mutableLiveData<State>(State.None)
 
-    private val typedTextObserver =
-        Observer<String> { state.value = State.None }
+    private val typedTextObserver = Observer<String> { state.value = State.None }
 
     init {
         email.observeForever(typedTextObserver)
@@ -38,23 +38,10 @@ class RegistrationViewModel(
         val response = userRegistrationUseCase.executeAsync(params).await()
         when (response.status) {
             Response.Status.SUCCESS -> {
-                userName.value = response.data
                 state.value = State.Success
                 navigator.navigate(from = Registration, to = RegistrationSuccessful)
             }
-            Response.Status.FAILURE -> {
-                val type = when (response.error) {
-                    is UserRegistrationUseCase.Error.WeakPassword -> RegisterTypeError.PASSWORD
-                    is UserRegistrationUseCase.Error.EmptyUserName -> RegisterTypeError.USERNAME
-                    is UserRegistrationUseCase.Error.EmptyPassword -> RegisterTypeError.PASSWORD
-                    is UserRegistrationUseCase.Error.UserAlreadyExist -> RegisterTypeError.EMAIL_ALREADY_EXIST
-                    is UserRegistrationUseCase.Error.EmptyEmail -> RegisterTypeError.EMAIL
-                    is UserRegistrationUseCase.Error.InvalidEmail -> RegisterTypeError.EMAIL
-                    is UserRegistrationUseCase.Error.InvalidPassword -> RegisterTypeError.USERNAME
-                    else -> RegisterTypeError.SERVER
-                }
-                state.value = State.Fail(type)
-            }
+            Response.Status.FAILURE -> state.value = State.Fail(response.newError!!)
         }
     }
 
@@ -66,15 +53,13 @@ class RegistrationViewModel(
     }
 
     sealed class State {
-        fun isErrorOfType(type: RegisterTypeError): Boolean {
+        fun isErrorOfType(type: JitError): Boolean {
             return this is RegistrationViewModel.State.Fail && this.type == type
         }
 
         object None : State()
         object InProgress : State()
-        data class Fail(val type: RegisterTypeError) : State()
+        data class Fail(val type: JitError) : State()
         object Success : State()
     }
-
-    enum class RegisterTypeError { USERNAME, EMAIL, EMAIL_ALREADY_EXIST, PASSWORD, SERVER, UNKNOWN }
 }

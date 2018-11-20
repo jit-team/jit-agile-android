@@ -67,19 +67,11 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
         response(currentUser!!.toUser())
     }.await()
 
-    private fun FirebaseUser.toUser(): User {
-        return User(id = uid, name = displayName ?: "", email = email ?: "")
-    }
-
-    private fun Task<AuthResult>.toUser(): User {
-        return result!!.user.toUser()
-    }
-
     override suspend fun register(
         userName: String,
         email: String,
         password: String
-    ): Response<User> {
+    ): Response<Unit> {
         return CoroutineScope(dispatcher).async {
             try {
                 val registerTaskResult = suspendCoroutine<Task<AuthResult>> { continuation ->
@@ -90,7 +82,7 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
                 }
                 handleRegisterResponse(userName, registerTaskResult)
             } catch (e: Exception) {
-                errorResponse<User>(error = UserRepository.Error.UnknownError)
+                errorResponse<Unit>(error = UserRepository.Error.UnknownError)
             }
         }.await()
     }
@@ -98,14 +90,18 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
     private suspend fun handleRegisterResponse(
         userName: String,
         taskResult: Task<AuthResult>
-    ): Response<User> {
+    ): Response<Unit> {
         return when {
             taskResult.isSuccessful -> {
                 val firebaseUser = taskResult.result?.user!!
                 updateUserName(firebaseUser, userName)
-                response(firebaseUser.toUser())
+                response(Unit)
             }
-            taskResult.exception != null -> errorResponse(error = retrieveError(taskResult.exception!!))
+            taskResult.exception != null -> newErrorResponse(
+                error = FirebaseErrorResolver.parseRegistrationException(
+                    taskResult.exception!!
+                )
+            )
             else -> errorResponse(error = UserRepository.Error.UnknownError)
         }
     }
