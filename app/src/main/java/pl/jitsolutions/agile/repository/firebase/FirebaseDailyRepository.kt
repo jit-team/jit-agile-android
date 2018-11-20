@@ -2,6 +2,7 @@ package pl.jitsolutions.agile.repository.firebase
 
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.functions.FirebaseFunctions
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.CoroutineScope
@@ -19,6 +20,7 @@ import kotlin.coroutines.experimental.suspendCoroutine
 class FirebaseDailyRepository(private val dispatcher: CoroutineDispatcher) : DailyRepository {
     private val firestore = FirebaseFirestore.getInstance()
     private val functions = FirebaseFunctions.getInstance()
+    private lateinit var observeDailyListener: ListenerRegistration
 
     override suspend fun endDaily(dailyId: String): Response<Unit> {
         return CoroutineScope(dispatcher).async {
@@ -39,7 +41,7 @@ class FirebaseDailyRepository(private val dispatcher: CoroutineDispatcher) : Dai
 
     override suspend fun observeDaily(dailyId: String): ReceiveChannel<Response<Daily?>> {
         val channel = Channel<Response<Daily?>>()
-        firestore.collection("dailies")
+        observeDailyListener = firestore.collection("dailies")
             .document(dailyId)
             .addSnapshotListener { document, exception ->
                 CoroutineScope(dispatcher).launch {
@@ -70,6 +72,7 @@ class FirebaseDailyRepository(private val dispatcher: CoroutineDispatcher) : Dai
             }
         }.await()
     }
+
     private fun handleDailyDocument(document: DocumentSnapshot): Response<Daily?> {
         return when {
             document.data != null -> {
@@ -133,5 +136,9 @@ class FirebaseDailyRepository(private val dispatcher: CoroutineDispatcher) : Dai
                     }
             }
         }.await()
+    }
+
+    override fun dispose() {
+        observeDailyListener.remove()
     }
 }
