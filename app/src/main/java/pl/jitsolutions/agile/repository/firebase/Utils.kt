@@ -39,7 +39,7 @@ fun Any?.toUserList(): List<User> {
     val usersMap = this as Map<String, Map<String, Any>>
     return usersMap.map { (_, value) ->
         User(
-            id = value["id"] as String,
+            id = value["uid"] as String,
             name = value["displayName"] as? String ?: "",
             email = value["email"] as String,
             active = value["active"] as Boolean
