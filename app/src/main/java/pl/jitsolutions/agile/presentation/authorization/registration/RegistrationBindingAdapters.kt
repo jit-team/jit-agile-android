@@ -56,7 +56,7 @@ fun bindRegistrationProgressVisibility(
     progressBar.visibility = when (state) {
         RegistrationViewModel.State.None -> View.INVISIBLE
         RegistrationViewModel.State.InProgress -> View.VISIBLE
-        is RegistrationViewModel.State.Error -> View.INVISIBLE
+        is RegistrationViewModel.State.Fail -> View.INVISIBLE
         RegistrationViewModel.State.Success -> View.INVISIBLE
     }
 }

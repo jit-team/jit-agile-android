@@ -53,7 +53,7 @@ class RegistrationViewModel(
                     is UserRegistrationUseCase.Error.InvalidPassword -> RegisterTypeError.USERNAME
                     else -> RegisterTypeError.SERVER
                 }
-                state.value = State.Error(type)
+                state.value = State.Fail(type)
             }
         }
     }
@@ -67,12 +67,12 @@ class RegistrationViewModel(
 
     sealed class State {
         fun isErrorOfType(type: RegisterTypeError): Boolean {
-            return this is RegistrationViewModel.State.Error && this.type == type
+            return this is RegistrationViewModel.State.Fail && this.type == type
         }
 
         object None : State()
         object InProgress : State()
-        data class Error(val type: RegisterTypeError) : State()
+        data class Fail(val type: RegisterTypeError) : State()
         object Success : State()
     }
 
