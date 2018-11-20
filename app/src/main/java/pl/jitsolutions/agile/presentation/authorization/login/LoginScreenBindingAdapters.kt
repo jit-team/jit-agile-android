@@ -8,11 +8,11 @@ import com.google.android.material.textfield.TextInputLayout
 import pl.jitsolutions.agile.R
 
 @BindingAdapter("bindLoginEmailError")
-fun bindLoginEmailError(view: TextInputLayout, loginState: LoginViewModel.LoginState) {
+fun bindLoginEmailError(view: TextInputLayout, state: LoginViewModel.State) {
     val errorText: String? = when {
-        loginState.isErrorOfType(LoginViewModel.LoginErrorType.EMAIL) ->
+        state.isErrorOfType(LoginViewModel.LoginErrorType.EMAIL) ->
             view.context.getString(R.string.login_screen_error_invalid_email)
-        loginState.isErrorOfType(LoginViewModel.LoginErrorType.EMAIL_NOT_FOUND) ->
+        state.isErrorOfType(LoginViewModel.LoginErrorType.EMAIL_NOT_FOUND) ->
             view.context.getString(R.string.login_screen_error_email_not_found)
         else -> null
     }
@@ -21,40 +21,36 @@ fun bindLoginEmailError(view: TextInputLayout, loginState: LoginViewModel.LoginS
 }
 
 @BindingAdapter("bindLoginPasswordError")
-fun bindLoginPasswordError(view: TextInputLayout, loginState: LoginViewModel.LoginState) {
+fun bindLoginPasswordError(view: TextInputLayout, state: LoginViewModel.State) {
     view.error = view.resources.getString(R.string.login_screen_error_invalid_password)
-    view.isErrorEnabled = loginState.isErrorOfType(LoginViewModel.LoginErrorType.PASSWORD)
-}
-
-@BindingAdapter("bindLoginCredentialsEditingEnabled")
-fun bindLoginCredentialsEditingEnabled(view: View, loginState: LoginViewModel.LoginState) {
-    view.isEnabled = when (loginState) {
-        LoginViewModel.LoginState.None -> true
-        LoginViewModel.LoginState.InProgress -> false
-        is LoginViewModel.LoginState.Error -> true
-        LoginViewModel.LoginState.Success -> false
-    }
+    view.isErrorEnabled = state.isErrorOfType(LoginViewModel.LoginErrorType.PASSWORD)
 }
 
 @BindingAdapter("bindLoginProgressVisibility")
-fun bindLoginProgressVisibility(progressBar: ProgressBar, loginState: LoginViewModel.LoginState) {
-    progressBar.visibility = when (loginState) {
-        LoginViewModel.LoginState.None -> View.INVISIBLE
-        LoginViewModel.LoginState.InProgress -> View.VISIBLE
-        is LoginViewModel.LoginState.Error -> View.INVISIBLE
-        LoginViewModel.LoginState.Success -> View.INVISIBLE
+fun bindLoginProgressVisibility(progressBar: ProgressBar, state: LoginViewModel.State) {
+    progressBar.visibility = when (state) {
+        LoginViewModel.State.None -> View.INVISIBLE
+        LoginViewModel.State.InProgress -> View.VISIBLE
+        is LoginViewModel.State.Fail -> View.INVISIBLE
+        LoginViewModel.State.Success -> View.INVISIBLE
     }
 }
 
 @BindingAdapter("bindLoginUnknownErrorVisibility")
-fun bindLoginUnknownErrorVisibility(view: TextView, loginState: LoginViewModel.LoginState) {
+fun bindLoginUnknownErrorVisibility(view: TextView, state: LoginViewModel.State) {
     val errorText: String? = when {
-        loginState.isErrorOfType(LoginViewModel.LoginErrorType.SERVER) ->
+        state.isErrorOfType(LoginViewModel.LoginErrorType.SERVER) ->
             view.context.getString(R.string.login_screen_error_network)
-        loginState.isErrorOfType(LoginViewModel.LoginErrorType.UNKNOWN) ->
+        state.isErrorOfType(LoginViewModel.LoginErrorType.UNKNOWN) ->
             view.context.getString(R.string.login_screen_error_unknown)
         else -> null
     }
     view.text = errorText
     view.visibility = if (errorText != null) View.VISIBLE else View.INVISIBLE
+}
+
+@BindingAdapter("bindLoginViewEnabled")
+fun bindLoginViewEnabled(view: View, state: LoginViewModel.State) {
+    view.isEnabled = state != LoginViewModel.State.InProgress &&
+        state != LoginViewModel.State.Success
 }

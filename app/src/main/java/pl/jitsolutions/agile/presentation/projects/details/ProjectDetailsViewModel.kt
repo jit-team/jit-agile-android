@@ -46,10 +46,10 @@ class ProjectDetailsViewModel(
     private fun handleDeleteProjectError(result: Response<Unit>) {
         val errorState = when (result.error) {
             DeleteProjectUseCase.Error.ServerConnection ->
-                State.Error(ErrorType.CONNECTION)
+                State.Fail(ErrorType.CONNECTION)
             is DeleteProjectUseCase.Error.ProjectNotFound ->
-                State.Error(ErrorType.PROJECT_NOT_FOUND)
-            else -> State.Error(ErrorType.CONNECTION)
+                State.Fail(ErrorType.PROJECT_NOT_FOUND)
+            else -> State.Fail(ErrorType.CONNECTION)
         }
         state.value = errorState
     }
@@ -75,10 +75,10 @@ class ProjectDetailsViewModel(
                     from = Navigator.Destination.ProjectDetails(projectId),
                     to = Navigator.Destination.Daily(projectId)
                 )
-                state.value = State.Idle
+                state.value = State.Success
             }
             ERROR -> {
-                state.value = State.Error(ErrorType.CONNECTION)
+                state.value = State.Fail(ErrorType.CONNECTION)
             }
         }
     }
@@ -86,10 +86,10 @@ class ProjectDetailsViewModel(
     private fun handleLeaveProjectError(result: Response<Unit>) {
         val errorState = when (result.error) {
             LeaveProjectUseCase.Error.ServerConnection ->
-                State.Error(ErrorType.CONNECTION)
+                State.Fail(ErrorType.CONNECTION)
             is LeaveProjectUseCase.Error.ProjectNotFound ->
-                State.Error(ErrorType.PROJECT_NOT_FOUND)
-            else -> State.Error(ErrorType.CONNECTION)
+                State.Fail(ErrorType.PROJECT_NOT_FOUND)
+            else -> State.Fail(ErrorType.CONNECTION)
         }
         state.value = errorState
     }
@@ -99,7 +99,7 @@ class ProjectDetailsViewModel(
         val resultState = executeGetProject()
         state.value = resultState
 
-        if (resultState is State.Error) {
+        if (resultState is State.Fail) {
             navigator.navigateBack(Navigator.Destination.ProjectDetails(projectId))
         }
     }
@@ -113,27 +113,28 @@ class ProjectDetailsViewModel(
                     project.value = first
                     users.value = second
                 }
-                State.Idle
+                State.Success
             }
             ERROR -> when (result.error!!) {
                 GetProjectUseCase.Error.ServerConnection ->
-                    State.Error(ErrorType.CONNECTION)
+                    State.Fail(ErrorType.CONNECTION)
                 is GetProjectUseCase.Error.ProjectNotFound ->
-                    State.Error(ErrorType.PROJECT_NOT_FOUND)
-                else -> State.Error(ErrorType.CONNECTION)
+                    State.Fail(ErrorType.PROJECT_NOT_FOUND)
+                else -> State.Fail(ErrorType.CONNECTION)
             }
         }
     }
 
     sealed class State {
         fun isErrorOfType(type: ErrorType): Boolean {
-            return this is State.Error && this.type == type
+            return this is State.Fail && this.type == type
         }
 
+        object Success : State()
         object Idle : State()
         object InProgress : State()
         object Empty : State()
-        class Error(val type: ErrorType) : State()
+        class Fail(val type: ErrorType) : State()
     }
 
     enum class ErrorType { CONNECTION, PROJECT_NOT_FOUND }

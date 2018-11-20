@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import org.kodein.di.Kodein
@@ -35,7 +36,7 @@ class ProjectDetailsFragment : BaseFragment() {
         setHasOptionsMenu(true)
 
         val viewModelFactory: ViewModelProvider.Factory by instance(tag = ProjectDetailsViewModel::class.java)
-        binding = DataBindingUtil.inflate<FragmentProjectDetailsBinding>(
+        binding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_project_details,
             container,
@@ -45,6 +46,9 @@ class ProjectDetailsFragment : BaseFragment() {
             .get(ProjectDetailsViewModel::class.java)
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
+        viewModel.state.observe(this, Observer {
+            setMenuVisibility(it is ProjectDetailsViewModel.State.Success)
+        })
         return binding.root
     }
 

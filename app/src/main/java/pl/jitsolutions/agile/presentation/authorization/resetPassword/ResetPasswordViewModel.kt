@@ -16,10 +16,10 @@ class ResetPasswordViewModel(
 ) : CoroutineViewModel(dispatcher) {
 
     val email = mutableLiveData("")
-    val resetPasswordState = mutableLiveData<ResetPasswordState>(ResetPasswordState.None)
+    val state = mutableLiveData<State>(State.None)
 
     private val typedTextObserver = Observer<String> {
-        resetPasswordState.value = ResetPasswordState.None
+        state.value = State.None
     }
 
     init {
@@ -27,12 +27,12 @@ class ResetPasswordViewModel(
     }
 
     fun resetPassword() = launch {
-        resetPasswordState.value = ResetPasswordState.InProgress
+        state.value = State.InProgress
         val params = UserResetPasswordUseCase.Params(email.value!!)
         val response = resetPasswordUseCase.executeAsync(params).await()
         when (response.status) {
             Response.Status.SUCCESS -> {
-                resetPasswordState.value = ResetPasswordState.Success
+                state.value = State.Success
                 navigator.navigateBack(from = Navigator.Destination.ResetPassword)
             }
             Response.Status.ERROR -> {
@@ -44,7 +44,7 @@ class ResetPasswordViewModel(
                     is UserResetPasswordUseCase.Error.EmptyEmail -> ResetPasswordTypeError.EMAIL
                     else -> ResetPasswordViewModel.ResetPasswordTypeError.SERVER
                 }
-                resetPasswordState.value = ResetPasswordState.Error(type)
+                state.value = State.Fail(type)
             }
         }
     }
@@ -53,15 +53,15 @@ class ResetPasswordViewModel(
         navigator.navigateBack(Navigator.Destination.ResetPassword)
     }
 
-    sealed class ResetPasswordState {
+    sealed class State {
         fun isErrorOfType(type: ResetPasswordTypeError): Boolean {
-            return this is Error && this.type == type
+            return this is Fail && this.type == type
         }
 
-        object None : ResetPasswordState()
-        object InProgress : ResetPasswordState()
-        data class Error(val type: ResetPasswordTypeError) : ResetPasswordState()
-        object Success : ResetPasswordState()
+        object None : State()
+        object InProgress : State()
+        data class Fail(val type: ResetPasswordTypeError) : State()
+        object Success : State()
     }
 
     enum class ResetPasswordTypeError { EMAIL, EMAIL_NOT_FOUND, SERVER, UNKNOWN }

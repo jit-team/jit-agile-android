@@ -97,6 +97,8 @@
                 android:layout_gravity="bottom|right"
                 android:layout_margin="16dp"
                 android:onClick="@{() -> viewModel.createProject()}"
+                android:visibility="invisible"
+                bindProjectListFab="@{viewModel.state}"
                 app:srcCompat="@drawable/ic_add" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -59,7 +59,7 @@ class ProjectListViewModel(
         val result = logoutCurrentUserUseCase.executeAsync(params).await()
         when (result.status) {
             SUCCESS -> navigator.navigate(ProjectList, Login)
-            ERROR -> state.value = State.Error(ProjectListError.UNKNOWN)
+            ERROR -> state.value = State.Fail(ProjectListError.UNKNOWN)
         }
     }
 
@@ -72,7 +72,7 @@ class ProjectListViewModel(
         val result = joinDailyUseCase.executeAsync(params).await()
         when (result.status) {
             SUCCESS -> navigator.navigate(ProjectList, Navigator.Destination.Daily(projectId))
-            ERROR -> state.value = State.Error(ProjectListError.UNKNOWN)
+            ERROR -> state.value = State.Fail(ProjectListError.UNKNOWN)
         }
     }
 
@@ -89,7 +89,7 @@ class ProjectListViewModel(
         val result = getLoggedUserUseCase.executeAsync(params).await()
         when (result.status) {
             SUCCESS -> handleGetLoggedUserSuccess(result)
-            ERROR -> state.value = State.Error(ProjectListError.UNKNOWN)
+            ERROR -> state.value = State.Fail(ProjectListError.UNKNOWN)
         }
     }
 
@@ -104,7 +104,7 @@ class ProjectListViewModel(
                     projects.value = projectsWithDaily.sortedBy { it.project.name }
                     moveToDailyIfActive(moveToDaily, projectsWithDaily)
                 } else {
-                    state.value = State.EmptyList
+                    state.value = State.Empty
                 }
             }
             ERROR -> {
@@ -113,7 +113,7 @@ class ProjectListViewModel(
                     GetCurrentUserProjectsUseCase.Error.UserNotFound -> ProjectListError.USER_NOT_FOUND
                     else -> ProjectListError.UNKNOWN
                 }
-                state.value = State.Error(type)
+                state.value = State.Fail(type)
             }
         }
     }
@@ -141,19 +141,19 @@ class ProjectListViewModel(
         val result = getApplicationVersionUseCase.executeAsync(params).await()
         when (result.status) {
             SUCCESS -> version.value = result.data!!
-            ERROR -> state.value = State.Error(ProjectListError.UNKNOWN)
+            ERROR -> state.value = State.Fail(ProjectListError.UNKNOWN)
         }
     }
 
     sealed class State {
         fun isErrorOfType(type: ProjectListViewModel.ProjectListError): Boolean {
-            return this is ProjectListViewModel.State.Error && this.type == type
+            return this is ProjectListViewModel.State.Fail && this.type == type
         }
 
         object None : State()
         object InProgress : State()
-        object EmptyList : State()
-        data class Error(val type: ProjectListError) : State()
+        object Empty : State()
+        data class Fail(val type: ProjectListError) : State()
         object Success : State()
     }
 
