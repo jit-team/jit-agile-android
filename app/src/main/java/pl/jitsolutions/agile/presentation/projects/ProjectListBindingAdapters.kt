@@ -11,6 +11,7 @@ import androidx.databinding.BindingAdapter
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import pl.jitsolutions.agile.R
 import pl.jitsolutions.agile.domain.ProjectWithDaily
@@ -100,7 +101,7 @@ fun bindProjectListEmptyList(view: View, state: ProjectListViewModel.State) {
     view.visibility = when (state) {
         ProjectListViewModel.State.None -> View.INVISIBLE
         ProjectListViewModel.State.InProgress -> View.INVISIBLE
-        is ProjectListViewModel.State.Error -> View.INVISIBLE
+        is ProjectListViewModel.State.Fail -> View.INVISIBLE
         ProjectListViewModel.State.Success -> View.INVISIBLE
         ProjectListViewModel.State.EmptyList -> View.VISIBLE
     }
@@ -108,7 +109,7 @@ fun bindProjectListEmptyList(view: View, state: ProjectListViewModel.State) {
 
 @BindingAdapter("bindProjectListError")
 fun bindProjectListError(view: TextView, state: ProjectListViewModel.State) {
-    if (state !is ProjectListViewModel.State.Error)
+    if (state !is ProjectListViewModel.State.Fail)
         return
 
     val error: String? = when {
@@ -150,8 +151,17 @@ fun bindProjectListRefreshState(
     swipeRefreshLayout.isRefreshing = when (state) {
         ProjectListViewModel.State.None -> false
         ProjectListViewModel.State.InProgress -> true
-        is ProjectListViewModel.State.Error -> false
+        is ProjectListViewModel.State.Fail -> false
         ProjectListViewModel.State.Success -> false
         ProjectListViewModel.State.EmptyList -> false
+    }
+}
+
+@BindingAdapter("bindProjectListFab")
+fun bindProjectListFab(fab: FloatingActionButton, state: ProjectListViewModel.State) {
+    when (state) {
+        ProjectListViewModel.State.Success -> fab.show()
+        ProjectListViewModel.State.EmptyList -> fab.show()
+        else -> fab.hide()
     }
 }

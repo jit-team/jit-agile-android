@@ -29,7 +29,6 @@ fun resetPasswordCredentialsEditingEnabled(
 ) {
     view.isEnabled = state != ResetPasswordViewModel.State.InProgress &&
         state != ResetPasswordViewModel.State.Success
-
 }
 
 @BindingAdapter("bindResetPasswordEmailError")
