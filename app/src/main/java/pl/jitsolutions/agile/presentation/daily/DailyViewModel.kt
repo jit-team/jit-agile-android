@@ -86,6 +86,7 @@ class DailyViewModel(
         } else {
             dailyState.value = DailyState.End
             startTime.value = -1L
+            observeDailyUseCase.dispose()
         }
     }
 
@@ -93,7 +94,7 @@ class DailyViewModel(
         val currentUserId = daily.queue[0]
         users.value = sortQueueAndSelectCurrentUser(queue, daily.users)
         dailyState.value = when {
-            queue.size == 1 -> DailyState.Last
+            queue.size == 1 -> if (userId == currentUserId) DailyState.LastTurn else DailyState.LastWait
             userId == currentUserId -> DailyState.Turn
             else -> DailyState.Wait
         }
@@ -153,7 +154,7 @@ class DailyViewModel(
             DailyState.Prepare -> {
                 startDaily()
             }
-            DailyState.Wait, DailyState.Turn, DailyState.Last -> {
+            DailyState.Wait, DailyState.Turn, DailyState.LastTurn, DailyState.LastWait -> {
                 nextTurnDaily()
             }
         }
@@ -189,12 +190,18 @@ class DailyViewModel(
         object Prepare : DailyState()
         object Wait : DailyState()
         object Turn : DailyState()
-        object Last : DailyState()
+        object LastWait : DailyState()
+        object LastTurn : DailyState()
         object End : DailyState()
     }
 
     sealed class State {
         object Idle : State()
         object InProgress : State()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        observeDailyUseCase.dispose()
     }
 }

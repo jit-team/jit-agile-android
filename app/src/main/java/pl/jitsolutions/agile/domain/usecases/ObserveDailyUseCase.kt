@@ -19,5 +19,9 @@ class ObserveDailyUseCase(
         }
     }
 
+    fun dispose() {
+        dailyRepository.dispose()
+    }
+
     class Params(val dailyId: String)
 }

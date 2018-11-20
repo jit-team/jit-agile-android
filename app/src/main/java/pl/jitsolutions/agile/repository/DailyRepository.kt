@@ -11,4 +11,5 @@ interface DailyRepository {
     suspend fun startDaily(dailyId: String): Response<Unit>
     suspend fun observeDaily(dailyId: String): ReceiveChannel<Response<Daily?>>
     suspend fun nextDaily(dailyId: String): Response<Unit>
+    fun dispose()
 }
