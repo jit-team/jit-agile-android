@@ -7,13 +7,14 @@ import android.widget.TextView
 import pl.jitsolutions.agile.R
 
 private const val DAILY_LENGTH = 15 * 60 * 1000L
+private const val INVALID_TIME = -1L
 
 class Chronometer(context: Context, attributes: AttributeSet) : TextView(
     context,
     attributes
 ) {
 
-    private var based = -1L
+    private var based = INVALID_TIME
     private val timeElapsed = StringBuilder()
     private var running = false
     private var started = false
@@ -34,7 +35,7 @@ class Chronometer(context: Context, attributes: AttributeSet) : TextView(
     fun stop() {
         started = false
         updateRunning()
-        if (based == -1L) {
+        if (based == INVALID_TIME) {
             text = DateUtils.formatElapsedTime(timeElapsed, 0)
             return
         }

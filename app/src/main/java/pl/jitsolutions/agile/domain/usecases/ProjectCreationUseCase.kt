@@ -3,15 +3,14 @@ package pl.jitsolutions.agile.domain.usecases
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.errorResponse
-import pl.jitsolutions.agile.domain.response
 import pl.jitsolutions.agile.repository.ProjectRepository
 
 class ProjectCreationUseCase(
     private val projectRepository: ProjectRepository,
     dispatcher: CoroutineDispatcher
-) : UseCase<ProjectCreationUseCase.Params, Unit>(dispatcher) {
+) : UseCase<ProjectCreationUseCase.Params, String>(dispatcher) {
 
-    override suspend fun build(params: Params): Response<Unit> {
+    override suspend fun build(params: Params): Response<String> {
         if (params.validate() != null)
             return errorResponse(error = params.validate()!!)
         val response = projectRepository.createNewProject(params.name, params.password)
@@ -22,7 +21,7 @@ class ProjectCreationUseCase(
         }
     }
 
-    private fun projectErrorResponse(response: Response<Unit>): Response<Unit> {
+    private fun projectErrorResponse(response: Response<String>): Response<String> {
         return when (response.error) {
             is ProjectRepository.Error.ProjectAlreadyExist -> errorResponse(error = Error.ProjectAlreadyExist)
             is ProjectRepository.Error.ServerConnection -> errorResponse(error = Error.ServerConnection)

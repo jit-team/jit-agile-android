@@ -116,10 +116,26 @@ class AndroidNavigator(context: Context) : Navigator {
             }
             ProjectCreation -> when (to) {
                 ProjectList -> navController.popBackStack()
+                is ProjectDetails -> {
+                    navController.popBackStack()
+                    navController.navigate(
+                        ProjectListFragmentDirections
+                            .showProjectDetails()
+                            .setProjectId(to.projectId)
+                    )
+                }
                 else -> throw Navigator.InvalidNavigationException(from, to)
             }
             ProjectJoining -> when (to) {
                 ProjectList -> navController.popBackStack()
+                is ProjectDetails -> {
+                    navController.popBackStack()
+                    navController.navigate(
+                        ProjectListFragmentDirections
+                            .showProjectDetails()
+                            .setProjectId(to.projectId)
+                    )
+                }
                 else -> throw Navigator.InvalidNavigationException(from, to)
             }
         }

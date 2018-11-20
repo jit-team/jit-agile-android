@@ -8,6 +8,7 @@ import pl.jitsolutions.agile.domain.usecases.ProjectCreationUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
 import pl.jitsolutions.agile.presentation.navigation.Navigator
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectCreation
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectDetails
 import pl.jitsolutions.agile.utils.mutableLiveData
 
 class ProjectCreationViewModel(
@@ -35,11 +36,12 @@ class ProjectCreationViewModel(
                     projectName.value!!,
                     password.value!!
                 )
-            )
-                .await()
+            ).await()
         when (result.status) {
             Response.Status.SUCCESS -> {
                 projectCreationState.value = ProjectCreationState.Success
+                val projectId = result.data!!
+                navigator.navigate(ProjectCreation, ProjectDetails(projectId))
             }
             Response.Status.ERROR -> {
                 val error = when (result.error) {
@@ -52,10 +54,6 @@ class ProjectCreationViewModel(
                 projectCreationState.value = ProjectCreationState.Error(error)
             }
         }
-    }
-
-    fun confirmSuccess() {
-        navigator.navigateBack(ProjectCreation)
     }
 
     override fun onCleared() {
