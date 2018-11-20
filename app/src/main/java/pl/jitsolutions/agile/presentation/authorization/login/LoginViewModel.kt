@@ -20,9 +20,9 @@ class LoginViewModel(
 ) : CoroutineViewModel(mainDispatcher) {
     val password = mutableLiveData("")
     val email = mutableLiveData("")
-    val state = mutableLiveData<LoginState>(LoginState.None)
+    val state = mutableLiveData<State>(State.None)
 
-    private val typedTextObserver = Observer<String> { state.value = LoginState.None }
+    private val typedTextObserver = Observer<String> { state.value = State.None }
 
     init {
         email.observeForever(typedTextObserver)
@@ -30,12 +30,12 @@ class LoginViewModel(
     }
 
     fun login() = launch {
-        state.value = LoginState.InProgress
+        state.value = State.InProgress
         val params = LoginUserUseCase.Params(email.value!!, password.value!!)
         val response = loginUserUseCase.executeAsync(params).await()
         when (response.status) {
             Response.Status.SUCCESS -> {
-                state.value = LoginState.Success
+                state.value = State.Success
                 navigator.navigate(from = Login, to = ProjectList)
             }
             Response.Status.ERROR -> {
@@ -49,7 +49,7 @@ class LoginViewModel(
                     is LoginUserUseCase.Error.EmptyPassword -> LoginErrorType.PASSWORD
                     else -> LoginErrorType.SERVER
                 }
-                state.value = LoginState.Fail(type)
+                state.value = State.Fail(type)
             }
         }
     }
@@ -68,15 +68,15 @@ class LoginViewModel(
         super.onCleared()
     }
 
-    sealed class LoginState {
+    sealed class State {
         fun isErrorOfType(type: LoginErrorType): Boolean {
             return this is Fail && this.type == type
         }
 
-        object None : LoginState()
-        object InProgress : LoginState()
-        data class Fail(val type: LoginErrorType) : LoginState()
-        object Success : LoginState()
+        object None : State()
+        object InProgress : State()
+        data class Fail(val type: LoginErrorType) : State()
+        object Success : State()
     }
 
     enum class LoginErrorType { EMAIL, EMAIL_NOT_FOUND, PASSWORD, SERVER, UNKNOWN }
