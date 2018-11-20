@@ -73,7 +73,7 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) :
 
     private fun Map<String, Any>.toDomainUser(): User {
         return User(
-            id = this["id"] as String,
+            id = this["uid"] as String,
             name = this["displayName"] as? String ?: "",
             email = this["email"] as String
         )
