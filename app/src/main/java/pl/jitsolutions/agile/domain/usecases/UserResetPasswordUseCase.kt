@@ -21,7 +21,7 @@ class UserResetPasswordUseCase(
         val response = userRepository.resetPassword(params.email)
         return when (response.status) {
             Response.Status.SUCCESS -> response(null)
-            Response.Status.ERROR -> errorResponse(response)
+            Response.Status.FAILURE -> errorResponse(response)
         }
     }
 

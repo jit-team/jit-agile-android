@@ -4,7 +4,7 @@ import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.launch
 import pl.jitsolutions.agile.domain.Response
-import pl.jitsolutions.agile.domain.Response.Status.ERROR
+import pl.jitsolutions.agile.domain.Response.Status.FAILURE
 import pl.jitsolutions.agile.domain.Response.Status.SUCCESS
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.usecases.GetApplicationVersionUseCase
@@ -34,7 +34,7 @@ class SplashViewModel(
         val response = getApplicationVersionUseCase.executeAsync(params).await()
         when (response.status) {
             SUCCESS -> version.value = response.data
-            ERROR -> throw response.error!!
+            FAILURE -> throw response.error!!
         }
     }
 
@@ -48,7 +48,7 @@ class SplashViewModel(
         val response = getLoggedUserUseCase.executeAsync(params).await()
         when (response.status) {
             SUCCESS -> handleGetLoggedUserSuccess(response)
-            ERROR -> throw response.error!!
+            FAILURE -> throw response.error!!
         }
     }
 

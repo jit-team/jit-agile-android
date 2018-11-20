@@ -18,7 +18,7 @@ class ProjectJoiningUseCase(
 
         return when (response.status) {
             Response.Status.SUCCESS -> response
-            Response.Status.ERROR -> projectErrorResponse(response)
+            Response.Status.FAILURE -> projectErrorResponse(response)
         }
     }
 

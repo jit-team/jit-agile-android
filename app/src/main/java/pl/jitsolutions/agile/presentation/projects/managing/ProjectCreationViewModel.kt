@@ -43,7 +43,7 @@ class ProjectCreationViewModel(
                 val projectId = result.data!!
                 navigator.navigate(ProjectCreation, ProjectDetails(projectId))
             }
-            Response.Status.ERROR -> {
+            Response.Status.FAILURE -> {
                 val error = when (result.error) {
                     is ProjectCreationUseCase.Error.EmptyProjectName -> ProjectCreationErrorType.PROJECT_NAME
                     is ProjectCreationUseCase.Error.EmptyPassword -> ProjectCreationErrorType.PASSWORD

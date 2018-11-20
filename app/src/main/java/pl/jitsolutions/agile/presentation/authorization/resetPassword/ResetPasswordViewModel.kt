@@ -35,7 +35,7 @@ class ResetPasswordViewModel(
                 state.value = State.Success
                 navigator.navigateBack(from = Navigator.Destination.ResetPassword)
             }
-            Response.Status.ERROR -> {
+            Response.Status.FAILURE -> {
                 val type = when (response.error) {
                     is UserResetPasswordUseCase.Error.UnknownError -> ResetPasswordTypeError.SERVER
                     is UserResetPasswordUseCase.Error.ServerConnection -> ResetPasswordTypeError.SERVER

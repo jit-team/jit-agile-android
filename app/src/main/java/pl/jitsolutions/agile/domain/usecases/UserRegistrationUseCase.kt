@@ -20,7 +20,7 @@ class UserRegistrationUseCase(
         val response = userRepository.register(params.userName, params.email, params.password)
         return when (response.status) {
             Response.Status.SUCCESS -> response(response.data?.name!!)
-            Response.Status.ERROR -> userErrorResponse(response)
+            Response.Status.FAILURE -> userErrorResponse(response)
         }
     }
 

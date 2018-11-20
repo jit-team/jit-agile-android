@@ -12,7 +12,7 @@ import pl.jitsolutions.agile.domain.response
 import pl.jitsolutions.agile.repository.ProjectRepository
 import pl.jitsolutions.agile.repository.UserRepository
 
-class LoginUserUseCaseTest {
+class UserLoginUseCaseTest {
 
     @Test
     fun `login and get projects successful`() = runBlocking {
@@ -25,9 +25,9 @@ class LoginUserUseCaseTest {
         val mockProjectRepository = mock<ProjectRepository> {
             onBlocking { getProjects("abc") } doReturn response(emptyList())
         }
-        val params = LoginUserUseCase.Params("test@test.pl", "123")
+        val params = UserLoginUseCase.Params("test@test.pl", "123")
         val useCase =
-            LoginUserUseCase(mockUserRepository, mockProjectRepository, Dispatchers.Unconfined)
+            UserLoginUseCase(mockUserRepository, mockProjectRepository, Dispatchers.Unconfined)
 
         val actualResponse = useCase.executeAsync(params).await()
 
@@ -47,14 +47,14 @@ class LoginUserUseCaseTest {
         }
         val mockProjectRepository = mock<ProjectRepository>()
 
-        val params = LoginUserUseCase.Params("test@test.pl", "123")
+        val params = UserLoginUseCase.Params("test@test.pl", "123")
         val useCase =
-            LoginUserUseCase(mockUserRepository, mockProjectRepository, Dispatchers.Unconfined)
+            UserLoginUseCase(mockUserRepository, mockProjectRepository, Dispatchers.Unconfined)
 
         val response = useCase.executeAsync(params).await()
 
         assertThat(response) {
-            hasError(LoginUserUseCase.Error.ServerConnection)
+            hasError(UserLoginUseCase.Error.ServerConnection)
         }
     }
 
@@ -68,14 +68,14 @@ class LoginUserUseCaseTest {
         }
         val mockProjectRepository = mock<ProjectRepository>()
 
-        val params = LoginUserUseCase.Params("test@test.pl", "123")
+        val params = UserLoginUseCase.Params("test@test.pl", "123")
         val useCase =
-            LoginUserUseCase(mockUserRepository, mockProjectRepository, Dispatchers.Unconfined)
+            UserLoginUseCase(mockUserRepository, mockProjectRepository, Dispatchers.Unconfined)
 
         val response = useCase.executeAsync(params).await()
 
         assertThat(response) {
-            hasError(LoginUserUseCase.Error.UserEmailNotFound)
+            hasError(UserLoginUseCase.Error.UserEmailNotFound)
         }
     }
 }

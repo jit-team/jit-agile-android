@@ -19,7 +19,7 @@ class GetCurrentUserProjectsWithDailyUseCase(
             Response.Status.SUCCESS -> {
                 getProjectsWithDaily()
             }
-            Response.Status.ERROR -> {
+            Response.Status.FAILURE -> {
                 errorResponse(error = Error.UserNotFound)
             }
         }

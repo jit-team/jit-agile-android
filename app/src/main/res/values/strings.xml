@@ -9,10 +9,12 @@
     <string name="login_screen_password_label">Password</string>
     <string name="login_screen_login_button_text">log in</string>
     <string name="login_screen_register_button_text">register</string>
-    <string name="login_screen_error_unknown">Unknown error, please try again</string>
     <string name="login_screen_error_invalid_email">Invalid email address</string>
+    <string name="login_screen_error_empty_email">Empty email address</string>
     <string name="login_screen_error_email_not_found">Email not found</string>
+    <string name="login_screen_error_unknown">Unknown error</string>
     <string name="login_screen_error_invalid_password">Invalid password</string>
+    <string name="login_screen_error_empty_password">Empty password</string>
     <string name="login_screen_error_network">Network error</string>
     <string name="login_screen_forgot_password_label">Forgot your password?</string>
 

@@ -16,41 +16,49 @@ import kotlinx.coroutines.experimental.async
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.errorResponse
+import pl.jitsolutions.agile.domain.newErrorResponse
 import pl.jitsolutions.agile.domain.response
 import pl.jitsolutions.agile.repository.UserRepository
+import kotlin.coroutines.experimental.Continuation
 import kotlin.coroutines.experimental.suspendCoroutine
 
 class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
     UserRepository {
     private val firebaseAuth = FirebaseAuth.getInstance()
 
-    override suspend fun login(email: String, password: String): Response<User> {
-        val loginResults = CoroutineScope(dispatcher).async {
-            suspendCoroutine<Response<User>> { continuation ->
+    override suspend fun login(email: String, password: String): Response<Unit> {
+        return CoroutineScope(dispatcher).async {
+            suspendCoroutine<Response<Unit>> { continuation ->
                 try {
                     firebaseAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener { result ->
-                            when {
-                                result.isSuccessful -> {
-                                    continuation.resume(response(result.toUser()))
-                                }
-                                result.exception != null -> {
-                                    continuation.resume(
-                                        errorResponse(
-                                            error = retrieveError(
-                                                result.exception!!
-                                            )
-                                        )
-                                    )
-                                }
-                            }
+                            handleLoginResponse(result, continuation)
                         }
                 } catch (e: Exception) {
-                    continuation.resume(errorResponse(error = retrieveError(e)))
+                    continuation.resume(
+                        newErrorResponse(error = FirebaseErrorResolver.parseLoginException(e))
+                    )
                 }
             }
+        }.await()
+    }
+
+    private fun handleLoginResponse(
+        result: Task<AuthResult>,
+        continuation: Continuation<Response<Unit>>
+    ) {
+        when {
+            result.isSuccessful -> {
+                continuation.resume(response(Unit))
+            }
+            result.exception != null -> {
+                continuation.resume(
+                    newErrorResponse(
+                        error = FirebaseErrorResolver.parseLoginException(result.exception!!)
+                    )
+                )
+            }
         }
-        return loginResults.await()
     }
 
     override suspend fun logout() = CoroutineScope(dispatcher).async {

@@ -5,7 +5,7 @@ import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.launch
 import pl.jitsolutions.agile.domain.ProjectWithDaily
 import pl.jitsolutions.agile.domain.Response
-import pl.jitsolutions.agile.domain.Response.Status.ERROR
+import pl.jitsolutions.agile.domain.Response.Status.FAILURE
 import pl.jitsolutions.agile.domain.Response.Status.SUCCESS
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.usecases.GetApplicationVersionUseCase
@@ -59,7 +59,7 @@ class ProjectListViewModel(
         val result = logoutCurrentUserUseCase.executeAsync(params).await()
         when (result.status) {
             SUCCESS -> navigator.navigate(ProjectList, Login)
-            ERROR -> state.value = State.Fail(ProjectListError.UNKNOWN)
+            FAILURE -> state.value = State.Fail(ProjectListError.UNKNOWN)
         }
     }
 
@@ -72,7 +72,7 @@ class ProjectListViewModel(
         val result = joinDailyUseCase.executeAsync(params).await()
         when (result.status) {
             SUCCESS -> navigator.navigate(ProjectList, Navigator.Destination.Daily(projectId))
-            ERROR -> state.value = State.Fail(ProjectListError.UNKNOWN)
+            FAILURE -> state.value = State.Fail(ProjectListError.UNKNOWN)
         }
     }
 
@@ -89,7 +89,7 @@ class ProjectListViewModel(
         val result = getLoggedUserUseCase.executeAsync(params).await()
         when (result.status) {
             SUCCESS -> handleGetLoggedUserSuccess(result)
-            ERROR -> state.value = State.Fail(ProjectListError.UNKNOWN)
+            FAILURE -> state.value = State.Fail(ProjectListError.UNKNOWN)
         }
     }
 
@@ -107,7 +107,7 @@ class ProjectListViewModel(
                     state.value = State.Empty
                 }
             }
-            ERROR -> {
+            FAILURE -> {
                 val type = when (result.error) {
                     GetCurrentUserProjectsUseCase.Error.ServerConnection -> ProjectListError.SERVER
                     GetCurrentUserProjectsUseCase.Error.UserNotFound -> ProjectListError.USER_NOT_FOUND
@@ -141,7 +141,7 @@ class ProjectListViewModel(
         val result = getApplicationVersionUseCase.executeAsync(params).await()
         when (result.status) {
             SUCCESS -> version.value = result.data!!
-            ERROR -> state.value = State.Fail(ProjectListError.UNKNOWN)
+            FAILURE -> state.value = State.Fail(ProjectListError.UNKNOWN)
         }
     }
 

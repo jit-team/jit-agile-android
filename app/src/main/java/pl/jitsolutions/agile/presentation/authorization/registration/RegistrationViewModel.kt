@@ -42,7 +42,7 @@ class RegistrationViewModel(
                 state.value = State.Success
                 navigator.navigate(from = Registration, to = RegistrationSuccessful)
             }
-            Response.Status.ERROR -> {
+            Response.Status.FAILURE -> {
                 val type = when (response.error) {
                     is UserRegistrationUseCase.Error.WeakPassword -> RegisterTypeError.PASSWORD
                     is UserRegistrationUseCase.Error.EmptyUserName -> RegisterTypeError.USERNAME

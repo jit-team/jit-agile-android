@@ -5,7 +5,7 @@ import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.channels.consumeEach
 import kotlinx.coroutines.experimental.launch
 import pl.jitsolutions.agile.domain.Daily
-import pl.jitsolutions.agile.domain.Response.Status.ERROR
+import pl.jitsolutions.agile.domain.Response.Status.FAILURE
 import pl.jitsolutions.agile.domain.Response.Status.SUCCESS
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.usecases.EndDailyUseCase
@@ -50,7 +50,7 @@ class DailyViewModel(
                 userId = result.data?.id
                 executeGetDaily()
             }
-            ERROR -> {
+            FAILURE -> {
             }
         }
         state.value = State.Idle
@@ -66,7 +66,7 @@ class DailyViewModel(
                 SUCCESS -> {
                     handleDailyState(it.data)
                 }
-                ERROR -> {
+                FAILURE -> {
                     TODO()
                 }
             }
@@ -127,7 +127,7 @@ class DailyViewModel(
         val result = leaveDailyUseCase.executeAsync(params).await()
         when (result.status) {
             SUCCESS -> navigator.navigateBack(Navigator.Destination.Daily(dailyId))
-            ERROR -> {
+            FAILURE -> {
                 TODO()
             }
         }
@@ -141,7 +141,7 @@ class DailyViewModel(
         when (result.status) {
             SUCCESS -> {
             }
-            ERROR -> {
+            FAILURE -> {
                 TODO()
             }
         }
@@ -166,7 +166,7 @@ class DailyViewModel(
         when (result.status) {
             SUCCESS -> {
             }
-            ERROR -> {
+            FAILURE -> {
                 TODO()
             }
         }
@@ -179,7 +179,7 @@ class DailyViewModel(
         when (result.status) {
             SUCCESS -> {
             }
-            ERROR -> {
+            FAILURE -> {
                 TODO()
             }
         }

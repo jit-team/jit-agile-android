@@ -15,7 +15,7 @@ class LogoutCurrentUserUseCase(
         return when (response.status) {
             Response.Status.SUCCESS -> response
             // Should not happen, we clear only the local Firebase cache for now
-            Response.Status.ERROR -> throw response.error!!
+            Response.Status.FAILURE -> throw response.error!!
         }
     }
 

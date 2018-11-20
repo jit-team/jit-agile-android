@@ -5,7 +5,7 @@ import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.launch
 import pl.jitsolutions.agile.domain.Project
 import pl.jitsolutions.agile.domain.Response
-import pl.jitsolutions.agile.domain.Response.Status.ERROR
+import pl.jitsolutions.agile.domain.Response.Status.FAILURE
 import pl.jitsolutions.agile.domain.Response.Status.SUCCESS
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.usecases.DeleteProjectUseCase
@@ -39,7 +39,7 @@ class ProjectDetailsViewModel(
         val result = deleteProjectUseCase.executeAsync(params).await()
         when (result.status) {
             SUCCESS -> navigator.navigateBack(Navigator.Destination.ProjectDetails(projectId))
-            ERROR -> handleDeleteProjectError(result)
+            FAILURE -> handleDeleteProjectError(result)
         }
     }
 
@@ -60,7 +60,7 @@ class ProjectDetailsViewModel(
         val result = leaveProjectUseCase.executeAsync(params).await()
         when (result.status) {
             SUCCESS -> navigator.navigateBack(Navigator.Destination.ProjectDetails(projectId))
-            ERROR -> handleLeaveProjectError(result)
+            FAILURE -> handleLeaveProjectError(result)
         }
     }
 
@@ -77,7 +77,7 @@ class ProjectDetailsViewModel(
                 )
                 state.value = State.Success
             }
-            ERROR -> {
+            FAILURE -> {
                 state.value = State.Fail(ErrorType.CONNECTION)
             }
         }
@@ -115,7 +115,7 @@ class ProjectDetailsViewModel(
                 }
                 State.Success
             }
-            ERROR -> when (result.error!!) {
+            FAILURE -> when (result.error!!) {
                 GetProjectUseCase.Error.ServerConnection ->
                     State.Fail(ErrorType.CONNECTION)
                 is GetProjectUseCase.Error.ProjectNotFound ->

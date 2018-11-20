@@ -3,8 +3,9 @@ package pl.jitsolutions.agile.presentation.authorization.login
 import androidx.lifecycle.Observer
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.launch
+import pl.jitsolutions.agile.JitError
 import pl.jitsolutions.agile.domain.Response
-import pl.jitsolutions.agile.domain.usecases.LoginUserUseCase
+import pl.jitsolutions.agile.domain.usecases.UserLoginUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
 import pl.jitsolutions.agile.presentation.navigation.Navigator
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Login
@@ -14,7 +15,7 @@ import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Reset
 import pl.jitsolutions.agile.utils.mutableLiveData
 
 class LoginViewModel(
-    private val loginUserUseCase: LoginUserUseCase,
+    private val userLoginUseCase: UserLoginUseCase,
     private val navigator: Navigator,
     mainDispatcher: CoroutineDispatcher
 ) : CoroutineViewModel(mainDispatcher) {
@@ -31,25 +32,15 @@ class LoginViewModel(
 
     fun login() = launch {
         state.value = State.InProgress
-        val params = LoginUserUseCase.Params(email.value!!, password.value!!)
-        val response = loginUserUseCase.executeAsync(params).await()
+        val params = UserLoginUseCase.Params(email.value!!, password.value!!)
+        val response = userLoginUseCase.executeAsync(params).await()
         when (response.status) {
             Response.Status.SUCCESS -> {
                 state.value = State.Success
                 navigator.navigate(from = Login, to = ProjectList)
             }
-            Response.Status.ERROR -> {
-                val type = when (response.error) {
-                    is LoginUserUseCase.Error.UnknownError -> LoginErrorType.SERVER
-                    is LoginUserUseCase.Error.ServerConnection -> LoginErrorType.SERVER
-                    is LoginUserUseCase.Error.WrongPassword -> LoginErrorType.PASSWORD
-                    is LoginUserUseCase.Error.InvalidEmail -> LoginErrorType.EMAIL
-                    is LoginUserUseCase.Error.UserEmailNotFound -> LoginErrorType.EMAIL_NOT_FOUND
-                    is LoginUserUseCase.Error.EmptyEmail -> LoginErrorType.EMAIL
-                    is LoginUserUseCase.Error.EmptyPassword -> LoginErrorType.PASSWORD
-                    else -> LoginErrorType.SERVER
-                }
-                state.value = State.Fail(type)
+            Response.Status.FAILURE -> {
+                state.value = State.Fail(response.newError!!)
             }
         }
     }
@@ -69,15 +60,13 @@ class LoginViewModel(
     }
 
     sealed class State {
-        fun isErrorOfType(type: LoginErrorType): Boolean {
+        fun isErrorOfType(type: JitError): Boolean {
             return this is Fail && this.type == type
         }
 
         object None : State()
         object InProgress : State()
-        data class Fail(val type: LoginErrorType) : State()
+        data class Fail(val type: JitError) : State()
         object Success : State()
     }
-
-    enum class LoginErrorType { EMAIL, EMAIL_NOT_FOUND, PASSWORD, SERVER, UNKNOWN }
 }

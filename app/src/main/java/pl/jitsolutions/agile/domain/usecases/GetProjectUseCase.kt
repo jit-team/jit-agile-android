@@ -3,7 +3,7 @@ package pl.jitsolutions.agile.domain.usecases
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import pl.jitsolutions.agile.domain.Project
 import pl.jitsolutions.agile.domain.Response
-import pl.jitsolutions.agile.domain.Response.Status.ERROR
+import pl.jitsolutions.agile.domain.Response.Status.FAILURE
 import pl.jitsolutions.agile.domain.Response.Status.SUCCESS
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.errorResponse
@@ -18,7 +18,7 @@ class GetProjectUseCase(
         val response = projectRepository.getProject(params.projectId)
         return when (response.status) {
             SUCCESS -> response
-            ERROR -> when (response.error) {
+            FAILURE -> when (response.error) {
                 is ProjectRepository.Error.ProjectNotFound ->
                     errorResponse(error = Error.ProjectNotFound(response.error.projectId))
                 ProjectRepository.Error.ServerConnection ->

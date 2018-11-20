@@ -19,7 +19,7 @@ class GetCurrentUserProjectsUseCase(
             Response.Status.SUCCESS -> {
                 getProjects()
             }
-            Response.Status.ERROR -> {
+            Response.Status.FAILURE -> {
                 errorResponse(error = Error.UserNotFound)
             }
         }

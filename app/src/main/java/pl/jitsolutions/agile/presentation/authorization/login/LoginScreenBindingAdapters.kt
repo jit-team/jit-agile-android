@@ -5,15 +5,18 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.google.android.material.textfield.TextInputLayout
+import pl.jitsolutions.agile.JitError
 import pl.jitsolutions.agile.R
 
 @BindingAdapter("bindLoginEmailError")
 fun bindLoginEmailError(view: TextInputLayout, state: LoginViewModel.State) {
     val errorText: String? = when {
-        state.isErrorOfType(LoginViewModel.LoginErrorType.EMAIL) ->
+        state.isErrorOfType(JitError.InvalidEmail) ->
             view.context.getString(R.string.login_screen_error_invalid_email)
-        state.isErrorOfType(LoginViewModel.LoginErrorType.EMAIL_NOT_FOUND) ->
-            view.context.getString(R.string.login_screen_error_email_not_found)
+        state.isErrorOfType(JitError.DoesNotExist) ->
+            view.context.getString(R.string.login_screen_error_invalid_email)
+        state.isErrorOfType(JitError.EmptyEmail) ->
+            view.context.getString(R.string.login_screen_error_empty_email)
         else -> null
     }
     view.isErrorEnabled = errorText != null
@@ -22,8 +25,16 @@ fun bindLoginEmailError(view: TextInputLayout, state: LoginViewModel.State) {
 
 @BindingAdapter("bindLoginPasswordError")
 fun bindLoginPasswordError(view: TextInputLayout, state: LoginViewModel.State) {
-    view.error = view.resources.getString(R.string.login_screen_error_invalid_password)
-    view.isErrorEnabled = state.isErrorOfType(LoginViewModel.LoginErrorType.PASSWORD)
+    val errorText: String? = when {
+        state.isErrorOfType(JitError.InvalidPassword) ->
+            view.context.getString(R.string.login_screen_error_invalid_password)
+        state.isErrorOfType(JitError.EmptyPassword) ->
+            view.context.getString(R.string.login_screen_error_empty_password)
+        else -> null
+    }
+
+    view.isErrorEnabled = errorText != null
+    view.error = errorText
 }
 
 @BindingAdapter("bindLoginProgressVisibility")
@@ -39,9 +50,9 @@ fun bindLoginProgressVisibility(progressBar: ProgressBar, state: LoginViewModel.
 @BindingAdapter("bindLoginUnknownErrorVisibility")
 fun bindLoginUnknownErrorVisibility(view: TextView, state: LoginViewModel.State) {
     val errorText: String? = when {
-        state.isErrorOfType(LoginViewModel.LoginErrorType.SERVER) ->
+        state.isErrorOfType(JitError.Network) ->
             view.context.getString(R.string.login_screen_error_network)
-        state.isErrorOfType(LoginViewModel.LoginErrorType.UNKNOWN) ->
+        state.isErrorOfType(JitError.Unknown) ->
             view.context.getString(R.string.login_screen_error_unknown)
         else -> null
     }
