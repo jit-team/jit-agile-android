@@ -51,6 +51,6 @@ fun bindLoginUnknownErrorVisibility(view: TextView, state: LoginViewModel.State)
 
 @BindingAdapter("bindLoginViewEnabled")
 fun bindLoginViewEnabled(view: View, state: LoginViewModel.State) {
-    view.isEnabled = state != LoginViewModel.State.InProgress ||
+    view.isEnabled = state != LoginViewModel.State.InProgress &&
         state != LoginViewModel.State.Success
 }

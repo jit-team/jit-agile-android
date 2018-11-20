@@ -20,10 +20,10 @@ class RegistrationViewModel(
     val email = mutableLiveData("")
     val password = mutableLiveData("")
     val userName = mutableLiveData("")
-    val registrationState = mutableLiveData<RegistrationState>(RegistrationState.None)
+    val state = mutableLiveData<State>(State.None)
 
     private val typedTextObserver =
-        Observer<String> { registrationState.value = RegistrationState.None }
+        Observer<String> { state.value = State.None }
 
     init {
         email.observeForever(typedTextObserver)
@@ -32,14 +32,14 @@ class RegistrationViewModel(
     }
 
     fun register() = launch {
-        registrationState.value = RegistrationState.InProgress
+        state.value = State.InProgress
         val params =
             UserRegistrationUseCase.Params(email.value!!, userName.value!!, password.value!!)
         val response = userRegistrationUseCase.executeAsync(params).await()
         when (response.status) {
             Response.Status.SUCCESS -> {
                 userName.value = response.data
-                registrationState.value = RegistrationState.Success
+                state.value = State.Success
                 navigator.navigate(from = Registration, to = RegistrationSuccessful)
             }
             Response.Status.ERROR -> {
@@ -53,7 +53,7 @@ class RegistrationViewModel(
                     is UserRegistrationUseCase.Error.InvalidPassword -> RegisterTypeError.USERNAME
                     else -> RegisterTypeError.SERVER
                 }
-                registrationState.value = RegistrationState.Error(type)
+                state.value = State.Error(type)
             }
         }
     }
@@ -65,15 +65,15 @@ class RegistrationViewModel(
         super.onCleared()
     }
 
-    sealed class RegistrationState {
+    sealed class State {
         fun isErrorOfType(type: RegisterTypeError): Boolean {
-            return this is RegistrationState.Error && this.type == type
+            return this is RegistrationViewModel.State.Error && this.type == type
         }
 
-        object None : RegistrationState()
-        object InProgress : RegistrationState()
-        data class Error(val type: RegisterTypeError) : RegistrationState()
-        object Success : RegistrationState()
+        object None : State()
+        object InProgress : State()
+        data class Error(val type: RegisterTypeError) : State()
+        object Success : State()
     }
 
     enum class RegisterTypeError { USERNAME, EMAIL, EMAIL_ALREADY_EXIST, PASSWORD, SERVER, UNKNOWN }
