@@ -72,9 +72,10 @@
     <string name="reset_password_screen_email_label">Email</string>
     <string name="reset_password_screen_reset_button_text">Reset password</string>
     <string name="reset_password_screen_error_invalid_email">Invalid email</string>
-    <string name="reset_password_screen_error_email_not_found">Email not found</string>
+    <string name="reset_password_screen_error_empty_email">Empty email</string>
+    <string name="reset_password_screen_user_not_found">User not found</string>
     <string name="reset_password_screen_error_network">Network error</string>
-    <string name="reset_password_screen_error_unknown">Unknown error, please try again</string>
+    <string name="reset_password_screen_error_unknown">Unknown error</string>
     <string name="reset_password_screen_dialog_email_sent_text">Reset link has been sent. Check your mailbox</string>
     <string name="reset_password_screen_dialog_positive_text">OK</string>
 

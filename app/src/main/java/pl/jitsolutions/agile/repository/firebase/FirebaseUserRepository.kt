@@ -1,18 +1,14 @@
 package pl.jitsolutions.agile.repository.firebase
 
 import com.google.android.gms.tasks.Task
-import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthInvalidUserException
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.CoroutineScope
 import kotlinx.coroutines.experimental.async
+import pl.jitsolutions.agile.JitError
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.errorResponse
@@ -124,35 +120,29 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
         }
     }
 
-    override suspend fun resetPassword(email: String): Response<Void?> {
+    override suspend fun resetPassword(email: String): Response<Unit> {
         return CoroutineScope(dispatcher).async {
             try {
-                suspendCoroutine<Response<Void?>> { continuation ->
+                suspendCoroutine<Response<Unit>> { continuation ->
                     firebaseAuth.sendPasswordResetEmail(email).addOnCompleteListener {
                         when {
-                            it.isSuccessful -> continuation.resume(response(null))
+                            it.isSuccessful -> continuation.resume(response(Unit))
                             it.exception != null -> continuation.resume(
-                                errorResponse(error = retrieveError(it.exception!!))
+                                newErrorResponse(
+                                    error = FirebaseErrorResolver.parseResetPasswordException(
+                                        it.exception!!
+                                    )
+                                )
                             )
-                            else -> continuation.resume(errorResponse(error = UserRepository.Error.UnknownError))
+                            else -> continuation.resume(
+                                newErrorResponse(error = JitError.Unknown)
+                            )
                         }
                     }
                 }
             } catch (e: Exception) {
-                // TODO: add timber, for debug error in logs, for release send to crashlytics
-                errorResponse<Void?>(error = UserRepository.Error.UnknownError)
+                newErrorResponse<Unit>(error = FirebaseErrorResolver.parseRegistrationException(e))
             }
         }.await()
-    }
-
-    private fun retrieveError(exception: Exception): UserRepository.Error {
-        return when (exception) {
-            is FirebaseAuthWeakPasswordException -> UserRepository.Error.WeakPassword
-            is FirebaseAuthInvalidUserException -> UserRepository.Error.UserNotFound
-            is FirebaseAuthInvalidCredentialsException -> UserRepository.Error.InvalidPassword
-            is FirebaseAuthUserCollisionException -> UserRepository.Error.UserAlreadyExist
-            is FirebaseNetworkException -> UserRepository.Error.ServerConnection
-            else -> UserRepository.Error.UnknownError
-        }
     }
 }
