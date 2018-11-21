@@ -35,7 +35,6 @@ class ResetPasswordViewModel(
         when (response.status) {
             Response.Status.SUCCESS -> {
                 state.value = State.Success
-                navigator.navigateBack(from = ResetPassword)
             }
             Response.Status.FAILURE -> {
                 state.value = State.Fail(response.error!!)

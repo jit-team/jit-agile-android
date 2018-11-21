@@ -1,23 +1,16 @@
 package pl.jitsolutions.agile.repository.firebase
 
-import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
-import pl.jitsolutions.agile.common.Error
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.User
-import pl.jitsolutions.agile.domain.errorResponse
 import pl.jitsolutions.agile.domain.response
 import pl.jitsolutions.agile.repository.UserRepository
-import kotlin.coroutines.Continuation
-import kotlin.coroutines.suspendCoroutine
-import kotlin.coroutines.resume
 
 class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
     UserRepository {
@@ -25,25 +18,18 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
 
     override suspend fun login(email: String, password: String): Response<Unit> {
         return CoroutineScope(dispatcher).async {
-            suspendCoroutine<Response<Unit>> { continuation ->
-                try {
-                    firebaseAuth
-                        .signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener { continuation.handleLoginResponse(it) }
-                } catch (e: Exception) {
-                    continuation.resume(FirebaseErrorResolver.parseLoginException(e))
+            try {
+                val task = firebaseAuth.signInWithEmailAndPassword(email, password)
+                Tasks.await(task)
+                if (task.isSuccessful) {
+                    response(Unit)
+                } else {
+                    FirebaseErrorResolver.parseLoginException(task.exception ?: Exception())
                 }
+            } catch (e: Exception) {
+                FirebaseErrorResolver.parseLoginException<Unit>(e)
             }
         }.await()
-    }
-
-    private fun Continuation<Response<Unit>>.handleLoginResponse(result: Task<AuthResult>) {
-        val response = when {
-            result.isSuccessful -> response(Unit)
-            result.exception != null -> FirebaseErrorResolver.parseLoginException(result.exception!!)
-            else -> errorResponse(error = Error.Unknown)
-        }
-        resume(response)
     }
 
     override suspend fun logout() =
@@ -59,32 +45,20 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
         password: String
     ): Response<Unit> {
         return CoroutineScope(dispatcher).async {
-            suspendCoroutine<Response<Unit>> { continuation ->
-                try {
-                    firebaseAuth
-                        .createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener { continuation.handleRegisterResponse(it, userName) }
-                } catch (e: Exception) {
-                    continuation.resume(FirebaseErrorResolver.parseRegistrationException(e))
+            try {
+                val task = firebaseAuth.createUserWithEmailAndPassword(email, password)
+                val result = Tasks.await(task)
+                if (task.isSuccessful) {
+                    val firebaseUser = result.user!!
+                    updateUserName(firebaseUser, userName)
+                    response(Unit)
+                } else {
+                    FirebaseErrorResolver.parseRegistrationException(task.exception ?: Exception())
                 }
+            } catch (e: Exception) {
+                FirebaseErrorResolver.parseRegistrationException<Unit>(e)
             }
         }.await()
-    }
-
-    private fun Continuation<Response<Unit>>.handleRegisterResponse(
-        result: Task<AuthResult>,
-        userName: String
-    ) {
-        val response = when {
-            result.isSuccessful -> {
-                val firebaseUser = result.result?.user!!
-                updateUserName(firebaseUser, userName)
-                response(Unit)
-            }
-            result.exception != null -> FirebaseErrorResolver.parseRegistrationException(result.exception!!)
-            else -> errorResponse(error = Error.Unknown)
-        }
-        resume(response)
     }
 
     private fun updateUserName(firebaseUser: FirebaseUser, userName: String) {
@@ -93,6 +67,7 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
                 .setDisplayName(userName)
                 .build()
         )
+        // TODO error handling
         Tasks.await(updateProfileTask)
     }
 
@@ -103,24 +78,17 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
 
     override suspend fun resetPassword(email: String): Response<Unit> {
         return CoroutineScope(dispatcher).async {
-            suspendCoroutine<Response<Unit>> { continuation ->
-                try {
-                    firebaseAuth
-                        .sendPasswordResetEmail(email)
-                        .addOnCompleteListener { continuation.handleResetPasswordResponse(it) }
-                } catch (e: Exception) {
-                    continuation.resume(FirebaseErrorResolver.parseResetPasswordException(e))
+            try {
+                val task = firebaseAuth.sendPasswordResetEmail(email)
+                Tasks.await(task)
+                if (task.isSuccessful) {
+                    response(Unit)
+                } else {
+                    FirebaseErrorResolver.parseResetPasswordException(task.exception ?: Exception())
                 }
+            } catch (e: Exception) {
+                FirebaseErrorResolver.parseResetPasswordException<Unit>(e)
             }
         }.await()
-    }
-
-    private fun Continuation<Response<Unit>>.handleResetPasswordResponse(result: Task<Void>) {
-        val response = when {
-            result.isSuccessful -> response(Unit)
-            result.exception != null -> FirebaseErrorResolver.parseResetPasswordException(result.exception!!)
-            else -> errorResponse(error = Error.Unknown)
-        }
-        resume(response)
     }
 }

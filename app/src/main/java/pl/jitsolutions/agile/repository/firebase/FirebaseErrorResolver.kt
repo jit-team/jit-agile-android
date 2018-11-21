@@ -13,9 +13,10 @@ import java.net.UnknownHostException
 
 object FirebaseErrorResolver {
     inline fun <reified T> parseFunctionException(exception: Exception): Response<T> {
-        val error = when (exception) {
+        val cause = exception.cause
+        val error = when (cause) {
             is FirebaseFunctionsException -> {
-                when (exception.code) {
+                when (cause.code) {
                     FirebaseFunctionsException.Code.INVALID_ARGUMENT -> {
                         val message = exception.message
                         when {
@@ -37,7 +38,7 @@ object FirebaseErrorResolver {
     }
 
     inline fun <reified T> parseResetPasswordException(exception: Exception): Response<T> {
-        val error = when (exception) {
+        val error = when (exception.cause) {
             is FirebaseAuthInvalidUserException -> Error.DoesNotExist
             else -> parseCommonException(exception)
         }
@@ -45,18 +46,30 @@ object FirebaseErrorResolver {
     }
 
     inline fun <reified T> parseLoginException(exception: Exception): Response<T> {
-        val error = when (exception) {
+        val error = when (exception.cause) {
             is FirebaseAuthInvalidUserException -> Error.DoesNotExist
-            is FirebaseAuthInvalidCredentialsException -> Error.InvalidPassword
+            is FirebaseAuthInvalidCredentialsException -> {
+                val message = exception.message ?: ""
+                when {
+                    message.contains("email") -> Error.InvalidEmail
+                    else -> Error.InvalidPassword
+                }
+            }
             else -> parseCommonException(exception)
         }
         return errorResponse(error = error)
     }
 
     inline fun <reified T> parseRegistrationException(exception: Exception): Response<T> {
-        val error = when (exception) {
+        val error = when (exception.cause) {
             is FirebaseAuthWeakPasswordException -> Error.WeakPassword
-            is FirebaseAuthInvalidCredentialsException -> Error.InvalidEmail
+            is FirebaseAuthInvalidCredentialsException -> {
+                val message = exception.message ?: ""
+                when {
+                    message.contains("email") -> Error.InvalidEmail
+                    else -> Error.InvalidPassword
+                }
+            }
             is FirebaseAuthUserCollisionException -> Error.Exists
             else -> parseCommonException(exception)
         }
@@ -65,7 +78,7 @@ object FirebaseErrorResolver {
 
     @Suppress("NOTHING_TO_INLINE")
     inline fun parseCommonException(exception: Exception): Error {
-        return when (exception) {
+        return when (exception.cause) {
             is FirebaseNetworkException -> Error.Network
             is UnknownHostException -> Error.Network
             else -> Error.Unknown
