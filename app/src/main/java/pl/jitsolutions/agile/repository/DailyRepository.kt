@@ -1,6 +1,6 @@
 package pl.jitsolutions.agile.repository
 
-import kotlinx.coroutines.experimental.channels.ReceiveChannel
+import kotlinx.coroutines.channels.ReceiveChannel
 import pl.jitsolutions.agile.domain.Daily
 import pl.jitsolutions.agile.domain.Response
 

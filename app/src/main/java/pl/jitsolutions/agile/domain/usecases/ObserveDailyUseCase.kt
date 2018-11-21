@@ -1,8 +1,8 @@
 package pl.jitsolutions.agile.domain.usecases
 
-import kotlinx.coroutines.experimental.CoroutineDispatcher
-import kotlinx.coroutines.experimental.channels.ProducerScope
-import kotlinx.coroutines.experimental.channels.consumeEach
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.channels.ProducerScope
+import kotlinx.coroutines.channels.consumeEach
 import pl.jitsolutions.agile.domain.Daily
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.repository.DailyRepository
