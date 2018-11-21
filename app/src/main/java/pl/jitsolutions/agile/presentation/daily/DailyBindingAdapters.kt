@@ -160,8 +160,9 @@ fun bindDailyUser(textView: TextView, user: User) {
 @BindingAdapter("bindDailyProgressVisibility")
 fun bindDailyProgressVisibility(view: View, state: DailyViewModel.State) {
     view.visibility = when (state) {
-        DailyViewModel.State.Idle -> View.INVISIBLE
+        DailyViewModel.State.Idle -> View.GONE
         DailyViewModel.State.InProgress -> View.VISIBLE
+        DailyViewModel.State.Success -> View.GONE
     }
 }
 
@@ -195,6 +196,11 @@ fun bindDailyQuotaState(textView: TextView, dailyState: DailyViewModel.DailyStat
         }
         else -> textView.visibility = View.GONE
     }
+}
+
+@BindingAdapter("bindDailyViewEnabled")
+fun bindDailyViewEnabled(view: View, state: DailyViewModel.State) {
+    view.isEnabled = state == DailyViewModel.State.Success
 }
 
 fun showDailyLeaveConfirmation(

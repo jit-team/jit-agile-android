@@ -53,18 +53,17 @@ class DailyViewModel(
             FAILURE -> {
             }
         }
-        state.value = State.Idle
+        state.value = State.Success
     }
 
     private fun executeGetDaily() = launch {
         state.value = State.InProgress
-
         val params = ObserveDailyUseCase.Params(dailyId)
         observeDailyUseCase.execute(params).consumeEach {
-            state.value = State.Idle
             when (it.status) {
                 SUCCESS -> {
                     handleDailyState(it.data)
+                    state.value = State.Success
                 }
                 FAILURE -> {
                     TODO()
@@ -131,7 +130,7 @@ class DailyViewModel(
                 TODO()
             }
         }
-        state.value = State.Idle
+        state.value = State.Success
     }
 
     fun endDaily() = launch {
@@ -145,7 +144,7 @@ class DailyViewModel(
                 TODO()
             }
         }
-        state.value = State.Idle
+        state.value = State.Success
     }
 
     fun nextTurn() {
@@ -170,7 +169,7 @@ class DailyViewModel(
                 TODO()
             }
         }
-        state.value = State.Idle
+        state.value = State.Success
     }
 
     private fun nextTurnDaily() = launch {
@@ -183,7 +182,7 @@ class DailyViewModel(
                 TODO()
             }
         }
-        state.value = State.Idle
+        state.value = State.Success
     }
 
     sealed class DailyState {
@@ -196,6 +195,7 @@ class DailyViewModel(
     }
 
     sealed class State {
+        object Success : State()
         object Idle : State()
         object InProgress : State()
     }
