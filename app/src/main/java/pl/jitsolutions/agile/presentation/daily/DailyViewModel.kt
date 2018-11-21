@@ -1,9 +1,9 @@
 package pl.jitsolutions.agile.presentation.daily
 
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.experimental.CoroutineDispatcher
-import kotlinx.coroutines.experimental.channels.consumeEach
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.launch
 import pl.jitsolutions.agile.domain.Daily
 import pl.jitsolutions.agile.domain.Response.Status.FAILURE
 import pl.jitsolutions.agile.domain.Response.Status.SUCCESS

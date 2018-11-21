@@ -1,16 +1,17 @@
 package pl.jitsolutions.agile.repository.firebase
 
 import com.google.firebase.functions.FirebaseFunctions
-import kotlinx.coroutines.experimental.CoroutineDispatcher
-import kotlinx.coroutines.experimental.CoroutineScope
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
 import pl.jitsolutions.agile.domain.Project
 import pl.jitsolutions.agile.domain.ProjectWithDaily
 import pl.jitsolutions.agile.domain.ProjectWithUsers
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.response
 import pl.jitsolutions.agile.repository.ProjectRepository
-import kotlin.coroutines.experimental.suspendCoroutine
+import kotlin.coroutines.suspendCoroutine
+import kotlin.coroutines.resume
 
 class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRepository {
     private val functions = FirebaseFunctions.getInstance()

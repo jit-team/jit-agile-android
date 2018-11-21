@@ -2,9 +2,9 @@ package pl.jitsolutions.agile.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.coroutines.experimental.CoroutineDispatcher
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.asCoroutineDispatcher
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asCoroutineDispatcher
 import org.kodein.di.Kodein
 import org.kodein.di.Kodein.Module
 import org.kodein.di.generic.bind

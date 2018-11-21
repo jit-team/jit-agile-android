@@ -1,8 +1,8 @@
 package pl.jitsolutions.agile.presentation.authorization.registration
 
 import androidx.lifecycle.Observer
-import kotlinx.coroutines.experimental.CoroutineDispatcher
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.launch
 import pl.jitsolutions.agile.common.Error
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.usecases.UserRegistrationUseCase
