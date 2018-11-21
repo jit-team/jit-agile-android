@@ -3,7 +3,7 @@ package pl.jitsolutions.agile.presentation.projects.managing
 import androidx.lifecycle.Observer
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.launch
-import pl.jitsolutions.agile.JitError
+import pl.jitsolutions.agile.Error
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.usecases.ProjectCreationUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
@@ -45,7 +45,7 @@ class ProjectCreationViewModel(
                 navigator.navigate(ProjectCreation, ProjectDetails(projectId))
             }
             Response.Status.FAILURE -> {
-                state.value = State.Fail(result.newError!!)
+                state.value = State.Fail(result.error!!)
             }
         }
     }
@@ -57,13 +57,13 @@ class ProjectCreationViewModel(
     }
 
     sealed class State {
-        fun isErrorOfType(type: JitError): Boolean {
+        fun isErrorOfType(type: Error): Boolean {
             return this is Fail && this.type == type
         }
 
         object None : State()
         object InProgress : State()
-        data class Fail(val type: JitError) : State()
+        data class Fail(val type: Error) : State()
         object Success : State()
     }
 }

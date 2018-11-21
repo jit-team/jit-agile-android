@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
-import pl.jitsolutions.agile.JitError
+import pl.jitsolutions.agile.Error
 import pl.jitsolutions.agile.R
 import pl.jitsolutions.agile.domain.ProjectWithDaily
 import pl.jitsolutions.agile.domain.User
@@ -115,8 +115,8 @@ fun bindProjectListError(view: TextView, state: ProjectListViewModel.State) {
     }
 
     val error: String? = when {
-        state.isErrorOfType(JitError.Network) -> view.context.getString(R.string.project_list_screen_error_connection)
-        state.isErrorOfType(JitError.DoesNotExist) -> view.context.getString(R.string.project_list_screen_error_user_not_found)
+        state.isErrorOfType(Error.Network) -> view.context.getString(R.string.project_list_screen_error_connection)
+        state.isErrorOfType(Error.DoesNotExist) -> view.context.getString(R.string.project_list_screen_error_user_not_found)
         else -> view.context.getString(R.string.project_list_screen_error_unknown)
     }
     view.text = error

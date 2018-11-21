@@ -5,7 +5,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.google.android.material.textfield.TextInputLayout
-import pl.jitsolutions.agile.JitError
+import pl.jitsolutions.agile.Error
 import pl.jitsolutions.agile.R
 
 @BindingAdapter("bindProjectCreationNameError")
@@ -14,11 +14,11 @@ fun bindProjectCreationNameError(
     state: ProjectCreationViewModel.State
 ) {
     val errorText: String? = when {
-        state.isErrorOfType(JitError.InvalidName) ->
+        state.isErrorOfType(Error.InvalidName) ->
             view.context.getString(R.string.project_creation_screen_error_invalid_project_name)
-        state.isErrorOfType(JitError.Exists) ->
+        state.isErrorOfType(Error.Exists) ->
             view.context.getString(R.string.project_creation_screen_error_project_already_exist)
-        state.isErrorOfType(JitError.EmptyName) ->
+        state.isErrorOfType(Error.EmptyName) ->
             view.context.getString(R.string.project_creation_screen_error_empty_project_name)
         else -> null
     }
@@ -32,11 +32,11 @@ fun bindProjectCreationPasswordError(
     state: ProjectCreationViewModel.State
 ) {
     val errorText: String? = when {
-        state.isErrorOfType(JitError.InvalidPassword) ->
+        state.isErrorOfType(Error.InvalidPassword) ->
             view.context.getString(R.string.project_creation_screen_error_invalid_password)
-        state.isErrorOfType(JitError.EmptyPassword) ->
+        state.isErrorOfType(Error.EmptyPassword) ->
             view.context.getString(R.string.project_creation_screen_error_empty_password)
-        state.isErrorOfType(JitError.EmptyPassword) ->
+        state.isErrorOfType(Error.EmptyPassword) ->
             view.context.getString(R.string.project_creation_screen_error_weak_password)
         else -> null
     }
@@ -76,9 +76,9 @@ fun bindProjectCreationUnknownErrorVisibility(
     state: ProjectCreationViewModel.State
 ) {
     val errorText: String? = when {
-        state.isErrorOfType(JitError.Network) ->
+        state.isErrorOfType(Error.Network) ->
             view.context.getString(R.string.project_creation_screen_error_network)
-        state.isErrorOfType(JitError.Unknown) ->
+        state.isErrorOfType(Error.Unknown) ->
             view.context.getString(R.string.project_creation_screen_error_unknown)
         else -> null
     }

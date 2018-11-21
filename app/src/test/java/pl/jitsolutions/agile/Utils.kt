@@ -21,7 +21,7 @@ class ResponseAssertion<T>(val response: Response<T>) {
 
     fun hasError(error: Throwable?) {
         isUnsuccessful()
-        assertEquals(error, response.newError)
+        assertEquals(error, response.error)
     }
 
     fun hasString(string: String?) = assertEquals(string, response.data)

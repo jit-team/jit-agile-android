@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.BindingAdapter
 import com.google.android.material.textfield.TextInputLayout
-import pl.jitsolutions.agile.JitError
+import pl.jitsolutions.agile.Error
 import pl.jitsolutions.agile.R
 
 @BindingAdapter("bindResetPasswordBackArrowVisibility")
@@ -38,11 +38,11 @@ fun resetPasswordEmailError(
     state: ResetPasswordViewModel.State
 ) {
     val errorText: String? = when {
-        state.isErrorOfType(JitError.InvalidEmail) ->
+        state.isErrorOfType(Error.InvalidEmail) ->
             view.context.getString(R.string.reset_password_screen_error_invalid_email)
-        state.isErrorOfType(JitError.EmptyEmail) ->
+        state.isErrorOfType(Error.EmptyEmail) ->
             view.context.getString(R.string.reset_password_screen_error_empty_email)
-        state.isErrorOfType(JitError.DoesNotExist) ->
+        state.isErrorOfType(Error.DoesNotExist) ->
             view.context.getString(R.string.reset_password_screen_user_not_found)
         else -> null
     }
@@ -69,9 +69,9 @@ fun bindResetPasswordUnknownErrorVisibility(
     state: ResetPasswordViewModel.State
 ) {
     val errorText: String? = when {
-        state.isErrorOfType(JitError.Network) ->
+        state.isErrorOfType(Error.Network) ->
             view.context.getString(R.string.reset_password_screen_error_network)
-        state.isErrorOfType(JitError.Unknown) ->
+        state.isErrorOfType(Error.Unknown) ->
             view.context.getString(R.string.reset_password_screen_error_unknown)
         else -> null
     }

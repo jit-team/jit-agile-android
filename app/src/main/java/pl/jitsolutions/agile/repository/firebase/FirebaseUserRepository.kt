@@ -9,10 +9,10 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.CoroutineScope
 import kotlinx.coroutines.experimental.async
-import pl.jitsolutions.agile.JitError
+import pl.jitsolutions.agile.Error
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.User
-import pl.jitsolutions.agile.domain.newErrorResponse
+import pl.jitsolutions.agile.domain.errorResponse
 import pl.jitsolutions.agile.domain.response
 import pl.jitsolutions.agile.repository.UserRepository
 import kotlin.coroutines.experimental.Continuation
@@ -40,7 +40,7 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
         val response = when {
             result.isSuccessful -> response(Unit)
             result.exception != null -> FirebaseErrorResolver.parseLoginException(result.exception!!)
-            else -> newErrorResponse(error = JitError.Unknown)
+            else -> errorResponse(error = Error.Unknown)
         }
         resume(response)
     }
@@ -81,7 +81,7 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
                 response(Unit)
             }
             result.exception != null -> FirebaseErrorResolver.parseRegistrationException(result.exception!!)
-            else -> newErrorResponse(error = JitError.Unknown)
+            else -> errorResponse(error = Error.Unknown)
         }
         resume(response)
     }
@@ -118,7 +118,7 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
         val response = when {
             result.isSuccessful -> response(Unit)
             result.exception != null -> FirebaseErrorResolver.parseResetPasswordException(result.exception!!)
-            else -> newErrorResponse(error = JitError.Unknown)
+            else -> errorResponse(error = Error.Unknown)
         }
         resume(response)
     }

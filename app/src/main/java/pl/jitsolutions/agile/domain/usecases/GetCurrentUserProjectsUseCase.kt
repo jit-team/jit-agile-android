@@ -6,7 +6,7 @@ import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.Response.Status.FAILURE
 import pl.jitsolutions.agile.domain.Response.Status.SUCCESS
 import pl.jitsolutions.agile.domain.User
-import pl.jitsolutions.agile.domain.newErrorResponse
+import pl.jitsolutions.agile.domain.errorResponse
 import pl.jitsolutions.agile.repository.ProjectRepository
 import pl.jitsolutions.agile.repository.UserRepository
 
@@ -20,7 +20,7 @@ class GetCurrentUserProjectsUseCase(
         val loggedInUserResponse = userRepository.getLoggedInUser()
         return when (loggedInUserResponse.status) {
             SUCCESS -> getProjects(loggedInUserResponse.data!!)
-            FAILURE -> newErrorResponse(error = loggedInUserResponse.newError!!)
+            FAILURE -> errorResponse(error = loggedInUserResponse.error!!)
         }
     }
 

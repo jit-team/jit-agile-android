@@ -3,7 +3,7 @@ package pl.jitsolutions.agile.presentation.authorization.registration
 import androidx.lifecycle.Observer
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.launch
-import pl.jitsolutions.agile.JitError
+import pl.jitsolutions.agile.Error
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.usecases.UserRegistrationUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
@@ -41,7 +41,7 @@ class RegistrationViewModel(
                 state.value = State.Success
                 navigator.navigate(from = Registration, to = RegistrationSuccessful)
             }
-            Response.Status.FAILURE -> state.value = State.Fail(response.newError!!)
+            Response.Status.FAILURE -> state.value = State.Fail(response.error!!)
         }
     }
 
@@ -53,13 +53,13 @@ class RegistrationViewModel(
     }
 
     sealed class State {
-        fun isErrorOfType(type: JitError): Boolean {
+        fun isErrorOfType(type: Error): Boolean {
             return this is RegistrationViewModel.State.Fail && this.type == type
         }
 
         object None : State()
         object InProgress : State()
-        data class Fail(val type: JitError) : State()
+        data class Fail(val type: Error) : State()
         object Success : State()
     }
 }

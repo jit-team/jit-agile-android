@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.BindingAdapter
 import com.google.android.material.textfield.TextInputLayout
-import pl.jitsolutions.agile.JitError
+import pl.jitsolutions.agile.Error
 import pl.jitsolutions.agile.R
 
 @BindingAdapter("bindRegistrationUsernameError")
@@ -17,9 +17,9 @@ fun bindRegistrationUsernameError(
     state: RegistrationViewModel.State
 ) {
     val errorText: String? = when {
-        state.isErrorOfType(JitError.InvalidName) ->
+        state.isErrorOfType(Error.InvalidName) ->
             view.context.getString(R.string.registration_screen_error_invalid_username)
-        state.isErrorOfType(JitError.EmptyName) ->
+        state.isErrorOfType(Error.EmptyName) ->
             view.context.getString(R.string.registration_screen_error_empty_username)
         else -> null
     }
@@ -34,11 +34,11 @@ fun bindRegistrationEmailError(
     state: RegistrationViewModel.State
 ) {
     val errorText: String? = when {
-        state.isErrorOfType(JitError.InvalidEmail) ->
+        state.isErrorOfType(Error.InvalidEmail) ->
             view.context.getString(R.string.registration_screen_error_invalid_email)
-        state.isErrorOfType(JitError.Exists) ->
+        state.isErrorOfType(Error.Exists) ->
             view.context.getString(R.string.registration_screen_error_user_exists)
-        state.isErrorOfType(JitError.EmptyEmail) ->
+        state.isErrorOfType(Error.EmptyEmail) ->
             view.context.getString(R.string.registration_screen_error_empty_email)
         else -> null
     }
@@ -52,11 +52,11 @@ fun bindRegistrationPasswordError(
     state: RegistrationViewModel.State
 ) {
     val errorText: String? = when {
-        state.isErrorOfType(JitError.InvalidPassword) ->
+        state.isErrorOfType(Error.InvalidPassword) ->
             view.context.getString(R.string.registration_screen_error_invalid_password)
-        state.isErrorOfType(JitError.EmptyPassword) ->
+        state.isErrorOfType(Error.EmptyPassword) ->
             view.context.getString(R.string.registration_screen_error_empty_password)
-        state.isErrorOfType(JitError.WeakPassword) ->
+        state.isErrorOfType(Error.WeakPassword) ->
             view.context.getString(R.string.registration_screen_error_weak_password)
         else -> null
     }
@@ -95,9 +95,9 @@ fun bindRegistrationUnknownErrorVisibility(
     state: RegistrationViewModel.State
 ) {
     val errorText: String? = when {
-        state.isErrorOfType(JitError.Network) ->
+        state.isErrorOfType(Error.Network) ->
             view.context.getString(R.string.registration_screen_error_network)
-        state.isErrorOfType(JitError.Unknown) ->
+        state.isErrorOfType(Error.Unknown) ->
             view.context.getString(R.string.registration_screen_error_unknown)
         else -> null
     }

@@ -1,9 +1,9 @@
 package pl.jitsolutions.agile.domain.usecases
 
 import kotlinx.coroutines.experimental.CoroutineDispatcher
-import pl.jitsolutions.agile.JitError
+import pl.jitsolutions.agile.Error
 import pl.jitsolutions.agile.domain.Response
-import pl.jitsolutions.agile.domain.newErrorResponse
+import pl.jitsolutions.agile.domain.errorResponse
 import pl.jitsolutions.agile.domain.usecases.ProjectJoiningUseCase.Params
 import pl.jitsolutions.agile.repository.ProjectRepository
 
@@ -15,15 +15,15 @@ class ProjectJoiningUseCase(
     override suspend fun build(params: Params): Response<String> {
         val validationError = params.validate()
         if (validationError != null) {
-            return newErrorResponse(error = validationError)
+            return errorResponse(error = validationError)
         }
         return projectRepository.joinProject(params.name, params.password)
     }
 
     data class Params(val name: String, val password: String) {
-        fun validate(): JitError? = when {
-            name.isEmpty() -> JitError.EmptyName
-            password.isEmpty() -> JitError.EmptyPassword
+        fun validate(): Error? = when {
+            name.isEmpty() -> Error.EmptyName
+            password.isEmpty() -> Error.EmptyPassword
             else -> null
         }
     }

@@ -3,7 +3,7 @@ package pl.jitsolutions.agile.presentation.authorization.login
 import androidx.lifecycle.Observer
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.launch
-import pl.jitsolutions.agile.JitError
+import pl.jitsolutions.agile.Error
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.usecases.UserLoginUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
@@ -40,7 +40,7 @@ class LoginViewModel(
                 navigator.navigate(from = Login, to = ProjectList)
             }
             Response.Status.FAILURE -> {
-                state.value = State.Fail(response.newError!!)
+                state.value = State.Fail(response.error!!)
             }
         }
     }
@@ -60,13 +60,13 @@ class LoginViewModel(
     }
 
     sealed class State {
-        fun isErrorOfType(type: JitError): Boolean {
+        fun isErrorOfType(type: Error): Boolean {
             return this is Fail && this.type == type
         }
 
         object None : State()
         object InProgress : State()
-        data class Fail(val type: JitError) : State()
+        data class Fail(val type: Error) : State()
         object Success : State()
     }
 }

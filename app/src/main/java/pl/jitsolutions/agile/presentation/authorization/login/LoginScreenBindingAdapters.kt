@@ -5,17 +5,17 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.google.android.material.textfield.TextInputLayout
-import pl.jitsolutions.agile.JitError
+import pl.jitsolutions.agile.Error
 import pl.jitsolutions.agile.R
 
 @BindingAdapter("bindLoginEmailError")
 fun bindLoginEmailError(view: TextInputLayout, state: LoginViewModel.State) {
     val errorText: String? = when {
-        state.isErrorOfType(JitError.InvalidEmail) ->
+        state.isErrorOfType(Error.InvalidEmail) ->
             view.context.getString(R.string.login_screen_error_invalid_email)
-        state.isErrorOfType(JitError.DoesNotExist) ->
+        state.isErrorOfType(Error.DoesNotExist) ->
             view.context.getString(R.string.login_screen_error_invalid_email)
-        state.isErrorOfType(JitError.EmptyEmail) ->
+        state.isErrorOfType(Error.EmptyEmail) ->
             view.context.getString(R.string.login_screen_error_empty_email)
         else -> null
     }
@@ -26,9 +26,9 @@ fun bindLoginEmailError(view: TextInputLayout, state: LoginViewModel.State) {
 @BindingAdapter("bindLoginPasswordError")
 fun bindLoginPasswordError(view: TextInputLayout, state: LoginViewModel.State) {
     val errorText: String? = when {
-        state.isErrorOfType(JitError.InvalidPassword) ->
+        state.isErrorOfType(Error.InvalidPassword) ->
             view.context.getString(R.string.login_screen_error_invalid_password)
-        state.isErrorOfType(JitError.EmptyPassword) ->
+        state.isErrorOfType(Error.EmptyPassword) ->
             view.context.getString(R.string.login_screen_error_empty_password)
         else -> null
     }
@@ -50,9 +50,9 @@ fun bindLoginProgressVisibility(progressBar: ProgressBar, state: LoginViewModel.
 @BindingAdapter("bindLoginUnknownErrorVisibility")
 fun bindLoginUnknownErrorVisibility(view: TextView, state: LoginViewModel.State) {
     val errorText: String? = when {
-        state.isErrorOfType(JitError.Network) ->
+        state.isErrorOfType(Error.Network) ->
             view.context.getString(R.string.login_screen_error_network)
-        state.isErrorOfType(JitError.Unknown) ->
+        state.isErrorOfType(Error.Unknown) ->
             view.context.getString(R.string.login_screen_error_unknown)
         else -> null
     }

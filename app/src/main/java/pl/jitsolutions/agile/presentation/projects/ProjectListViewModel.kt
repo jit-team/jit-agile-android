@@ -3,7 +3,7 @@ package pl.jitsolutions.agile.presentation.projects
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.launch
-import pl.jitsolutions.agile.JitError
+import pl.jitsolutions.agile.Error
 import pl.jitsolutions.agile.domain.ProjectWithDaily
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.Response.Status.FAILURE
@@ -59,7 +59,7 @@ class ProjectListViewModel(
         val result = logoutCurrentUserUseCase.executeAsync(params).await()
         when (result.status) {
             SUCCESS -> navigator.navigate(from = ProjectList, to = Login)
-            FAILURE -> state.value = State.Fail(result.newError!!)
+            FAILURE -> state.value = State.Fail(result.error!!)
         }
     }
 
@@ -72,7 +72,7 @@ class ProjectListViewModel(
         val result = joinDailyUseCase.executeAsync(params).await()
         when (result.status) {
             SUCCESS -> navigator.navigate(ProjectList, Navigator.Destination.Daily(projectId))
-            FAILURE -> state.value = State.Fail(result.newError!!)
+            FAILURE -> state.value = State.Fail(result.error!!)
         }
     }
 
@@ -89,7 +89,7 @@ class ProjectListViewModel(
         val result = getLoggedUserUseCase.executeAsync(params).await()
         when (result.status) {
             SUCCESS -> handleGetLoggedUserSuccess(result)
-            FAILURE -> state.value = State.Fail(result.newError!!)
+            FAILURE -> state.value = State.Fail(result.error!!)
         }
     }
 
@@ -108,7 +108,7 @@ class ProjectListViewModel(
                 }
             }
             FAILURE -> {
-                state.value = State.Fail(result.newError!!)
+                state.value = State.Fail(result.error!!)
             }
         }
     }
@@ -136,19 +136,19 @@ class ProjectListViewModel(
         val result = getApplicationVersionUseCase.executeAsync(params).await()
         when (result.status) {
             SUCCESS -> version.value = result.data!!
-            FAILURE -> state.value = State.Fail(result.newError!!)
+            FAILURE -> state.value = State.Fail(result.error!!)
         }
     }
 
     sealed class State {
-        fun isErrorOfType(type: JitError): Boolean {
+        fun isErrorOfType(type: Error): Boolean {
             return this is ProjectListViewModel.State.Fail && this.type == type
         }
 
         object None : State()
         object InProgress : State()
         object Empty : State()
-        data class Fail(val type: JitError) : State()
+        data class Fail(val type: Error) : State()
         object Success : State()
     }
 }

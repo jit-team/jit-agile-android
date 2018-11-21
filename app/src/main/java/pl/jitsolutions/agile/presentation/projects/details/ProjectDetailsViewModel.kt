@@ -3,7 +3,7 @@ package pl.jitsolutions.agile.presentation.projects.details
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.launch
-import pl.jitsolutions.agile.JitError
+import pl.jitsolutions.agile.Error
 import pl.jitsolutions.agile.domain.Project
 import pl.jitsolutions.agile.domain.Response.Status.FAILURE
 import pl.jitsolutions.agile.domain.Response.Status.SUCCESS
@@ -39,7 +39,7 @@ class ProjectDetailsViewModel(
         val result = deleteProjectUseCase.executeAsync(params).await()
         when (result.status) {
             SUCCESS -> navigator.navigateBack(Navigator.Destination.ProjectDetails(projectId))
-            FAILURE -> state.value = State.Fail(result.newError!!)
+            FAILURE -> state.value = State.Fail(result.error!!)
         }
     }
 
@@ -49,7 +49,7 @@ class ProjectDetailsViewModel(
         val result = leaveProjectUseCase.executeAsync(params).await()
         when (result.status) {
             SUCCESS -> navigator.navigateBack(Navigator.Destination.ProjectDetails(projectId))
-            FAILURE -> state.value = State.Fail(result.newError!!)
+            FAILURE -> state.value = State.Fail(result.error!!)
         }
     }
 
@@ -66,7 +66,7 @@ class ProjectDetailsViewModel(
                 )
                 state.value = State.Success
             }
-            FAILURE -> state.value = State.Fail(result.newError!!)
+            FAILURE -> state.value = State.Fail(result.error!!)
         }
     }
 
@@ -90,12 +90,12 @@ class ProjectDetailsViewModel(
                 users.value = projectWithUsers.users
                 State.Success
             }
-            FAILURE -> State.Fail(result.newError!!)
+            FAILURE -> State.Fail(result.error!!)
         }
     }
 
     sealed class State {
-        fun isErrorOfType(type: JitError): Boolean {
+        fun isErrorOfType(type: Error): Boolean {
             return this is State.Fail && this.type == type
         }
 
@@ -103,6 +103,6 @@ class ProjectDetailsViewModel(
         object Idle : State()
         object InProgress : State()
         object Empty : State()
-        class Fail(val type: JitError) : State()
+        class Fail(val type: Error) : State()
     }
 }

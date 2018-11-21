@@ -5,7 +5,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.google.android.material.textfield.TextInputLayout
-import pl.jitsolutions.agile.JitError
+import pl.jitsolutions.agile.Error
 import pl.jitsolutions.agile.R
 
 @BindingAdapter("bindProjectJoiningNameError")
@@ -14,11 +14,11 @@ fun bindProjectJoiningNameError(
     state: ProjectJoiningViewModel.State
 ) {
     val errorText: String? = when {
-        state.isErrorOfType(JitError.InvalidName) ->
+        state.isErrorOfType(Error.InvalidName) ->
             view.context.getString(R.string.project_joining_screen_error_invalid_project_name)
-        state.isErrorOfType(JitError.EmptyName) ->
+        state.isErrorOfType(Error.EmptyName) ->
             view.context.getString(R.string.project_joining_screen_error_empty_project_name)
-        state.isErrorOfType(JitError.DoesNotExist) ->
+        state.isErrorOfType(Error.DoesNotExist) ->
             view.context.getString(R.string.project_joining_screen_error_project_not_found)
         else -> null
     }
@@ -32,9 +32,9 @@ fun bindProjectJoiningPasswordError(
     state: ProjectJoiningViewModel.State
 ) {
     val errorText: String? = when {
-        state.isErrorOfType(JitError.EmptyPassword) ->
+        state.isErrorOfType(Error.EmptyPassword) ->
             view.context.getString(R.string.project_joining_screen_error_empty_password)
-        state.isErrorOfType(JitError.InvalidPassword) ->
+        state.isErrorOfType(Error.InvalidPassword) ->
             view.context.getString(R.string.project_joining_screen_error_invalid_password)
         else -> null
     }
@@ -75,9 +75,9 @@ fun bindProjectJoiningUnknownErrorVisibility(
     state: ProjectJoiningViewModel.State
 ) {
     val errorText: String? = when {
-        state.isErrorOfType(JitError.Network) ->
+        state.isErrorOfType(Error.Network) ->
             view.context.getString(R.string.project_joining_screen_error_network)
-        state.isErrorOfType(JitError.Unknown) ->
+        state.isErrorOfType(Error.Unknown) ->
             view.context.getString(R.string.project_joining_screen_error_unknown)
         else -> null
     }
