@@ -67,7 +67,7 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
                 .setDisplayName(userName)
                 .build()
         )
-        //TODO error handling
+        // TODO error handling
         Tasks.await(updateProfileTask)
     }
 

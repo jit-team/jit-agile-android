@@ -48,7 +48,7 @@ object FirebaseErrorResolver {
         val error = when (exception.cause) {
             is FirebaseAuthInvalidUserException -> Error.DoesNotExist
             is FirebaseAuthInvalidCredentialsException -> {
-                val message =  exception.message ?: ""
+                val message = exception.message ?: ""
                 when {
                     message.contains("email") -> Error.InvalidEmail
                     else -> Error.InvalidPassword
@@ -63,7 +63,7 @@ object FirebaseErrorResolver {
         val error = when (exception.cause) {
             is FirebaseAuthWeakPasswordException -> Error.WeakPassword
             is FirebaseAuthInvalidCredentialsException -> {
-                val message =  exception.message ?: ""
+                val message = exception.message ?: ""
                 when {
                     message.contains("email") -> Error.InvalidEmail
                     else -> Error.InvalidPassword
