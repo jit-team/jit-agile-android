@@ -7,13 +7,15 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.functions.FirebaseFunctionsException
 import pl.jitsolutions.agile.JitError
+import pl.jitsolutions.agile.domain.Response
+import pl.jitsolutions.agile.domain.newErrorResponse
 import java.net.UnknownHostException
 
 object FirebaseErrorResolver {
-    fun parseFunctionException(exception: Exception): JitError {
-        return when (exception) {
+    inline fun <reified T> parseFunctionException(exception: Exception): Response<T> {
+        val error = when (exception) {
             is FirebaseFunctionsException -> {
-                return when (exception.code) {
+                when (exception.code) {
                     FirebaseFunctionsException.Code.INVALID_ARGUMENT -> {
                         val message = exception.message
                         when {
@@ -31,33 +33,38 @@ object FirebaseErrorResolver {
             }
             else -> parseCommonException(exception)
         }
+        return newErrorResponse(error = error)
     }
 
-    fun parseResetPasswordException(exception: Exception): JitError {
-        return when (exception) {
+    inline fun <reified T> parseResetPasswordException(exception: Exception): Response<T> {
+        val error = when (exception) {
             is FirebaseAuthInvalidUserException -> JitError.DoesNotExist
             else -> parseCommonException(exception)
         }
+        return newErrorResponse(error = error)
     }
 
-    fun parseLoginException(exception: Exception): JitError {
-        return when (exception) {
+    inline fun <reified T> parseLoginException(exception: Exception): Response<T> {
+        val error = when (exception) {
             is FirebaseAuthInvalidUserException -> JitError.DoesNotExist
             is FirebaseAuthInvalidCredentialsException -> JitError.InvalidPassword
             else -> parseCommonException(exception)
         }
+        return newErrorResponse(error = error)
     }
 
-    fun parseRegistrationException(exception: Exception): JitError {
-        return when (exception) {
+    inline fun <reified T> parseRegistrationException(exception: Exception): Response<T> {
+        val error = when (exception) {
             is FirebaseAuthWeakPasswordException -> JitError.WeakPassword
             is FirebaseAuthInvalidCredentialsException -> JitError.InvalidEmail
             is FirebaseAuthUserCollisionException -> JitError.Exists
             else -> parseCommonException(exception)
         }
+        return newErrorResponse(error = error)
     }
 
-    fun parseCommonException(exception: Exception): JitError {
+    @Suppress("NOTHING_TO_INLINE")
+    inline fun parseCommonException(exception: Exception): JitError {
         return when (exception) {
             is FirebaseNetworkException -> JitError.Network
             is UnknownHostException -> JitError.Network

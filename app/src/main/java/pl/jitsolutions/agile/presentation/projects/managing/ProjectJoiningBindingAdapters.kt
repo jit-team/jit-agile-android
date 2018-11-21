@@ -5,17 +5,20 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.google.android.material.textfield.TextInputLayout
+import pl.jitsolutions.agile.JitError
 import pl.jitsolutions.agile.R
 
 @BindingAdapter("bindProjectJoiningNameError")
 fun bindProjectJoiningNameError(
     view: TextInputLayout,
-    projectJoiningState: ProjectJoiningViewModel.ProjectJoiningState
+    state: ProjectJoiningViewModel.State
 ) {
     val errorText: String? = when {
-        projectJoiningState.isErrorOfType(ProjectJoiningViewModel.ProjectJoiningErrorType.PROJECT_NAME) ->
+        state.isErrorOfType(JitError.InvalidName) ->
             view.context.getString(R.string.project_joining_screen_error_invalid_project_name)
-        projectJoiningState.isErrorOfType(ProjectJoiningViewModel.ProjectJoiningErrorType.PROJECT_NOT_FOUND) ->
+        state.isErrorOfType(JitError.EmptyName) ->
+            view.context.getString(R.string.project_joining_screen_error_empty_project_name)
+        state.isErrorOfType(JitError.DoesNotExist) ->
             view.context.getString(R.string.project_joining_screen_error_project_not_found)
         else -> null
     }
@@ -26,12 +29,12 @@ fun bindProjectJoiningNameError(
 @BindingAdapter("bindProjectJoiningPasswordError")
 fun bindProjectJoiningPasswordError(
     view: TextInputLayout,
-    projectJoiningState: ProjectJoiningViewModel.ProjectJoiningState
+    state: ProjectJoiningViewModel.State
 ) {
     val errorText: String? = when {
-        projectJoiningState.isErrorOfType(ProjectJoiningViewModel.ProjectJoiningErrorType.PASSWORD) ->
+        state.isErrorOfType(JitError.EmptyPassword) ->
             view.context.getString(R.string.project_joining_screen_error_empty_password)
-        projectJoiningState.isErrorOfType(ProjectJoiningViewModel.ProjectJoiningErrorType.INVALID_PASSWORD) ->
+        state.isErrorOfType(JitError.InvalidPassword) ->
             view.context.getString(R.string.project_joining_screen_error_invalid_password)
         else -> null
     }
@@ -43,38 +46,38 @@ fun bindProjectJoiningPasswordError(
 @BindingAdapter("bindProjectJoiningProgressVisibility")
 fun bindProjectJoiningProgressVisibility(
     progressBar: ProgressBar,
-    projectJoiningState: ProjectJoiningViewModel.ProjectJoiningState
+    state: ProjectJoiningViewModel.State
 ) {
-    progressBar.visibility = when (projectJoiningState) {
-        ProjectJoiningViewModel.ProjectJoiningState.None -> View.INVISIBLE
-        ProjectJoiningViewModel.ProjectJoiningState.InProgress -> View.VISIBLE
-        is ProjectJoiningViewModel.ProjectJoiningState.Error -> View.INVISIBLE
-        ProjectJoiningViewModel.ProjectJoiningState.Success -> View.INVISIBLE
+    progressBar.visibility = when (state) {
+        ProjectJoiningViewModel.State.None -> View.INVISIBLE
+        ProjectJoiningViewModel.State.InProgress -> View.VISIBLE
+        is ProjectJoiningViewModel.State.Fail -> View.INVISIBLE
+        ProjectJoiningViewModel.State.Success -> View.INVISIBLE
     }
 }
 
 @BindingAdapter("bindProjectJoiningEditingEnabled")
 fun bindProjectJoiningEditingEnabled(
     view: View,
-    projectJoiningState: ProjectJoiningViewModel.ProjectJoiningState
+    state: ProjectJoiningViewModel.State
 ) {
-    view.isEnabled = when (projectJoiningState) {
-        ProjectJoiningViewModel.ProjectJoiningState.None -> true
-        ProjectJoiningViewModel.ProjectJoiningState.InProgress -> false
-        is ProjectJoiningViewModel.ProjectJoiningState.Error -> true
-        ProjectJoiningViewModel.ProjectJoiningState.Success -> false
+    view.isEnabled = when (state) {
+        ProjectJoiningViewModel.State.None -> true
+        ProjectJoiningViewModel.State.InProgress -> false
+        is ProjectJoiningViewModel.State.Fail -> true
+        ProjectJoiningViewModel.State.Success -> false
     }
 }
 
 @BindingAdapter("bindProjectJoiningUnknownErrorVisibility")
 fun bindProjectJoiningUnknownErrorVisibility(
     view: TextView,
-    projectJoiningState: ProjectJoiningViewModel.ProjectJoiningState
+    state: ProjectJoiningViewModel.State
 ) {
     val errorText: String? = when {
-        projectJoiningState.isErrorOfType(ProjectJoiningViewModel.ProjectJoiningErrorType.SERVER) ->
+        state.isErrorOfType(JitError.Network) ->
             view.context.getString(R.string.project_joining_screen_error_network)
-        projectJoiningState.isErrorOfType(ProjectJoiningViewModel.ProjectJoiningErrorType.UNKNOWN) ->
+        state.isErrorOfType(JitError.Unknown) ->
             view.context.getString(R.string.project_joining_screen_error_unknown)
         else -> null
     }

@@ -44,7 +44,7 @@ class DailyViewModel(
 
     private fun executeGetLoggedUser() = launch {
         state.value = State.InProgress
-        val result = getLoggedUserUseCase.executeAsync(GetLoggedUserUseCase.Params()).await()
+        val result = getLoggedUserUseCase.executeAsync(GetLoggedUserUseCase.Params).await()
         when (result.status) {
             SUCCESS -> {
                 userId = result.data?.id

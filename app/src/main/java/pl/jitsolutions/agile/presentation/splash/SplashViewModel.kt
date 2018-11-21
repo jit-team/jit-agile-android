@@ -30,11 +30,11 @@ class SplashViewModel(
     }
 
     private fun executeGetApplicationVersion() = launch {
-        val params = GetApplicationVersionUseCase.Params()
+        val params = GetApplicationVersionUseCase.Params
         val response = getApplicationVersionUseCase.executeAsync(params).await()
         when (response.status) {
             SUCCESS -> version.value = response.data
-            FAILURE -> throw response.error!!
+            FAILURE -> navigator.forceFinish()
         }
     }
 
@@ -44,20 +44,20 @@ class SplashViewModel(
     }
 
     private fun executeGetLoggedUser() = launch {
-        val params = GetLoggedUserUseCase.Params()
+        val params = GetLoggedUserUseCase.Params
         val response = getLoggedUserUseCase.executeAsync(params).await()
         when (response.status) {
             SUCCESS -> handleGetLoggedUserSuccess(response)
-            FAILURE -> throw response.error!!
+            FAILURE -> navigator.forceFinish()
         }
     }
 
     private fun handleGetLoggedUserSuccess(response: Response<User?>) {
         val isUserLoggedIn = response.data != null
         if (isUserLoggedIn) {
-            navigator.navigate(Splash, ProjectList)
+            navigator.navigate(from = Splash, to = ProjectList)
         } else {
-            navigator.navigate(Splash, Login)
+            navigator.navigate(from = Splash, to = Login)
         }
     }
 }

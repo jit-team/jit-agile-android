@@ -1,6 +1,5 @@
 package pl.jitsolutions.agile.domain.usecases
 
-import androidx.core.util.PatternsCompat
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import pl.jitsolutions.agile.JitError
 import pl.jitsolutions.agile.domain.Response
@@ -17,17 +16,13 @@ class UserResetPasswordUseCase(
         if (validationError != null) {
             return newErrorResponse(error = validationError)
         }
-
         return userRepository.resetPassword(params.email)
     }
 
     data class Params(val email: String) {
-        fun validate(): JitError? {
-            return when {
-                email.isEmpty() -> JitError.EmptyEmail
-                !PatternsCompat.EMAIL_ADDRESS.matcher(email).matches() -> JitError.InvalidEmail
-                else -> null
-            }
+        fun validate(): JitError? = when {
+            email.isEmpty() -> JitError.EmptyEmail
+            else -> null
         }
     }
 }

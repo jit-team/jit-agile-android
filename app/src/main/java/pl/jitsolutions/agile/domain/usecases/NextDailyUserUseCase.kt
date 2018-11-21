@@ -10,7 +10,7 @@ class NextDailyUserUseCase(
 ) : UseCase<NextDailyUserUseCase.Params, Unit>(dispatcher) {
 
     override suspend fun build(params: Params): Response<Unit> {
-        return dailyRepository.nextDaily(params.dailyId)
+        return dailyRepository.nextDailyUser(params.dailyId)
     }
 
     data class Params(val dailyId: String)

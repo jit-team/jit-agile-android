@@ -11,13 +11,8 @@ class LogoutCurrentUserUseCase(
 ) : UseCase<LogoutCurrentUserUseCase.Params, User>(dispatcher) {
 
     override suspend fun build(params: Params): Response<User> {
-        val response = userRepository.logout()
-        return when (response.status) {
-            Response.Status.SUCCESS -> response
-            // Should not happen, we clear only the local Firebase cache for now
-            Response.Status.FAILURE -> throw response.error!!
-        }
+        return userRepository.logout()
     }
 
-    data class Params(val stub: String? = null)
+    object Params
 }

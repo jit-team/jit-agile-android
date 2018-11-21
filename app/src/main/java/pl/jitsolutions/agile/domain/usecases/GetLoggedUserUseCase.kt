@@ -14,5 +14,5 @@ class GetLoggedUserUseCase(
         return userRepository.getLoggedInUser()
     }
 
-    data class Params(val void: Void? = null)
+    object Params
 }

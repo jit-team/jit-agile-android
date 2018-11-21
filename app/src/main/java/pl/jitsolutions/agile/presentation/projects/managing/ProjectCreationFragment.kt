@@ -30,8 +30,8 @@ class ProjectCreationFragment : BaseFragment() {
             DataBindingUtil.inflate(inflater, R.layout.fragment_project_creation, container, false)
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
-        viewModel.projectCreationState.observe(this, Observer {
-            if (it == ProjectCreationViewModel.ProjectCreationState.Success) {
+        viewModel.state.observe(this, Observer {
+            if (it == ProjectCreationViewModel.State.Success) {
                 Toast.makeText(
                     context,
                     R.string.project_creation_screen_success_message,

@@ -9,14 +9,4 @@ interface UserRepository {
     suspend fun register(userName: String, email: String, password: String): Response<Unit>
     suspend fun getLoggedInUser(): Response<User?>
     suspend fun resetPassword(email: String): Response<Unit>
-
-    sealed class Error(message: String? = null) : Throwable(message) {
-        object InvalidEmail : Error()
-        object InvalidPassword : Error()
-        object UserNotFound : Error()
-        object WeakPassword : Error()
-        object UserAlreadyExist : Error()
-        object UnknownError : Error()
-        object ServerConnection : Error()
-    }
 }

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
+import pl.jitsolutions.agile.JitError
 import pl.jitsolutions.agile.R
 import pl.jitsolutions.agile.domain.ProjectWithDaily
 import pl.jitsolutions.agile.domain.User
@@ -109,22 +110,14 @@ fun bindProjectListEmptyList(view: View, state: ProjectListViewModel.State) {
 
 @BindingAdapter("bindProjectListError")
 fun bindProjectListError(view: TextView, state: ProjectListViewModel.State) {
-    if (state !is ProjectListViewModel.State.Fail)
+    if (state !is ProjectListViewModel.State.Fail) {
         return
+    }
 
     val error: String? = when {
-        state.isErrorOfType(ProjectListViewModel.ProjectListError.SERVER) -> {
-            view.context.getString(R.string.project_list_screen_error_connection)
-        }
-        state.isErrorOfType(ProjectListViewModel.ProjectListError.USER_NOT_FOUND) -> {
-            view.context.getString(R.string.project_list_screen_error_user_not_found)
-        }
-        state.isErrorOfType(ProjectListViewModel.ProjectListError.UNKNOWN) -> {
-            view.context.getString(R.string.project_list_screen_error_unknown)
-        }
-        else -> {
-            null
-        }
+        state.isErrorOfType(JitError.Network) -> view.context.getString(R.string.project_list_screen_error_connection)
+        state.isErrorOfType(JitError.DoesNotExist) -> view.context.getString(R.string.project_list_screen_error_user_not_found)
+        else -> view.context.getString(R.string.project_list_screen_error_unknown)
     }
     view.text = error
     view.visibility = if (error != null) View.VISIBLE else View.GONE

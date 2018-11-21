@@ -3,13 +3,13 @@ package pl.jitsolutions.agile.presentation.projects
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.launch
+import pl.jitsolutions.agile.JitError
 import pl.jitsolutions.agile.domain.ProjectWithDaily
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.Response.Status.FAILURE
 import pl.jitsolutions.agile.domain.Response.Status.SUCCESS
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.usecases.GetApplicationVersionUseCase
-import pl.jitsolutions.agile.domain.usecases.GetCurrentUserProjectsUseCase
 import pl.jitsolutions.agile.domain.usecases.GetCurrentUserProjectsWithDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.GetLoggedUserUseCase
 import pl.jitsolutions.agile.domain.usecases.JoinDailyUseCase
@@ -55,11 +55,11 @@ class ProjectListViewModel(
     }
 
     fun logout() = launch {
-        val params = LogoutCurrentUserUseCase.Params()
+        val params = LogoutCurrentUserUseCase.Params
         val result = logoutCurrentUserUseCase.executeAsync(params).await()
         when (result.status) {
-            SUCCESS -> navigator.navigate(ProjectList, Login)
-            FAILURE -> state.value = State.Fail(ProjectListError.UNKNOWN)
+            SUCCESS -> navigator.navigate(from = ProjectList, to = Login)
+            FAILURE -> state.value = State.Fail(result.newError!!)
         }
     }
 
@@ -72,7 +72,7 @@ class ProjectListViewModel(
         val result = joinDailyUseCase.executeAsync(params).await()
         when (result.status) {
             SUCCESS -> navigator.navigate(ProjectList, Navigator.Destination.Daily(projectId))
-            FAILURE -> state.value = State.Fail(ProjectListError.UNKNOWN)
+            FAILURE -> state.value = State.Fail(result.newError!!)
         }
     }
 
@@ -85,16 +85,16 @@ class ProjectListViewModel(
     }
 
     private fun executeGetLoggedUser() = launch {
-        val params = GetLoggedUserUseCase.Params()
+        val params = GetLoggedUserUseCase.Params
         val result = getLoggedUserUseCase.executeAsync(params).await()
         when (result.status) {
             SUCCESS -> handleGetLoggedUserSuccess(result)
-            FAILURE -> state.value = State.Fail(ProjectListError.UNKNOWN)
+            FAILURE -> state.value = State.Fail(result.newError!!)
         }
     }
 
     private fun executeGetUserProjects(moveToDaily: Boolean = false) = launch {
-        val params = GetCurrentUserProjectsWithDailyUseCase.Params()
+        val params = GetCurrentUserProjectsWithDailyUseCase.Params
         val result = getCurrentUserProjectsWithDailyUseCase.executeAsync(params).await()
         when (result.status) {
             SUCCESS -> {
@@ -108,12 +108,7 @@ class ProjectListViewModel(
                 }
             }
             FAILURE -> {
-                val type = when (result.error) {
-                    GetCurrentUserProjectsUseCase.Error.ServerConnection -> ProjectListError.SERVER
-                    GetCurrentUserProjectsUseCase.Error.UserNotFound -> ProjectListError.USER_NOT_FOUND
-                    else -> ProjectListError.UNKNOWN
-                }
-                state.value = State.Fail(type)
+                state.value = State.Fail(result.newError!!)
             }
         }
     }
@@ -137,25 +132,23 @@ class ProjectListViewModel(
     }
 
     private fun executeGetApplicationVersion() = launch {
-        val params = GetApplicationVersionUseCase.Params()
+        val params = GetApplicationVersionUseCase.Params
         val result = getApplicationVersionUseCase.executeAsync(params).await()
         when (result.status) {
             SUCCESS -> version.value = result.data!!
-            FAILURE -> state.value = State.Fail(ProjectListError.UNKNOWN)
+            FAILURE -> state.value = State.Fail(result.newError!!)
         }
     }
 
     sealed class State {
-        fun isErrorOfType(type: ProjectListViewModel.ProjectListError): Boolean {
+        fun isErrorOfType(type: JitError): Boolean {
             return this is ProjectListViewModel.State.Fail && this.type == type
         }
 
         object None : State()
         object InProgress : State()
         object Empty : State()
-        data class Fail(val type: ProjectListError) : State()
+        data class Fail(val type: JitError) : State()
         object Success : State()
     }
-
-    enum class ProjectListError { UNKNOWN, SERVER, USER_NOT_FOUND }
 }

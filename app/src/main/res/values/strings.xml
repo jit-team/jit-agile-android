@@ -84,9 +84,12 @@
     <string name="project_creation_screen_create_button_text">Create</string>
     <string name="project_creation_screen_error_invalid_project_name">Invalid project name</string>
     <string name="project_creation_screen_error_project_already_exist">Project already exist</string>
+    <string name="project_creation_screen_error_empty_project_name">Empty project name</string>
     <string name="project_creation_screen_error_invalid_password">Invalid password</string>
+    <string name="project_creation_screen_error_empty_password">Empty password</string>
+    <string name="project_creation_screen_error_weak_password">Weak password</string>
     <string name="project_creation_screen_error_network">Network error</string>
-    <string name="project_creation_screen_error_unknown">Unknown error, please try again</string>
+    <string name="project_creation_screen_error_unknown">Unknown error</string>
     <string name="project_creation_screen_success_message">Project has been created</string>
 
     <string name="project_adding_screen_title">Add project</string>
@@ -97,10 +100,11 @@
     <string name="project_joining_screen_password_label">Password</string>
     <string name="project_joining_screen_join_button_text">Join</string>
     <string name="project_joining_screen_error_invalid_project_name">Invalid project name</string>
+    <string name="project_joining_screen_error_empty_project_name">Empty project name</string>
     <string name="project_joining_screen_error_project_not_found">Project not found</string>
     <string name="project_joining_screen_error_empty_password">Empty password</string>
     <string name="project_joining_screen_error_invalid_password">Invalid password</string>
-    <string name="project_joining_screen_error_unknown">Unknown error, please try again</string>
+    <string name="project_joining_screen_error_unknown">Unknown error</string>
     <string name="project_joining_screen_error_network">Network error</string>
     <string name="project_joining_screen_success_message">Join to project successful</string>
 

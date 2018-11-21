@@ -13,5 +13,5 @@ class GetApplicationVersionUseCase(
         return systemInfoRepository.getApplicationVersion()
     }
 
-    data class Params(val void: Void? = null)
+    object Params
 }
