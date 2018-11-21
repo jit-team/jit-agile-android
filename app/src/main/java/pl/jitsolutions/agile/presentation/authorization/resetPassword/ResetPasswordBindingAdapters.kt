@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.BindingAdapter
 import com.google.android.material.textfield.TextInputLayout
-import pl.jitsolutions.agile.Error
+import pl.jitsolutions.agile.common.Error
 import pl.jitsolutions.agile.R
 
 @BindingAdapter("bindResetPasswordBackArrowVisibility")

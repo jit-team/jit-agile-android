@@ -1,7 +1,7 @@
 package pl.jitsolutions.agile.domain.usecases
 
 import kotlinx.coroutines.experimental.CoroutineDispatcher
-import pl.jitsolutions.agile.Error
+import pl.jitsolutions.agile.common.Error
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.errorResponse
 import pl.jitsolutions.agile.domain.usecases.ProjectJoiningUseCase.Params

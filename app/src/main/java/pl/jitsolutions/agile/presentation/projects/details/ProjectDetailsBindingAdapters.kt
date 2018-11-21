@@ -10,7 +10,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import pl.jitsolutions.agile.Error
+import pl.jitsolutions.agile.common.Error
 import pl.jitsolutions.agile.R
 import pl.jitsolutions.agile.domain.User
 

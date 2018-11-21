@@ -1,4 +1,4 @@
-package pl.jitsolutions.agile
+package pl.jitsolutions.agile.common
 
 sealed class Error {
     object InvalidEmail : Error()

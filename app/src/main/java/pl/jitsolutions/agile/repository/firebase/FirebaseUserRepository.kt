@@ -9,7 +9,7 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.CoroutineScope
 import kotlinx.coroutines.experimental.async
-import pl.jitsolutions.agile.Error
+import pl.jitsolutions.agile.common.Error
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.errorResponse

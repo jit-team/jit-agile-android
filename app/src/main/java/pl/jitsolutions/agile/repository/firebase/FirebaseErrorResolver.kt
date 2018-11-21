@@ -6,7 +6,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.functions.FirebaseFunctionsException
-import pl.jitsolutions.agile.Error
+import pl.jitsolutions.agile.common.Error
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.errorResponse
 import java.net.UnknownHostException

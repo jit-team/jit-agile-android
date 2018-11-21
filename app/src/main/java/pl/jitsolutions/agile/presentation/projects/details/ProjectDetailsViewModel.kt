@@ -3,7 +3,7 @@ package pl.jitsolutions.agile.presentation.projects.details
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.launch
-import pl.jitsolutions.agile.Error
+import pl.jitsolutions.agile.common.Error
 import pl.jitsolutions.agile.domain.Project
 import pl.jitsolutions.agile.domain.Response.Status.FAILURE
 import pl.jitsolutions.agile.domain.Response.Status.SUCCESS

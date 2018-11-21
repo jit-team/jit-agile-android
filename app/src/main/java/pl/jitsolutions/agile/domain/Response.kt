@@ -1,6 +1,6 @@
 package pl.jitsolutions.agile.domain
 
-import pl.jitsolutions.agile.Error
+import pl.jitsolutions.agile.common.Error
 
 data class Response<T>(
     val data: T?,
