@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.functions.FirebaseFunctionsException
+import kotlinx.coroutines.delay
 import pl.jitsolutions.agile.common.Error
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.errorResponse
@@ -82,16 +83,35 @@ object FirebaseErrorResolver {
         return when (exception.cause) {
             is FirebaseNetworkException -> Error.Network
             is UnknownHostException -> Error.Network
+            is SocketTimeoutException -> Error.Network
             else -> Error.Unknown
         }
     }
+}
 
-    fun shouldRetry(exception: Exception): Boolean {
-        return when (exception.cause) {
-            is FirebaseNetworkException -> true
-            is UnknownHostException -> true
-            is SocketTimeoutException -> true
-            else -> false
+suspend fun <T> retryWhenError(
+    times: Int = 3,
+    function: suspend () -> Response<T>
+): Response<T> {
+    var retries = times - 1
+    var result = function()
+    while (retries > 0 && result.status == Response.Status.FAILURE &&
+        shouldRetry(result.error)
+    ) {
+        if (result.status == Response.Status.FAILURE) {
+            delay((2000 until 5000).random().toLong())
+            result = function()
+        } else {
+            return result
         }
+        retries--
+    }
+    return result
+}
+
+private fun shouldRetry(error: Error?): Boolean {
+    return when (error) {
+        Error.Network -> true
+        else -> false
     }
 }
