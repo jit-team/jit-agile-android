@@ -7,6 +7,8 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
+import pl.jitsolutions.agile.common.RetryException
+import pl.jitsolutions.agile.common.retry
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.response
@@ -17,19 +19,24 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
     private val firebaseAuth = FirebaseAuth.getInstance()
 
     override suspend fun login(email: String, password: String): Response<Unit> {
-        return CoroutineScope(dispatcher).async {
-            try {
-                val task = firebaseAuth.signInWithEmailAndPassword(email, password)
-                Tasks.await(task)
-                if (task.isSuccessful) {
-                    response(Unit)
-                } else {
-                    FirebaseErrorResolver.parseLoginException(task.exception ?: Exception())
+        return retry {
+            CoroutineScope(dispatcher).async {
+                try {
+                    val task = firebaseAuth.signInWithEmailAndPassword(email, password)
+                    Tasks.await(task)
+
+                    if (task.isSuccessful) {
+                        response(Unit)
+                    } else {
+                        FirebaseErrorResolver.parseLoginException(task.exception ?: Exception())
+                    }
+                } catch (e: Exception) {
+                    if (FirebaseErrorResolver.shouldRetry(e))
+                        throw RetryException()
+                    FirebaseErrorResolver.parseLoginException<Unit>(e)
                 }
-            } catch (e: Exception) {
-                FirebaseErrorResolver.parseLoginException<Unit>(e)
-            }
-        }.await()
+            }.await()
+        }
     }
 
     override suspend fun logout() =

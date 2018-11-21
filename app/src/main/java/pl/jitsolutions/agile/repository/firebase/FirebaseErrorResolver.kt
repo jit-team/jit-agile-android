@@ -9,6 +9,7 @@ import com.google.firebase.functions.FirebaseFunctionsException
 import pl.jitsolutions.agile.common.Error
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.errorResponse
+import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 object FirebaseErrorResolver {
@@ -82,6 +83,15 @@ object FirebaseErrorResolver {
             is FirebaseNetworkException -> Error.Network
             is UnknownHostException -> Error.Network
             else -> Error.Unknown
+        }
+    }
+
+    fun shouldRetry(exception: Exception): Boolean {
+        return when (exception.cause) {
+            is FirebaseNetworkException -> true
+            is UnknownHostException -> true
+            is SocketTimeoutException -> true
+            else -> false
         }
     }
 }
