@@ -104,6 +104,7 @@ class ProjectListViewModel(
                     projects.value = projectsWithDaily.sortedBy { it.project.name }
                     moveToDailyIfActive(moveToDaily, projectsWithDaily)
                 } else {
+                    projects.value = emptyList()
                     state.value = State.Empty
                 }
             }
