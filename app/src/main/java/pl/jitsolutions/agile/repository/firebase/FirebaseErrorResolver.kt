@@ -13,9 +13,10 @@ import java.net.UnknownHostException
 
 object FirebaseErrorResolver {
     inline fun <reified T> parseFunctionException(exception: Exception): Response<T> {
-        val error = when (exception.cause) {
+        val cause = exception.cause
+        val error = when (cause) {
             is FirebaseFunctionsException -> {
-                when ((exception.cause as FirebaseFunctionsException).code) {
+                when (cause.code) {
                     FirebaseFunctionsException.Code.INVALID_ARGUMENT -> {
                         val message = exception.message
                         when {
