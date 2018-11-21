@@ -1,39 +1,18 @@
 package pl.jitsolutions.agile.domain.usecases
 
 import kotlinx.coroutines.experimental.CoroutineDispatcher
-import pl.jitsolutions.agile.domain.Project
+import pl.jitsolutions.agile.domain.ProjectWithUsers
 import pl.jitsolutions.agile.domain.Response
-import pl.jitsolutions.agile.domain.Response.Status.ERROR
-import pl.jitsolutions.agile.domain.Response.Status.SUCCESS
-import pl.jitsolutions.agile.domain.User
-import pl.jitsolutions.agile.domain.errorResponse
 import pl.jitsolutions.agile.repository.ProjectRepository
 
 class GetProjectUseCase(
     private val projectRepository: ProjectRepository,
     dispatcher: CoroutineDispatcher
-) : UseCase<GetProjectUseCase.Params, Pair<Project, List<User>>>(dispatcher) {
+) : UseCase<GetProjectUseCase.Params, ProjectWithUsers>(dispatcher) {
 
-    override suspend fun build(params: Params): Response<Pair<Project, List<User>>> {
-        val response = projectRepository.getProject(params.projectId)
-        return when (response.status) {
-            SUCCESS -> response
-            ERROR -> when (response.error) {
-                is ProjectRepository.Error.ProjectNotFound ->
-                    errorResponse(error = Error.ProjectNotFound(response.error.projectId))
-                ProjectRepository.Error.ServerConnection ->
-                    errorResponse(error = Error.ServerConnection)
-                else -> throw response.error!!
-            }
-        }
+    override suspend fun build(params: Params): Response<ProjectWithUsers> {
+        return projectRepository.getProject(params.projectId)
     }
 
     data class Params(val projectId: String)
-
-    sealed class Error(message: String? = null) : Throwable(message) {
-        data class ProjectNotFound(val projectId: String) :
-            Error("Project with id: $projectId not found!")
-
-        object ServerConnection : Error("Server connection error")
-    }
 }

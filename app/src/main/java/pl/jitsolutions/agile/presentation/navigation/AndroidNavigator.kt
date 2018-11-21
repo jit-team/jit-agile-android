@@ -20,8 +20,8 @@ import pl.jitsolutions.agile.presentation.projects.ProjectListFragmentDirections
 
 class AndroidNavigator(context: Context) : Navigator {
     private val observers = mutableMapOf<Int, MutableSet<Navigator.NavigationObserver>>()
+    private val activity = context as AppCompatActivity
     private val navController by lazy {
-        val activity = context as AppCompatActivity
         activity.findNavController(android.R.id.content).apply {
             addOnNavigatedListener { _, destination ->
                 observers[destination.id]?.forEach { observer ->
@@ -169,5 +169,9 @@ class AndroidNavigator(context: Context) : Navigator {
             }
             else -> false
         }
+    }
+
+    override fun forceFinish() {
+        activity.finish()
     }
 }

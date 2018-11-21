@@ -23,7 +23,7 @@ class RegistrationSuccessfulViewModel(
     }
 
     private fun executeGetUserName() = launch {
-        val params = GetLoggedUserUseCase.Params()
+        val params = GetLoggedUserUseCase.Params
         val userResponse = getLoggedUserUseCase.executeAsync(params).await()
         user.value = userResponse.data!!
     }

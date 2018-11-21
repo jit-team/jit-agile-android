@@ -13,5 +13,5 @@ class StartDailyUseCase(
         return dailyRepository.startDaily(params.dailyId)
     }
 
-    class Params(val dailyId: String)
+    data class Params(val dailyId: String)
 }

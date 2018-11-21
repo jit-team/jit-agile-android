@@ -10,18 +10,16 @@ import pl.jitsolutions.agile.repository.DailyRepository
 class ObserveDailyUseCase(
     private val dailyRepository: DailyRepository,
     dispatcher: CoroutineDispatcher
-) :
-    ChannelUseCase<ObserveDailyUseCase.Params, Daily?>(dispatcher) {
+) : ChannelUseCase<ObserveDailyUseCase.Params, Daily?>(dispatcher) {
 
     override suspend fun ProducerScope<Response<Daily?>>.build(params: Params) {
-        dailyRepository.observeDaily(params.dailyId).consumeEach {
-            send(it)
-        }
+        dailyRepository.observeDaily(params.dailyId)
+            .consumeEach { send(it) }
     }
 
-    fun dispose() {
+    override fun dispose() {
         dailyRepository.dispose()
     }
 
-    class Params(val dailyId: String)
+    data class Params(val dailyId: String)
 }

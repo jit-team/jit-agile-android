@@ -3,9 +3,9 @@ package pl.jitsolutions.agile.presentation.projects.details
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.launch
+import pl.jitsolutions.agile.common.Error
 import pl.jitsolutions.agile.domain.Project
-import pl.jitsolutions.agile.domain.Response
-import pl.jitsolutions.agile.domain.Response.Status.ERROR
+import pl.jitsolutions.agile.domain.Response.Status.FAILURE
 import pl.jitsolutions.agile.domain.Response.Status.SUCCESS
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.usecases.DeleteProjectUseCase
@@ -39,19 +39,8 @@ class ProjectDetailsViewModel(
         val result = deleteProjectUseCase.executeAsync(params).await()
         when (result.status) {
             SUCCESS -> navigator.navigateBack(Navigator.Destination.ProjectDetails(projectId))
-            ERROR -> handleDeleteProjectError(result)
+            FAILURE -> state.value = State.Fail(result.error!!)
         }
-    }
-
-    private fun handleDeleteProjectError(result: Response<Unit>) {
-        val errorState = when (result.error) {
-            DeleteProjectUseCase.Error.ServerConnection ->
-                State.Fail(ErrorType.CONNECTION)
-            is DeleteProjectUseCase.Error.ProjectNotFound ->
-                State.Fail(ErrorType.PROJECT_NOT_FOUND)
-            else -> State.Fail(ErrorType.CONNECTION)
-        }
-        state.value = errorState
     }
 
     fun leaveProject() = launch {
@@ -60,7 +49,7 @@ class ProjectDetailsViewModel(
         val result = leaveProjectUseCase.executeAsync(params).await()
         when (result.status) {
             SUCCESS -> navigator.navigateBack(Navigator.Destination.ProjectDetails(projectId))
-            ERROR -> handleLeaveProjectError(result)
+            FAILURE -> state.value = State.Fail(result.error!!)
         }
     }
 
@@ -77,21 +66,8 @@ class ProjectDetailsViewModel(
                 )
                 state.value = State.Success
             }
-            ERROR -> {
-                state.value = State.Fail(ErrorType.CONNECTION)
-            }
+            FAILURE -> state.value = State.Fail(result.error!!)
         }
-    }
-
-    private fun handleLeaveProjectError(result: Response<Unit>) {
-        val errorState = when (result.error) {
-            LeaveProjectUseCase.Error.ServerConnection ->
-                State.Fail(ErrorType.CONNECTION)
-            is LeaveProjectUseCase.Error.ProjectNotFound ->
-                State.Fail(ErrorType.PROJECT_NOT_FOUND)
-            else -> State.Fail(ErrorType.CONNECTION)
-        }
-        state.value = errorState
     }
 
     private fun executeGetProjectDetails() = launch {
@@ -109,24 +85,17 @@ class ProjectDetailsViewModel(
         val result = getProjectUseCase.executeAsync(params).await()
         return when (result.status) {
             SUCCESS -> {
-                with(result.data!!) {
-                    project.value = first
-                    users.value = second
-                }
+                val projectWithUsers = result.data!!
+                project.value = projectWithUsers.project
+                users.value = projectWithUsers.users
                 State.Success
             }
-            ERROR -> when (result.error!!) {
-                GetProjectUseCase.Error.ServerConnection ->
-                    State.Fail(ErrorType.CONNECTION)
-                is GetProjectUseCase.Error.ProjectNotFound ->
-                    State.Fail(ErrorType.PROJECT_NOT_FOUND)
-                else -> State.Fail(ErrorType.CONNECTION)
-            }
+            FAILURE -> State.Fail(result.error!!)
         }
     }
 
     sealed class State {
-        fun isErrorOfType(type: ErrorType): Boolean {
+        fun isErrorOfType(type: Error): Boolean {
             return this is State.Fail && this.type == type
         }
 
@@ -134,8 +103,6 @@ class ProjectDetailsViewModel(
         object Idle : State()
         object InProgress : State()
         object Empty : State()
-        class Fail(val type: ErrorType) : State()
+        class Fail(val type: Error) : State()
     }
-
-    enum class ErrorType { CONNECTION, PROJECT_NOT_FOUND }
 }

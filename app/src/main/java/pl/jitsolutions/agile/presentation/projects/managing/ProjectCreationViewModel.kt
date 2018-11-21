@@ -3,6 +3,7 @@ package pl.jitsolutions.agile.presentation.projects.managing
 import androidx.lifecycle.Observer
 import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.launch
+import pl.jitsolutions.agile.common.Error
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.usecases.ProjectCreationUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
@@ -18,10 +19,10 @@ class ProjectCreationViewModel(
 ) : CoroutineViewModel(dispatcher) {
     val projectName = mutableLiveData("")
     val password = mutableLiveData("")
-    val projectCreationState = mutableLiveData<ProjectCreationState>(ProjectCreationState.None)
+    val state = mutableLiveData<State>(State.None)
 
     private val typedTextObserver =
-        Observer<String> { projectCreationState.value = ProjectCreationState.None }
+        Observer<String> { state.value = State.None }
 
     init {
         projectName.observeForever(typedTextObserver)
@@ -29,7 +30,7 @@ class ProjectCreationViewModel(
     }
 
     fun createProject() = launch {
-        projectCreationState.value = ProjectCreationState.InProgress
+        state.value = State.InProgress
         val result =
             projectCreationUseCase.executeAsync(
                 ProjectCreationUseCase.Params(
@@ -39,19 +40,12 @@ class ProjectCreationViewModel(
             ).await()
         when (result.status) {
             Response.Status.SUCCESS -> {
-                projectCreationState.value = ProjectCreationState.Success
+                state.value = State.Success
                 val projectId = result.data!!
                 navigator.navigate(ProjectCreation, ProjectDetails(projectId))
             }
-            Response.Status.ERROR -> {
-                val error = when (result.error) {
-                    is ProjectCreationUseCase.Error.EmptyProjectName -> ProjectCreationErrorType.PROJECT_NAME
-                    is ProjectCreationUseCase.Error.EmptyPassword -> ProjectCreationErrorType.PASSWORD
-                    is ProjectCreationUseCase.Error.ProjectAlreadyExist -> ProjectCreationErrorType.PROJECT_ALREADY_EXIST
-                    is ProjectCreationUseCase.Error.ServerConnection -> ProjectCreationErrorType.SERVER
-                    else -> ProjectCreationErrorType.UNKNOWN
-                }
-                projectCreationState.value = ProjectCreationState.Error(error)
+            Response.Status.FAILURE -> {
+                state.value = State.Fail(result.error!!)
             }
         }
     }
@@ -62,16 +56,14 @@ class ProjectCreationViewModel(
         super.onCleared()
     }
 
-    sealed class ProjectCreationState {
-        fun isErrorOfType(type: ProjectCreationErrorType): Boolean {
-            return this is Error && this.type == type
+    sealed class State {
+        fun isErrorOfType(type: Error): Boolean {
+            return this is Fail && this.type == type
         }
 
-        object None : ProjectCreationState()
-        object InProgress : ProjectCreationState()
-        data class Error(val type: ProjectCreationErrorType) : ProjectCreationState()
-        object Success : ProjectCreationState()
+        object None : State()
+        object InProgress : State()
+        data class Fail(val type: Error) : State()
+        object Success : State()
     }
-
-    enum class ProjectCreationErrorType { PROJECT_NAME, PROJECT_ALREADY_EXIST, PASSWORD, SERVER, UNKNOWN }
 }

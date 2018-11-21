@@ -17,7 +17,7 @@ class ResponseAssertion<T>(val response: Response<T>) {
 
     fun hasData(data: T?) = assertEquals(data, response.data)
 
-    fun isUnsuccessful() = assertEquals(Response.Status.ERROR, response.status)
+    fun isUnsuccessful() = assertEquals(Response.Status.FAILURE, response.status)
 
     fun hasError(error: Throwable?) {
         isUnsuccessful()

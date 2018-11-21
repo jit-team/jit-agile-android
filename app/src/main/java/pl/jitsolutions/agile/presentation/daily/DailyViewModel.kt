@@ -5,7 +5,7 @@ import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.channels.consumeEach
 import kotlinx.coroutines.experimental.launch
 import pl.jitsolutions.agile.domain.Daily
-import pl.jitsolutions.agile.domain.Response.Status.ERROR
+import pl.jitsolutions.agile.domain.Response.Status.FAILURE
 import pl.jitsolutions.agile.domain.Response.Status.SUCCESS
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.usecases.EndDailyUseCase
@@ -44,13 +44,13 @@ class DailyViewModel(
 
     private fun executeGetLoggedUser() = launch {
         state.value = State.InProgress
-        val result = getLoggedUserUseCase.executeAsync(GetLoggedUserUseCase.Params()).await()
+        val result = getLoggedUserUseCase.executeAsync(GetLoggedUserUseCase.Params).await()
         when (result.status) {
             SUCCESS -> {
                 userId = result.data?.id
                 executeGetDaily()
             }
-            ERROR -> {
+            FAILURE -> {
             }
         }
         state.value = State.Success
@@ -65,7 +65,7 @@ class DailyViewModel(
                     handleDailyState(it.data)
                     state.value = State.Success
                 }
-                ERROR -> {
+                FAILURE -> {
                     TODO()
                 }
             }
@@ -126,7 +126,7 @@ class DailyViewModel(
         val result = leaveDailyUseCase.executeAsync(params).await()
         when (result.status) {
             SUCCESS -> navigator.navigateBack(Navigator.Destination.Daily(dailyId))
-            ERROR -> {
+            FAILURE -> {
                 TODO()
             }
         }
@@ -140,7 +140,7 @@ class DailyViewModel(
         when (result.status) {
             SUCCESS -> {
             }
-            ERROR -> {
+            FAILURE -> {
                 TODO()
             }
         }
@@ -165,7 +165,7 @@ class DailyViewModel(
         when (result.status) {
             SUCCESS -> {
             }
-            ERROR -> {
+            FAILURE -> {
                 TODO()
             }
         }
@@ -178,7 +178,7 @@ class DailyViewModel(
         when (result.status) {
             SUCCESS -> {
             }
-            ERROR -> {
+            FAILURE -> {
                 TODO()
             }
         }

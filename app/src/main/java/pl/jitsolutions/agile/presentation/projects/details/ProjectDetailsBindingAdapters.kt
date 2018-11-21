@@ -10,6 +10,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import pl.jitsolutions.agile.common.Error
 import pl.jitsolutions.agile.R
 import pl.jitsolutions.agile.domain.User
 
@@ -69,9 +70,9 @@ fun bindProjectDetailsErrorState(view: View, state: ProjectDetailsViewModel.Stat
     }
 
     val messageResId = when {
-        state.isErrorOfType(ProjectDetailsViewModel.ErrorType.CONNECTION) ->
+        state.isErrorOfType(Error.Network) ->
             R.string.project_details_screen_error_connection
-        state.isErrorOfType(ProjectDetailsViewModel.ErrorType.PROJECT_NOT_FOUND) ->
+        state.isErrorOfType(Error.Unknown) ->
             R.string.project_details_screen_error_project_not_found
         else -> R.string.project_details_screen_error_unknown
     }

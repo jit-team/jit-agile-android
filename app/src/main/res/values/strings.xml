@@ -9,10 +9,12 @@
     <string name="login_screen_password_label">Password</string>
     <string name="login_screen_login_button_text">log in</string>
     <string name="login_screen_register_button_text">register</string>
-    <string name="login_screen_error_unknown">Unknown error, please try again</string>
     <string name="login_screen_error_invalid_email">Invalid email address</string>
+    <string name="login_screen_error_empty_email">Empty email address</string>
     <string name="login_screen_error_email_not_found">Email not found</string>
+    <string name="login_screen_error_unknown">Unknown error</string>
     <string name="login_screen_error_invalid_password">Invalid password</string>
+    <string name="login_screen_error_empty_password">Empty password</string>
     <string name="login_screen_error_network">Network error</string>
     <string name="login_screen_forgot_password_label">Forgot your password?</string>
 
@@ -23,9 +25,13 @@
     <string name="registration_screen_register_button_text">Register</string>
     <string name="registration_screen_successful_toast_text">Register successful</string>
     <string name="registration_screen_error_invalid_email">Invalid email address</string>
-    <string name="registration_screen_error_email_already_exist">Email already exist</string>
+    <string name="registration_screen_error_empty_email">Empty email</string>
+    <string name="registration_screen_error_user_exists">User already exist</string>
     <string name="registration_screen_error_invalid_username">Invalid username</string>
+    <string name="registration_screen_error_empty_username">Empty username</string>
     <string name="registration_screen_error_invalid_password">Invalid password</string>
+    <string name="registration_screen_error_weak_password">Weak password</string>
+    <string name="registration_screen_error_empty_password">Empty password</string>
     <string name="registration_screen_error_unknown">Unknown error</string>
     <string name="registration_screen_error_network">Network error</string>
 
@@ -66,9 +72,10 @@
     <string name="reset_password_screen_email_label">Email</string>
     <string name="reset_password_screen_reset_button_text">Reset password</string>
     <string name="reset_password_screen_error_invalid_email">Invalid email</string>
-    <string name="reset_password_screen_error_email_not_found">Email not found</string>
+    <string name="reset_password_screen_error_empty_email">Empty email</string>
+    <string name="reset_password_screen_user_not_found">User not found</string>
     <string name="reset_password_screen_error_network">Network error</string>
-    <string name="reset_password_screen_error_unknown">Unknown error, please try again</string>
+    <string name="reset_password_screen_error_unknown">Unknown error</string>
     <string name="reset_password_screen_dialog_email_sent_text">Reset link has been sent. Check your mailbox</string>
     <string name="reset_password_screen_dialog_positive_text">OK</string>
 
@@ -77,9 +84,12 @@
     <string name="project_creation_screen_create_button_text">Create</string>
     <string name="project_creation_screen_error_invalid_project_name">Invalid project name</string>
     <string name="project_creation_screen_error_project_already_exist">Project already exist</string>
+    <string name="project_creation_screen_error_empty_project_name">Empty project name</string>
     <string name="project_creation_screen_error_invalid_password">Invalid password</string>
+    <string name="project_creation_screen_error_empty_password">Empty password</string>
+    <string name="project_creation_screen_error_weak_password">Weak password</string>
     <string name="project_creation_screen_error_network">Network error</string>
-    <string name="project_creation_screen_error_unknown">Unknown error, please try again</string>
+    <string name="project_creation_screen_error_unknown">Unknown error</string>
     <string name="project_creation_screen_success_message">Project has been created</string>
 
     <string name="project_adding_screen_title">Add project</string>
@@ -90,10 +100,11 @@
     <string name="project_joining_screen_password_label">Password</string>
     <string name="project_joining_screen_join_button_text">Join</string>
     <string name="project_joining_screen_error_invalid_project_name">Invalid project name</string>
+    <string name="project_joining_screen_error_empty_project_name">Empty project name</string>
     <string name="project_joining_screen_error_project_not_found">Project not found</string>
     <string name="project_joining_screen_error_empty_password">Empty password</string>
     <string name="project_joining_screen_error_invalid_password">Invalid password</string>
-    <string name="project_joining_screen_error_unknown">Unknown error, please try again</string>
+    <string name="project_joining_screen_error_unknown">Unknown error</string>
     <string name="project_joining_screen_error_network">Network error</string>
     <string name="project_joining_screen_success_message">Join to project successful</string>
 

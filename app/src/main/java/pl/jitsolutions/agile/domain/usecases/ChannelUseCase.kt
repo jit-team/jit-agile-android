@@ -13,4 +13,6 @@ abstract class ChannelUseCase<Params, Result>(private val dispatcher: CoroutineD
 
     fun execute(params: Params): ReceiveChannel<Response<Result>> =
         CoroutineScope(dispatcher).produce { build(params) }
+
+    abstract fun dispose()
 }

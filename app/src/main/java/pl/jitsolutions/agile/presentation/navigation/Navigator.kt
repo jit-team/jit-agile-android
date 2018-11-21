@@ -7,6 +7,8 @@ interface Navigator {
 
     fun navigateBack(from: Destination?): Boolean
 
+    fun forceFinish()
+
     fun addDestinationObserver(destination: Destination, observer: NavigationObserver)
 
     fun removeDestinationObserver(destination: Destination, observer: NavigationObserver)

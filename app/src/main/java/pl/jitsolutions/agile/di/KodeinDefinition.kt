@@ -21,13 +21,13 @@ import pl.jitsolutions.agile.domain.usecases.GetProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.JoinDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.LeaveDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.LeaveProjectUseCase
-import pl.jitsolutions.agile.domain.usecases.LoginUserUseCase
 import pl.jitsolutions.agile.domain.usecases.LogoutCurrentUserUseCase
 import pl.jitsolutions.agile.domain.usecases.NextDailyUserUseCase
 import pl.jitsolutions.agile.domain.usecases.ObserveDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.ProjectCreationUseCase
 import pl.jitsolutions.agile.domain.usecases.ProjectJoiningUseCase
 import pl.jitsolutions.agile.domain.usecases.StartDailyUseCase
+import pl.jitsolutions.agile.domain.usecases.UserLoginUseCase
 import pl.jitsolutions.agile.domain.usecases.UserRegistrationUseCase
 import pl.jitsolutions.agile.domain.usecases.UserResetPasswordUseCase
 import pl.jitsolutions.agile.presentation.authorization.login.LoginViewModel
@@ -86,8 +86,8 @@ private val useCasesModule = Module(name = "UseCases") {
     bind<UserRegistrationUseCase>() with provider {
         UserRegistrationUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
-    bind<LoginUserUseCase>() with provider {
-        LoginUserUseCase(instance(), instance(), instance(tag = Tags.Dispatchers.USE_CASE))
+    bind<UserLoginUseCase>() with provider {
+        UserLoginUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
     bind<LogoutCurrentUserUseCase>() with provider {
         LogoutCurrentUserUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))

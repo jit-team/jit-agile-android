@@ -30,8 +30,8 @@ class ProjectJoiningFragment : BaseFragment() {
             DataBindingUtil.inflate(inflater, R.layout.fragment_project_joining, container, false)
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
-        viewModel.projectJoiningState.observe(this, Observer {
-            if (it == ProjectJoiningViewModel.ProjectJoiningState.Success) {
+        viewModel.state.observe(this, Observer {
+            if (it == ProjectJoiningViewModel.State.Success) {
                 Toast.makeText(
                     context,
                     R.string.project_joining_screen_success_message,
