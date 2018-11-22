@@ -1,5 +1,6 @@
 package pl.jitsolutions.agile.repository.firebase
 
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.functions.FirebaseFunctions
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -10,8 +11,6 @@ import pl.jitsolutions.agile.domain.ProjectWithUsers
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.response
 import pl.jitsolutions.agile.repository.ProjectRepository
-import kotlin.coroutines.suspendCoroutine
-import kotlin.coroutines.resume
 
 class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRepository {
     private val functions = FirebaseFunctions.getInstance()
@@ -19,16 +18,18 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
     override suspend fun getProjectsWithDailyState(userId: String): Response<List<ProjectWithDaily>> {
         return retryWhenError {
             CoroutineScope(dispatcher).async {
-                suspendCoroutine<Response<List<ProjectWithDaily>>> { continuation ->
-                    functions
+                try {
+                    val task = functions
                         .getHttpsCallable("getProjectsWithDailyState")
                         .call()
-                        .addOnSuccessListener {
-                            continuation.resume(response(it.data.toProjectWithDailyList()))
-                        }
-                        .addOnFailureListener {
-                            continuation.resume(FirebaseErrorResolver.parseFunctionException(it))
-                        }
+                    Tasks.await(task)
+                    if (task.isSuccessful) {
+                        response(task.result?.data.toProjectWithDailyList())
+                    } else {
+                        FirebaseErrorResolver.parseFunctionException(task.exception ?: Exception())
+                    }
+                } catch (e: Exception) {
+                    FirebaseErrorResolver.parseFunctionException<List<ProjectWithDaily>>(e)
                 }
             }.await()
         }
@@ -37,16 +38,20 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
     override suspend fun getProjects(userId: String): Response<List<Project>> {
         return retryWhenError {
             CoroutineScope(dispatcher).async {
-                suspendCoroutine<Response<List<Project>>> { continuation ->
-                    functions
-                        .getHttpsCallable("getProjects")
-                        .call()
-                        .addOnSuccessListener {
-                            continuation.resume(response(it.data.toProjectList()))
-                        }
-                        .addOnFailureListener {
-                            continuation.resume(FirebaseErrorResolver.parseFunctionException(it))
-                        }
+                try {
+                    val task =
+                        functions
+                            .getHttpsCallable("getProjects")
+                            .call()
+                    Tasks.await(task)
+                    if (task.isSuccessful) {
+                        response(task.result?.data.toProjectList())
+                    } else {
+                        FirebaseErrorResolver.parseFunctionException(task.exception ?: Exception())
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    FirebaseErrorResolver.parseFunctionException<List<Project>>(e)
                 }
             }.await()
         }
@@ -55,16 +60,18 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
     override suspend fun getProject(projectId: String): Response<ProjectWithUsers> {
         return retryWhenError {
             CoroutineScope(dispatcher).async {
-                suspendCoroutine<Response<ProjectWithUsers>> { continuation ->
-                    functions
+                try {
+                    val task = functions
                         .getHttpsCallable("getProject")
                         .call(getProjectParams(projectId))
-                        .addOnSuccessListener {
-                            continuation.resume(response(it.data.toProjectWithUsers()))
-                        }
-                        .addOnFailureListener {
-                            continuation.resume(FirebaseErrorResolver.parseFunctionException(it))
-                        }
+                    Tasks.await(task)
+                    if (task.isSuccessful) {
+                        response(task.result?.data.toProjectWithUsers())
+                    } else {
+                        FirebaseErrorResolver.parseFunctionException(task.exception ?: Exception())
+                    }
+                } catch (e: Exception) {
+                    FirebaseErrorResolver.parseFunctionException<ProjectWithUsers>(e)
                 }
             }.await()
         }
@@ -73,16 +80,20 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
     override suspend fun leaveProject(projectId: String): Response<Unit> {
         return retryWhenError {
             CoroutineScope(dispatcher).async {
-                suspendCoroutine<Response<Unit>> { continuation ->
-                    functions
+                try {
+                    val task = functions
                         .getHttpsCallable("leaveProject")
                         .call(leaveProjectParams(projectId))
-                        .addOnSuccessListener {
-                            continuation.resume(response(Unit))
-                        }
-                        .addOnFailureListener {
-                            continuation.resume(FirebaseErrorResolver.parseFunctionException(it))
-                        }
+                    Tasks.await(task)
+                    if (task.isSuccessful) {
+                        response(Unit)
+                    } else {
+                        FirebaseErrorResolver.parseFunctionException(
+                            task.exception ?: Exception()
+                        )
+                    }
+                } catch (e: Exception) {
+                    FirebaseErrorResolver.parseFunctionException<Unit>(e)
                 }
             }.await()
         }
@@ -91,16 +102,20 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
     override suspend fun deleteProject(projectId: String): Response<Unit> {
         return retryWhenError {
             CoroutineScope(dispatcher).async {
-                suspendCoroutine<Response<Unit>> { continuation ->
-                    functions
+                try {
+                    val task = functions
                         .getHttpsCallable("deleteProject")
-                        .call(deleteProjectParams(projectId))
-                        .addOnSuccessListener {
-                            continuation.resume(response(Unit))
-                        }
-                        .addOnFailureListener {
-                            continuation.resume(FirebaseErrorResolver.parseFunctionException(it))
-                        }
+                        .call(leaveProjectParams(projectId))
+                    Tasks.await(task)
+                    if (task.isSuccessful) {
+                        response(Unit)
+                    } else {
+                        FirebaseErrorResolver.parseFunctionException(
+                            task.exception ?: Exception()
+                        )
+                    }
+                } catch (e: Exception) {
+                    FirebaseErrorResolver.parseFunctionException<Unit>(e)
                 }
             }.await()
         }
@@ -109,34 +124,45 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
     override suspend fun joinProject(projectName: String, password: String): Response<String> {
         return retryWhenError {
             CoroutineScope(dispatcher).async {
-                suspendCoroutine<Response<String>> { continuation ->
-                    functions
+                try {
+                    val task = functions
                         .getHttpsCallable("joinProject")
                         .call(joinProjectParams(projectName, password))
-                        .addOnSuccessListener {
-                            continuation.resume(response(it.data.toProjectId()))
-                        }
-                        .addOnFailureListener {
-                            continuation.resume(FirebaseErrorResolver.parseFunctionException(it))
-                        }
+                    Tasks.await(task)
+                    if (task.isSuccessful) {
+                        response(task.result?.data.toProjectId())
+                    } else {
+                        FirebaseErrorResolver.parseFunctionException(
+                            task.exception ?: Exception()
+                        )
+                    }
+                } catch (e: Exception) {
+                    FirebaseErrorResolver.parseFunctionException<String>(e)
                 }
             }.await()
         }
     }
 
-    override suspend fun createNewProject(projectName: String, password: String): Response<String> {
+    override suspend fun createNewProject(
+        projectName: String,
+        password: String
+    ): Response<String> {
         return retryWhenError {
             CoroutineScope(dispatcher).async {
-                suspendCoroutine<Response<String>> { continuation ->
-                    functions
+                try {
+                    val task = functions
                         .getHttpsCallable("newProject")
                         .call(newProjectParams(projectName, password))
-                        .addOnSuccessListener {
-                            continuation.resume(response(it.data.toProjectId()))
-                        }
-                        .addOnFailureListener {
-                            continuation.resume(FirebaseErrorResolver.parseFunctionException(it))
-                        }
+                    Tasks.await(task)
+                    if (task.isSuccessful) {
+                        response(task.result?.data.toProjectId())
+                    } else {
+                        FirebaseErrorResolver.parseFunctionException(
+                            task.exception ?: Exception()
+                        )
+                    }
+                } catch (e: Exception) {
+                    FirebaseErrorResolver.parseFunctionException<String>(e)
                 }
             }.await()
         }
