@@ -94,24 +94,23 @@ suspend fun <T> retryWhenError(
     function: suspend () -> Response<T>
 ): Response<T> {
     var retries = times - 1
-    var result = function()
-    while (retries > 0 && result.status == Response.Status.FAILURE &&
-        shouldRetry(result.error)
-    ) {
-        if (result.status == Response.Status.FAILURE) {
+    var result: Response<T>
+    do {
+        result = function()
+        if (shouldRetry(result)) {
             delay((2000 until 5000).random().toLong())
-            result = function()
         } else {
             return result
         }
         retries--
-    }
+    } while (retries > 0 && shouldRetry(result))
     return result
 }
 
-private fun shouldRetry(error: Error?): Boolean {
-    return when (error) {
-        Error.Network -> true
-        else -> false
+private fun <T> shouldRetry(response: Response<T>): Boolean {
+    return if (response.status == Response.Status.SUCCESS) {
+        false
+    } else {
+        response.error !== null && response.error == Error.Network
     }
 }

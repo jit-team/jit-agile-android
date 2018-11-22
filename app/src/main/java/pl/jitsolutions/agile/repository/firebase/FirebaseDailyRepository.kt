@@ -23,17 +23,19 @@ class FirebaseDailyRepository(private val dispatcher: CoroutineDispatcher) : Dai
     private lateinit var observeDailyListener: ListenerRegistration
 
     override suspend fun endDaily(dailyId: String): Response<Unit> {
-        return CoroutineScope(dispatcher).async {
-            suspendCoroutine<Response<Unit>> { continuation ->
-                functions
-                    .getHttpsCallable("finishDaily")
-                    .call(endDailyParams(dailyId))
-                    .addOnSuccessListener { continuation.resume(response(Unit)) }
-                    .addOnFailureListener {
-                        continuation.resume(FirebaseErrorResolver.parseFunctionException(it))
-                    }
-            }
-        }.await()
+        return retryWhenError {
+            CoroutineScope(dispatcher).async {
+                suspendCoroutine<Response<Unit>> { continuation ->
+                    functions
+                        .getHttpsCallable("finishDaily")
+                        .call(endDailyParams(dailyId))
+                        .addOnSuccessListener { continuation.resume(response(Unit)) }
+                        .addOnFailureListener {
+                            continuation.resume(FirebaseErrorResolver.parseFunctionException(it))
+                        }
+                }
+            }.await()
+        }
     }
 
     override suspend fun observeDaily(dailyId: String): ReceiveChannel<Response<Daily?>> {
@@ -66,59 +68,67 @@ class FirebaseDailyRepository(private val dispatcher: CoroutineDispatcher) : Dai
     }
 
     override suspend fun nextDailyUser(dailyId: String): Response<Unit> {
-        return CoroutineScope(dispatcher).async {
-            suspendCoroutine<Response<Unit>> { continuation ->
-                functions
-                    .getHttpsCallable("nextDailyUser")
-                    .call(nextDailyUserParams(dailyId))
-                    .addOnSuccessListener { continuation.resume(response(Unit)) }
-                    .addOnFailureListener {
-                        continuation.resume(FirebaseErrorResolver.parseFunctionException(it))
-                    }
-            }
-        }.await()
+        return retryWhenError {
+            CoroutineScope(dispatcher).async {
+                suspendCoroutine<Response<Unit>> { continuation ->
+                    functions
+                        .getHttpsCallable("nextDailyUser")
+                        .call(nextDailyUserParams(dailyId))
+                        .addOnSuccessListener { continuation.resume(response(Unit)) }
+                        .addOnFailureListener {
+                            continuation.resume(FirebaseErrorResolver.parseFunctionException(it))
+                        }
+                }
+            }.await()
+        }
     }
 
     override suspend fun joinDaily(dailyId: String): Response<Unit> {
-        return CoroutineScope(dispatcher).async {
-            suspendCoroutine<Response<Unit>> { continuation ->
-                functions
-                    .getHttpsCallable("joinDaily")
-                    .call(joinDailyParams(dailyId))
-                    .addOnSuccessListener { continuation.resume(response(Unit)) }
-                    .addOnFailureListener {
-                        continuation.resume(FirebaseErrorResolver.parseFunctionException(it))
-                    }
-            }
-        }.await()
+        return retryWhenError {
+            CoroutineScope(dispatcher).async {
+                suspendCoroutine<Response<Unit>> { continuation ->
+                    functions
+                        .getHttpsCallable("joinDaily")
+                        .call(joinDailyParams(dailyId))
+                        .addOnSuccessListener { continuation.resume(response(Unit)) }
+                        .addOnFailureListener {
+                            continuation.resume(FirebaseErrorResolver.parseFunctionException(it))
+                        }
+                }
+            }.await()
+        }
     }
 
     override suspend fun leaveDaily(dailyId: String): Response<Unit> {
-        return CoroutineScope(dispatcher).async {
-            suspendCoroutine<Response<Unit>> { continuation ->
-                functions
-                    .getHttpsCallable("leaveDaily")
-                    .call(leaveDailyParams(dailyId))
-                    .addOnSuccessListener { continuation.resume(response(Unit)) }
-                    .addOnFailureListener {
-                        continuation.resume(FirebaseErrorResolver.parseFunctionException(it))
-                    }
-            }
-        }.await()
+        return retryWhenError {
+            CoroutineScope(dispatcher).async {
+                suspendCoroutine<Response<Unit>> { continuation ->
+                    functions
+                        .getHttpsCallable("leaveDaily")
+                        .call(leaveDailyParams(dailyId))
+                        .addOnSuccessListener { continuation.resume(response(Unit)) }
+                        .addOnFailureListener {
+                            continuation.resume(FirebaseErrorResolver.parseFunctionException(it))
+                        }
+                }
+            }.await()
+        }
     }
 
     override suspend fun startDaily(dailyId: String): Response<Unit> {
-        return CoroutineScope(dispatcher).async {
-            suspendCoroutine<Response<Unit>> { continuation ->
-                functions
-                    .getHttpsCallable("startDaily")
-                    .call(startDailyParams(dailyId))
-                    .addOnSuccessListener { continuation.resume(response(Unit)) }
-                    .addOnFailureListener {
-                        continuation.resume(FirebaseErrorResolver.parseFunctionException(it))
-                    }
-            }
-        }.await()
+        return retryWhenError {
+            CoroutineScope(dispatcher).async {
+                suspendCoroutine<Response<Unit>> { continuation ->
+                    functions
+                        .getHttpsCallable("startDaily")
+                        .call(startDailyParams(dailyId))
+                        .addOnSuccessListener { continuation.resume(response(Unit)) }
+                        .addOnFailureListener {
+                            continuation.resume(FirebaseErrorResolver.parseFunctionException(it))
+                        }
+                }
+            }.await()
+        }
     }
 
     override fun dispose() {

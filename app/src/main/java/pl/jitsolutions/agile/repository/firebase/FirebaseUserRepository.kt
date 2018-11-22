@@ -36,11 +36,13 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
     }
 
     override suspend fun logout() =
-        CoroutineScope(dispatcher).async {
-            val currentUser = firebaseAuth.currentUser
-            firebaseAuth.signOut()
-            response(currentUser!!.toUser())
-        }.await()
+        retryWhenError {
+            CoroutineScope(dispatcher).async {
+                val currentUser = firebaseAuth.currentUser
+                firebaseAuth.signOut()
+                response(currentUser!!.toUser())
+            }.await()
+        }
 
     override suspend fun register(
         userName: String,
