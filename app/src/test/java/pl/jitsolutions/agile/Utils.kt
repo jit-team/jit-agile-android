@@ -1,6 +1,7 @@
 package pl.jitsolutions.agile
 
 import org.junit.Assert.assertEquals
+import pl.jitsolutions.agile.common.Error
 import pl.jitsolutions.agile.domain.Project
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.User
@@ -19,7 +20,7 @@ class ResponseAssertion<T>(val response: Response<T>) {
 
     fun isUnsuccessful() = assertEquals(Response.Status.FAILURE, response.status)
 
-    fun hasError(error: Throwable?) {
+    fun hasError(error: Error?) {
         isUnsuccessful()
         assertEquals(error, response.error)
     }

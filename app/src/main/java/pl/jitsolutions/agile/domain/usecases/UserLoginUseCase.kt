@@ -19,6 +19,11 @@ class UserLoginUseCase(
         return userRepository.login(params.email, params.password)
     }
 
+    suspend fun login(email: String, password: String): Response<Unit> {
+        val params = Params(email, password)
+        return executeAsync(params).await()
+    }
+
     data class Params(val email: String, val password: String) {
         fun validate(): Error? = when {
             email.isEmpty() -> Error.EmptyEmail
