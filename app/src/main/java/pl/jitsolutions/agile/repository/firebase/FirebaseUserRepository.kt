@@ -17,48 +17,57 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
     private val firebaseAuth = FirebaseAuth.getInstance()
 
     override suspend fun login(email: String, password: String): Response<Unit> {
-        return CoroutineScope(dispatcher).async {
-            try {
-                val task = firebaseAuth.signInWithEmailAndPassword(email, password)
-                Tasks.await(task)
-                if (task.isSuccessful) {
-                    response(Unit)
-                } else {
-                    FirebaseErrorResolver.parseLoginException(task.exception ?: Exception())
+        return retryWhenError {
+            CoroutineScope(dispatcher).async {
+                try {
+                    val task = firebaseAuth.signInWithEmailAndPassword(email, password)
+                    Tasks.await(task)
+
+                    if (task.isSuccessful) {
+                        response(Unit)
+                    } else {
+                        FirebaseErrorResolver.parseLoginException(task.exception ?: Exception())
+                    }
+                } catch (e: Exception) {
+                    FirebaseErrorResolver.parseLoginException<Unit>(e)
                 }
-            } catch (e: Exception) {
-                FirebaseErrorResolver.parseLoginException<Unit>(e)
-            }
-        }.await()
+            }.await()
+        }
     }
 
     override suspend fun logout() =
-        CoroutineScope(dispatcher).async {
-            val currentUser = firebaseAuth.currentUser
-            firebaseAuth.signOut()
-            response(currentUser!!.toUser())
-        }.await()
+        retryWhenError {
+            CoroutineScope(dispatcher).async {
+                val currentUser = firebaseAuth.currentUser
+                firebaseAuth.signOut()
+                response(currentUser!!.toUser())
+            }.await()
+        }
 
     override suspend fun register(
         userName: String,
         email: String,
         password: String
     ): Response<Unit> {
-        return CoroutineScope(dispatcher).async {
-            try {
-                val task = firebaseAuth.createUserWithEmailAndPassword(email, password)
-                val result = Tasks.await(task)
-                if (task.isSuccessful) {
-                    val firebaseUser = result.user!!
-                    updateUserName(firebaseUser, userName)
-                    response(Unit)
-                } else {
-                    FirebaseErrorResolver.parseRegistrationException(task.exception ?: Exception())
+        return retryWhenError {
+            CoroutineScope(dispatcher).async {
+                try {
+                    val task = firebaseAuth.createUserWithEmailAndPassword(email, password)
+                    val result = Tasks.await(task)
+                    if (task.isSuccessful) {
+                        val firebaseUser = result.user!!
+                        updateUserName(firebaseUser, userName)
+                        response(Unit)
+                    } else {
+                        FirebaseErrorResolver.parseRegistrationException(
+                            task.exception ?: Exception()
+                        )
+                    }
+                } catch (e: Exception) {
+                    FirebaseErrorResolver.parseRegistrationException<Unit>(e)
                 }
-            } catch (e: Exception) {
-                FirebaseErrorResolver.parseRegistrationException<Unit>(e)
-            }
-        }.await()
+            }.await()
+        }
     }
 
     private fun updateUserName(firebaseUser: FirebaseUser, userName: String) {
@@ -77,18 +86,22 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
     }
 
     override suspend fun resetPassword(email: String): Response<Unit> {
-        return CoroutineScope(dispatcher).async {
-            try {
-                val task = firebaseAuth.sendPasswordResetEmail(email)
-                Tasks.await(task)
-                if (task.isSuccessful) {
-                    response(Unit)
-                } else {
-                    FirebaseErrorResolver.parseResetPasswordException(task.exception ?: Exception())
+        return retryWhenError {
+            CoroutineScope(dispatcher).async {
+                try {
+                    val task = firebaseAuth.sendPasswordResetEmail(email)
+                    Tasks.await(task)
+                    if (task.isSuccessful) {
+                        response(Unit)
+                    } else {
+                        FirebaseErrorResolver.parseResetPasswordException(
+                            task.exception ?: Exception()
+                        )
+                    }
+                } catch (e: Exception) {
+                    FirebaseErrorResolver.parseResetPasswordException<Unit>(e)
                 }
-            } catch (e: Exception) {
-                FirebaseErrorResolver.parseResetPasswordException<Unit>(e)
-            }
-        }.await()
+            }.await()
+        }
     }
 }

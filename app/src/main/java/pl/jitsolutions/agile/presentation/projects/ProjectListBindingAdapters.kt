@@ -111,6 +111,7 @@ fun bindProjectListEmptyList(view: View, state: ProjectListViewModel.State) {
 @BindingAdapter("bindProjectListError")
 fun bindProjectListError(view: TextView, state: ProjectListViewModel.State) {
     if (state !is ProjectListViewModel.State.Fail) {
+        view.visibility = View.GONE
         return
     }
 
