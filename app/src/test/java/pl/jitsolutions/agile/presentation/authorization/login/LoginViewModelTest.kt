@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.ArgumentMatchers.anyString
+import pl.jitsolutions.agile.awaitResponseMock
 import pl.jitsolutions.agile.domain.response
 import pl.jitsolutions.agile.domain.usecases.UserLoginUseCase
 import pl.jitsolutions.agile.presentation.navigation.Navigator
@@ -21,11 +21,14 @@ class LoginViewModelTest {
 
     @Test
     fun `login successful`() = runBlocking {
+
+        val awaitResponseMock = awaitResponseMock(response(Unit))
+
         val userLoginUseCase = mock<UserLoginUseCase> {
-            onBlocking {
-                login(anyString(), anyString())
+            on {
+                executeAsync(UserLoginUseCase.Params("", ""))
             } doReturn
-                response(Unit)
+                awaitResponseMock
         }
 
         val navigator = mock<Navigator>()
@@ -41,7 +44,10 @@ class LoginViewModelTest {
 
         verify(observerState).onChanged(LoginViewModel.State.InProgress)
 
-        verify(navigator).navigate(from = Navigator.Destination.Login, to = Navigator.Destination.ProjectList)
+        verify(navigator).navigate(
+            from = Navigator.Destination.Login,
+            to = Navigator.Destination.ProjectList
+        )
 
         verify(observerState).onChanged(LoginViewModel.State.Success)
     }

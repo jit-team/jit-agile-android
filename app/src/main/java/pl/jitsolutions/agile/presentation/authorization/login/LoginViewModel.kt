@@ -32,7 +32,8 @@ class LoginViewModel(
 
     fun login() = launch {
         state.value = State.InProgress
-        val response = userLoginUseCase.login(email.value!!, password.value!!)
+        val params = UserLoginUseCase.Params(email.value!!, password.value!!)
+        val response = userLoginUseCase.executeAsync(params).await()
         when (response.status) {
             Response.Status.SUCCESS -> {
                 state.value = State.Success

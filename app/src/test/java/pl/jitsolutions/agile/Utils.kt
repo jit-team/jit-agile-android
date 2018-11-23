@@ -1,5 +1,8 @@
 package pl.jitsolutions.agile
 
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.mock
+import kotlinx.coroutines.Deferred
 import org.junit.Assert.assertEquals
 import pl.jitsolutions.agile.common.Error
 import pl.jitsolutions.agile.domain.Project
@@ -47,3 +50,11 @@ class UserAssertion(val user: User) {
 fun <T> ResponseAssertion<T>.hasUser(userAssertion: UserAssertion.() -> Unit) {
     UserAssertion(response.data!! as User).apply(userAssertion)
 }
+
+inline fun <reified T> awaitResponseMock(awaitResponse: Response<T>): Deferred<Response<T>> =
+    mock {
+        onBlocking {
+            await()
+        } doReturn
+            awaitResponse
+    }
