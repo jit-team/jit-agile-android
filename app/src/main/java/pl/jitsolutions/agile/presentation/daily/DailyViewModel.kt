@@ -72,7 +72,7 @@ class DailyViewModel(
         }
     }
 
-    private fun handleDailyState(daily: Daily?) {
+    fun handleDailyState(daily: Daily?) {
         if (daily != null) {
             project.value = daily.project.name
             users.value = daily.users

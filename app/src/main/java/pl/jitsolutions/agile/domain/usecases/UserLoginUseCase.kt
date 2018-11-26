@@ -18,7 +18,7 @@ class UserLoginUseCase(
         }
         return userRepository.login(params.email, params.password)
     }
-    
+
     data class Params(val email: String, val password: String) {
         fun validate(): Error? = when {
             email.isEmpty() -> Error.EmptyEmail
