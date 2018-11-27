@@ -17,3 +17,5 @@ inline fun <reified T> response(data: T): Response<T> {
 inline fun <reified T> errorResponse(data: T? = null, error: Error): Response<T> {
     return Response(data = data, status = Response.Status.FAILURE, error = error)
 }
+
+fun <T> Response<T>.isSuccessfulWithData() = this.status == Response.Status.SUCCESS && this.data != null

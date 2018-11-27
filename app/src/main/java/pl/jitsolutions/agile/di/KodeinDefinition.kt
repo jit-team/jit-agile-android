@@ -26,6 +26,7 @@ import pl.jitsolutions.agile.domain.usecases.NextDailyUserUseCase
 import pl.jitsolutions.agile.domain.usecases.ObserveDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.ProjectCreationUseCase
 import pl.jitsolutions.agile.domain.usecases.ProjectJoiningUseCase
+import pl.jitsolutions.agile.domain.usecases.AssignDeviceTokenToUserTokenUseCase
 import pl.jitsolutions.agile.domain.usecases.StartDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.UserLoginUseCase
 import pl.jitsolutions.agile.domain.usecases.UserRegistrationUseCase
@@ -42,10 +43,12 @@ import pl.jitsolutions.agile.presentation.projects.managing.ProjectJoiningViewMo
 import pl.jitsolutions.agile.presentation.splash.SplashViewModel
 import pl.jitsolutions.agile.repository.AndroidSystemInfoRepository
 import pl.jitsolutions.agile.repository.DailyRepository
+import pl.jitsolutions.agile.repository.NotificationRepository
 import pl.jitsolutions.agile.repository.ProjectRepository
 import pl.jitsolutions.agile.repository.SystemInfoRepository
 import pl.jitsolutions.agile.repository.UserRepository
 import pl.jitsolutions.agile.repository.firebase.FirebaseDailyRepository
+import pl.jitsolutions.agile.repository.firebase.FirebaseNotificationRepository
 import pl.jitsolutions.agile.repository.firebase.FirebaseProjectRepository
 import pl.jitsolutions.agile.repository.firebase.FirebaseUserRepository
 import java.util.concurrent.Executors
@@ -80,14 +83,17 @@ private val repositoriesModule = Module(name = "Repositories") {
     bind<SystemInfoRepository>() with singleton {
         AndroidSystemInfoRepository()
     }
+    bind<NotificationRepository>() with singleton {
+        FirebaseNotificationRepository(instance(tag = Tags.Dispatchers.IO))
+    }
 }
 
 private val useCasesModule = Module(name = "UseCases") {
     bind<UserRegistrationUseCase>() with provider {
-        UserRegistrationUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
+        UserRegistrationUseCase(instance(), instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
     bind<UserLoginUseCase>() with provider {
-        UserLoginUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
+        UserLoginUseCase(instance(), instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
     bind<LogoutCurrentUserUseCase>() with provider {
         LogoutCurrentUserUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
@@ -108,7 +114,11 @@ private val useCasesModule = Module(name = "UseCases") {
         GetCurrentUserProjectsUseCase(instance(), instance(), instance(Tags.Dispatchers.USE_CASE))
     }
     bind<GetCurrentUserProjectsWithDailyUseCase>() with provider {
-        GetCurrentUserProjectsWithDailyUseCase(instance(), instance(), instance(Tags.Dispatchers.USE_CASE))
+        GetCurrentUserProjectsWithDailyUseCase(
+            instance(),
+            instance(),
+            instance(Tags.Dispatchers.USE_CASE)
+        )
     }
     bind<LeaveProjectUseCase>() with provider {
         LeaveProjectUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
@@ -139,6 +149,9 @@ private val useCasesModule = Module(name = "UseCases") {
     }
     bind<NextDailyUserUseCase>() with provider {
         NextDailyUserUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
+    }
+    bind<AssignDeviceTokenToUserTokenUseCase>() with provider {
+        AssignDeviceTokenToUserTokenUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
 }
 

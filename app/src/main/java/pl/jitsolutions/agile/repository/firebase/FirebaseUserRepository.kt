@@ -16,7 +16,7 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
     UserRepository {
     private val firebaseAuth = FirebaseAuth.getInstance()
 
-    override suspend fun login(email: String, password: String): Response<Unit> {
+    override suspend fun login(email: String, password: String): Response<String> {
         return retryWhenError {
             CoroutineScope(dispatcher).async {
                 try {
@@ -24,12 +24,12 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
                     Tasks.await(task)
 
                     if (task.isSuccessful) {
-                        response(Unit)
+                        response(task.result?.user?.uid!!)
                     } else {
                         FirebaseErrorResolver.parseLoginException(task.exception ?: Exception())
                     }
                 } catch (e: Exception) {
-                    FirebaseErrorResolver.parseLoginException<Unit>(e)
+                    FirebaseErrorResolver.parseLoginException<String>(e)
                 }
             }.await()
         }
@@ -48,7 +48,7 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
         userName: String,
         email: String,
         password: String
-    ): Response<Unit> {
+    ): Response<String> {
         return retryWhenError {
             CoroutineScope(dispatcher).async {
                 try {
@@ -57,14 +57,14 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
                     if (task.isSuccessful) {
                         val firebaseUser = result.user!!
                         updateUserName(firebaseUser, userName)
-                        response(Unit)
+                        response(task.result?.user?.uid!!)
                     } else {
                         FirebaseErrorResolver.parseRegistrationException(
                             task.exception ?: Exception()
                         )
                     }
                 } catch (e: Exception) {
-                    FirebaseErrorResolver.parseRegistrationException<Unit>(e)
+                    FirebaseErrorResolver.parseRegistrationException<String>(e)
                 }
             }.await()
         }

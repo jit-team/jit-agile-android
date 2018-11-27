@@ -14,6 +14,7 @@ import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
 import pl.jitsolutions.agile.presentation.navigation.AndroidNavigator
 import pl.jitsolutions.agile.presentation.navigation.Navigator
+import pl.jitsolutions.agile.presentation.notifications.registerNotificationChannel
 
 abstract class BaseActivity : AppCompatActivity(), KodeinAware {
     abstract val navigationGraphResId: Int
@@ -30,6 +31,8 @@ abstract class BaseActivity : AppCompatActivity(), KodeinAware {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         kodeinTrigger.trigger()
+
+        registerNotificationChannel(this)
 
         val navHost = NavHostFragment.create(navigationGraphResId)
         supportFragmentManager.beginTransaction()

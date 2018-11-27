@@ -133,4 +133,7 @@
         <item name="daily_screen_quota6">“It does not matter how slowly you go as long as you do not stop.”– Confucius</item>
         <item name="daily_screen_quota7">“We may encounter many defeats but we must not be defeated.”– Maya Angelou</item>
     </string-array>
+
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="default_notification_channel_name" translatable="false">fcm_default_channel_name</string>
 </resources>
