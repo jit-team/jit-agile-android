@@ -13,9 +13,9 @@ import pl.jitsolutions.agile.di.Tags
 import pl.jitsolutions.agile.domain.isSuccessfulWithData
 import pl.jitsolutions.agile.domain.usecases.GetLoggedUserUseCase
 import pl.jitsolutions.agile.domain.usecases.AssignDeviceTokenToUserTokenUseCase
-import pl.jitsolutions.agile.domain.usecases.NotificationUseCase
+import pl.jitsolutions.agile.domain.usecases.ShowStartDailyNotificationUseCase
 
-class MyFirebaseMessagingService : FirebaseMessagingService(), KodeinAware {
+class CloudMessagingService : FirebaseMessagingService(), KodeinAware {
 
     private val closestKodein: Kodein by closestKodein()
 
@@ -26,7 +26,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), KodeinAware {
 
     private val assignDeviceTokenToUserTokenUseCase: AssignDeviceTokenToUserTokenUseCase by instance()
 
-    private val notificationUseCase: NotificationUseCase by instance()
+    private val showStartDailyNotificationUseCase: ShowStartDailyNotificationUseCase by instance()
 
     private val dispatcher: CoroutineDispatcher by instance(tag = Tags.Dispatchers.USE_CASE)
 
@@ -59,8 +59,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), KodeinAware {
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
-        remoteMessage?.data?.isNotEmpty()?.let {
-            notificationUseCase.sendNotification(remoteMessage.data)
+        val projectName = remoteMessage.projectName()
+        projectName?.let {
+            showStartDailyNotificationUseCase.showNotification(it)
         }
     }
+
+    private fun RemoteMessage?.projectName() = this?.data!!["projectName"]
 }

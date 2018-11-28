@@ -7,15 +7,16 @@ import pl.jitsolutions.agile.BuildConfig
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.response
 
-class AndroidSystemInfoRepository(application: Application) : SystemInfoRepository {
+class AndroidSystemInfoRepository(application: Application) : SystemInfoRepository,
+    Application.ActivityLifecycleCallbacks {
 
-    var appState: SystemInfoRepository.AppState = SystemInfoRepository.AppState.BACKGROUND
+    private var appState: SystemInfoRepository.AppState = SystemInfoRepository.AppState.BACKGROUND
 
     init {
         application.registerActivityLifecycleCallbacks(this)
     }
 
-    override suspend fun getApplicationState(): Response<SystemInfoRepository.AppState> {
+    override fun getApplicationState(): Response<SystemInfoRepository.AppState> {
         return response(appState)
     }
 

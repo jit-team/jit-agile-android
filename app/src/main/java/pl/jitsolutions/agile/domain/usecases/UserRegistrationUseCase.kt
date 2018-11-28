@@ -4,16 +4,13 @@ import kotlinx.coroutines.CoroutineDispatcher
 import pl.jitsolutions.agile.common.Error
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.errorResponse
-import pl.jitsolutions.agile.repository.NotificationRepository
 import pl.jitsolutions.agile.repository.UserRepository
 
 class UserRegistrationUseCase(
     private val userRepository: UserRepository,
-    notificationRepository: NotificationRepository,
+    private val cloudMessagingManager: CloudMessagingManager,
     dispatcher: CoroutineDispatcher
 ) : UseCase<UserRegistrationUseCase.Params, Unit>(dispatcher) {
-
-    private val cloudMessagingManager = CloudMessagingManager(notificationRepository)
 
     override suspend fun build(params: Params): Response<Unit> {
         val validationError = params.validate()

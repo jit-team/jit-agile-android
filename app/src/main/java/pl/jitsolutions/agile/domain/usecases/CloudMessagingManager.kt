@@ -9,7 +9,7 @@ import pl.jitsolutions.agile.repository.NotificationRepository
 
 class CloudMessagingManager(private val notificationRepository: NotificationRepository) {
 
-    internal suspend fun assignDeviceTokenToUser(uid: String): Response<Unit> {
+    suspend fun assignDeviceTokenToUser(uid: String): Response<Unit> {
         val tokenResponse = notificationRepository.getDeviceToken()
         return if (tokenResponse.isSuccessfulWithData()) {
             handleSuccess(uid, tokenResponse.data!!)

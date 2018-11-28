@@ -29,7 +29,8 @@ import pl.jitsolutions.agile.domain.usecases.ObserveDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.ProjectCreationUseCase
 import pl.jitsolutions.agile.domain.usecases.ProjectJoiningUseCase
 import pl.jitsolutions.agile.domain.usecases.AssignDeviceTokenToUserTokenUseCase
-import pl.jitsolutions.agile.domain.usecases.NotificationUseCase
+import pl.jitsolutions.agile.domain.usecases.CloudMessagingManager
+import pl.jitsolutions.agile.domain.usecases.ShowStartDailyNotificationUseCase
 import pl.jitsolutions.agile.domain.usecases.StartDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.UserLoginUseCase
 import pl.jitsolutions.agile.domain.usecases.UserRegistrationUseCase
@@ -58,7 +59,7 @@ import java.util.concurrent.Executors
 
 interface Tags {
     enum class Dispatchers { USE_CASE, IO, MAIN }
-    enum class Parameters { PROJECT_DETAILS_ID, DAILY_ID, APPLICATION_CONTEXT }
+    enum class Parameters { PROJECT_DETAILS_ID, DAILY_ID }
 }
 
 private val dispatchersModule = Module(name = "Dispatchers") {
@@ -84,7 +85,7 @@ private val repositoriesModule = Module(name = "Repositories") {
         FirebaseDailyRepository(instance(tag = Tags.Dispatchers.IO))
     }
     bind<SystemInfoRepository>() with singleton {
-        AndroidSystemInfoRepository(instance(tag = Tags.Parameters.APPLICATION_CONTEXT))
+        AndroidSystemInfoRepository(instance())
     }
     bind<NotificationRepository>() with singleton {
         FirebaseNotificationRepository(instance(tag = Tags.Dispatchers.IO))
@@ -156,8 +157,8 @@ private val useCasesModule = Module(name = "UseCases") {
     bind<AssignDeviceTokenToUserTokenUseCase>() with provider {
         AssignDeviceTokenToUserTokenUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
-    bind<NotificationUseCase>() with provider {
-        NotificationUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
+    bind<ShowStartDailyNotificationUseCase>() with provider {
+        ShowStartDailyNotificationUseCase(instance(), instance())
     }
 }
 
@@ -269,6 +270,12 @@ private val viewModelsModule = Module(name = "ViewModels") {
     }
 }
 
+private val cloudMessagingModule = Module(name = "CloudMessaging") {
+    bind<CloudMessagingManager>() with provider {
+        CloudMessagingManager(instance())
+    }
+}
+
 // TODO: move to utils file or something
 private fun viewModelFactory(factory: () -> ViewModel): ViewModelProvider.Factory {
     return object : ViewModelProvider.Factory {
@@ -280,12 +287,13 @@ private fun viewModelFactory(factory: () -> ViewModel): ViewModelProvider.Factor
 
 fun kodeinBuilder(application: Application): LazyKodein {
     return Kodein.lazy {
-        bind<Application>(tag = Tags.Parameters.APPLICATION_CONTEXT) with provider {
+        bind<Application>() with provider {
             application
         }
         import(dispatchersModule)
         import(repositoriesModule)
         import(useCasesModule)
         import(viewModelsModule)
+        import(cloudMessagingModule)
     }
 }

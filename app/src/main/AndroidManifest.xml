@@ -19,7 +19,7 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="@string/default_notification_channel_id" />
+            android:value="@string/notification_channel_id" />
 
         <activity
             android:name="pl.jitsolutions.agile.presentation.MainActivity"
@@ -35,7 +35,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".presentation.notifications.MyFirebaseMessagingService">
+        <service android:name=".presentation.notifications.CloudMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
