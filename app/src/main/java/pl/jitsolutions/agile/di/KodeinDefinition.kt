@@ -1,5 +1,6 @@
 package pl.jitsolutions.agile.di
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.CoroutineDispatcher
@@ -7,6 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.asCoroutineDispatcher
 import org.kodein.di.Kodein
 import org.kodein.di.Kodein.Module
+import org.kodein.di.LazyKodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
@@ -27,6 +29,7 @@ import pl.jitsolutions.agile.domain.usecases.ObserveDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.ProjectCreationUseCase
 import pl.jitsolutions.agile.domain.usecases.ProjectJoiningUseCase
 import pl.jitsolutions.agile.domain.usecases.AssignDeviceTokenToUserTokenUseCase
+import pl.jitsolutions.agile.domain.usecases.NotificationUseCase
 import pl.jitsolutions.agile.domain.usecases.StartDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.UserLoginUseCase
 import pl.jitsolutions.agile.domain.usecases.UserRegistrationUseCase
@@ -36,7 +39,6 @@ import pl.jitsolutions.agile.presentation.authorization.registration.Registratio
 import pl.jitsolutions.agile.presentation.authorization.registrationSuccessful.RegistrationSuccessfulViewModel
 import pl.jitsolutions.agile.presentation.authorization.resetPassword.ResetPasswordViewModel
 import pl.jitsolutions.agile.presentation.daily.DailyViewModel
-import pl.jitsolutions.agile.presentation.notifications.NotificationCallback
 import pl.jitsolutions.agile.presentation.projects.ProjectListViewModel
 import pl.jitsolutions.agile.presentation.projects.details.ProjectDetailsViewModel
 import pl.jitsolutions.agile.presentation.projects.managing.ProjectCreationViewModel
@@ -56,7 +58,7 @@ import java.util.concurrent.Executors
 
 interface Tags {
     enum class Dispatchers { USE_CASE, IO, MAIN }
-    enum class Parameters { PROJECT_DETAILS_ID, DAILY_ID }
+    enum class Parameters { PROJECT_DETAILS_ID, DAILY_ID, APPLICATION_CONTEXT }
 }
 
 private val dispatchersModule = Module(name = "Dispatchers") {
@@ -82,7 +84,7 @@ private val repositoriesModule = Module(name = "Repositories") {
         FirebaseDailyRepository(instance(tag = Tags.Dispatchers.IO))
     }
     bind<SystemInfoRepository>() with singleton {
-        AndroidSystemInfoRepository()
+        AndroidSystemInfoRepository(instance(tag = Tags.Parameters.APPLICATION_CONTEXT))
     }
     bind<NotificationRepository>() with singleton {
         FirebaseNotificationRepository(instance(tag = Tags.Dispatchers.IO))
@@ -153,6 +155,9 @@ private val useCasesModule = Module(name = "UseCases") {
     }
     bind<AssignDeviceTokenToUserTokenUseCase>() with provider {
         AssignDeviceTokenToUserTokenUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
+    }
+    bind<NotificationUseCase>() with provider {
+        NotificationUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
 }
 
@@ -273,10 +278,14 @@ private fun viewModelFactory(factory: () -> ViewModel): ViewModelProvider.Factor
     }
 }
 
-val kodeinBuilder = Kodein.lazy {
-    import(dispatchersModule)
-    import(repositoriesModule)
-    import(useCasesModule)
-    import(viewModelsModule)
-    bind<NotificationCallback>() with singleton { NotificationCallback() }
+fun kodeinBuilder(application: Application): LazyKodein {
+    return Kodein.lazy {
+        bind<Application>(tag = Tags.Parameters.APPLICATION_CONTEXT) with provider {
+            application
+        }
+        import(dispatchersModule)
+        import(repositoriesModule)
+        import(useCasesModule)
+        import(viewModelsModule)
+    }
 }

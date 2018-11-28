@@ -13,6 +13,7 @@ import pl.jitsolutions.agile.di.Tags
 import pl.jitsolutions.agile.domain.isSuccessfulWithData
 import pl.jitsolutions.agile.domain.usecases.GetLoggedUserUseCase
 import pl.jitsolutions.agile.domain.usecases.AssignDeviceTokenToUserTokenUseCase
+import pl.jitsolutions.agile.domain.usecases.NotificationUseCase
 
 class MyFirebaseMessagingService : FirebaseMessagingService(), KodeinAware {
 
@@ -25,9 +26,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), KodeinAware {
 
     private val assignDeviceTokenToUserTokenUseCase: AssignDeviceTokenToUserTokenUseCase by instance()
 
-    private val dispatcher: CoroutineDispatcher by instance(tag = Tags.Dispatchers.USE_CASE)
+    private val notificationUseCase: NotificationUseCase by instance()
 
-    private val notificationCallback: NotificationCallback by instance()
+    private val dispatcher: CoroutineDispatcher by instance(tag = Tags.Dispatchers.USE_CASE)
 
     override fun onNewToken(token: String?) {
         CoroutineScope(dispatcher).launch {
@@ -59,7 +60,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), KodeinAware {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
         remoteMessage?.data?.isNotEmpty()?.let {
-            notificationCallback.postMessage(remoteMessage.data)
+            notificationUseCase.sendNotification(remoteMessage.data)
         }
     }
 }
