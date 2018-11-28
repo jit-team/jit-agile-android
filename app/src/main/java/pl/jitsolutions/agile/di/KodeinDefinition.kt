@@ -36,6 +36,7 @@ import pl.jitsolutions.agile.presentation.authorization.registration.Registratio
 import pl.jitsolutions.agile.presentation.authorization.registrationSuccessful.RegistrationSuccessfulViewModel
 import pl.jitsolutions.agile.presentation.authorization.resetPassword.ResetPasswordViewModel
 import pl.jitsolutions.agile.presentation.daily.DailyViewModel
+import pl.jitsolutions.agile.presentation.notifications.NotificationCallback
 import pl.jitsolutions.agile.presentation.projects.ProjectListViewModel
 import pl.jitsolutions.agile.presentation.projects.details.ProjectDetailsViewModel
 import pl.jitsolutions.agile.presentation.projects.managing.ProjectCreationViewModel
@@ -277,4 +278,5 @@ val kodeinBuilder = Kodein.lazy {
     import(repositoriesModule)
     import(useCasesModule)
     import(viewModelsModule)
+    bind<NotificationCallback>() with singleton { NotificationCallback() }
 }

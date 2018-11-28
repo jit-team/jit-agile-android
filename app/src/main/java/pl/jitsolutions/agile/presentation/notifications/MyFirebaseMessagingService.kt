@@ -1,6 +1,7 @@
 package pl.jitsolutions.agile.presentation.notifications
 
 import com.google.firebase.messaging.FirebaseMessagingService
+import com.google.firebase.messaging.RemoteMessage
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -25,6 +26,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), KodeinAware {
     private val assignDeviceTokenToUserTokenUseCase: AssignDeviceTokenToUserTokenUseCase by instance()
 
     private val dispatcher: CoroutineDispatcher by instance(tag = Tags.Dispatchers.USE_CASE)
+
+    private val notificationCallback: NotificationCallback by instance()
 
     override fun onNewToken(token: String?) {
         CoroutineScope(dispatcher).launch {
@@ -51,6 +54,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService(), KodeinAware {
         if (registerResponse.isSuccessfulWithData()) {
         } else {
             // handle fail?
+        }
+    }
+
+    override fun onMessageReceived(remoteMessage: RemoteMessage?) {
+        remoteMessage?.data?.isNotEmpty()?.let {
+            notificationCallback.postMessage(remoteMessage.data)
         }
     }
 }
