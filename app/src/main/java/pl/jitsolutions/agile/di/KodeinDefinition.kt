@@ -29,7 +29,6 @@ import pl.jitsolutions.agile.domain.usecases.ObserveDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.ProjectCreationUseCase
 import pl.jitsolutions.agile.domain.usecases.ProjectJoiningUseCase
 import pl.jitsolutions.agile.domain.usecases.AssignDeviceTokenToUserTokenUseCase
-import pl.jitsolutions.agile.domain.usecases.CloudMessagingManager
 import pl.jitsolutions.agile.domain.usecases.ShowStartDailyNotificationUseCase
 import pl.jitsolutions.agile.domain.usecases.StartDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.UserLoginUseCase
@@ -155,7 +154,7 @@ private val useCasesModule = Module(name = "UseCases") {
         NextDailyUserUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
     bind<AssignDeviceTokenToUserTokenUseCase>() with provider {
-        AssignDeviceTokenToUserTokenUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
+        AssignDeviceTokenToUserTokenUseCase(instance(), instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
     bind<ShowStartDailyNotificationUseCase>() with provider {
         ShowStartDailyNotificationUseCase(
@@ -274,12 +273,6 @@ private val viewModelsModule = Module(name = "ViewModels") {
     }
 }
 
-private val cloudMessagingModule = Module(name = "CloudMessaging") {
-    bind<CloudMessagingManager>() with provider {
-        CloudMessagingManager(instance())
-    }
-}
-
 // TODO: move to utils file or something
 private fun viewModelFactory(factory: () -> ViewModel): ViewModelProvider.Factory {
     return object : ViewModelProvider.Factory {
@@ -298,6 +291,5 @@ fun kodeinBuilder(application: Application): LazyKodein {
         import(repositoriesModule)
         import(useCasesModule)
         import(viewModelsModule)
-        import(cloudMessagingModule)
     }
 }

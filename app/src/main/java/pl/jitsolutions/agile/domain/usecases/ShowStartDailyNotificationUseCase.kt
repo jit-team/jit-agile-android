@@ -16,7 +16,7 @@ class ShowStartDailyNotificationUseCase(
         return response(showNotification(params.projectName))
     }
 
-    private fun showNotification(projectName: String) {
+    private suspend fun showNotification(projectName: String) {
         val response = systemInfoRepository.getApplicationState()
         when (response.status) {
             Response.Status.SUCCESS -> handleSuccess(response.data!!, projectName)
@@ -25,9 +25,13 @@ class ShowStartDailyNotificationUseCase(
         }
     }
 
-    private fun handleSuccess(appState: SystemInfoRepository.AppState, projectName: String) {
-        if (appState == SystemInfoRepository.AppState.BACKGROUND)
+    private suspend fun handleSuccess(
+        appState: SystemInfoRepository.AppState,
+        projectName: String
+    ) {
+        if (appState == SystemInfoRepository.AppState.BACKGROUND) {
             notificationRepository.showNotification(projectName)
+        }
     }
 
     data class Params(val projectName: String)

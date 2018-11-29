@@ -50,7 +50,7 @@ class CloudMessagingService : FirebaseMessagingService(), KodeinAware {
     }
 
     private suspend fun register(uid: String, token: String) {
-        val params = AssignDeviceTokenToUserTokenUseCase.Params(uid, token)
+        val params = AssignDeviceTokenToUserTokenUseCase.Params()
         val registerResponse = assignDeviceTokenToUserTokenUseCase.executeAsync(params).await()
         if (registerResponse.isSuccessfulWithData()) {
         } else {

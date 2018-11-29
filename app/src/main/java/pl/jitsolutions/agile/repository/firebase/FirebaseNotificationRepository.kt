@@ -17,16 +17,52 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import pl.jitsolutions.agile.R
+import pl.jitsolutions.agile.common.Error
 import pl.jitsolutions.agile.domain.Response
+import pl.jitsolutions.agile.domain.errorResponse
+import pl.jitsolutions.agile.domain.isSuccessfulWithData
 import pl.jitsolutions.agile.domain.response
 import pl.jitsolutions.agile.presentation.MainActivity
 import pl.jitsolutions.agile.repository.NotificationRepository
 
-class FirebaseNotificationRepository(private val application: Application, val dispatcher: CoroutineDispatcher) : NotificationRepository {
+class FirebaseNotificationRepository(
+    private val application: Application,
+    val dispatcher: CoroutineDispatcher
+) : NotificationRepository {
 
     private val firestore = FirebaseFirestore.getInstance()
 
-    override suspend fun getDeviceToken(): Response<String?> {
+    override suspend fun assignDeviceTokenToUser(userId: String): Response<Unit> {
+        return retryWhenError {
+            CoroutineScope(dispatcher).async {
+                try {
+                    val tokenResponse = getDeviceToken()
+                    if (tokenResponse.isSuccessfulWithData()) {
+                        handleSuccess(userId, tokenResponse.data!!)
+                    } else {
+                        errorResponse(error = tokenResponse.error ?: Error.Unknown)
+                    }
+                } catch (e: Exception) {
+                    FirebaseErrorResolver.parseFirestoreException<Unit>(e)
+                }
+            }.await()
+        }
+    }
+
+    private fun handleSuccess(userId: String, token: String): Response<Unit> {
+        val tokenMap = mapOf("token" to token)
+        val task = firestore.collection("fcm_tokens")
+            .document(userId)
+            .set(tokenMap, SetOptions.merge())
+        Tasks.await(task)
+        return if (task.isSuccessful) {
+            response(Unit)
+        } else {
+            FirebaseErrorResolver.parseFirestoreException(task.exception ?: Exception())
+        }
+    }
+
+    private suspend fun getDeviceToken(): Response<String?> {
         return retryWhenError {
             CoroutineScope(dispatcher).async {
                 try {
@@ -46,23 +82,7 @@ class FirebaseNotificationRepository(private val application: Application, val d
         }
     }
 
-    override suspend fun assignDeviceTokenToUser(userId: String, token: String): Response<Unit> {
-        return retryWhenError {
-            CoroutineScope(dispatcher).async {
-                try {
-                    val tokenMap = mapOf("token" to token)
-                    firestore.collection("fcm_tokens")
-                        .document(userId)
-                        .set(tokenMap, SetOptions.merge())
-                    response(Unit)
-                } catch (e: Exception) {
-                    FirebaseErrorResolver.parseFirestoreException<Unit>(e)
-                }
-            }.await()
-        }
-    }
-
-    override fun showNotification(projectName: String) {
+    override suspend fun showNotification(projectName: String) {
         val intent = Intent(application, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(
