@@ -82,7 +82,7 @@ class FirebaseNotificationRepository(
         }
     }
 
-    override suspend fun showNotification(projectName: String) {
+    override suspend fun showStartDailyNotification(projectName: String) : Response<Unit>{
         val intent = Intent(application, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(
@@ -112,5 +112,6 @@ class FirebaseNotificationRepository(
             notificationManager.createNotificationChannel(channel)
         }
         notificationManager.notify(0, builder.build())
+        return response(Unit)
     }
 }

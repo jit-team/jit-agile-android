@@ -30,7 +30,7 @@ class ShowStartDailyNotificationUseCase(
         projectName: String
     ) {
         if (appState == SystemInfoRepository.AppState.BACKGROUND) {
-            notificationRepository.showNotification(projectName)
+            notificationRepository.showStartDailyNotification(projectName)
         }
     }
 
