@@ -108,6 +108,7 @@ dependencies {
     implementation "com.google.firebase:firebase-auth:$libVersions.firebaseAuthVersion"
     implementation "com.google.firebase:firebase-firestore:$libVersions.firebaseFirestoreVersion"
     implementation "com.google.firebase:firebase-functions:$libVersions.firebaseFunctionsVersion"
+    implementation "com.google.firebase:firebase-messaging:$libVersions.firebaseMessagingVersion"
 
     implementation "com.crashlytics.sdk.android:crashlytics:$libVersions.crashlyticsVersion"
 
