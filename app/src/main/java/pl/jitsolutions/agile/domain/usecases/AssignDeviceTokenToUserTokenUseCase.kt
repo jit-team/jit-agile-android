@@ -11,7 +11,6 @@ import pl.jitsolutions.agile.repository.UserRepository
 class AssignDeviceTokenToUserTokenUseCase(
     private val notificationRepository: NotificationRepository,
     private val userRepository: UserRepository,
-
     dispatcher: CoroutineDispatcher
 ) :
     UseCase<AssignDeviceTokenToUserTokenUseCase.Params, Unit>(dispatcher) {
