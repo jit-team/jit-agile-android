@@ -61,7 +61,13 @@ class CloudMessagingService : FirebaseMessagingService(), KodeinAware {
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
         val projectName = remoteMessage.projectName()
         projectName?.let {
-            showStartDailyNotificationUseCase.showNotification(it)
+            CoroutineScope(dispatcher).launch {
+                showStartDailyNotificationUseCase.executeAsync(
+                    ShowStartDailyNotificationUseCase.Params(
+                        it
+                    )
+                ).await()
+            }
         }
     }
 

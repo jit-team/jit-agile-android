@@ -88,7 +88,7 @@ private val repositoriesModule = Module(name = "Repositories") {
         AndroidSystemInfoRepository(instance())
     }
     bind<NotificationRepository>() with singleton {
-        FirebaseNotificationRepository(instance(tag = Tags.Dispatchers.IO))
+        FirebaseNotificationRepository(instance(), instance(tag = Tags.Dispatchers.IO))
     }
 }
 
@@ -158,7 +158,11 @@ private val useCasesModule = Module(name = "UseCases") {
         AssignDeviceTokenToUserTokenUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
     bind<ShowStartDailyNotificationUseCase>() with provider {
-        ShowStartDailyNotificationUseCase(instance(), instance())
+        ShowStartDailyNotificationUseCase(
+            instance(),
+            instance(),
+            instance(Tags.Dispatchers.USE_CASE)
+        )
     }
 }
 
