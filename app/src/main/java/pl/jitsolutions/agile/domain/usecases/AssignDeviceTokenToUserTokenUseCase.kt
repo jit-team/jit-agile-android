@@ -19,10 +19,10 @@ class AssignDeviceTokenToUserTokenUseCase(
         val userResponse = userRepository.getLoggedInUser()
         return when (userResponse) {
             is Success -> notificationRepository.assignDeviceTokenToUser(userResponse.data.id)
-            is Failure -> when(userResponse.error) {
+            is Failure -> when (userResponse.error) {
                 Error.DoesNotExist -> {
                     Failure(userResponse.error)
-                    //TODO: user session not found, move to login screen
+                    // TODO: user session not found, move to login screen
                 }
                 else -> Failure(userResponse.error)
             }

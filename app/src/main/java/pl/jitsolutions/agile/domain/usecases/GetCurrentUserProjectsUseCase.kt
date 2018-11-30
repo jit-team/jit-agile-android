@@ -20,10 +20,10 @@ class GetCurrentUserProjectsUseCase(
         val response = userRepository.getLoggedInUser()
         return when (response) {
             is Success -> getProjects(response.data)
-            is Failure -> when(response.error) {
+            is Failure -> when (response.error) {
                 Error.DoesNotExist -> {
                     Failure(response.error)
-                    //TODO: user session not found, move to login screen
+                    // TODO: user session not found, move to login screen
                 }
                 else -> Failure(response.error)
             }

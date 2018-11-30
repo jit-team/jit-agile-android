@@ -30,9 +30,9 @@ class RegistrationSuccessfulViewModel(
         val userResponse = getLoggedUserUseCase.executeAsync(params).await()
         when (userResponse) {
             is Success -> user.value = userResponse.data
-            is Failure -> when(userResponse.error) {
+            is Failure -> when (userResponse.error) {
                 Error.DoesNotExist -> {
-                    //TODO: user session not found, move to login screen
+                    // TODO: user session not found, move to login screen
                 }
             }
         }

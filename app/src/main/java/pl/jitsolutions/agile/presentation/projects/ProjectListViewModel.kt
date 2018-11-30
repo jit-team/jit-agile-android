@@ -88,7 +88,7 @@ class ProjectListViewModel(
         val result = getLoggedUserUseCase.executeAsync(params).await()
         when (result) {
             is Success -> user.value = result.data
-            is Failure -> when(result.error) {
+            is Failure -> when (result.error) {
                 Error.DoesNotExist -> navigator.navigate(from = ProjectList, to = Login)
                 else -> state.value = State.Fail(result.error)
             }

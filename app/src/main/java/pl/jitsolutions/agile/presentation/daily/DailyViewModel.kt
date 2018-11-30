@@ -52,9 +52,9 @@ class DailyViewModel(
                 userId = result.data.id
                 executeGetDaily()
             }
-            is Failure -> when(result.error) {
+            is Failure -> when (result.error) {
                 Error.DoesNotExist -> {
-                    //TODO: user session not found, move to login screen
+                    // TODO: user session not found, move to login screen
                 }
             }
         }

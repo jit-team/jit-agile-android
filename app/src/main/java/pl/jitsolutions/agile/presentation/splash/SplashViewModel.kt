@@ -47,7 +47,7 @@ class SplashViewModel(
         val response = getLoggedUserUseCase.executeAsync(params).await()
         when (response) {
             is Success -> navigator.navigate(from = Splash, to = ProjectList)
-            is Failure -> if(response.error == Error.DoesNotExist) {
+            is Failure -> if (response.error == Error.DoesNotExist) {
                 navigator.navigate(from = Splash, to = Login)
             } else {
                 navigator.forceFinish()
