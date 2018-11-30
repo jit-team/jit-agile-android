@@ -90,12 +90,12 @@ class FirebaseNotificationRepository(
             PendingIntent.FLAG_ONE_SHOT
         )
 
-        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val builder = NotificationCompat.Builder(application, "")
             .setSmallIcon(R.drawable.ic_daily_24dp_white)
             .setContentTitle(projectName)
             .setContentText(application.getString(R.string.notification_daily_started))
-            .setSound(defaultSoundUri)
+            .setDefaults(NotificationCompat.DEFAULT_ALL)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)
             .setChannelId(application.getString(R.string.notification_channel_id))
             .setContentIntent(pendingIntent)
@@ -107,7 +107,7 @@ class FirebaseNotificationRepository(
             val channel = NotificationChannel(
                 application.getString(R.string.notification_channel_id),
                 application.getString(R.string.notification_channel_name),
-                NotificationManager.IMPORTANCE_DEFAULT
+                NotificationManager.IMPORTANCE_HIGH
             )
             notificationManager.createNotificationChannel(channel)
         }

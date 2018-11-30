@@ -67,7 +67,8 @@ abstract class BaseActivity : AppCompatActivity(), KodeinAware {
             notificationManager?.createNotificationChannel(
                 NotificationChannel(
                     channelId,
-                    channelName, NotificationManager.IMPORTANCE_LOW
+                    channelName,
+                    NotificationManager.IMPORTANCE_HIGH
                 )
             )
         }
