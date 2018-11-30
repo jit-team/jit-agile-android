@@ -7,6 +7,7 @@ import androidx.databinding.BindingAdapter
 import com.google.android.material.textfield.TextInputLayout
 import pl.jitsolutions.agile.common.Error
 import pl.jitsolutions.agile.R
+import pl.jitsolutions.agile.presentation.authorization.registration.RegistrationViewModel
 
 @BindingAdapter("bindProjectJoiningNameError")
 fun bindProjectJoiningNameError(
@@ -83,4 +84,10 @@ fun bindProjectJoiningUnknownErrorVisibility(
     }
     view.text = errorText
     view.visibility = if (errorText != null) View.VISIBLE else View.INVISIBLE
+}
+
+@BindingAdapter("bindProjectJoiningViewEnabled")
+fun bindProjectJoiningViewEnabled(view: View, state: ProjectJoiningViewModel.State) {
+    view.isEnabled = state != ProjectJoiningViewModel.State.InProgress &&
+        state != ProjectJoiningViewModel.State.Success
 }

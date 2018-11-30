@@ -22,7 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:bindProjectJoiningEditingEnabled="@{viewModel.state}"
-            app:bindProjectJoiningNameError="@{viewModel.state}">
+            app:bindProjectJoiningNameError="@{viewModel.state}"
+            app:bindProjectJoiningViewEnabled="@{viewModel.state}">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -39,7 +40,9 @@
             android:layout_height="wrap_content"
             app:bindProjectJoiningEditingEnabled="@{viewModel.state}"
             app:bindProjectJoiningPasswordError="@{viewModel.state}"
-            app:layout_constraintTop_toBottomOf="@+id/project_joining_project_layout">
+            app:bindProjectJoiningViewEnabled="@{viewModel.state}"
+            app:layout_constraintTop_toBottomOf="@+id/project_joining_project_layout"
+            app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -56,6 +59,7 @@
             android:layout_height="?defaultButtonHeight"
             android:onClick="@{() -> viewModel.joinProject()}"
             android:text="@string/project_joining_screen_join_button_text"
+            app:bindProjectJoiningViewEnabled="@{viewModel.state}"
             app:layout_constraintTop_toBottomOf="@+id/project_joining_password_layout" />
 
         <TextView
