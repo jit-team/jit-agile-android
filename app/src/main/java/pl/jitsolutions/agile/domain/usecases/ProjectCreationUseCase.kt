@@ -2,8 +2,8 @@ package pl.jitsolutions.agile.domain.usecases
 
 import kotlinx.coroutines.CoroutineDispatcher
 import pl.jitsolutions.agile.common.Error
+import pl.jitsolutions.agile.domain.Failure
 import pl.jitsolutions.agile.domain.Response
-import pl.jitsolutions.agile.domain.errorResponse
 import pl.jitsolutions.agile.repository.ProjectRepository
 
 class ProjectCreationUseCase(
@@ -14,7 +14,7 @@ class ProjectCreationUseCase(
     override suspend fun build(params: Params): Response<String> {
         val validationError = params.validate()
         if (validationError != null) {
-            return errorResponse(error = validationError)
+            return Failure(error = validationError)
         }
         return projectRepository.createNewProject(params.name, params.password)
     }

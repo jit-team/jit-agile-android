@@ -8,8 +8,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import pl.jitsolutions.agile.domain.Response
+import pl.jitsolutions.agile.domain.Success
 import pl.jitsolutions.agile.domain.User
-import pl.jitsolutions.agile.domain.response
 import pl.jitsolutions.agile.repository.UserRepository
 
 class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
@@ -24,9 +24,11 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
                     Tasks.await(task)
 
                     if (task.isSuccessful) {
-                        response(Unit)
+                        Success(Unit)
                     } else {
-                        FirebaseErrorResolver.parseLoginException(task.exception ?: Exception())
+                        FirebaseErrorResolver.parseLoginException<Unit>(
+                            task.exception ?: Exception()
+                        )
                     }
                 } catch (e: Exception) {
                     FirebaseErrorResolver.parseLoginException<Unit>(e)
@@ -40,7 +42,7 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
             CoroutineScope(dispatcher).async {
                 val currentUser = firebaseAuth.currentUser
                 firebaseAuth.signOut()
-                response(currentUser!!.toUser())
+                Success(currentUser!!.toUser())
             }.await()
         }
 
@@ -57,9 +59,9 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
                     if (task.isSuccessful) {
                         val firebaseUser = result.user!!
                         updateUserName(firebaseUser, userName)
-                        response(Unit)
+                        Success(Unit)
                     } else {
-                        FirebaseErrorResolver.parseRegistrationException(
+                        FirebaseErrorResolver.parseRegistrationException<Unit>(
                             task.exception ?: Exception()
                         )
                     }
@@ -82,7 +84,7 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
 
     override suspend fun getLoggedInUser(): Response<User?> {
         val loggedUser = firebaseAuth.currentUser?.toUser()
-        return response(loggedUser)
+        return Success(loggedUser)
     }
 
     override suspend fun resetPassword(email: String): Response<Unit> {
@@ -92,9 +94,9 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
                     val task = firebaseAuth.sendPasswordResetEmail(email)
                     Tasks.await(task)
                     if (task.isSuccessful) {
-                        response(Unit)
+                        Success(Unit)
                     } else {
-                        FirebaseErrorResolver.parseResetPasswordException(
+                        FirebaseErrorResolver.parseResetPasswordException<Unit>(
                             task.exception ?: Exception()
                         )
                     }

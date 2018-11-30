@@ -1,8 +1,11 @@
 package pl.jitsolutions.agile
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
+import pl.jitsolutions.agile.domain.Failure
 import pl.jitsolutions.agile.domain.Project
 import pl.jitsolutions.agile.domain.Response
+import pl.jitsolutions.agile.domain.Success
 import pl.jitsolutions.agile.domain.User
 
 inline fun <reified T> assertThat(
@@ -13,18 +16,11 @@ inline fun <reified T> assertThat(
 }
 
 class ResponseAssertion<T>(val response: Response<T>) {
-    fun isSuccessful() = assertEquals(Response.Status.SUCCESS, response.status)
+    fun isSuccessful() = assertTrue(response is Success)
 
-    fun hasData(data: T?) = assertEquals(data, response.data)
+    fun isUnsuccessful() = assertTrue(response is Failure)
 
-    fun isUnsuccessful() = assertEquals(Response.Status.FAILURE, response.status)
-
-    fun hasError(error: Throwable?) {
-        isUnsuccessful()
-        assertEquals(error, response.error)
-    }
-
-    fun hasString(string: String?) = assertEquals(string, response.data)
+    fun hasString(string: String?) = assertEquals(string, (response as Success).data)
 }
 
 class ProjectAssertion(val project: Project) {
@@ -34,7 +30,8 @@ class ProjectAssertion(val project: Project) {
 }
 
 fun <T> ResponseAssertion<T>.hasProject(projectAssertion: ProjectAssertion.() -> Unit) {
-    ProjectAssertion((response.data!! as Pair<Project, List<User>>).first).apply(projectAssertion)
+    val success = response as Success
+    ProjectAssertion((success.data as Pair<Project, List<User>>).first).apply(projectAssertion)
 }
 
 class UserAssertion(val user: User) {
@@ -44,5 +41,6 @@ class UserAssertion(val user: User) {
 }
 
 fun <T> ResponseAssertion<T>.hasUser(userAssertion: UserAssertion.() -> Unit) {
-    UserAssertion(response.data!! as User).apply(userAssertion)
+    val success = response as Success
+    UserAssertion(success.data as User).apply(userAssertion)
 }

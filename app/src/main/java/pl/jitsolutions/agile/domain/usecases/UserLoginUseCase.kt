@@ -2,9 +2,9 @@ package pl.jitsolutions.agile.domain.usecases
 
 import kotlinx.coroutines.CoroutineDispatcher
 import pl.jitsolutions.agile.common.Error
+import pl.jitsolutions.agile.domain.Failure
 import pl.jitsolutions.agile.domain.Response
-import pl.jitsolutions.agile.domain.errorResponse
-import pl.jitsolutions.agile.domain.isSuccessfulWithData
+import pl.jitsolutions.agile.domain.Success
 import pl.jitsolutions.agile.repository.NotificationRepository
 import pl.jitsolutions.agile.repository.UserRepository
 
@@ -17,23 +17,24 @@ class UserLoginUseCase(
     override suspend fun build(params: Params): Response<Unit> {
         val validationError = params.validate()
         if (validationError != null) {
-            return errorResponse(error = validationError)
+            return Failure(validationError)
         }
         val response = userRepository.login(params.email, params.password)
-        return when (response.status) {
-            Response.Status.SUCCESS -> handleSuccess()
-            Response.Status.FAILURE -> {
-                errorResponse(error = response.error ?: Error.Unknown)
-            }
+        return when (response) {
+            is Success -> handleSuccess()
+            is Failure -> response
         }
     }
 
     private suspend fun handleSuccess(): Response<Unit> {
-        val currentUser = userRepository.getLoggedInUser()
-        return if (currentUser.isSuccessfulWithData()) {
-            notificationRepository.assignDeviceTokenToUser(currentUser.data?.id!!)
-        } else {
-            errorResponse(error = currentUser.error ?: Error.Unknown)
+        val response = userRepository.getLoggedInUser()
+        return when (response) {
+            is Success -> if (response.data == null) {
+                Failure(Error.Unknown)
+            } else {
+                notificationRepository.assignDeviceTokenToUser(response.data.id)
+            }
+            is Failure -> Failure(response.error)
         }
     }
 

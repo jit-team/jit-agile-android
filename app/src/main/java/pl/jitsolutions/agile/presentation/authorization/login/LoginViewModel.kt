@@ -4,7 +4,8 @@ import androidx.lifecycle.Observer
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import pl.jitsolutions.agile.common.Error
-import pl.jitsolutions.agile.domain.Response
+import pl.jitsolutions.agile.domain.Failure
+import pl.jitsolutions.agile.domain.Success
 import pl.jitsolutions.agile.domain.usecases.UserLoginUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
 import pl.jitsolutions.agile.presentation.navigation.Navigator
@@ -34,13 +35,13 @@ class LoginViewModel(
         state.value = State.InProgress
         val params = UserLoginUseCase.Params(email.value!!, password.value!!)
         val response = userLoginUseCase.executeAsync(params).await()
-        when (response.status) {
-            Response.Status.SUCCESS -> {
+        when (response) {
+            is Success -> {
                 state.value = State.Success
                 navigator.navigate(from = Login, to = ProjectList)
             }
-            Response.Status.FAILURE -> {
-                state.value = State.Fail(response.error!!)
+            is Failure -> {
+                state.value = State.Fail(response.error)
             }
         }
     }

@@ -1,12 +1,12 @@
 package pl.jitsolutions.agile.domain.usecases
 
 import kotlinx.coroutines.CoroutineDispatcher
+import pl.jitsolutions.agile.common.Error
+import pl.jitsolutions.agile.domain.Failure
 import pl.jitsolutions.agile.domain.ProjectWithDaily
 import pl.jitsolutions.agile.domain.Response
-import pl.jitsolutions.agile.domain.Response.Status.FAILURE
-import pl.jitsolutions.agile.domain.Response.Status.SUCCESS
+import pl.jitsolutions.agile.domain.Success
 import pl.jitsolutions.agile.domain.User
-import pl.jitsolutions.agile.domain.errorResponse
 import pl.jitsolutions.agile.repository.ProjectRepository
 import pl.jitsolutions.agile.repository.UserRepository
 
@@ -17,10 +17,14 @@ class GetCurrentUserProjectsWithDailyUseCase(
 ) : UseCase<GetCurrentUserProjectsWithDailyUseCase.Params, List<ProjectWithDaily>>(dispatcher) {
 
     override suspend fun build(params: Params): Response<List<ProjectWithDaily>> {
-        val loggedInUserResponse = userRepository.getLoggedInUser()
-        return when (loggedInUserResponse.status) {
-            SUCCESS -> getProjectsWithDaily(loggedInUserResponse.data!!)
-            FAILURE -> errorResponse(error = loggedInUserResponse.error!!)
+        val response = userRepository.getLoggedInUser()
+        return when (response) {
+            is Success -> if (response.data == null) {
+                Failure(Error.Unknown)
+            } else {
+                getProjectsWithDaily(response.data)
+            }
+            is Failure -> Failure(response.error)
         }
     }
 

@@ -4,10 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import pl.jitsolutions.agile.common.Error
+import pl.jitsolutions.agile.domain.Failure
 import pl.jitsolutions.agile.domain.ProjectWithDaily
-import pl.jitsolutions.agile.domain.Response
-import pl.jitsolutions.agile.domain.Response.Status.FAILURE
-import pl.jitsolutions.agile.domain.Response.Status.SUCCESS
+import pl.jitsolutions.agile.domain.Success
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.usecases.GetApplicationVersionUseCase
 import pl.jitsolutions.agile.domain.usecases.GetCurrentUserProjectsWithDailyUseCase
@@ -57,9 +56,9 @@ class ProjectListViewModel(
     fun logout() = launch {
         val params = LogoutCurrentUserUseCase.Params
         val result = logoutCurrentUserUseCase.executeAsync(params).await()
-        when (result.status) {
-            SUCCESS -> navigator.navigate(from = ProjectList, to = Login)
-            FAILURE -> state.value = State.Fail(result.error!!)
+        when (result) {
+            is Success -> navigator.navigate(from = ProjectList, to = Login)
+            is Failure -> state.value = State.Fail(result.error)
         }
     }
 
@@ -70,9 +69,9 @@ class ProjectListViewModel(
     fun joinDaily(projectId: String) = launch {
         val params = JoinDailyUseCase.Params(projectId)
         val result = joinDailyUseCase.executeAsync(params).await()
-        when (result.status) {
-            SUCCESS -> navigator.navigate(ProjectList, Navigator.Destination.Daily(projectId))
-            FAILURE -> state.value = State.Fail(result.error!!)
+        when (result) {
+            is Success -> navigator.navigate(ProjectList, Navigator.Destination.Daily(projectId))
+            is Failure -> state.value = State.Fail(result.error)
         }
     }
 
@@ -87,18 +86,18 @@ class ProjectListViewModel(
     private fun executeGetLoggedUser() = launch {
         val params = GetLoggedUserUseCase.Params
         val result = getLoggedUserUseCase.executeAsync(params).await()
-        when (result.status) {
-            SUCCESS -> handleGetLoggedUserSuccess(result)
-            FAILURE -> state.value = State.Fail(result.error!!)
+        when (result) {
+            is Success -> handleGetLoggedUserSuccess(result)
+            is Failure -> state.value = State.Fail(result.error)
         }
     }
 
     private fun executeGetUserProjects(moveToDaily: Boolean = false) = launch {
         val params = GetCurrentUserProjectsWithDailyUseCase.Params
         val result = getCurrentUserProjectsWithDailyUseCase.executeAsync(params).await()
-        when (result.status) {
-            SUCCESS -> {
-                if (result.data != null && !result.data.isEmpty()) {
+        when (result) {
+            is Success -> {
+                if (!result.data.isEmpty()) {
                     state.value = State.Success
                     val projectsWithDaily = result.data
                     projects.value = projectsWithDaily.sortedBy { it.project.name }
@@ -108,8 +107,8 @@ class ProjectListViewModel(
                     state.value = State.Empty
                 }
             }
-            FAILURE -> {
-                state.value = State.Fail(result.error!!)
+            is Failure -> {
+                state.value = State.Fail(result.error)
             }
         }
     }
@@ -124,7 +123,7 @@ class ProjectListViewModel(
         }
     }
 
-    private fun handleGetLoggedUserSuccess(response: Response<User?>) {
+    private fun handleGetLoggedUserSuccess(response: Success<User?>) {
         if (response.data != null) {
             user.value = response.data
         } else {
@@ -135,9 +134,9 @@ class ProjectListViewModel(
     private fun executeGetApplicationVersion() = launch {
         val params = GetApplicationVersionUseCase.Params
         val result = getApplicationVersionUseCase.executeAsync(params).await()
-        when (result.status) {
-            SUCCESS -> version.value = result.data!!
-            FAILURE -> state.value = State.Fail(result.error!!)
+        when (result) {
+            is Success -> version.value = result.data
+            is Failure -> state.value = State.Fail(result.error)
         }
     }
 
