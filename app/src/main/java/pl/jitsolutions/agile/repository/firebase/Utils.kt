@@ -30,7 +30,8 @@ fun Any?.toProject(): Project {
     val map = this as Map<String, Any>
     return Project(
         id = map["id"] as String,
-        name = map["name"] as String
+        name = map["name"] as String,
+        password = map["password"] as? String
     )
 }
 

@@ -90,6 +90,9 @@ fun bindProjectDetailsMenuItemListener(
             view.showLeaveConfirmation { viewModel.leaveProject() }
         R.id.menu_project_details_delete_project ->
             view.showDeleteConfirmation { viewModel.deleteProject() }
+        R.id.menu_project_details_show_project_password -> {
+            view.showPassword(viewModel.project.value?.password!!)
+        }
     }
 }
 
@@ -128,6 +131,16 @@ private fun View.showDeleteConfirmation(onDeleteListener: () -> Unit) {
             R.string.project_details_screen_delete_confirmation_negative_button_text,
             null
         )
+        .setCancelable(true)
+        .show()
+}
+
+private fun View.showPassword(password: String) {
+    val format = context.getString(R.string.project_details_screen_show_password_title)
+    val message = String.format(format, password)
+    AlertDialog.Builder(context)
+        .setTitle(message)
+        .setPositiveButton(R.string.project_details_screen_show_password_positive_button_text) { _, _ -> }
         .setCancelable(true)
         .show()
 }
