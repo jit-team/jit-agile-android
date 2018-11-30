@@ -7,7 +7,6 @@ import androidx.databinding.BindingAdapter
 import com.google.android.material.textfield.TextInputLayout
 import pl.jitsolutions.agile.common.Error
 import pl.jitsolutions.agile.R
-import pl.jitsolutions.agile.presentation.authorization.registration.RegistrationViewModel
 
 @BindingAdapter("bindProjectCreationNameError")
 fun bindProjectCreationNameError(
