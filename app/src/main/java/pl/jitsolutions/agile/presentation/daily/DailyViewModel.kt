@@ -55,6 +55,8 @@ class DailyViewModel(
             is Failure -> when (result.error) {
                 Error.DoesNotExist -> {
                     // TODO: user session not found, move to login screen
+                    // for now, just leave daily screen
+                    navigator.navigateBack(Navigator.Destination.Daily(dailyId))
                 }
             }
         }
@@ -70,9 +72,7 @@ class DailyViewModel(
                     handleDailyState(response.data)
                     state.value = State.Success
                 }
-                is Failure -> {
-                    TODO()
-                }
+                is Failure -> navigator.navigateBack(Navigator.Destination.Daily(dailyId))
             }
         }
     }
@@ -132,7 +132,7 @@ class DailyViewModel(
         when (result) {
             is Success -> navigator.navigateBack(Navigator.Destination.Daily(dailyId))
             is Failure -> {
-                TODO()
+                //silent fail, let the user to try again
             }
         }
         state.value = State.Success
@@ -144,9 +144,10 @@ class DailyViewModel(
         val result = endDailyUseCase.executeAsync(params).await()
         when (result) {
             is Success -> {
+                //ignore
             }
             is Failure -> {
-                TODO()
+                //silent fail, let the user to try again
             }
         }
         state.value = State.Success
@@ -168,7 +169,7 @@ class DailyViewModel(
         when (result) {
             is Success -> playSound.value = true
             is Failure -> {
-                TODO()
+                //silent fail, let the user to try again
             }
         }
         state.value = State.Success
@@ -179,9 +180,10 @@ class DailyViewModel(
         val result = nextDailyUserUseCase.executeAsync(params).await()
         when (result) {
             is Success -> {
+                //ignore
             }
             is Failure -> {
-                TODO()
+                //silent fail, let the user to try again
             }
         }
         state.value = State.Success
