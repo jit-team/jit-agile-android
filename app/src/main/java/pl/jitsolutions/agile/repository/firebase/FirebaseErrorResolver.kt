@@ -78,6 +78,14 @@ object FirebaseErrorResolver {
         return errorResponse(error = error)
     }
 
+    inline fun <reified T> parseInstanceException(exception: Exception): Response<T> {
+        return errorResponse(error = parseCommonException(exception))
+    }
+
+    inline fun <reified T> parseFirestoreException(exception: Exception): Response<T> {
+        return errorResponse(error = parseCommonException(exception))
+    }
+
     @Suppress("NOTHING_TO_INLINE")
     inline fun parseCommonException(exception: Exception): Error {
         return when (exception.cause) {

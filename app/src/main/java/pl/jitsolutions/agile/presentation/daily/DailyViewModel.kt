@@ -35,6 +35,7 @@ class DailyViewModel(
     val startTime = mutableLiveData(0L)
     val dailyState = mutableLiveData<DailyState>(DailyState.Prepare)
     val state = mutableLiveData<State>(State.Idle)
+    val playSound = mutableLiveData(false)
     private var queue = emptyList<String>()
     private var userId: String? = null
 
@@ -164,6 +165,7 @@ class DailyViewModel(
         val result = startDailyUseCase.executeAsync(params).await()
         when (result.status) {
             SUCCESS -> {
+                playSound.value = true
             }
             FAILURE -> {
                 TODO()
