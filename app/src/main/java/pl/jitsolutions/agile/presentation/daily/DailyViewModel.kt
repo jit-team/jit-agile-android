@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
+import pl.jitsolutions.agile.common.Error
 import pl.jitsolutions.agile.domain.Daily
 import pl.jitsolutions.agile.domain.Failure
 import pl.jitsolutions.agile.domain.Success
@@ -48,10 +49,13 @@ class DailyViewModel(
         val result = getLoggedUserUseCase.executeAsync(GetLoggedUserUseCase.Params).await()
         when (result) {
             is Success -> {
-                userId = result.data!!.id
+                userId = result.data.id
                 executeGetDaily()
             }
-            is Failure -> {
+            is Failure -> when(result.error) {
+                Error.DoesNotExist -> {
+                    //TODO: user session not found, move to login screen
+                }
             }
         }
         state.value = State.Success

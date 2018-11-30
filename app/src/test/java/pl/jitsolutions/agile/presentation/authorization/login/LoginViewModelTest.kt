@@ -10,7 +10,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Rule
 import org.junit.Test
 import pl.jitsolutions.agile.awaitResponseMock
-import pl.jitsolutions.agile.domain.response
+import pl.jitsolutions.agile.domain.Success
 import pl.jitsolutions.agile.domain.usecases.UserLoginUseCase
 import pl.jitsolutions.agile.presentation.navigation.Navigator
 
@@ -22,7 +22,7 @@ class LoginViewModelTest {
     @Test
     fun `login successful`() = runBlocking {
 
-        val awaitResponseMock = awaitResponseMock(response(Unit))
+        val awaitResponseMock = awaitResponseMock(Success(Unit))
 
         val userLoginUseCase = mock<UserLoginUseCase> {
             on {

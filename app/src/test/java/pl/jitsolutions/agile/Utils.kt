@@ -4,8 +4,8 @@ import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.mock
 import kotlinx.coroutines.Deferred
 import org.junit.Assert.assertEquals
-import pl.jitsolutions.agile.common.Error
 import org.junit.Assert.assertTrue
+import pl.jitsolutions.agile.common.Error
 import pl.jitsolutions.agile.domain.Failure
 import pl.jitsolutions.agile.domain.Project
 import pl.jitsolutions.agile.domain.Response
@@ -23,6 +23,11 @@ class ResponseAssertion<T>(val response: Response<T>) {
     fun isSuccessful() = assertTrue(response is Success)
 
     fun isUnsuccessful() = assertTrue(response is Failure)
+
+    fun hasError(error: Error) {
+        isUnsuccessful()
+        assertEquals(error, (response as Failure).error)
+    }
 
     fun hasString(string: String?) = assertEquals(string, (response as Success).data)
 }

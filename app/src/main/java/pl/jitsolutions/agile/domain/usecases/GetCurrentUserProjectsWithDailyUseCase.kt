@@ -19,12 +19,14 @@ class GetCurrentUserProjectsWithDailyUseCase(
     override suspend fun build(params: Params): Response<List<ProjectWithDaily>> {
         val response = userRepository.getLoggedInUser()
         return when (response) {
-            is Success -> if (response.data == null) {
-                Failure(Error.Unknown)
-            } else {
-                getProjectsWithDaily(response.data)
+            is Success -> getProjectsWithDaily(response.data)
+            is Failure -> when(response.error) {
+                Error.DoesNotExist -> {
+                    Failure(response.error)
+                    //TODO: user session not found, move to login screen
+                }
+                else -> Failure(response.error)
             }
-            is Failure -> Failure(response.error)
         }
     }
 

@@ -18,12 +18,14 @@ class AssignDeviceTokenToUserTokenUseCase(
     override suspend fun build(params: Params): Response<Unit> {
         val userResponse = userRepository.getLoggedInUser()
         return when (userResponse) {
-            is Success -> if (userResponse.data == null) {
-                Failure(Error.Unknown)
-            } else {
-                notificationRepository.assignDeviceTokenToUser(userResponse.data.id)
+            is Success -> notificationRepository.assignDeviceTokenToUser(userResponse.data.id)
+            is Failure -> when(userResponse.error) {
+                Error.DoesNotExist -> {
+                    Failure(userResponse.error)
+                    //TODO: user session not found, move to login screen
+                }
+                else -> Failure(userResponse.error)
             }
-            is Failure -> Failure(userResponse.error)
         }
     }
 

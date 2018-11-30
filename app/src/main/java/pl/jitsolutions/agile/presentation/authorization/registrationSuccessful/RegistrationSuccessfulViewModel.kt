@@ -3,6 +3,8 @@ package pl.jitsolutions.agile.presentation.authorization.registrationSuccessful
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
+import pl.jitsolutions.agile.common.Error
+import pl.jitsolutions.agile.domain.Failure
 import pl.jitsolutions.agile.domain.Success
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.usecases.GetLoggedUserUseCase
@@ -27,10 +29,11 @@ class RegistrationSuccessfulViewModel(
         val params = GetLoggedUserUseCase.Params
         val userResponse = getLoggedUserUseCase.executeAsync(params).await()
         when (userResponse) {
-            is Success -> if (userResponse.data == null) {
-                // Logged user not found
-            } else {
-                user.value = userResponse.data
+            is Success -> user.value = userResponse.data
+            is Failure -> when(userResponse.error) {
+                Error.DoesNotExist -> {
+                    //TODO: user session not found, move to login screen
+                }
             }
         }
     }

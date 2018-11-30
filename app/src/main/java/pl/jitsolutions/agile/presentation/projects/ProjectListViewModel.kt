@@ -87,8 +87,11 @@ class ProjectListViewModel(
         val params = GetLoggedUserUseCase.Params
         val result = getLoggedUserUseCase.executeAsync(params).await()
         when (result) {
-            is Success -> handleGetLoggedUserSuccess(result)
-            is Failure -> state.value = State.Fail(result.error)
+            is Success -> user.value = result.data
+            is Failure -> when(result.error) {
+                Error.DoesNotExist -> navigator.navigate(from = ProjectList, to = Login)
+                else -> state.value = State.Fail(result.error)
+            }
         }
     }
 
@@ -120,14 +123,6 @@ class ProjectListViewModel(
         if (moveToDaily && projectsWithDaily.any { it.daily != null }) {
             val dailyId = projectsWithDaily.first { it.daily != null }.project.id
             joinDaily(dailyId)
-        }
-    }
-
-    private fun handleGetLoggedUserSuccess(response: Success<User?>) {
-        if (response.data != null) {
-            user.value = response.data
-        } else {
-            navigator.navigate(from = ProjectList, to = Login)
         }
     }
 

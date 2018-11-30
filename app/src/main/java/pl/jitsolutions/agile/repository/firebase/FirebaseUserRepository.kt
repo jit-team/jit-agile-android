@@ -7,6 +7,8 @@ import com.google.firebase.auth.UserProfileChangeRequest
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
+import pl.jitsolutions.agile.common.Error
+import pl.jitsolutions.agile.domain.Failure
 import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.Success
 import pl.jitsolutions.agile.domain.User
@@ -82,9 +84,13 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
         Tasks.await(updateProfileTask)
     }
 
-    override suspend fun getLoggedInUser(): Response<User?> {
+    override suspend fun getLoggedInUser(): Response<User> {
         val loggedUser = firebaseAuth.currentUser?.toUser()
-        return Success(loggedUser)
+        return if (loggedUser == null) {
+            Failure(Error.DoesNotExist)
+        } else {
+            Success(loggedUser)
+        }
     }
 
     override suspend fun resetPassword(email: String): Response<Unit> {

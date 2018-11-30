@@ -29,12 +29,14 @@ class UserLoginUseCase(
     private suspend fun handleSuccess(): Response<Unit> {
         val response = userRepository.getLoggedInUser()
         return when (response) {
-            is Success -> if (response.data == null) {
-                Failure(Error.Unknown)
-            } else {
-                notificationRepository.assignDeviceTokenToUser(response.data.id)
+            is Success -> notificationRepository.assignDeviceTokenToUser(response.data.id)
+            is Failure -> when(response.error) {
+                Error.DoesNotExist -> {
+                    Failure(response.error)
+                    //TODO: user session not found, move to login screen
+                }
+                else -> Failure(response.error)
             }
-            is Failure -> Failure(response.error)
         }
     }
 
