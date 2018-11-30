@@ -4,9 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import pl.jitsolutions.agile.common.Error
+import pl.jitsolutions.agile.domain.Failure
 import pl.jitsolutions.agile.domain.Project
-import pl.jitsolutions.agile.domain.Response.Status.FAILURE
-import pl.jitsolutions.agile.domain.Response.Status.SUCCESS
+import pl.jitsolutions.agile.domain.Success
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.usecases.DeleteProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.GetProjectUseCase
@@ -37,9 +37,9 @@ class ProjectDetailsViewModel(
         state.value = State.InProgress
         val params = DeleteProjectUseCase.Params(projectId)
         val result = deleteProjectUseCase.executeAsync(params).await()
-        when (result.status) {
-            SUCCESS -> navigator.navigateBack(Navigator.Destination.ProjectDetails(projectId))
-            FAILURE -> state.value = State.Fail(result.error!!)
+        when (result) {
+            is Success -> navigator.navigateBack(Navigator.Destination.ProjectDetails(projectId))
+            is Failure -> state.value = State.Fail(result.error)
         }
     }
 
@@ -47,9 +47,9 @@ class ProjectDetailsViewModel(
         state.value = State.InProgress
         val params = LeaveProjectUseCase.Params(projectId)
         val result = leaveProjectUseCase.executeAsync(params).await()
-        when (result.status) {
-            SUCCESS -> navigator.navigateBack(Navigator.Destination.ProjectDetails(projectId))
-            FAILURE -> state.value = State.Fail(result.error!!)
+        when (result) {
+            is Success -> navigator.navigateBack(Navigator.Destination.ProjectDetails(projectId))
+            is Failure -> state.value = State.Fail(result.error)
         }
     }
 
@@ -58,15 +58,15 @@ class ProjectDetailsViewModel(
         val params = JoinDailyUseCase.Params(projectId)
         val result = joinDailyUseCase.executeAsync(params).await()
 
-        when (result.status) {
-            SUCCESS -> {
+        when (result) {
+            is Success -> {
                 navigator.navigate(
                     from = Navigator.Destination.ProjectDetails(projectId),
                     to = Navigator.Destination.Daily(projectId)
                 )
                 state.value = State.Success
             }
-            FAILURE -> state.value = State.Fail(result.error!!)
+            is Failure -> state.value = State.Fail(result.error)
         }
     }
 
@@ -83,14 +83,14 @@ class ProjectDetailsViewModel(
     private suspend fun executeGetProject(): State {
         val params = GetProjectUseCase.Params(projectId)
         val result = getProjectUseCase.executeAsync(params).await()
-        return when (result.status) {
-            SUCCESS -> {
-                val projectWithUsers = result.data!!
+        return when (result) {
+            is Success -> {
+                val projectWithUsers = result.data
                 project.value = projectWithUsers.project
                 users.value = projectWithUsers.users
                 State.Success
             }
-            FAILURE -> State.Fail(result.error!!)
+            is Failure -> State.Fail(result.error)
         }
     }
 

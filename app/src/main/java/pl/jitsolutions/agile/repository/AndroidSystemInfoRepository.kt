@@ -5,7 +5,7 @@ import android.app.Application
 import android.os.Bundle
 import pl.jitsolutions.agile.BuildConfig
 import pl.jitsolutions.agile.domain.Response
-import pl.jitsolutions.agile.domain.response
+import pl.jitsolutions.agile.domain.Success
 
 class AndroidSystemInfoRepository(application: Application) : SystemInfoRepository,
     Application.ActivityLifecycleCallbacks {
@@ -17,7 +17,7 @@ class AndroidSystemInfoRepository(application: Application) : SystemInfoReposito
     }
 
     override fun getApplicationState(): Response<SystemInfoRepository.AppState> {
-        return response(appState)
+        return Success(appState)
     }
 
     override fun onActivityPaused(activity: Activity?) {
@@ -44,6 +44,6 @@ class AndroidSystemInfoRepository(application: Application) : SystemInfoReposito
     }
 
     override suspend fun getApplicationVersion(): Response<String> {
-        return response(BuildConfig.VERSION_NAME)
+        return Success(BuildConfig.VERSION_NAME)
     }
 }

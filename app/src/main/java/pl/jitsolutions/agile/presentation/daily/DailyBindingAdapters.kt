@@ -3,6 +3,7 @@ package pl.jitsolutions.agile.presentation.daily
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.graphics.drawable.ColorDrawable
+import android.media.MediaPlayer
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -201,6 +202,14 @@ fun bindDailyQuotaState(textView: TextView, dailyState: DailyViewModel.DailyStat
 @BindingAdapter("bindDailyViewEnabled")
 fun bindDailyViewEnabled(view: View, state: DailyViewModel.State) {
     view.isEnabled = state == DailyViewModel.State.Success
+}
+
+@BindingAdapter("bindDailyPlaySound")
+fun bindDailySound(view: View, playSound: Boolean) {
+    if (playSound) {
+        val mp = MediaPlayer.create(view.context, R.raw.start_daily_sound)
+        mp.start()
+    }
 }
 
 fun showDailyLeaveConfirmation(

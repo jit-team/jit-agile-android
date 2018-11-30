@@ -8,9 +8,9 @@ import pl.jitsolutions.agile.repository.UserRepository
 class GetLoggedUserUseCase(
     private val userRepository: UserRepository,
     dispatcher: CoroutineDispatcher
-) : UseCase<GetLoggedUserUseCase.Params, User?>(dispatcher) {
+) : UseCase<GetLoggedUserUseCase.Params, User>(dispatcher) {
 
-    override suspend fun build(params: Params): Response<User?> {
+    override suspend fun build(params: Params): Response<User> {
         return userRepository.getLoggedInUser()
     }
 

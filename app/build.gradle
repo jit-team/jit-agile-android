@@ -117,7 +117,9 @@ dependencies {
 
     testImplementation "junit:junit:$libVersions.junitVersion"
     testImplementation "org.mockito:mockito-core:$libVersions.mockitoVersion"
+    testImplementation "org.mockito:mockito-inline:$libVersions.mockitoVersion"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$libVersions.mockitoKotlinVersion"
+    testImplementation "androidx.arch.core:core-testing:$libVersions.lifecycleVersion"
 
     androidTestImplementation "androidx.test:runner:$libVersions.testRunnerVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$libVersions.espressoVersion"

@@ -17,11 +17,9 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import pl.jitsolutions.agile.R
-import pl.jitsolutions.agile.common.Error
+import pl.jitsolutions.agile.domain.Failure
 import pl.jitsolutions.agile.domain.Response
-import pl.jitsolutions.agile.domain.errorResponse
-import pl.jitsolutions.agile.domain.isSuccessfulWithData
-import pl.jitsolutions.agile.domain.response
+import pl.jitsolutions.agile.domain.Success
 import pl.jitsolutions.agile.presentation.MainActivity
 import pl.jitsolutions.agile.repository.NotificationRepository
 
@@ -37,10 +35,9 @@ class FirebaseNotificationRepository(
             CoroutineScope(dispatcher).async {
                 try {
                     val tokenResponse = getDeviceToken()
-                    if (tokenResponse.isSuccessfulWithData()) {
-                        handleSuccess(userId, tokenResponse.data!!)
-                    } else {
-                        errorResponse(error = tokenResponse.error ?: Error.Unknown)
+                    when (tokenResponse) {
+                        is Success -> handleSuccess(userId, tokenResponse.data)
+                        is Failure -> Failure(tokenResponse.error)
                     }
                 } catch (e: Exception) {
                     FirebaseErrorResolver.parseFirestoreException<Unit>(e)
@@ -56,27 +53,27 @@ class FirebaseNotificationRepository(
             .set(tokenMap, SetOptions.merge())
         Tasks.await(task)
         return if (task.isSuccessful) {
-            response(Unit)
+            Success(Unit)
         } else {
             FirebaseErrorResolver.parseFirestoreException(task.exception ?: Exception())
         }
     }
 
-    private suspend fun getDeviceToken(): Response<String?> {
+    private suspend fun getDeviceToken(): Response<String> {
         return retryWhenError {
             CoroutineScope(dispatcher).async {
                 try {
                     val task = FirebaseInstanceId.getInstance().instanceId
                     Tasks.await(task)
                     if (task.isSuccessful) {
-                        response(task.result?.token)
+                        Success(task.result!!.token)
                     } else {
-                        FirebaseErrorResolver.parseInstanceException(
+                        FirebaseErrorResolver.parseInstanceException<String>(
                             task.exception ?: Exception()
                         )
                     }
                 } catch (e: Exception) {
-                    FirebaseErrorResolver.parseInstanceException<String?>(e)
+                    FirebaseErrorResolver.parseInstanceException<String>(e)
                 }
             }.await()
         }
@@ -112,6 +109,6 @@ class FirebaseNotificationRepository(
             notificationManager.createNotificationChannel(channel)
         }
         notificationManager.notify(0, builder.build())
-        return response(Unit)
+        return Success(Unit)
     }
 }

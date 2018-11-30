@@ -9,7 +9,7 @@ import pl.jitsolutions.agile.domain.Project
 import pl.jitsolutions.agile.domain.ProjectWithDaily
 import pl.jitsolutions.agile.domain.ProjectWithUsers
 import pl.jitsolutions.agile.domain.Response
-import pl.jitsolutions.agile.domain.response
+import pl.jitsolutions.agile.domain.Success
 import pl.jitsolutions.agile.repository.ProjectRepository
 
 class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRepository {
@@ -24,9 +24,11 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
                         .call()
                     Tasks.await(task)
                     if (task.isSuccessful) {
-                        response(task.result?.data.toProjectWithDailyList())
+                        Success(task.result?.data.toProjectWithDailyList())
                     } else {
-                        FirebaseErrorResolver.parseFunctionException(task.exception ?: Exception())
+                        FirebaseErrorResolver.parseFunctionException<List<ProjectWithDaily>>(
+                            task.exception ?: Exception()
+                        )
                     }
                 } catch (e: Exception) {
                     FirebaseErrorResolver.parseFunctionException<List<ProjectWithDaily>>(e)
@@ -45,9 +47,11 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
                             .call()
                     Tasks.await(task)
                     if (task.isSuccessful) {
-                        response(task.result?.data.toProjectList())
+                        Success(task.result?.data.toProjectList())
                     } else {
-                        FirebaseErrorResolver.parseFunctionException(task.exception ?: Exception())
+                        FirebaseErrorResolver.parseFunctionException<List<Project>>(
+                            task.exception ?: Exception()
+                        )
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -66,9 +70,11 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
                         .call(getProjectParams(projectId))
                     Tasks.await(task)
                     if (task.isSuccessful) {
-                        response(task.result?.data.toProjectWithUsers())
+                        Success(task.result?.data.toProjectWithUsers())
                     } else {
-                        FirebaseErrorResolver.parseFunctionException(task.exception ?: Exception())
+                        FirebaseErrorResolver.parseFunctionException<ProjectWithUsers>(
+                            task.exception ?: Exception()
+                        )
                     }
                 } catch (e: Exception) {
                     FirebaseErrorResolver.parseFunctionException<ProjectWithUsers>(e)
@@ -86,9 +92,9 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
                         .call(leaveProjectParams(projectId))
                     Tasks.await(task)
                     if (task.isSuccessful) {
-                        response(Unit)
+                        Success(Unit)
                     } else {
-                        FirebaseErrorResolver.parseFunctionException(
+                        FirebaseErrorResolver.parseFunctionException<Unit>(
                             task.exception ?: Exception()
                         )
                     }
@@ -108,9 +114,9 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
                         .call(leaveProjectParams(projectId))
                     Tasks.await(task)
                     if (task.isSuccessful) {
-                        response(Unit)
+                        Success(Unit)
                     } else {
-                        FirebaseErrorResolver.parseFunctionException(
+                        FirebaseErrorResolver.parseFunctionException<Unit>(
                             task.exception ?: Exception()
                         )
                     }
@@ -130,9 +136,9 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
                         .call(joinProjectParams(projectName, password))
                     Tasks.await(task)
                     if (task.isSuccessful) {
-                        response(task.result?.data.toProjectId())
+                        Success(task.result?.data.toProjectId())
                     } else {
-                        FirebaseErrorResolver.parseFunctionException(
+                        FirebaseErrorResolver.parseFunctionException<String>(
                             task.exception ?: Exception()
                         )
                     }
@@ -155,9 +161,9 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
                         .call(newProjectParams(projectName, password))
                     Tasks.await(task)
                     if (task.isSuccessful) {
-                        response(task.result?.data.toProjectId())
+                        Success(task.result?.data.toProjectId())
                     } else {
-                        FirebaseErrorResolver.parseFunctionException(
+                        FirebaseErrorResolver.parseFunctionException<String>(
                             task.exception ?: Exception()
                         )
                     }

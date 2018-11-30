@@ -4,9 +4,10 @@ import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
+import pl.jitsolutions.agile.common.Error
 import pl.jitsolutions.agile.domain.Daily
-import pl.jitsolutions.agile.domain.Response.Status.FAILURE
-import pl.jitsolutions.agile.domain.Response.Status.SUCCESS
+import pl.jitsolutions.agile.domain.Failure
+import pl.jitsolutions.agile.domain.Success
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.usecases.EndDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.GetLoggedUserUseCase
@@ -35,6 +36,7 @@ class DailyViewModel(
     val startTime = mutableLiveData(0L)
     val dailyState = mutableLiveData<DailyState>(DailyState.Prepare)
     val state = mutableLiveData<State>(State.Idle)
+    val playSound = mutableLiveData(false)
     private var queue = emptyList<String>()
     private var userId: String? = null
 
@@ -45,12 +47,15 @@ class DailyViewModel(
     private fun executeGetLoggedUser() = launch {
         state.value = State.InProgress
         val result = getLoggedUserUseCase.executeAsync(GetLoggedUserUseCase.Params).await()
-        when (result.status) {
-            SUCCESS -> {
-                userId = result.data?.id
+        when (result) {
+            is Success -> {
+                userId = result.data.id
                 executeGetDaily()
             }
-            FAILURE -> {
+            is Failure -> when (result.error) {
+                Error.DoesNotExist -> {
+                    // TODO: user session not found, move to login screen
+                }
             }
         }
         state.value = State.Success
@@ -59,13 +64,13 @@ class DailyViewModel(
     private fun executeGetDaily() = launch {
         state.value = State.InProgress
         val params = ObserveDailyUseCase.Params(dailyId)
-        observeDailyUseCase.execute(params).consumeEach {
-            when (it.status) {
-                SUCCESS -> {
-                    handleDailyState(it.data)
+        observeDailyUseCase.execute(params).consumeEach { response ->
+            when (response) {
+                is Success -> {
+                    handleDailyState(response.data)
                     state.value = State.Success
                 }
-                FAILURE -> {
+                is Failure -> {
                     TODO()
                 }
             }
@@ -124,9 +129,9 @@ class DailyViewModel(
         state.value = State.InProgress
         val params = LeaveDailyUseCase.Params(dailyId)
         val result = leaveDailyUseCase.executeAsync(params).await()
-        when (result.status) {
-            SUCCESS -> navigator.navigateBack(Navigator.Destination.Daily(dailyId))
-            FAILURE -> {
+        when (result) {
+            is Success -> navigator.navigateBack(Navigator.Destination.Daily(dailyId))
+            is Failure -> {
                 TODO()
             }
         }
@@ -137,10 +142,10 @@ class DailyViewModel(
         state.value = State.InProgress
         val params = EndDailyUseCase.Params(dailyId)
         val result = endDailyUseCase.executeAsync(params).await()
-        when (result.status) {
-            SUCCESS -> {
+        when (result) {
+            is Success -> {
             }
-            FAILURE -> {
+            is Failure -> {
                 TODO()
             }
         }
@@ -150,9 +155,7 @@ class DailyViewModel(
     fun nextTurn() {
         state.value = State.InProgress
         when (dailyState.value) {
-            DailyState.Prepare -> {
-                startDaily()
-            }
+            DailyState.Prepare -> startDaily()
             DailyState.Wait, DailyState.Turn, DailyState.LastTurn, DailyState.LastWait -> {
                 nextTurnDaily()
             }
@@ -162,10 +165,9 @@ class DailyViewModel(
     private fun startDaily() = launch {
         val params = StartDailyUseCase.Params(dailyId)
         val result = startDailyUseCase.executeAsync(params).await()
-        when (result.status) {
-            SUCCESS -> {
-            }
-            FAILURE -> {
+        when (result) {
+            is Success -> playSound.value = true
+            is Failure -> {
                 TODO()
             }
         }
@@ -175,10 +177,10 @@ class DailyViewModel(
     private fun nextTurnDaily() = launch {
         val params = NextDailyUserUseCase.Params(dailyId)
         val result = nextDailyUserUseCase.executeAsync(params).await()
-        when (result.status) {
-            SUCCESS -> {
+        when (result) {
+            is Success -> {
             }
-            FAILURE -> {
+            is Failure -> {
                 TODO()
             }
         }
