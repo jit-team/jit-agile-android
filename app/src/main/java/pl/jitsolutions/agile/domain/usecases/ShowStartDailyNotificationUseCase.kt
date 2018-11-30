@@ -2,7 +2,7 @@ package pl.jitsolutions.agile.domain.usecases
 
 import kotlinx.coroutines.CoroutineDispatcher
 import pl.jitsolutions.agile.domain.Response
-import pl.jitsolutions.agile.domain.response
+import pl.jitsolutions.agile.domain.Success
 import pl.jitsolutions.agile.repository.NotificationRepository
 import pl.jitsolutions.agile.repository.SystemInfoRepository
 
@@ -13,13 +13,13 @@ class ShowStartDailyNotificationUseCase(
 ) : UseCase<ShowStartDailyNotificationUseCase.Params, Unit>(dispatcher) {
 
     override suspend fun build(params: Params): Response<Unit> {
-        return response(showNotification(params.projectName))
+        return Success(showNotification(params.projectName))
     }
 
     private suspend fun showNotification(projectName: String) {
         val response = systemInfoRepository.getApplicationState()
-        when (response.status) {
-            Response.Status.SUCCESS -> handleSuccess(response.data!!, projectName)
+        when (response) {
+            is Success -> handleSuccess(response.data, projectName)
             else -> {
             }
         }

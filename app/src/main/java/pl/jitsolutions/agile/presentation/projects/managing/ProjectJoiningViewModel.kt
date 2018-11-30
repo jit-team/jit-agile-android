@@ -4,7 +4,8 @@ import androidx.lifecycle.Observer
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import pl.jitsolutions.agile.common.Error
-import pl.jitsolutions.agile.domain.Response
+import pl.jitsolutions.agile.domain.Failure
+import pl.jitsolutions.agile.domain.Success
 import pl.jitsolutions.agile.domain.usecases.ProjectJoiningUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
 import pl.jitsolutions.agile.presentation.navigation.Navigator
@@ -33,14 +34,14 @@ class ProjectJoiningViewModel(
         state.value = State.InProgress
         val params = ProjectJoiningUseCase.Params(projectName.value!!, password.value!!)
         val result = projectJoiningUseCase.executeAsync(params).await()
-        when (result.status) {
-            Response.Status.SUCCESS -> {
+        when (result) {
+            is Success -> {
                 state.value = State.Success
-                val projectId = result.data!!
+                val projectId = result.data
                 navigator.navigate(ProjectJoining, ProjectDetails(projectId))
             }
-            Response.Status.FAILURE -> {
-                state.value = State.Fail(result.error!!)
+            is Failure -> {
+                state.value = State.Fail(result.error)
             }
         }
     }

@@ -8,8 +8,8 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.functions.FirebaseFunctionsException
 import kotlinx.coroutines.delay
 import pl.jitsolutions.agile.common.Error
+import pl.jitsolutions.agile.domain.Failure
 import pl.jitsolutions.agile.domain.Response
-import pl.jitsolutions.agile.domain.errorResponse
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
@@ -36,7 +36,7 @@ object FirebaseErrorResolver {
             }
             else -> parseCommonException(exception)
         }
-        return errorResponse(error = error)
+        return Failure(error)
     }
 
     inline fun <reified T> parseResetPasswordException(exception: Exception): Response<T> {
@@ -44,7 +44,7 @@ object FirebaseErrorResolver {
             is FirebaseAuthInvalidUserException -> Error.DoesNotExist
             else -> parseCommonException(exception)
         }
-        return errorResponse(error = error)
+        return Failure(error)
     }
 
     inline fun <reified T> parseLoginException(exception: Exception): Response<T> {
@@ -59,7 +59,7 @@ object FirebaseErrorResolver {
             }
             else -> parseCommonException(exception)
         }
-        return errorResponse(error = error)
+        return Failure(error)
     }
 
     inline fun <reified T> parseRegistrationException(exception: Exception): Response<T> {
@@ -75,15 +75,15 @@ object FirebaseErrorResolver {
             is FirebaseAuthUserCollisionException -> Error.Exists
             else -> parseCommonException(exception)
         }
-        return errorResponse(error = error)
+        return Failure(error)
     }
 
     inline fun <reified T> parseInstanceException(exception: Exception): Response<T> {
-        return errorResponse(error = parseCommonException(exception))
+        return Failure(error = parseCommonException(exception))
     }
 
     inline fun <reified T> parseFirestoreException(exception: Exception): Response<T> {
-        return errorResponse(error = parseCommonException(exception))
+        return Failure(error = parseCommonException(exception))
     }
 
     @Suppress("NOTHING_TO_INLINE")
@@ -116,9 +116,5 @@ suspend fun <T> retryWhenError(
 }
 
 private fun <T> shouldRetry(response: Response<T>): Boolean {
-    return if (response.status == Response.Status.SUCCESS) {
-        false
-    } else {
-        response.error !== null && response.error == Error.Network
-    }
+    return response is Failure && response.error == Error.Network
 }
