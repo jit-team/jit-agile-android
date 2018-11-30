@@ -132,7 +132,7 @@ class DailyViewModel(
         when (result) {
             is Success -> navigator.navigateBack(Navigator.Destination.Daily(dailyId))
             is Failure -> {
-                //silent fail, let the user to try again
+                // silent fail, let the user to try again
             }
         }
         state.value = State.Success
@@ -144,10 +144,10 @@ class DailyViewModel(
         val result = endDailyUseCase.executeAsync(params).await()
         when (result) {
             is Success -> {
-                //ignore
+                // ignore
             }
             is Failure -> {
-                //silent fail, let the user to try again
+                // silent fail, let the user to try again
             }
         }
         state.value = State.Success
@@ -169,7 +169,7 @@ class DailyViewModel(
         when (result) {
             is Success -> playSound.value = true
             is Failure -> {
-                //silent fail, let the user to try again
+                // silent fail, let the user to try again
             }
         }
         state.value = State.Success
@@ -180,10 +180,10 @@ class DailyViewModel(
         val result = nextDailyUserUseCase.executeAsync(params).await()
         when (result) {
             is Success -> {
-                //ignore
+                // ignore
             }
             is Failure -> {
-                //silent fail, let the user to try again
+                // silent fail, let the user to try again
             }
         }
         state.value = State.Success
