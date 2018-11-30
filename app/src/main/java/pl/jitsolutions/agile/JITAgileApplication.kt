@@ -4,13 +4,13 @@ import android.app.Application
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
 import io.fabric.sdk.android.Fabric
 import org.kodein.di.KodeinAware
 import pl.jitsolutions.agile.di.kodeinBuilder
-import com.google.firebase.firestore.FirebaseFirestoreSettings
 
 class JITAgileApplication : Application(), KodeinAware {
-    override val kodein = kodeinBuilder
+    override val kodein = kodeinBuilder(this)
 
     override fun onCreate() {
         super.onCreate()

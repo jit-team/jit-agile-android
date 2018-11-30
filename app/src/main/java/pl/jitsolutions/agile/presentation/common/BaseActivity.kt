@@ -1,6 +1,9 @@
 package pl.jitsolutions.agile.presentation.common
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation.findNavController
@@ -12,6 +15,7 @@ import org.kodein.di.android.closestKodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
+import pl.jitsolutions.agile.R
 import pl.jitsolutions.agile.presentation.navigation.AndroidNavigator
 import pl.jitsolutions.agile.presentation.navigation.Navigator
 
@@ -30,6 +34,8 @@ abstract class BaseActivity : AppCompatActivity(), KodeinAware {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         kodeinTrigger.trigger()
+
+        registerNotificationChannel(this)
 
         val navHost = NavHostFragment.create(navigationGraphResId)
         supportFragmentManager.beginTransaction()
@@ -50,6 +56,20 @@ abstract class BaseActivity : AppCompatActivity(), KodeinAware {
 
         if (!navigator.navigateBack(topFragment.destination)) {
             super.onBackPressed()
+        }
+    }
+
+    private fun registerNotificationChannel(context: Context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channelId = context.getString(R.string.notification_channel_id)
+            val channelName = context.getString(R.string.notification_channel_name)
+            val notificationManager = context.getSystemService(NotificationManager::class.java)
+            notificationManager?.createNotificationChannel(
+                NotificationChannel(
+                    channelId,
+                    channelName, NotificationManager.IMPORTANCE_LOW
+                )
+            )
         }
     }
 }
