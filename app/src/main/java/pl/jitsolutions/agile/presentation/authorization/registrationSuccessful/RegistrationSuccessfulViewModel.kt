@@ -3,6 +3,9 @@ package pl.jitsolutions.agile.presentation.authorization.registrationSuccessful
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
+import pl.jitsolutions.agile.common.Error
+import pl.jitsolutions.agile.domain.Failure
+import pl.jitsolutions.agile.domain.Success
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.domain.usecases.GetLoggedUserUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
@@ -25,7 +28,14 @@ class RegistrationSuccessfulViewModel(
     private fun executeGetUserName() = launch {
         val params = GetLoggedUserUseCase.Params
         val userResponse = getLoggedUserUseCase.executeAsync(params).await()
-        user.value = userResponse.data!!
+        when (userResponse) {
+            is Success -> user.value = userResponse.data
+            is Failure -> when (userResponse.error) {
+                Error.DoesNotExist -> {
+                    // TODO: user session not found, move to login screen
+                }
+            }
+        }
     }
 
     fun confirmSuccess() {

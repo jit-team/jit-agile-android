@@ -13,7 +13,7 @@ import kotlinx.coroutines.channels.ReceiveChannel
 import kotlinx.coroutines.launch
 import pl.jitsolutions.agile.domain.Daily
 import pl.jitsolutions.agile.domain.Response
-import pl.jitsolutions.agile.domain.response
+import pl.jitsolutions.agile.domain.Success
 import pl.jitsolutions.agile.repository.DailyRepository
 
 class FirebaseDailyRepository(private val dispatcher: CoroutineDispatcher) : DailyRepository {
@@ -30,9 +30,9 @@ class FirebaseDailyRepository(private val dispatcher: CoroutineDispatcher) : Dai
                         .call(endDailyParams(dailyId))
                     Tasks.await(task)
                     if (task.isSuccessful) {
-                        response(Unit)
+                        Success(Unit)
                     } else {
-                        FirebaseErrorResolver.parseFunctionException(
+                        FirebaseErrorResolver.parseFunctionException<Unit>(
                             task.exception ?: Exception()
                         )
                     }
@@ -66,9 +66,9 @@ class FirebaseDailyRepository(private val dispatcher: CoroutineDispatcher) : Dai
         return when {
             document.data != null -> {
                 val daily = document.data.toDaily()
-                response(daily)
+                Success(daily)
             }
-            else -> response(null)
+            else -> Success(null)
         }
     }
 
@@ -81,9 +81,9 @@ class FirebaseDailyRepository(private val dispatcher: CoroutineDispatcher) : Dai
                         .call(nextDailyUserParams(dailyId))
                     Tasks.await(task)
                     if (task.isSuccessful) {
-                        response(Unit)
+                        Success(Unit)
                     } else {
-                        FirebaseErrorResolver.parseFunctionException(
+                        FirebaseErrorResolver.parseFunctionException<Unit>(
                             task.exception ?: Exception()
                         )
                     }
@@ -103,9 +103,9 @@ class FirebaseDailyRepository(private val dispatcher: CoroutineDispatcher) : Dai
                         .call(joinDailyParams(dailyId))
                     Tasks.await(task)
                     if (task.isSuccessful) {
-                        response(Unit)
+                        Success(Unit)
                     } else {
-                        FirebaseErrorResolver.parseFunctionException(
+                        FirebaseErrorResolver.parseFunctionException<Unit>(
                             task.exception ?: Exception()
                         )
                     }
@@ -125,9 +125,9 @@ class FirebaseDailyRepository(private val dispatcher: CoroutineDispatcher) : Dai
                         .call(leaveDailyParams(dailyId))
                     Tasks.await(task)
                     if (task.isSuccessful) {
-                        response(Unit)
+                        Success(Unit)
                     } else {
-                        FirebaseErrorResolver.parseFunctionException(
+                        FirebaseErrorResolver.parseFunctionException<Unit>(
                             task.exception ?: Exception()
                         )
                     }
@@ -147,9 +147,9 @@ class FirebaseDailyRepository(private val dispatcher: CoroutineDispatcher) : Dai
                         .call(startDailyParams(dailyId))
                     Tasks.await(task)
                     if (task.isSuccessful) {
-                        response(Unit)
+                        Success(Unit)
                     } else {
-                        FirebaseErrorResolver.parseFunctionException(
+                        FirebaseErrorResolver.parseFunctionException<Unit>(
                             task.exception ?: Exception()
                         )
                     }

@@ -3,10 +3,9 @@ package pl.jitsolutions.agile.presentation.splash
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import pl.jitsolutions.agile.domain.Response
-import pl.jitsolutions.agile.domain.Response.Status.FAILURE
-import pl.jitsolutions.agile.domain.Response.Status.SUCCESS
-import pl.jitsolutions.agile.domain.User
+import pl.jitsolutions.agile.common.Error
+import pl.jitsolutions.agile.domain.Failure
+import pl.jitsolutions.agile.domain.Success
 import pl.jitsolutions.agile.domain.usecases.GetApplicationVersionUseCase
 import pl.jitsolutions.agile.domain.usecases.GetLoggedUserUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
@@ -32,9 +31,9 @@ class SplashViewModel(
     private fun executeGetApplicationVersion() = launch {
         val params = GetApplicationVersionUseCase.Params
         val response = getApplicationVersionUseCase.executeAsync(params).await()
-        when (response.status) {
-            SUCCESS -> version.value = response.data
-            FAILURE -> navigator.forceFinish()
+        when (response) {
+            is Success -> version.value = response.data
+            is Failure -> navigator.forceFinish()
         }
     }
 
@@ -46,18 +45,13 @@ class SplashViewModel(
     private fun executeGetLoggedUser() = launch {
         val params = GetLoggedUserUseCase.Params
         val response = getLoggedUserUseCase.executeAsync(params).await()
-        when (response.status) {
-            SUCCESS -> handleGetLoggedUserSuccess(response)
-            FAILURE -> navigator.forceFinish()
-        }
-    }
-
-    private fun handleGetLoggedUserSuccess(response: Response<User?>) {
-        val isUserLoggedIn = response.data != null
-        if (isUserLoggedIn) {
-            navigator.navigate(from = Splash, to = ProjectList)
-        } else {
-            navigator.navigate(from = Splash, to = Login)
+        when (response) {
+            is Success -> navigator.navigate(from = Splash, to = ProjectList)
+            is Failure -> if (response.error == Error.DoesNotExist) {
+                navigator.navigate(from = Splash, to = Login)
+            } else {
+                navigator.forceFinish()
+            }
         }
     }
 }

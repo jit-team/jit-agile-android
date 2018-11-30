@@ -2,20 +2,6 @@ package pl.jitsolutions.agile.domain
 
 import pl.jitsolutions.agile.common.Error
 
-data class Response<T>(
-    val data: T?,
-    val status: Status,
-    val error: Error?
-) {
-    enum class Status { SUCCESS, FAILURE }
-}
-
-inline fun <reified T> response(data: T): Response<T> {
-    return Response(data = data, status = Response.Status.SUCCESS, error = null)
-}
-
-inline fun <reified T> errorResponse(data: T? = null, error: Error): Response<T> {
-    return Response(data = data, status = Response.Status.FAILURE, error = error)
-}
-
-fun <T> Response<T>.isSuccessfulWithData() = this.status == Response.Status.SUCCESS && this.data != null
+sealed class Response<T>
+data class Success<T>(val data: T) : Response<T>()
+data class Failure<T>(val error: Error) : Response<T>()

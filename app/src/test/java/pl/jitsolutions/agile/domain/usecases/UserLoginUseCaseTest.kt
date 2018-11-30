@@ -8,8 +8,8 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import pl.jitsolutions.agile.assertThat
 import pl.jitsolutions.agile.common.Error
+import pl.jitsolutions.agile.domain.Success
 import pl.jitsolutions.agile.domain.User
-import pl.jitsolutions.agile.domain.response
 import pl.jitsolutions.agile.repository.NotificationRepository
 import pl.jitsolutions.agile.repository.UserRepository
 
@@ -21,19 +21,19 @@ class UserLoginUseCaseTest {
             onBlocking {
                 login("abc@email.pl", "abc")
             } doReturn
-                response(Unit)
+                Success(Unit)
 
             onBlocking {
                 getLoggedInUser()
             } doReturn
-                response<User?>(User("", "", ""))
+                Success(User("", "", ""))
         }
 
         val mockNotificationsRepository = mock<NotificationRepository> {
             onBlocking {
                 assignDeviceTokenToUser(any())
             } doReturn
-                response(Unit)
+                Success(Unit)
         }
 
         val params = UserLoginUseCase.Params("abc@email.pl", "abc")
