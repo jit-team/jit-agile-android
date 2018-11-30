@@ -84,3 +84,9 @@ fun bindProjectJoiningUnknownErrorVisibility(
     view.text = errorText
     view.visibility = if (errorText != null) View.VISIBLE else View.INVISIBLE
 }
+
+@BindingAdapter("bindProjectJoiningViewEnabled")
+fun bindProjectJoiningViewEnabled(view: View, state: ProjectJoiningViewModel.State) {
+    view.isEnabled = state != ProjectJoiningViewModel.State.InProgress &&
+        state != ProjectJoiningViewModel.State.Success
+}
