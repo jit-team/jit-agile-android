@@ -165,10 +165,9 @@ fun bindProjectDetailsChangePasswordError(view: View, state: ProjectDetailsViewM
                 ).show()
             }
             else -> {
-                //Do nothing
+                // Do nothing
             }
         }
-
     }
 }
 
@@ -254,7 +253,7 @@ private fun View.showChangePasswordDialog(onChangePasswordListener: (String) -> 
                         count: Int,
                         after: Int
                     ) {
-                        //ignore
+                        // ignore
                     }
 
                     override fun onTextChanged(
@@ -263,7 +262,7 @@ private fun View.showChangePasswordDialog(onChangePasswordListener: (String) -> 
                         before: Int,
                         count: Int
                     ) {
-                        //ignore
+                        // ignore
                     }
                 })
             }
