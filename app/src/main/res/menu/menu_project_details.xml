@@ -13,4 +13,9 @@
         android:title="@string/project_details_screen_menu_delete_project"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/menu_project_details_show_project_password"
+        android:title="@string/project_details_screen_menu_show_project_password"
+        app:showAsAction="never" />
+
 </menu>
