@@ -15,4 +15,5 @@ interface ProjectRepository {
     suspend fun deleteProject(projectId: String): Response<Unit>
 
     suspend fun createNewProject(projectName: String, password: String): Response<String>
+    suspend fun changeProjectPassword(projectId: String, newPassword: String): Response<Unit>
 }

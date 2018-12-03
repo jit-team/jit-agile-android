@@ -21,7 +21,8 @@
         android:layout_height="match_parent"
         app:bindProjectDetailsErrorState="@{viewModel.state}"
         app:bindProjectDetailsMenuItemSelected="@{menuItemId}"
-        app:bindProjectDetailsViewModel="@{viewModel}">
+        app:bindProjectDetailsViewModel="@{viewModel}"
+        app:bindProjectDetailsChangePasswordError="@{viewModel.state}">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"

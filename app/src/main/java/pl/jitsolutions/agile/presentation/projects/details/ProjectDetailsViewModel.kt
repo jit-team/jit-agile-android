@@ -8,6 +8,7 @@ import pl.jitsolutions.agile.domain.Failure
 import pl.jitsolutions.agile.domain.Project
 import pl.jitsolutions.agile.domain.Success
 import pl.jitsolutions.agile.domain.User
+import pl.jitsolutions.agile.domain.usecases.ChangeProjectPasswordUseCase
 import pl.jitsolutions.agile.domain.usecases.DeleteProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.GetProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.JoinDailyUseCase
@@ -21,6 +22,7 @@ class ProjectDetailsViewModel(
     private val leaveProjectUseCase: LeaveProjectUseCase,
     private val deleteProjectUseCase: DeleteProjectUseCase,
     private val joinDailyUseCase: JoinDailyUseCase,
+    private val changeProjectPasswordUseCase: ChangeProjectPasswordUseCase,
     private val navigator: Navigator,
     private val projectId: String,
     mainDispatcher: CoroutineDispatcher
@@ -64,8 +66,19 @@ class ProjectDetailsViewModel(
                     from = Navigator.Destination.ProjectDetails(projectId),
                     to = Navigator.Destination.Daily(projectId)
                 )
-                state.value = State.Success
+                state.value = State.Success()
             }
+            is Failure -> state.value = State.Fail(result.error)
+        }
+    }
+
+    fun changePassword(newPassword: String) = launch {
+        state.value = State.InProgress
+        val params = ChangeProjectPasswordUseCase.Params(projectId, newPassword)
+        val result = changeProjectPasswordUseCase.executeAsync(params).await()
+
+        when (result) {
+            is Success -> state.value = State.Success(SuccessType.CHANGE_PASSWORD)
             is Failure -> state.value = State.Fail(result.error)
         }
     }
@@ -88,7 +101,7 @@ class ProjectDetailsViewModel(
                 val projectWithUsers = result.data
                 project.value = projectWithUsers.project
                 users.value = projectWithUsers.users
-                State.Success
+                State.Success()
             }
             is Failure -> State.Fail(result.error)
         }
@@ -99,10 +112,16 @@ class ProjectDetailsViewModel(
             return this is State.Fail && this.type == type
         }
 
-        object Success : State()
+        fun isSuccessOfType(type: SuccessType): Boolean {
+            return this is State.Success && this.type == type
+        }
+
+        data class Success(val type: SuccessType = SuccessType.OTHER) : State()
         object Idle : State()
         object InProgress : State()
         object Empty : State()
-        class Fail(val type: Error) : State()
+        data class Fail(val type: Error) : State()
     }
+
+    enum class SuccessType { CHANGE_PASSWORD, OTHER }
 }

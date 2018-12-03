@@ -13,6 +13,8 @@ import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
+import pl.jitsolutions.agile.domain.usecases.AssignDeviceTokenToUserTokenUseCase
+import pl.jitsolutions.agile.domain.usecases.ChangeProjectPasswordUseCase
 import pl.jitsolutions.agile.domain.usecases.DeleteProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.EndDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.GetApplicationVersionUseCase
@@ -28,7 +30,6 @@ import pl.jitsolutions.agile.domain.usecases.NextDailyUserUseCase
 import pl.jitsolutions.agile.domain.usecases.ObserveDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.ProjectCreationUseCase
 import pl.jitsolutions.agile.domain.usecases.ProjectJoiningUseCase
-import pl.jitsolutions.agile.domain.usecases.AssignDeviceTokenToUserTokenUseCase
 import pl.jitsolutions.agile.domain.usecases.ShowStartDailyNotificationUseCase
 import pl.jitsolutions.agile.domain.usecases.StartDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.UserLoginUseCase
@@ -154,7 +155,11 @@ private val useCasesModule = Module(name = "UseCases") {
         NextDailyUserUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
     bind<AssignDeviceTokenToUserTokenUseCase>() with provider {
-        AssignDeviceTokenToUserTokenUseCase(instance(), instance(), instance(tag = Tags.Dispatchers.USE_CASE))
+        AssignDeviceTokenToUserTokenUseCase(
+            instance(),
+            instance(),
+            instance(tag = Tags.Dispatchers.USE_CASE)
+        )
     }
     bind<ShowStartDailyNotificationUseCase>() with provider {
         ShowStartDailyNotificationUseCase(
@@ -162,6 +167,9 @@ private val useCasesModule = Module(name = "UseCases") {
             instance(),
             instance(Tags.Dispatchers.USE_CASE)
         )
+    }
+    bind<ChangeProjectPasswordUseCase>() with provider {
+        ChangeProjectPasswordUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
 }
 
@@ -228,6 +236,7 @@ private val viewModelsModule = Module(name = "ViewModels") {
     bind<ViewModelProvider.Factory>(tag = ProjectDetailsViewModel::class.java) with provider {
         viewModelFactory {
             ProjectDetailsViewModel(
+                instance(),
                 instance(),
                 instance(),
                 instance(),
