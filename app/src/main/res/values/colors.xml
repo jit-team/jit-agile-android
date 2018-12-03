@@ -29,4 +29,6 @@
     <color name="daily_active_user_background">@android:color/transparent</color>
     <color name="daily_other_user">@color/dark_text_color</color>
     <color name="daily_other_user_background">@android:color/transparent</color>
+    <color name="daily_countdown_timer_default_text">@android:color/black</color>
+    <color name="daily_countdown_timer_negative_text">@color/red_600</color>
 </resources>
