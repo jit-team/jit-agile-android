@@ -118,6 +118,7 @@
     <string name="daily_screen_end_daily_button_text">End daily</string>
     <string name="daily_screen_quit_button_text">Quit</string>
     <string name="daily_screen_duration_label" tools:ignore="ExtraTranslation">15:00</string>
+    <string name="daily_screen_duration_minus_char" tools:ignore="ExtraTranslation">-</string>
     <string name="daily_screen_leave_confirmation_title">Leave confirmation</string>
     <string name="daily_screen_leave_confirmation_message">Are you sure you want to leave the daily?</string>
     <string name="daily_screen_leave_confirmation_positive_button_text">Leave</string>
