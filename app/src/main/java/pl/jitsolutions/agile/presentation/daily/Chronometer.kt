@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import pl.jitsolutions.agile.R
 
-private const val DAILY_LENGTH = 10 * 1000L
+private const val DAILY_LENGTH = 15 * 60 * 1000L
 private const val INVALID_TIME = -1L
 
 class Chronometer(context: Context, attributes: AttributeSet) : TextView(
