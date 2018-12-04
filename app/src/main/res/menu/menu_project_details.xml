@@ -18,4 +18,9 @@
         android:title="@string/project_details_screen_menu_show_project_password"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/menu_project_details_change_project_password"
+        android:title="@string/project_details_screen_menu_change_project_password"
+        app:showAsAction="never" />
+
 </menu>

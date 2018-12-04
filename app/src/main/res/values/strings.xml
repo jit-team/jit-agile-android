@@ -57,6 +57,7 @@
     <string name="project_details_screen_menu_leave_project">Leave</string>
     <string name="project_details_screen_menu_delete_project">Delete</string>
     <string name="project_details_screen_menu_show_project_password">Show Password</string>
+    <string name="project_details_screen_menu_change_project_password">Change Password</string>
     <string name="project_details_screen_leave_confirmation_title">Leave confirmation</string>
     <string name="project_details_screen_leave_confirmation_message">Are you sure you want to leave the project?</string>
     <string name="project_details_screen_leave_confirmation_positive_button_text">Leave</string>
@@ -70,6 +71,12 @@
     <string name="project_details_screen_error_unknown">Something goes wrong…</string>
     <string name="project_details_screen_show_password_title">Password: %s</string>
     <string name="project_details_screen_show_password_positive_button_text">OK</string>
+    <string name="project_details_screen_change_password_title">Change password</string>
+    <string name="project_details_screen_change_password_positive_button_text">Change</string>
+    <string name="project_details_screen_change_password_negative_button_text">Cancel</string>
+    <string name="project_details_screen_change_password_new_password_label">New password</string>
+    <string name="project_details_screen_change_password_error_empty_password">Empty password</string>
+    <string name="project_details_screen_change_password_success_message">Password has been changed</string>
 
     <string name="reset_password_screen_title">Reset password</string>
     <string name="reset_password_screen_email_label">Email</string>

@@ -13,6 +13,8 @@ import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
+import pl.jitsolutions.agile.domain.usecases.AssignDeviceTokenToUserTokenUseCase
+import pl.jitsolutions.agile.domain.usecases.ChangeProjectPasswordUseCase
 import pl.jitsolutions.agile.domain.usecases.DeleteProjectUseCase
 import pl.jitsolutions.agile.domain.usecases.EndDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.GetApplicationVersionUseCase
@@ -28,7 +30,6 @@ import pl.jitsolutions.agile.domain.usecases.NextDailyUserUseCase
 import pl.jitsolutions.agile.domain.usecases.ObserveDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.ProjectCreationUseCase
 import pl.jitsolutions.agile.domain.usecases.ProjectJoiningUseCase
-import pl.jitsolutions.agile.domain.usecases.AssignDeviceTokenToUserTokenUseCase
 import pl.jitsolutions.agile.domain.usecases.ShowStartDailyNotificationUseCase
 import pl.jitsolutions.agile.domain.usecases.StartDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.UserLoginUseCase
@@ -40,6 +41,7 @@ import pl.jitsolutions.agile.presentation.authorization.registrationSuccessful.R
 import pl.jitsolutions.agile.presentation.authorization.resetPassword.ResetPasswordViewModel
 import pl.jitsolutions.agile.presentation.daily.DailyViewModel
 import pl.jitsolutions.agile.presentation.projects.ProjectListViewModel
+import pl.jitsolutions.agile.presentation.projects.details.ChangeProjectPasswordViewModel
 import pl.jitsolutions.agile.presentation.projects.details.ProjectDetailsViewModel
 import pl.jitsolutions.agile.presentation.projects.managing.ProjectCreationViewModel
 import pl.jitsolutions.agile.presentation.projects.managing.ProjectJoiningViewModel
@@ -58,7 +60,7 @@ import java.util.concurrent.Executors
 
 interface Tags {
     enum class Dispatchers { USE_CASE, IO, MAIN }
-    enum class Parameters { PROJECT_DETAILS_ID, DAILY_ID }
+    enum class Parameters { PROJECT_DETAILS_ID, PROJECT_DETAILS_PASSWORD, DAILY_ID }
 }
 
 private val dispatchersModule = Module(name = "Dispatchers") {
@@ -154,7 +156,11 @@ private val useCasesModule = Module(name = "UseCases") {
         NextDailyUserUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
     bind<AssignDeviceTokenToUserTokenUseCase>() with provider {
-        AssignDeviceTokenToUserTokenUseCase(instance(), instance(), instance(tag = Tags.Dispatchers.USE_CASE))
+        AssignDeviceTokenToUserTokenUseCase(
+            instance(),
+            instance(),
+            instance(tag = Tags.Dispatchers.USE_CASE)
+        )
     }
     bind<ShowStartDailyNotificationUseCase>() with provider {
         ShowStartDailyNotificationUseCase(
@@ -162,6 +168,9 @@ private val useCasesModule = Module(name = "UseCases") {
             instance(),
             instance(Tags.Dispatchers.USE_CASE)
         )
+    }
+    bind<ChangeProjectPasswordUseCase>() with provider {
+        ChangeProjectPasswordUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
 }
 
@@ -267,6 +276,16 @@ private val viewModelsModule = Module(name = "ViewModels") {
                 instance(),
                 instance(tag = Tags.Parameters.DAILY_ID),
                 instance(),
+                instance(tag = Tags.Dispatchers.MAIN)
+            )
+        }
+    }
+    bind<ViewModelProvider.Factory>(tag = ChangeProjectPasswordViewModel::class.java) with provider {
+        viewModelFactory {
+            ChangeProjectPasswordViewModel(
+                instance(),
+                instance(),
+                instance(Tags.Parameters.PROJECT_DETAILS_ID),
                 instance(tag = Tags.Dispatchers.MAIN)
             )
         }

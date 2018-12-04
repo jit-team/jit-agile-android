@@ -21,6 +21,7 @@ interface Navigator {
         object RegistrationSuccessful : Destination(R.id.registrationSuccessfulFragment)
         object ProjectList : Destination(R.id.projectListFragment)
         class ProjectDetails(val projectId: String) : Destination(R.id.projectDetailsFragment)
+        object ChangeProjectPassword : Destination(R.id.changeProjectPasswordDialogFragment)
         object ProjectCreation : Destination(R.id.projectCreation)
         object ProjectAdding : Destination(R.id.projectAdding)
         object ProjectJoining : Destination(R.id.projectCreation)
@@ -39,6 +40,7 @@ interface Navigator {
                     R.id.projectCreation -> ProjectCreation
                     R.id.projectAdding -> ProjectAdding
                     R.id.dailyFragment -> Daily("")
+                    R.id.changeProjectPasswordDialogFragment -> ChangeProjectPassword
                     else -> null
                 }
             }

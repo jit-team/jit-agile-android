@@ -2,9 +2,11 @@ package pl.jitsolutions.agile.presentation.navigation
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
 import androidx.navigation.findNavController
 import pl.jitsolutions.agile.R
 import pl.jitsolutions.agile.presentation.daily.DailyFragmentDirections
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ChangeProjectPassword
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Daily
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Login
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectAdding
@@ -17,6 +19,9 @@ import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Regis
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ResetPassword
 import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Splash
 import pl.jitsolutions.agile.presentation.projects.ProjectListFragmentDirections
+import pl.jitsolutions.agile.presentation.projects.details.ChangeProjectPasswordDialogFragment
+
+private const val CHANGE_PASSWORD_DIALOG_FRAGMENT_TAG = "ChangeProjectPasswordDialogFragment"
 
 class AndroidNavigator(context: Context) : Navigator {
     private val observers = mutableMapOf<Int, MutableSet<Navigator.NavigationObserver>>()
@@ -112,6 +117,13 @@ class AndroidNavigator(context: Context) : Navigator {
                             .setDailyId(to.dailyId)
                     )
                 }
+                ChangeProjectPassword -> {
+                    ChangeProjectPasswordDialogFragment.show(
+                        activity.supportFragmentManager,
+                        CHANGE_PASSWORD_DIALOG_FRAGMENT_TAG,
+                        from.projectId
+                    )
+                }
                 else -> throw Navigator.InvalidNavigationException(from, to)
             }
             ProjectCreation -> when (to) {
@@ -165,6 +177,13 @@ class AndroidNavigator(context: Context) : Navigator {
             }
             is Daily -> {
                 navController.navigateUp()
+                true
+            }
+            is ChangeProjectPassword -> {
+                val fragmentManager = activity.supportFragmentManager
+                val fragment =
+                    fragmentManager.findFragmentByTag(CHANGE_PASSWORD_DIALOG_FRAGMENT_TAG)
+                (fragment as? DialogFragment)?.dismiss()
                 true
             }
             else -> false

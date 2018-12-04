@@ -47,7 +47,7 @@ class ProjectDetailsFragment : BaseFragment() {
         binding.viewModel = viewModel
         binding.setLifecycleOwner(this)
         viewModel.state.observe(this, Observer {
-            setMenuVisibility(it is ProjectDetailsViewModel.State.Success)
+            setMenuVisibility(it !is ProjectDetailsViewModel.State.InProgress)
         })
         return binding.root
     }

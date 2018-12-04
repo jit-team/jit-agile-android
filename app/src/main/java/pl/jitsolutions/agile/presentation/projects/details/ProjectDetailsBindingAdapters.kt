@@ -10,8 +10,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import pl.jitsolutions.agile.common.Error
 import pl.jitsolutions.agile.R
+import pl.jitsolutions.agile.common.Error
 import pl.jitsolutions.agile.domain.User
 
 @BindingAdapter("bindProjectDetailsBackArrowVisibility")
@@ -90,9 +90,10 @@ fun bindProjectDetailsMenuItemListener(
             view.showLeaveConfirmation { viewModel.leaveProject() }
         R.id.menu_project_details_delete_project ->
             view.showDeleteConfirmation { viewModel.deleteProject() }
-        R.id.menu_project_details_show_project_password -> {
+        R.id.menu_project_details_show_project_password ->
             view.showPassword(viewModel.project.value?.password!!)
-        }
+        R.id.menu_project_details_change_project_password ->
+            viewModel.changePassword()
     }
 }
 

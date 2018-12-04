@@ -14,6 +14,9 @@ import pl.jitsolutions.agile.domain.usecases.JoinDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.LeaveProjectUseCase
 import pl.jitsolutions.agile.presentation.common.CoroutineViewModel
 import pl.jitsolutions.agile.presentation.navigation.Navigator
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ChangeProjectPassword
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.Daily
+import pl.jitsolutions.agile.presentation.navigation.Navigator.Destination.ProjectDetails
 import pl.jitsolutions.agile.utils.mutableLiveData
 
 class ProjectDetailsViewModel(
@@ -38,7 +41,7 @@ class ProjectDetailsViewModel(
         val params = DeleteProjectUseCase.Params(projectId)
         val result = deleteProjectUseCase.executeAsync(params).await()
         when (result) {
-            is Success -> navigator.navigateBack(Navigator.Destination.ProjectDetails(projectId))
+            is Success -> navigator.navigateBack(ProjectDetails(projectId))
             is Failure -> state.value = State.Fail(result.error)
         }
     }
@@ -48,7 +51,7 @@ class ProjectDetailsViewModel(
         val params = LeaveProjectUseCase.Params(projectId)
         val result = leaveProjectUseCase.executeAsync(params).await()
         when (result) {
-            is Success -> navigator.navigateBack(Navigator.Destination.ProjectDetails(projectId))
+            is Success -> navigator.navigateBack(ProjectDetails(projectId))
             is Failure -> state.value = State.Fail(result.error)
         }
     }
@@ -61,13 +64,17 @@ class ProjectDetailsViewModel(
         when (result) {
             is Success -> {
                 navigator.navigate(
-                    from = Navigator.Destination.ProjectDetails(projectId),
-                    to = Navigator.Destination.Daily(projectId)
+                    from = ProjectDetails(projectId),
+                    to = Daily(projectId)
                 )
                 state.value = State.Success
             }
             is Failure -> state.value = State.Fail(result.error)
         }
+    }
+
+    fun changePassword() {
+        navigator.navigate(ProjectDetails(projectId), ChangeProjectPassword)
     }
 
     private fun executeGetProjectDetails() = launch {
@@ -76,7 +83,7 @@ class ProjectDetailsViewModel(
         state.value = resultState
 
         if (resultState is State.Fail) {
-            navigator.navigateBack(Navigator.Destination.ProjectDetails(projectId))
+            navigator.navigateBack(ProjectDetails(projectId))
         }
     }
 
@@ -103,6 +110,6 @@ class ProjectDetailsViewModel(
         object Idle : State()
         object InProgress : State()
         object Empty : State()
-        class Fail(val type: Error) : State()
+        data class Fail(val type: Error) : State()
     }
 }

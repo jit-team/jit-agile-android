@@ -111,7 +111,7 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
                 try {
                     val task = functions
                         .getHttpsCallable("deleteProject")
-                        .call(leaveProjectParams(projectId))
+                        .call(deleteProjectParams(projectId))
                     Tasks.await(task)
                     if (task.isSuccessful) {
                         Success(Unit)
@@ -169,6 +169,31 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
                     }
                 } catch (e: Exception) {
                     FirebaseErrorResolver.parseFunctionException<String>(e)
+                }
+            }.await()
+        }
+    }
+
+    override suspend fun changeProjectPassword(
+        projectId: String,
+        newPassword: String
+    ): Response<Unit> {
+        return retryWhenError {
+            CoroutineScope(dispatcher).async {
+                try {
+                    val task = functions
+                        .getHttpsCallable("changeProjectPassword")
+                        .call(changeProjectPasswordParams(projectId, newPassword))
+                    Tasks.await(task)
+                    if (task.isSuccessful) {
+                        Success(Unit)
+                    } else {
+                        FirebaseErrorResolver.parseFunctionException<Unit>(
+                            task.exception ?: Exception()
+                        )
+                    }
+                } catch (e: Exception) {
+                    FirebaseErrorResolver.parseFunctionException<Unit>(e)
                 }
             }.await()
         }

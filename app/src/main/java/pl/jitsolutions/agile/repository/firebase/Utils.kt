@@ -100,6 +100,12 @@ fun newProjectParams(projectName: String, password: String) =
         "password" to password
     )
 
+fun changeProjectPasswordParams(projectId: String, newPassword: String) =
+    mapOf(
+        "projectId" to projectId,
+        "newPassword" to newPassword
+    )
+
 fun leaveProjectParams(projectId: String) =
     mapOf("projectId" to projectId)
 
