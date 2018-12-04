@@ -48,7 +48,7 @@ abstract class BaseActivity : AppCompatActivity(), KodeinAware {
 
     override fun onBackPressed() {
         val navHost = supportFragmentManager.findFragmentByTag("NavHostFragment")!!
-        val topFragment = navHost.childFragmentManager.fragments.last() as BaseFragment
+        val topFragment = navHost.childFragmentManager.fragments.last() as FragmentNavigation
 
         if (topFragment.onBackPressed()) {
             return
