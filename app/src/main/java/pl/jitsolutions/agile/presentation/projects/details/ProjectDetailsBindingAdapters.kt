@@ -44,7 +44,7 @@ fun bindProjectDetailsProgressVisibility(
     state: ProjectDetailsViewModel.State
 ) {
     progressBar.visibility = when (state) {
-        is ProjectDetailsViewModel.State.Success -> View.INVISIBLE
+        ProjectDetailsViewModel.State.Success -> View.INVISIBLE
         ProjectDetailsViewModel.State.Idle -> View.INVISIBLE
         ProjectDetailsViewModel.State.InProgress -> View.VISIBLE
         ProjectDetailsViewModel.State.Empty -> View.INVISIBLE
@@ -55,7 +55,7 @@ fun bindProjectDetailsProgressVisibility(
 @BindingAdapter("bindProjectDetailsEmptyState")
 fun bindProjectDetailsEmptyState(view: View, state: ProjectDetailsViewModel.State) {
     view.visibility = when (state) {
-        is ProjectDetailsViewModel.State.Success -> View.INVISIBLE
+        ProjectDetailsViewModel.State.Success -> View.INVISIBLE
         ProjectDetailsViewModel.State.Idle -> View.INVISIBLE
         ProjectDetailsViewModel.State.InProgress -> View.INVISIBLE
         ProjectDetailsViewModel.State.Empty -> View.VISIBLE
@@ -100,7 +100,7 @@ fun bindProjectDetailsMenuItemListener(
 @BindingAdapter("bindProjectDetailsFab")
 fun bindProjectListFab(fab: FloatingActionButton, state: ProjectDetailsViewModel.State) {
     when (state) {
-        is ProjectDetailsViewModel.State.Success -> fab.show()
+        ProjectDetailsViewModel.State.Success -> fab.show()
         ProjectDetailsViewModel.State.Empty -> fab.show()
         else -> fab.hide()
     }
