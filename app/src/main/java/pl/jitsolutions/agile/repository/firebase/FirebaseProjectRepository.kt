@@ -12,12 +12,15 @@ import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.Success
 import pl.jitsolutions.agile.repository.ProjectRepository
 
-class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRepository {
-    private val functions = FirebaseFunctions.getInstance()
+class FirebaseProjectRepository(
+    private val functions: FirebaseFunctions,
+    dispatcher: CoroutineDispatcher
+) : ProjectRepository {
+    private val scope = CoroutineScope(dispatcher)
 
     override suspend fun getProjectsWithDailyState(userId: String): Response<List<ProjectWithDaily>> {
         return retryWhenError {
-            CoroutineScope(dispatcher).async {
+            scope.async {
                 try {
                     val task = functions
                         .getHttpsCallable("getProjectsWithDailyState")
@@ -39,7 +42,7 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
 
     override suspend fun getProjects(userId: String): Response<List<Project>> {
         return retryWhenError {
-            CoroutineScope(dispatcher).async {
+            scope.async {
                 try {
                     val task =
                         functions
@@ -63,7 +66,7 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
 
     override suspend fun getProject(projectId: String): Response<ProjectWithUsers> {
         return retryWhenError {
-            CoroutineScope(dispatcher).async {
+            scope.async {
                 try {
                     val task = functions
                         .getHttpsCallable("getProject")
@@ -85,7 +88,7 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
 
     override suspend fun leaveProject(projectId: String): Response<Unit> {
         return retryWhenError {
-            CoroutineScope(dispatcher).async {
+            scope.async {
                 try {
                     val task = functions
                         .getHttpsCallable("leaveProject")
@@ -107,7 +110,7 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
 
     override suspend fun deleteProject(projectId: String): Response<Unit> {
         return retryWhenError {
-            CoroutineScope(dispatcher).async {
+            scope.async {
                 try {
                     val task = functions
                         .getHttpsCallable("deleteProject")
@@ -129,7 +132,7 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
 
     override suspend fun joinProject(projectName: String, password: String): Response<String> {
         return retryWhenError {
-            CoroutineScope(dispatcher).async {
+            scope.async {
                 try {
                     val task = functions
                         .getHttpsCallable("joinProject")
@@ -154,7 +157,7 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
         password: String
     ): Response<String> {
         return retryWhenError {
-            CoroutineScope(dispatcher).async {
+            scope.async {
                 try {
                     val task = functions
                         .getHttpsCallable("newProject")
@@ -179,7 +182,7 @@ class FirebaseProjectRepository(val dispatcher: CoroutineDispatcher) : ProjectRe
         newPassword: String
     ): Response<Unit> {
         return retryWhenError {
-            CoroutineScope(dispatcher).async {
+            scope.async {
                 try {
                     val task = functions
                         .getHttpsCallable("changeProjectPassword")

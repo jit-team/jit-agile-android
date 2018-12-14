@@ -30,7 +30,6 @@ import pl.jitsolutions.agile.domain.usecases.NextDailyUserUseCase
 import pl.jitsolutions.agile.domain.usecases.ObserveDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.ProjectCreationUseCase
 import pl.jitsolutions.agile.domain.usecases.ProjectJoiningUseCase
-import pl.jitsolutions.agile.domain.usecases.ShowStartDailyNotificationUseCase
 import pl.jitsolutions.agile.domain.usecases.StartDailyUseCase
 import pl.jitsolutions.agile.domain.usecases.UserLoginUseCase
 import pl.jitsolutions.agile.domain.usecases.UserRegistrationUseCase
@@ -77,13 +76,13 @@ private val dispatchersModule = Module(name = "Dispatchers") {
 
 private val repositoriesModule = Module(name = "Repositories") {
     bind<UserRepository>() with singleton {
-        FirebaseUserRepository(instance(tag = Tags.Dispatchers.IO))
+        FirebaseUserRepository(instance(), instance(tag = Tags.Dispatchers.IO))
     }
     bind<ProjectRepository>() with singleton {
-        FirebaseProjectRepository(instance(tag = Tags.Dispatchers.IO))
+        FirebaseProjectRepository(instance(), instance(tag = Tags.Dispatchers.IO))
     }
     bind<DailyRepository>() with singleton {
-        FirebaseDailyRepository(instance(tag = Tags.Dispatchers.IO))
+        FirebaseDailyRepository(instance(), instance(), instance(tag = Tags.Dispatchers.IO))
     }
     bind<SystemInfoRepository>() with singleton {
         AndroidSystemInfoRepository(instance())
@@ -101,7 +100,7 @@ private val useCasesModule = Module(name = "UseCases") {
         UserLoginUseCase(instance(), instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
     bind<LogoutCurrentUserUseCase>() with provider {
-        LogoutCurrentUserUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
+        LogoutCurrentUserUseCase(instance(), instance(), instance(tag = Tags.Dispatchers.USE_CASE))
     }
     bind<GetLoggedUserUseCase>() with provider {
         GetLoggedUserUseCase(instance(), instance(tag = Tags.Dispatchers.USE_CASE))
@@ -160,13 +159,6 @@ private val useCasesModule = Module(name = "UseCases") {
             instance(),
             instance(),
             instance(tag = Tags.Dispatchers.USE_CASE)
-        )
-    }
-    bind<ShowStartDailyNotificationUseCase>() with provider {
-        ShowStartDailyNotificationUseCase(
-            instance(),
-            instance(),
-            instance(Tags.Dispatchers.USE_CASE)
         )
     }
     bind<ChangeProjectPasswordUseCase>() with provider {
@@ -310,5 +302,6 @@ fun kodeinBuilder(application: Application): LazyKodein {
         import(repositoriesModule)
         import(useCasesModule)
         import(viewModelsModule)
+        import(firebaseModule)
     }
 }
