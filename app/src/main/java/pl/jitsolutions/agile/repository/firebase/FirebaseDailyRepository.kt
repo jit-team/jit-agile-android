@@ -16,14 +16,17 @@ import pl.jitsolutions.agile.domain.Response
 import pl.jitsolutions.agile.domain.Success
 import pl.jitsolutions.agile.repository.DailyRepository
 
-class FirebaseDailyRepository(private val dispatcher: CoroutineDispatcher) : DailyRepository {
-    private val firestore = FirebaseFirestore.getInstance()
-    private val functions = FirebaseFunctions.getInstance()
+class FirebaseDailyRepository(
+    private val firestore: FirebaseFirestore,
+    private val functions: FirebaseFunctions,
+    dispatcher: CoroutineDispatcher
+) : DailyRepository {
     private lateinit var observeDailyListener: ListenerRegistration
+    private val scope = CoroutineScope(dispatcher)
 
     override suspend fun endDaily(dailyId: String): Response<Unit> {
         return retryWhenError {
-            CoroutineScope(dispatcher).async {
+            scope.async {
                 try {
                     val task = functions
                         .getHttpsCallable("finishDaily")
@@ -48,7 +51,7 @@ class FirebaseDailyRepository(private val dispatcher: CoroutineDispatcher) : Dai
         observeDailyListener = firestore.collection("dailies")
             .document(dailyId)
             .addSnapshotListener { document, exception ->
-                CoroutineScope(dispatcher).launch {
+                scope.launch {
                     when {
                         document != null -> {
                             channel.send(handleDailyDocument(document))
@@ -74,7 +77,7 @@ class FirebaseDailyRepository(private val dispatcher: CoroutineDispatcher) : Dai
 
     override suspend fun nextDailyUser(dailyId: String): Response<Unit> {
         return retryWhenError {
-            CoroutineScope(dispatcher).async {
+            scope.async {
                 try {
                     val task = functions
                         .getHttpsCallable("nextDailyUser")
@@ -96,7 +99,7 @@ class FirebaseDailyRepository(private val dispatcher: CoroutineDispatcher) : Dai
 
     override suspend fun joinDaily(dailyId: String): Response<Unit> {
         return retryWhenError {
-            CoroutineScope(dispatcher).async {
+            scope.async {
                 try {
                     val task = functions
                         .getHttpsCallable("joinDaily")
@@ -118,7 +121,7 @@ class FirebaseDailyRepository(private val dispatcher: CoroutineDispatcher) : Dai
 
     override suspend fun leaveDaily(dailyId: String): Response<Unit> {
         return retryWhenError {
-            CoroutineScope(dispatcher).async {
+            scope.async {
                 try {
                     val task = functions
                         .getHttpsCallable("leaveDaily")
@@ -140,7 +143,7 @@ class FirebaseDailyRepository(private val dispatcher: CoroutineDispatcher) : Dai
 
     override suspend fun startDaily(dailyId: String): Response<Unit> {
         return retryWhenError {
-            CoroutineScope(dispatcher).async {
+            scope.async {
                 try {
                     val task = functions
                         .getHttpsCallable("startDaily")

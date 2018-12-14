@@ -14,13 +14,15 @@ import pl.jitsolutions.agile.domain.Success
 import pl.jitsolutions.agile.domain.User
 import pl.jitsolutions.agile.repository.UserRepository
 
-class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
-    UserRepository {
-    private val firebaseAuth = FirebaseAuth.getInstance()
+class FirebaseUserRepository(
+    private val firebaseAuth: FirebaseAuth,
+    dispatcher: CoroutineDispatcher
+) : UserRepository {
+    private val scope = CoroutineScope(dispatcher)
 
     override suspend fun login(email: String, password: String): Response<Unit> {
         return retryWhenError {
-            CoroutineScope(dispatcher).async {
+            scope.async {
                 try {
                     val task = firebaseAuth.signInWithEmailAndPassword(email, password)
                     Tasks.await(task)
@@ -41,7 +43,7 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
 
     override suspend fun logout() =
         retryWhenError {
-            CoroutineScope(dispatcher).async {
+            scope.async {
                 val currentUser = firebaseAuth.currentUser
                 firebaseAuth.signOut()
                 Success(currentUser!!.toUser())
@@ -54,7 +56,7 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
         password: String
     ): Response<Unit> {
         return retryWhenError {
-            CoroutineScope(dispatcher).async {
+            scope.async {
                 try {
                     val task = firebaseAuth.createUserWithEmailAndPassword(email, password)
                     val result = Tasks.await(task)
@@ -95,7 +97,7 @@ class FirebaseUserRepository(private val dispatcher: CoroutineDispatcher) :
 
     override suspend fun resetPassword(email: String): Response<Unit> {
         return retryWhenError {
-            CoroutineScope(dispatcher).async {
+            scope.async {
                 try {
                     val task = firebaseAuth.sendPasswordResetEmail(email)
                     Tasks.await(task)
