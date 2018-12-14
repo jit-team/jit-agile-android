@@ -41,7 +41,13 @@ class Chronometer(context: Context, attributes: AttributeSet) : TextView(
             text = DateUtils.formatElapsedTime(timeElapsed, 0)
             return
         }
-        updateText(System.currentTimeMillis())
+        updateEndText(System.currentTimeMillis())
+    }
+
+    private fun updateEndText(now: Long) {
+        based -= DAILY_LENGTH
+        val seconds = (now - based) / 1000
+        positive(seconds)
     }
 
     private fun updateText(now: Long) {
@@ -70,15 +76,15 @@ class Chronometer(context: Context, attributes: AttributeSet) : TextView(
         if (running != this.running) {
             if (running) {
                 updateText(System.currentTimeMillis())
-                postDelayed(mTickRunnable, 500)
+                postDelayed(tickRunnable, 500)
             } else {
-                removeCallbacks(mTickRunnable)
+                removeCallbacks(tickRunnable)
             }
             this.running = running
         }
     }
 
-    private val mTickRunnable = object : Runnable {
+    private val tickRunnable = object : Runnable {
         override fun run() {
             if (running) {
                 updateText(System.currentTimeMillis())
