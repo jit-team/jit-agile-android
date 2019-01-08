@@ -168,6 +168,20 @@
             app:argType="string" />
     </fragment>
 
+    <fragment
+        android:id="@+id/planningPokerFragment"
+        android:name="pl.jitsolutions.agile.presentation.planningpoker.PlanningPokerFragment"
+        android:label="PlanningPoker"
+        tools:layout="@layout/fragment_planning_poker" />
+
+    <action
+        android:id="@+id/planningPoker"
+        app:destination="@id/planningPokerFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+
     <action
         android:id="@+id/daily"
         app:destination="@id/dailyFragment"

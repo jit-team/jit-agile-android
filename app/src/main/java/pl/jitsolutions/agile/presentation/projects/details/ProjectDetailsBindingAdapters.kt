@@ -94,6 +94,8 @@ fun bindProjectDetailsMenuItemListener(
             view.showPassword(viewModel.project.value?.password!!)
         R.id.menu_project_details_change_project_password ->
             viewModel.changePassword()
+        R.id.menu_project_details_planning_poker ->
+            viewModel.planningPoker()
     }
 }
 

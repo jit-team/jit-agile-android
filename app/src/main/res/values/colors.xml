@@ -31,4 +31,8 @@
     <color name="daily_other_user_background">@android:color/transparent</color>
     <color name="daily_countdown_timer_default_text">@android:color/black</color>
     <color name="daily_countdown_timer_negative_text">@color/red_600</color>
+
+    <color name="poker_card_text_color">@color/colorPrimaryDark</color>
+    <color name="poker_card_background_solid">@color/colorAccent</color>
+    <color name="poker_card_background_stroke">@color/colorPrimaryDark</color>
 </resources>

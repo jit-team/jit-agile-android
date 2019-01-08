@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/menu_project_details_planning_poker"
+        android:icon="@drawable/ic_poker_cards"
+        android:title="@string/project_details_screen_menu_planning_poker"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/menu_project_details_leave_project"
         android:icon="@drawable/ic_logout_white"
         android:title="@string/project_details_screen_menu_leave_project"

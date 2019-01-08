@@ -26,6 +26,7 @@ interface Navigator {
         object ProjectAdding : Destination(R.id.projectAdding)
         object ProjectJoining : Destination(R.id.projectCreation)
         class Daily(val dailyId: String) : Destination(R.id.dailyFragment)
+        object PlanningPoker : Destination(R.id.planningPoker)
 
         companion object {
             fun forId(id: Int): Destination? {

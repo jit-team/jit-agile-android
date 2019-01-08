@@ -77,6 +77,10 @@ class ProjectDetailsViewModel(
         navigator.navigate(ProjectDetails(projectId), ChangeProjectPassword)
     }
 
+    fun planningPoker() {
+        navigator.navigate(ProjectDetails(projectId), Navigator.Destination.PlanningPoker)
+    }
+
     private fun executeGetProjectDetails() = launch {
         state.value = State.InProgress
         val resultState = executeGetProject()
