@@ -34,5 +34,5 @@
 
     <color name="poker_card_text_color">@color/colorPrimaryDark</color>
     <color name="poker_card_background_solid">@color/colorAccent</color>
-    <color name="poker_card_background_stroke">@color/colorPrimaryDark</color>
+    <color name="poker_card_background_stroke">#FFF</color>
 </resources>

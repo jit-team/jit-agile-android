@@ -30,6 +30,9 @@ private fun ViewPager.setZoomAnimation() {
         val scaleFactor = scalePercent + (1 - scalePercent) * (1 - Math.abs(position))
         view.scaleX = scaleFactor.toFloat()
         view.scaleY = scaleFactor.toFloat()
+        val scale = 1.3f - Math.abs(position)
+        val scaleElevation = scale * 20f
+        view.elevation = scaleElevation
     }
 }
 
