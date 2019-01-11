@@ -77,6 +77,9 @@
     <string name="project_details_screen_change_password_new_password_label">New password</string>
     <string name="project_details_screen_change_password_error_empty_password">Empty password</string>
     <string name="project_details_screen_change_password_success_message">Password has been changed</string>
+    <string name="project_details_screen_start_daily_button_text">Start daily</string>
+    <string name="project_details_screen_planning_poker_button_text">Planning poker</string>
+    <string name="project_details_screen_menu_planning_poker">Planning poker</string>
 
     <string name="reset_password_screen_title">Reset password</string>
     <string name="reset_password_screen_email_label">Email</string>
@@ -148,4 +151,6 @@
     <string name="notification_channel_id" translatable="false">fcm_default_channel</string>
     <string name="notification_channel_name" translatable="false">JIT Team</string>
     <string name="notification_daily_started">Daily has been started</string>
+
+    <string name="planning_poker_title">Planning poker</string>
 </resources>

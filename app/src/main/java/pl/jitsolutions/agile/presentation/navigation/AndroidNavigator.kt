@@ -124,6 +124,9 @@ class AndroidNavigator(context: Context) : Navigator {
                         from.projectId
                     )
                 }
+                Navigator.Destination.PlanningPoker -> {
+                    navController.navigate(R.id.planningPoker)
+                }
                 else -> throw Navigator.InvalidNavigationException(from, to)
             }
             ProjectCreation -> when (to) {
