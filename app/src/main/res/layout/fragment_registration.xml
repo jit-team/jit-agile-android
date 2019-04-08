@@ -46,7 +46,9 @@
                 android:layout_height="wrap_content"
                 android:nextFocusDown="@id/registration_layout_email"
                 app:bindRegistrationUsernameError="@{viewModel.state}"
-                app:bindRegistrationViewEnabled="@{viewModel.state}">
+                app:bindRegistrationViewEnabled="@{viewModel.state}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/registration_username"
