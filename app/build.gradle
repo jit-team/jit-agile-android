@@ -85,7 +85,6 @@ android {
 
     lintOptions {
         lintConfig file('lint.xml')
-        abortOnError false //remove it!
     }
 
     dataBinding {
