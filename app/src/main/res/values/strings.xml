@@ -4,7 +4,7 @@
     <string name="splash_screen_logo_placeholder">JIT Team</string>
     <string name="splash_screen_version">Ver. %s</string>
 
-    <string name="login_screen_title">Login</string>
+    <string name="login_screen_title">Welcome</string>
     <string name="login_screen_email_label">Email</string>
     <string name="login_screen_password_label">Password</string>
     <string name="login_screen_login_button_text">log in</string>
@@ -153,4 +153,6 @@
     <string name="notification_daily_started">Daily has been started</string>
 
     <string name="planning_poker_title">Planning poker</string>
+    <string name="login_app_name">JIT Agile</string>
+    <string name="login_app_description">To help teams work together</string>
 </resources>

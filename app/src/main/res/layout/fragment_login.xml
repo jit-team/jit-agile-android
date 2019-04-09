@@ -38,21 +38,45 @@
             android:layout_marginEnd="16dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+            <TextView
+                android:id="@+id/login_app_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/login_app_name"
+                android:textSize="35sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/login_app_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login_app_description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/login_app_name" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/login_layout_email"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/AppTheme.EditTextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nextFocusDown="@+id/login_layout_password"
                 app:bindLoginEmailError="@{viewModel.state}"
                 app:bindLoginViewEnabled="@{viewModel.state}"
+                app:layout_constraintBottom_toTopOf="@id/login_layout_password"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@id/login_app_description"
+                app:layout_constraintVertical_chainStyle="packed">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/login_email"
+                    style="@style/AppTheme.EditTextInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_mail_24dp"
                     android:hint="@string/login_screen_email_label"
                     android:inputType="textEmailAddress"
                     android:text="@={viewModel.email}" />
@@ -61,19 +85,23 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/login_layout_password"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/AppTheme.EditTextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:nextFocusUp="@+id/login_layout_email"
                 app:bindLoginPasswordError="@{viewModel.state}"
                 app:bindLoginViewEnabled="@{viewModel.state}"
+                app:layout_constraintBottom_toTopOf="@id/login_login"
                 app:layout_constraintTop_toBottomOf="@+id/login_layout_email"
                 app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/login_password"
+                    style="@style/AppTheme.EditTextInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_password_24dp"
                     android:hint="@string/login_screen_password_label"
                     android:inputType="textPassword"
                     android:text="@={viewModel.password}" />
@@ -87,27 +115,22 @@
                 android:onClick="@{() -> viewModel.login()}"
                 android:text="@string/login_screen_login_button_text"
                 app:bindLoginViewEnabled="@{viewModel.state}"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/login_layout_password" />
+                app:layout_constraintBottom_toTopOf="@id/login_register"
+                app:layout_constraintRight_toRightOf="parent" />
 
-            <View
-                android:id="@+id/login_divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="8dp"
-                android:background="?android:attr/dividerVertical"
-                app:layout_constraintTop_toBottomOf="@+id/login_login" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/login_register"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="match_parent"
                 android:layout_height="?defaultButtonHeight"
+                android:layout_marginBottom="30dp"
                 android:onClick="@{() -> viewModel.register()}"
                 android:text="@string/login_screen_register_button_text"
+                android:textColor="@color/dark_text_color"
                 app:bindLoginViewEnabled="@{viewModel.state}"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/login_divider" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <androidx.core.widget.ContentLoadingProgressBar
                 android:id="@+id/login_progress"
@@ -116,21 +139,23 @@
                 android:layout_height="wrap_content"
                 android:indeterminate="true"
                 app:bindLoginProgressVisibility="@{viewModel.state}"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/login_login"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/login_unknown_error" />
+                app:layout_constraintTop_toBottomOf="@+id/login_unknown_error" />
 
             <TextView
                 android:id="@+id/login_unknown_error"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:gravity="center_horizontal"
                 android:text="@string/login_screen_error_unknown"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="@color/login_screen_error_text"
                 app:bindLoginUnknownErrorVisibility="@{viewModel.state}"
-                app:layout_constraintTop_toBottomOf="@+id/login_register" />
+                app:layout_constraintTop_toBottomOf="@id/login_layout_password"
+                tools:visibility="visible" />
 
             <TextView
                 android:id="@+id/login_forgot_password"

@@ -6,11 +6,26 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="defaultButtonHeight">56dp</item>
         <item name="android:fontFamily">@font/moderat_jit_regular</item>
+        <item name="android:windowBackground">@color/window_color</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.EditTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopEnd">0dp</item>
+        <item name="boxCornerRadiusTopStart">0dp</item>
+        <item name="boxCornerRadiusBottomEnd">0dp</item>
+        <item name="boxCornerRadiusBottomStart">0dp</item>
+        <item name="android:background">#FFF</item>
+        <item name="hintEnabled">false</item>
+    </style>
+
+    <style name="AppTheme.EditTextInput">
+        <item name="android:textSize">18sp</item>
+        <item name="android:drawablePadding">10dp</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
