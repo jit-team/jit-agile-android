@@ -3,6 +3,7 @@ package pl.jitsolutions.agile
 import android.app.Application
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
+import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import io.fabric.sdk.android.Fabric
@@ -14,8 +15,8 @@ class JITAgileApplication : Application(), KodeinAware {
 
     override fun onCreate() {
         super.onCreate()
-        setupCrashlytics()
         setupFirebase()
+        setupCrashlytics()
     }
 
     private fun setupCrashlytics() {
@@ -27,6 +28,7 @@ class JITAgileApplication : Application(), KodeinAware {
     }
 
     private fun setupFirebase() {
+        FirebaseApp.initializeApp(this)
         val settings = FirebaseFirestoreSettings.Builder()
             .setTimestampsInSnapshotsEnabled(true)
             .setPersistenceEnabled(false)
