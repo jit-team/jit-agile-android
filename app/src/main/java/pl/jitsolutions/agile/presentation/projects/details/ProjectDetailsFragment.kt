@@ -25,7 +25,7 @@ class ProjectDetailsFragment : BaseFragment() {
 
     override val fragmentModule = Kodein.Module("ProjectDetailsFragment") {
         constant(tag = Tags.Parameters.PROJECT_DETAILS_ID) with
-            ProjectDetailsFragmentArgs.fromBundle(arguments).projectId
+            ProjectDetailsFragmentArgs.fromBundle(arguments!!).projectId
     }
 
     override fun onCreateView(
@@ -45,7 +45,7 @@ class ProjectDetailsFragment : BaseFragment() {
         val viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(ProjectDetailsViewModel::class.java)
         binding.viewModel = viewModel
-        binding.setLifecycleOwner(this)
+        binding.lifecycleOwner = this
         viewModel.state.observe(this, Observer {
             setMenuVisibility(it !is ProjectDetailsViewModel.State.InProgress)
         })

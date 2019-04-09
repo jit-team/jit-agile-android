@@ -28,7 +28,7 @@ class AndroidNavigator(context: Context) : Navigator {
     private val activity = context as AppCompatActivity
     private val navController by lazy {
         activity.findNavController(android.R.id.content).apply {
-            addOnNavigatedListener { _, destination ->
+            addOnDestinationChangedListener { _, destination, _ ->
                 observers[destination.id]?.forEach { observer ->
                     Navigator.Destination.forId(destination.id)?.let {
                         observer.onNavigation(it)

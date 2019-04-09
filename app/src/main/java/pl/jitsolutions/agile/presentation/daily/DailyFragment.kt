@@ -20,7 +20,7 @@ class DailyFragment : BaseFragment() {
 
     override val fragmentModule = Kodein.Module("DailyFragment") {
         constant(tag = Tags.Parameters.DAILY_ID) with
-            DailyFragmentArgs.fromBundle(arguments).dailyId
+            DailyFragmentArgs.fromBundle(arguments!!).dailyId
     }
 
     override fun onCreateView(

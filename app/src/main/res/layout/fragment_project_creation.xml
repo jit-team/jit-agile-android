@@ -23,7 +23,9 @@
             android:layout_height="wrap_content"
             app:bindProjectCreationEditingEnabled="@{viewModel.state}"
             app:bindProjectCreationNameError="@{viewModel.state}"
-            app:bindProjectCreationViewEnabled="@{viewModel.state}">
+            app:bindProjectCreationViewEnabled="@{viewModel.state}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"

@@ -45,7 +45,9 @@
                 android:layout_height="wrap_content"
                 android:nextFocusDown="@+id/login_layout_password"
                 app:bindLoginEmailError="@{viewModel.state}"
-                app:bindLoginViewEnabled="@{viewModel.state}">
+                app:bindLoginViewEnabled="@{viewModel.state}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/login_email"
