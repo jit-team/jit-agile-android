@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.BindingAdapter
 import androidx.drawerlayout.widget.DrawerLayout
@@ -127,6 +128,16 @@ fun bindProjectListError(view: TextView, state: ProjectListViewModel.State) {
 @BindingAdapter("bindProjectDailyVisibility")
 fun bindProjectDailyVisibility(view: View, projectWithDaily: ProjectWithDaily) {
     view.visibility = if (projectWithDaily.daily == null) View.INVISIBLE else View.VISIBLE
+}
+
+@BindingAdapter("bindProjectDailyBackground")
+fun bindProjectDailyBackground(view: View, projectWithDaily: ProjectWithDaily) {
+    view.setBackgroundColor(
+        if (projectWithDaily.daily == null) ContextCompat.getColor(
+            view.context,
+            R.color.item_daily_inactive
+        ) else ContextCompat.getColor(view.context, R.color.item_daily_active)
+    )
 }
 
 @BindingAdapter("bindProjectListRefreshListener")

@@ -23,6 +23,9 @@
     <color name="daily_turn">#ddffd6</color>
     <color name="daily_end">#fbffe2e5</color>
     <color name="daily_default">#FFFFFF</color>
+    <color name="item_daily_inactive">#414141</color>
+    <color name="item_daily_active">#FFCB3A</color>
+    <color name="item_daily_text_color">#FFF</color>
 
     <color name="daily_current_user_text">@color/light_text_color</color>
     <color name="daily_current_user_background">@color/colorPrimary</color>

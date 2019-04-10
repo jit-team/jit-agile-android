@@ -53,6 +53,8 @@
     <string name="project_list_screen_error_user_not_found">User not found</string>
     <string name="project_list_screen_error_connection">Server connection error</string>
 
+    <string name="list_item_project_join">Join daily</string>
+
     <string name="project_details_screen_empty_state_label">No participants</string>
     <string name="project_details_screen_menu_leave_project">Leave</string>
     <string name="project_details_screen_menu_delete_project">Delete</string>
