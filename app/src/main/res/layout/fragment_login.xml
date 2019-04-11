@@ -43,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="@string/login_app_name"
+                android:text="@string/account_screens_app_name"
                 android:textSize="35sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -53,7 +53,7 @@
                 android:id="@+id/login_app_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/login_app_description"
+                android:text="@string/account_screens_app_description"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/login_app_name" />
@@ -110,27 +110,32 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/login_login"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="?defaultButtonHeight"
                 android:onClick="@{() -> viewModel.login()}"
                 android:text="@string/login_screen_login_button_text"
                 app:bindLoginViewEnabled="@{viewModel.state}"
                 app:layout_constraintBottom_toTopOf="@id/login_register"
-                app:layout_constraintRight_toRightOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintWidth_percent="0.5" />
 
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/login_register"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="?defaultButtonHeight"
-                android:layout_marginBottom="30dp"
+                android:layout_marginBottom="10dp"
                 android:onClick="@{() -> viewModel.register()}"
                 android:text="@string/login_screen_register_button_text"
                 android:textColor="@color/dark_text_color"
                 app:bindLoginViewEnabled="@{viewModel.state}"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintBottom_toTopOf="@id/login_forgot_password"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintWidth_percent="0.5" />
 
             <androidx.core.widget.ContentLoadingProgressBar
                 android:id="@+id/login_progress"
@@ -161,7 +166,7 @@
                 android:id="@+id/login_forgot_password"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="20dp"
                 android:onClick="@{() -> viewModel.resetPassword()}"
                 android:text="@string/login_screen_forgot_password_label"
                 app:bindLoginViewEnabled="@{viewModel.state}"

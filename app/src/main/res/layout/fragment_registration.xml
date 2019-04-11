@@ -39,19 +39,42 @@
             android:layout_marginEnd="16dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+            <TextView
+                android:id="@+id/registration_app_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/account_screens_app_name"
+                android:textSize="35sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/registration_app_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/account_screens_app_description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/login_app_name" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/registration_layout_username"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/AppTheme.EditTextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nextFocusDown="@id/registration_layout_email"
                 app:bindRegistrationUsernameError="@{viewModel.state}"
                 app:bindRegistrationViewEnabled="@{viewModel.state}"
+                app:layout_constraintBottom_toTopOf="@id/registration_layout_email"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/registration_username"
+                    style="@style/AppTheme.EditTextInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/registration_screen_username_label"
@@ -62,17 +85,20 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/registration_layout_email"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/AppTheme.EditTextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:nextFocusUp="@id/registration_layout_username"
                 android:nextFocusDown="@id/registration_layout_password"
                 app:bindRegistrationEmailError="@{viewModel.state}"
                 app:bindRegistrationViewEnabled="@{viewModel.state}"
+                app:layout_constraintBottom_toTopOf="@id/registration_layout_password"
                 app:layout_constraintTop_toBottomOf="@+id/registration_layout_username">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/registration_email"
+                    style="@style/AppTheme.EditTextInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/registration_screen_email_label"
@@ -83,17 +109,20 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/registration_layout_password"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/AppTheme.EditTextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:nextFocusUp="@id/registration_layout_email"
                 app:bindRegistrationPasswordError="@{viewModel.state}"
                 app:bindRegistrationViewEnabled="@{viewModel.state}"
+                app:layout_constraintBottom_toTopOf="@id/registration_register"
                 app:layout_constraintTop_toBottomOf="@+id/registration_layout_email"
                 app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/registration_password"
+                    style="@style/AppTheme.EditTextInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/registration_screen_password_label"
@@ -105,24 +134,28 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/registration_register"
                 style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="?defaultButtonHeight"
+                android:layout_margin="30dp"
                 android:onClick="@{() -> viewModel.register()}"
                 android:text="@string/registration_screen_register_button_text"
                 app:bindRegistrationViewEnabled="@{viewModel.state}"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/registration_layout_password" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintWidth_percent="0.5" />
 
             <TextView
                 android:id="@+id/registration_unknown_error"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:gravity="center_horizontal"
                 android:text="@string/registration_screen_error_unknown"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="@color/registration_screen_error_text"
                 app:bindRegistrationUnknownErrorVisibility="@{viewModel.state}"
-                app:layout_constraintTop_toBottomOf="@+id/registration_register" />
+                app:layout_constraintTop_toBottomOf="@id/registration_layout_password" />
 
             <androidx.core.widget.ContentLoadingProgressBar
                 android:id="@+id/registration_progress"
@@ -131,7 +164,7 @@
                 android:layout_height="wrap_content"
                 android:indeterminate="true"
                 app:bindRegistrationProgressVisibility="@{viewModel.state}"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/registration_register"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/registration_unknown_error" />

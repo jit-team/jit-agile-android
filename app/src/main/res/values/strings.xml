@@ -155,6 +155,6 @@
     <string name="notification_daily_started">Daily has been started</string>
 
     <string name="planning_poker_title">Planning poker</string>
-    <string name="login_app_name">JIT Agile</string>
-    <string name="login_app_description">To help teams work together</string>
+    <string name="account_screens_app_name">JIT Agile</string>
+    <string name="account_screens_app_description">To help teams work together</string>
 </resources>
