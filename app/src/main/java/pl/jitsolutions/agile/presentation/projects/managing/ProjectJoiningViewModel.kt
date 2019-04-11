@@ -38,7 +38,7 @@ class ProjectJoiningViewModel(
             is Success -> {
                 state.value = State.Success
                 val projectId = result.data
-                navigator.navigate(ProjectJoining, ProjectDetails(projectId))
+                navigator.navigate(ProjectJoining, ProjectDetails(projectId, false))
             }
             is Failure -> {
                 state.value = State.Fail(result.error)

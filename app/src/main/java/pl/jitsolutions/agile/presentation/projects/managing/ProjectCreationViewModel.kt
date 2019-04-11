@@ -43,7 +43,7 @@ class ProjectCreationViewModel(
             is Success -> {
                 state.value = State.Success
                 val projectId = result.data
-                navigator.navigate(ProjectCreation, ProjectDetails(projectId))
+                navigator.navigate(ProjectCreation, ProjectDetails(projectId, false))
             }
             is Failure -> {
                 state.value = State.Fail(result.error)

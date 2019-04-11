@@ -1,12 +1,17 @@
 package pl.jitsolutions.agile.presentation.projects.details
 
 import android.content.ContextWrapper
+import android.graphics.Color
 import android.view.View
+import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import pl.jitsolutions.agile.R
@@ -84,6 +89,56 @@ fun bindProjectDetailsViewsVisibility(view: View, state: ProjectDetailsViewModel
         ProjectDetailsViewModel.State.Success -> View.VISIBLE
         else -> View.GONE
     }
+}
+
+@BindingAdapter("bindProjectDetailsStateColor")
+fun bindProjectDetailsStateColor(view: View, isActive: Boolean) {
+    view.setBackgroundColor(
+        ContextCompat.getColor(
+            view.context,
+            if (isActive) R.color.details_active_color else R.color.details_inactive_color
+        )
+    )
+}
+
+@BindingAdapter("bindProjectDetailsToolbarColor")
+fun bindProjectDetailsToolbarColor(toolbar: Toolbar, isActive: Boolean) {
+    toolbar.setBackgroundColor(
+        ContextCompat.getColor(
+            toolbar.context,
+            if (isActive) R.color.details_toolbar_active_color else R.color.details_toolbar_inactive_color
+        )
+    )
+}
+
+@BindingAdapter("bindProjectDetailsDailyCardTextColor")
+fun bindProjectDetailsDailyCardTextColor(textView: TextView, isActive: Boolean) {
+    textView.setTextColor(
+        ContextCompat.getColor(
+            textView.context,
+            if (isActive) R.color.light_text_color else R.color.dark_text_color
+        )
+    )
+}
+
+@BindingAdapter("bindProjectDetailsDailyCardColor")
+fun bindProjectDetailsDailyCardColor(cardView: CardView, isActive: Boolean) {
+    cardView.setCardBackgroundColor(
+        ContextCompat.getColor(
+            cardView.context,
+            if (isActive) R.color.details_card_active_color else R.color.details_card_inactive_color
+        )
+    )
+}
+
+@BindingAdapter("bindProjectDetailsDailyCardIcon")
+fun bindProjectDetailsDailyCardIcon(imageView: ImageView, isActive: Boolean) {
+    imageView.setImageDrawable(
+        ContextCompat.getDrawable(
+            imageView.context,
+            if (isActive) R.drawable.ic_daily_light else R.drawable.ic_daily_dark
+        )
+    )
 }
 
 @BindingAdapter("bindProjectDetailsMenuItemSelected", "bindProjectDetailsViewModel")

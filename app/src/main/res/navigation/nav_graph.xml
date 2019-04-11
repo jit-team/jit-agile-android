@@ -143,6 +143,10 @@
             android:name="projectId"
             android:defaultValue='""'
             app:argType="string" />
+        <argument
+            android:name="active"
+            android:defaultValue="false"
+            app:argType="boolean" />
     </fragment>
 
     <fragment

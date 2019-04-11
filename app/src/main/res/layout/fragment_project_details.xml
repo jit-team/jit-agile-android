@@ -31,8 +31,9 @@
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/details_toolbar_color"
+                android:background="@color/details_toolbar_inactive_color"
                 app:bindProjectDetailsBackArrowVisibility="@{true}"
+                app:bindProjectDetailsToolbarColor="@{viewModel.active}"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
                 app:title="Details"
                 tools:title="Example project" />
@@ -48,21 +49,22 @@
                 android:id="@+id/details_project_name"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:background="@color/details_title_color"
+                android:background="@color/details_inactive_color"
                 android:gravity="center"
                 android:text="@{viewModel.project.name}"
                 android:textColor="@color/light_text_color"
                 android:textSize="46sp"
+                app:bindProjectDetailsStateColor="@{viewModel.active}"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="WeJIT" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:background="@color/details_title_color"
+                android:background="@color/details_inactive_color"
+                app:bindProjectDetailsStateColor="@{viewModel.active}"
                 app:layout_constraintBottom_toBottomOf="@id/details_user_list"
                 app:layout_constraintTop_toTopOf="@id/details_user_list" />
-
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/details_user_list"
@@ -83,7 +85,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:onClick="@{() -> viewModel.joinDaily()}"
-                app:cardBackgroundColor="@color/details_title_color"
+                app:bindProjectDetailsDailyCardColor="@{viewModel.active}"
+                app:cardBackgroundColor="@color/details_card_inactive_color"
                 app:layout_constraintEnd_toStartOf="@id/details_card_poker"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/details_user_list"
@@ -100,18 +103,20 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:adjustViewBounds="true"
-                        android:src="@drawable/ic_daily"
+                        android:src="@drawable/ic_daily_dark"
+                        app:bindProjectDetailsDailyCardIcon="@{viewModel.active}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintWidth_percent="0.55" />
 
                     <TextView
-                        style="@style/AppTheme.DetailsCardText.Light"
+                        style="@style/AppTheme.DetailsCardText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
-                        android:text="Daily"
+                        android:text="@string/project_details_screen_daily_label"
+                        app:bindProjectDetailsDailyCardTextColor="@{viewModel.active}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/icon_daily" />
@@ -125,7 +130,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:onClick="@{() -> viewModel.planningPoker()}"
-                app:cardBackgroundColor="@color/window_color"
+                app:cardBackgroundColor="@color/details_card_inactive_color"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/details_card_daily"
                 app:layout_constraintTop_toBottomOf="@id/details_user_list"
@@ -149,11 +154,11 @@
                         app:layout_constraintWidth_percent="0.55" />
 
                     <TextView
-                        style="@style/AppTheme.DetailsCardText.Dark"
+                        style="@style/AppTheme.DetailsCardText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
-                        android:text="Planning poker"
+                        android:text="@string/project_details_screen_planning_poker_label"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/icon_poker" />
@@ -166,7 +171,7 @@
                 style="@style/AppTheme.DetailsCardView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:cardBackgroundColor="@color/window_color"
+                app:cardBackgroundColor="@color/details_card_inactive_color"
                 app:layout_constraintStart_toEndOf="@id/details_card_daily"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/details_card_daily"
@@ -190,11 +195,11 @@
                         app:layout_constraintWidth_percent="0.55" />
 
                     <TextView
-                        style="@style/AppTheme.DetailsCardText.Dark"
+                        style="@style/AppTheme.DetailsCardText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
-                        android:text="Retrobox"
+                        android:text="@string/project_details_screen_retrobox_label"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/icon_retro" />

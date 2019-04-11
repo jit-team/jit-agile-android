@@ -40,6 +40,11 @@
     <color name="poker_card_background_solid">@color/colorAccent</color>
     <color name="poker_card_background_stroke">#FFF</color>
 
-    <color name="details_toolbar_color">#E5B736</color>
-    <color name="details_title_color">#FFCB3A</color>
+    <color name="details_toolbar_active_color">#E5B736</color>
+    <color name="details_toolbar_inactive_color">#414141</color>
+    <color name="details_active_color">#FFCB3A</color>
+    <color name="details_inactive_color">#717171</color>
+    <color name="details_card_active_color">#FFCB3A</color>
+    <color name="details_card_inactive_color">#EAEAEA</color>
+
 </resources>

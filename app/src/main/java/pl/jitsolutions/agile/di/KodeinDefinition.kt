@@ -59,7 +59,7 @@ import java.util.concurrent.Executors
 
 interface Tags {
     enum class Dispatchers { USE_CASE, IO, MAIN }
-    enum class Parameters { PROJECT_DETAILS_ID, PROJECT_DETAILS_PASSWORD, DAILY_ID }
+    enum class Parameters { PROJECT_DETAILS_ID,PROJECT_DETAILS_ACTIVE, PROJECT_DETAILS_PASSWORD, DAILY_ID }
 }
 
 private val dispatchersModule = Module(name = "Dispatchers") {
@@ -235,6 +235,7 @@ private val viewModelsModule = Module(name = "ViewModels") {
                 instance(),
                 instance(),
                 instance(Tags.Parameters.PROJECT_DETAILS_ID),
+                instance(Tags.Parameters.PROJECT_DETAILS_ACTIVE),
                 instance(tag = Tags.Dispatchers.MAIN)
             )
         }

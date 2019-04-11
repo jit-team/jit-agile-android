@@ -79,8 +79,8 @@ class ProjectListViewModel(
         navigator.navigate(from = ProjectList, to = ProjectAdding)
     }
 
-    fun showProjectDetails(projectId: String) {
-        navigator.navigate(from = ProjectList, to = ProjectDetails(projectId))
+    fun showProjectDetails(projectId: String, active: Boolean) {
+        navigator.navigate(from = ProjectList, to = ProjectDetails(projectId, active))
     }
 
     private fun executeGetLoggedUser() = launch {

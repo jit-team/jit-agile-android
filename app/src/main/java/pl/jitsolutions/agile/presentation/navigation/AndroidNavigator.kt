@@ -89,6 +89,7 @@ class AndroidNavigator(context: Context) : Navigator {
                         ProjectListFragmentDirections
                             .showProjectDetails()
                             .setProjectId(to.projectId)
+                            .setActive(to.active)
                     )
                 }
                 is ProjectCreation -> {
