@@ -9,29 +9,13 @@
             type="pl.jitsolutions.agile.domain.User" />
     </data>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingStart="16dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="8dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{listItem.name}"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="@color/dark_text_color"
-            tools:text="User Name" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{listItem.email}"
-            android:textColor="@color/dark_text_color"
-            tools:text="email@emial.com" />
-
-    </LinearLayout>
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_margin="4dp"
+        android:background="@drawable/rounded_icon"
+        android:text="@{listItem.name.substring(0,2).toUpperCase()}"
+        android:textColor="@color/light_text_color"
+        tools:text="MK" />
 </layout>

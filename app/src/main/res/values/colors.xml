@@ -39,4 +39,7 @@
     <color name="poker_card_text_color">@color/colorPrimaryDark</color>
     <color name="poker_card_background_solid">@color/colorAccent</color>
     <color name="poker_card_background_stroke">#FFF</color>
+
+    <color name="details_toolbar_color">#E5B736</color>
+    <color name="details_title_color">#FFCB3A</color>
 </resources>

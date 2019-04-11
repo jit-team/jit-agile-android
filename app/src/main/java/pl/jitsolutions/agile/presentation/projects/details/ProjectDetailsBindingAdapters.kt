@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import pl.jitsolutions.agile.R
 import pl.jitsolutions.agile.common.Error
 import pl.jitsolutions.agile.domain.User
@@ -79,6 +78,14 @@ fun bindProjectDetailsErrorState(view: View, state: ProjectDetailsViewModel.Stat
     Toast.makeText(view.context.applicationContext, messageResId, Toast.LENGTH_SHORT).show()
 }
 
+@BindingAdapter("bindProjectDetailsViewsVisibility")
+fun bindProjectDetailsViewsVisibility(view: View, state: ProjectDetailsViewModel.State) {
+    view.visibility = when (state) {
+        ProjectDetailsViewModel.State.Success -> View.VISIBLE
+        else -> View.GONE
+    }
+}
+
 @BindingAdapter("bindProjectDetailsMenuItemSelected", "bindProjectDetailsViewModel")
 fun bindProjectDetailsMenuItemListener(
     view: View,
@@ -94,17 +101,6 @@ fun bindProjectDetailsMenuItemListener(
             view.showPassword(viewModel.project.value?.password!!)
         R.id.menu_project_details_change_project_password ->
             viewModel.changePassword()
-        R.id.menu_project_details_planning_poker ->
-            viewModel.planningPoker()
-    }
-}
-
-@BindingAdapter("bindProjectDetailsFab")
-fun bindProjectListFab(fab: FloatingActionButton, state: ProjectDetailsViewModel.State) {
-    when (state) {
-        ProjectDetailsViewModel.State.Success -> fab.show()
-        ProjectDetailsViewModel.State.Empty -> fab.show()
-        else -> fab.hide()
     }
 }
 
