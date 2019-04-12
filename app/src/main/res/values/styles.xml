@@ -52,6 +52,11 @@
         <item name="android:textColor">#767676</item>
     </style>
 
+    <style name="AppTheme.TabLayoutStyle" parent="@style/Widget.MaterialComponents.TabLayout">
+        <item name="android:background">#000</item>
+        <item name="tabTextColor">@color/light_text_color</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
