@@ -97,7 +97,7 @@
 
     <string name="project_creation_screen_project_label">Project name</string>
     <string name="project_creation_screen_password_label">Password</string>
-    <string name="project_creation_screen_create_button_text">Create</string>
+    <string name="project_creation_screen_create_button_text">Create project</string>
     <string name="project_creation_screen_error_invalid_project_name">Invalid project name</string>
     <string name="project_creation_screen_error_project_already_exist">Project already exist</string>
     <string name="project_creation_screen_error_empty_project_name">Empty project name</string>
@@ -114,7 +114,7 @@
 
     <string name="project_joining_screen_project_label">Project name</string>
     <string name="project_joining_screen_password_label">Password</string>
-    <string name="project_joining_screen_join_button_text">Join</string>
+    <string name="project_joining_screen_join_button_text">Join project</string>
     <string name="project_joining_screen_error_invalid_project_name">Invalid project name</string>
     <string name="project_joining_screen_error_empty_project_name">Empty project name</string>
     <string name="project_joining_screen_error_project_not_found">Project not found</string>

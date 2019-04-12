@@ -97,12 +97,13 @@
             android:id="@+id/project_joining_unknown_error"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:gravity="center_horizontal"
             android:text="@string/project_joining_screen_error_unknown"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@color/project_joining_screen_error_text"
             app:bindProjectJoiningUnknownErrorVisibility="@{viewModel.state}"
-            app:layout_constraintTop_toBottomOf="@+id/project_join" />
+            app:layout_constraintTop_toBottomOf="@+id/project_joining_password_layout" />
 
         <androidx.core.widget.ContentLoadingProgressBar
             android:id="@+id/project_joining_progress"
