@@ -35,7 +35,7 @@
     <string name="registration_screen_error_unknown">Unknown error</string>
     <string name="registration_screen_error_network">Network error</string>
 
-    <string name="registration_successful_screen_title">Registration successful</string>
+    <string name="registration_successful_screen_title">Success</string>
     <string name="registration_successful_screen_welcome_label">welcome to JIT Agile</string>
     <string name="registration_successful_screen_success_label">Register successful</string>
     <string name="registration_successful_screen_start_button_text">Let\'s start</string>
@@ -83,7 +83,7 @@
     <string name="project_details_screen_planning_poker_label">Planning poker</string>
     <string name="project_details_screen_daily_label">Daily</string>
     <string name="project_details_screen_retrobox_label">Retrobox</string>
-    
+
     <string name="reset_password_screen_title">Reset password</string>
     <string name="reset_password_screen_email_label">Email</string>
     <string name="reset_password_screen_reset_button_text">Reset password</string>

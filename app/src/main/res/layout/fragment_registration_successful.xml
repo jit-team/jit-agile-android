@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -32,7 +31,6 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="16dp"
@@ -40,41 +38,51 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <TextView
-                android:id="@+id/register_successful_username"
-                style="@style/TextAppearance.AppCompat.Title"
+                android:id="@+id/registration_successful_app_name"
+                style="@style/AppTheme.AppTitleText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{viewModel.user.name}"
-                app:layout_constraintBottom_toTopOf="@+id/register_successful_welcome"
+                android:text="@string/account_screens_app_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.2"
-                app:layout_constraintVertical_chainStyle="packed"
-                tools:text="Example User" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/register_successful_welcome"
-                style="@style/TextAppearance.AppCompat.Subhead"
+                android:id="@+id/registration_successful_app_description"
+                style="@style/AppTheme.AppDescriptionText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/registration_successful_screen_welcome_label"
-                app:layout_constraintBottom_toTopOf="@+id/registration_successful_start"
+                android:text="@string/account_screens_app_description"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/register_successful_username" />
+                app:layout_constraintTop_toBottomOf="@id/registration_successful_app_name" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="?defaultButtonHeight"
+                android:background="#FF7C7C7C"
+                android:gravity="center"
+                android:text="@string/registration_successful_screen_success_label"
+                android:textColor="@color/light_text_color"
+                app:layout_constraintBottom_toTopOf="@id/registration_successful_start"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/registration_successful_app_description" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/registration_successful_start"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="?defaultButtonHeight"
+                android:layout_margin="30dp"
                 android:layout_marginTop="10dp"
                 android:onClick="@{() -> viewModel.confirmSuccess()}"
                 android:text="@string/registration_successful_screen_start_button_text"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/register_successful_welcome" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintWidth_percent="0.5" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

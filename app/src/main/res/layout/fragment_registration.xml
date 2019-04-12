@@ -41,23 +41,23 @@
 
             <TextView
                 android:id="@+id/registration_app_name"
+                style="@style/AppTheme.AppTitleText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:text="@string/account_screens_app_name"
-                android:textSize="35sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/registration_app_description"
+                style="@style/AppTheme.AppDescriptionText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/account_screens_app_description"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/login_app_name" />
+                app:layout_constraintTop_toBottomOf="@id/registration_app_name" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/registration_layout_username"
@@ -69,7 +69,7 @@
                 app:bindRegistrationViewEnabled="@{viewModel.state}"
                 app:layout_constraintBottom_toTopOf="@id/registration_layout_email"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/registration_app_description"
                 app:layout_constraintVertical_chainStyle="packed">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -78,6 +78,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/registration_screen_username_label"
+                    android:drawableStart="@drawable/ic_user"
                     android:inputType="textPersonName"
                     android:text="@={viewModel.userName}" />
 
@@ -102,6 +103,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/registration_screen_email_label"
+                    android:drawableStart="@drawable/ic_mail"
                     android:inputType="textEmailAddress"
                     android:text="@={viewModel.email}" />
 
@@ -126,6 +128,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/registration_screen_password_label"
+                    android:drawableStart="@drawable/ic_password"
                     android:inputType="textPassword"
                     android:text="@={viewModel.password}" />
 

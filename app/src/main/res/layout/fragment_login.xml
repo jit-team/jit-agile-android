@@ -39,17 +39,17 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <TextView
+                style="@style/AppTheme.AppTitleText"
                 android:id="@+id/login_app_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:text="@string/account_screens_app_name"
-                android:textSize="35sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                style="@style/AppTheme.AppDescriptionText"
                 android:id="@+id/login_app_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -76,7 +76,7 @@
                     style="@style/AppTheme.EditTextInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_mail_24dp"
+                    android:drawableStart="@drawable/ic_mail"
                     android:hint="@string/login_screen_email_label"
                     android:inputType="textEmailAddress"
                     android:text="@={viewModel.email}" />
@@ -101,7 +101,7 @@
                     style="@style/AppTheme.EditTextInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_password_24dp"
+                    android:drawableStart="@drawable/ic_password"
                     android:hint="@string/login_screen_password_label"
                     android:inputType="textPassword"
                     android:text="@={viewModel.password}" />
