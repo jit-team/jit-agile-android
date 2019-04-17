@@ -2,13 +2,14 @@
 <resources>
     <color name="red_600">#e53935</color>
 
-    <color name="colorPrimary">#78777C</color>
-    <color name="colorPrimaryDark">#4E4D52</color>
+    <color name="colorPrimary">#000</color>
+    <color name="colorPrimaryDark">#000</color>
     <color name="colorAccent">#F9D267</color>
 
     <color name="dark_text_color">#000</color>
     <color name="light_text_color">#FFF</color>
 
+    <color name="window_color">#EAEAEA</color>
     <color name="login_screen_error_text">@color/red_600</color>
     <color name="registration_screen_error_text">@color/red_600</color>
     <color name="reset_password_screen_error_text">@color/red_600</color>
@@ -22,6 +23,9 @@
     <color name="daily_turn">#ddffd6</color>
     <color name="daily_end">#fbffe2e5</color>
     <color name="daily_default">#FFFFFF</color>
+    <color name="item_daily_inactive">#414141</color>
+    <color name="item_daily_active">#FFCB3A</color>
+    <color name="item_daily_text_color">#FFF</color>
 
     <color name="daily_current_user_text">@color/light_text_color</color>
     <color name="daily_current_user_background">@color/colorPrimary</color>
@@ -35,4 +39,12 @@
     <color name="poker_card_text_color">@color/colorPrimaryDark</color>
     <color name="poker_card_background_solid">@color/colorAccent</color>
     <color name="poker_card_background_stroke">#FFF</color>
+
+    <color name="details_toolbar_active_color">#E5B736</color>
+    <color name="details_toolbar_inactive_color">#414141</color>
+    <color name="details_active_color">#FFCB3A</color>
+    <color name="details_inactive_color">#717171</color>
+    <color name="details_card_active_color">#FFCB3A</color>
+    <color name="details_card_inactive_color">#EAEAEA</color>
+
 </resources>

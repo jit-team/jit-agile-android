@@ -26,6 +26,7 @@ class ProjectDetailsViewModel(
     private val joinDailyUseCase: JoinDailyUseCase,
     private val navigator: Navigator,
     private val projectId: String,
+    val active: Boolean,
     mainDispatcher: CoroutineDispatcher
 ) : CoroutineViewModel(mainDispatcher) {
     val project = MutableLiveData<Project>()
@@ -41,7 +42,7 @@ class ProjectDetailsViewModel(
         val params = DeleteProjectUseCase.Params(projectId)
         val result = deleteProjectUseCase.executeAsync(params).await()
         when (result) {
-            is Success -> navigator.navigateBack(ProjectDetails(projectId))
+            is Success -> navigator.navigateBack(ProjectDetails(projectId, false))
             is Failure -> state.value = State.Fail(result.error)
         }
     }
@@ -51,7 +52,7 @@ class ProjectDetailsViewModel(
         val params = LeaveProjectUseCase.Params(projectId)
         val result = leaveProjectUseCase.executeAsync(params).await()
         when (result) {
-            is Success -> navigator.navigateBack(ProjectDetails(projectId))
+            is Success -> navigator.navigateBack(ProjectDetails(projectId, active))
             is Failure -> state.value = State.Fail(result.error)
         }
     }
@@ -64,7 +65,7 @@ class ProjectDetailsViewModel(
         when (result) {
             is Success -> {
                 navigator.navigate(
-                    from = ProjectDetails(projectId),
+                    from = ProjectDetails(projectId, active),
                     to = Daily(projectId)
                 )
                 state.value = State.Success
@@ -74,11 +75,11 @@ class ProjectDetailsViewModel(
     }
 
     fun changePassword() {
-        navigator.navigate(ProjectDetails(projectId), ChangeProjectPassword)
+        navigator.navigate(ProjectDetails(projectId, active), ChangeProjectPassword)
     }
 
     fun planningPoker() {
-        navigator.navigate(ProjectDetails(projectId), Navigator.Destination.PlanningPoker)
+        navigator.navigate(ProjectDetails(projectId, active), Navigator.Destination.PlanningPoker)
     }
 
     private fun executeGetProjectDetails() = launch {
@@ -87,7 +88,7 @@ class ProjectDetailsViewModel(
         state.value = resultState
 
         if (resultState is State.Fail) {
-            navigator.navigateBack(ProjectDetails(projectId))
+            navigator.navigateBack(ProjectDetails(projectId, active))
         }
     }
 

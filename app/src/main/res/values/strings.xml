@@ -4,7 +4,7 @@
     <string name="splash_screen_logo_placeholder">JIT Team</string>
     <string name="splash_screen_version">Ver. %s</string>
 
-    <string name="login_screen_title">Login</string>
+    <string name="login_screen_title">Welcome</string>
     <string name="login_screen_email_label">Email</string>
     <string name="login_screen_password_label">Password</string>
     <string name="login_screen_login_button_text">log in</string>
@@ -35,7 +35,7 @@
     <string name="registration_screen_error_unknown">Unknown error</string>
     <string name="registration_screen_error_network">Network error</string>
 
-    <string name="registration_successful_screen_title">Registration successful</string>
+    <string name="registration_successful_screen_title">Success</string>
     <string name="registration_successful_screen_welcome_label">welcome to JIT Agile</string>
     <string name="registration_successful_screen_success_label">Register successful</string>
     <string name="registration_successful_screen_start_button_text">Let\'s start</string>
@@ -52,6 +52,8 @@
     <string name="project_list_screen_error_unknown">Unknown error</string>
     <string name="project_list_screen_error_user_not_found">User not found</string>
     <string name="project_list_screen_error_connection">Server connection error</string>
+
+    <string name="list_item_project_join">Join daily</string>
 
     <string name="project_details_screen_empty_state_label">No participants</string>
     <string name="project_details_screen_menu_leave_project">Leave</string>
@@ -78,8 +80,9 @@
     <string name="project_details_screen_change_password_error_empty_password">Empty password</string>
     <string name="project_details_screen_change_password_success_message">Password has been changed</string>
     <string name="project_details_screen_start_daily_button_text">Start daily</string>
-    <string name="project_details_screen_planning_poker_button_text">Planning poker</string>
-    <string name="project_details_screen_menu_planning_poker">Planning poker</string>
+    <string name="project_details_screen_planning_poker_label">Planning poker</string>
+    <string name="project_details_screen_daily_label">Daily</string>
+    <string name="project_details_screen_retrobox_label">Retrobox</string>
 
     <string name="reset_password_screen_title">Reset password</string>
     <string name="reset_password_screen_email_label">Email</string>
@@ -94,7 +97,7 @@
 
     <string name="project_creation_screen_project_label">Project name</string>
     <string name="project_creation_screen_password_label">Password</string>
-    <string name="project_creation_screen_create_button_text">Create</string>
+    <string name="project_creation_screen_create_button_text">Create project</string>
     <string name="project_creation_screen_error_invalid_project_name">Invalid project name</string>
     <string name="project_creation_screen_error_project_already_exist">Project already exist</string>
     <string name="project_creation_screen_error_empty_project_name">Empty project name</string>
@@ -111,7 +114,7 @@
 
     <string name="project_joining_screen_project_label">Project name</string>
     <string name="project_joining_screen_password_label">Password</string>
-    <string name="project_joining_screen_join_button_text">Join</string>
+    <string name="project_joining_screen_join_button_text">Join project</string>
     <string name="project_joining_screen_error_invalid_project_name">Invalid project name</string>
     <string name="project_joining_screen_error_empty_project_name">Empty project name</string>
     <string name="project_joining_screen_error_project_not_found">Project not found</string>
@@ -153,4 +156,7 @@
     <string name="notification_daily_started">Daily has been started</string>
 
     <string name="planning_poker_title">Planning poker</string>
+
+    <string name="account_screens_app_name">JIT Agile</string>
+    <string name="account_screens_app_description">To help teams work together</string>
 </resources>

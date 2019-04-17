@@ -1,7 +1,6 @@
 package pl.jitsolutions.agile
 
 import android.app.Application
-import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
@@ -20,11 +19,10 @@ class JITAgileApplication : Application(), KodeinAware {
     }
 
     private fun setupCrashlytics() {
-        val crashlyticsKit = Crashlytics.Builder()
-            .core(CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
+        val crashlyticsCore = CrashlyticsCore.Builder()
+            .disabled(BuildConfig.DEBUG)
             .build()
-
-        Fabric.with(this, crashlyticsKit)
+        Fabric.with(this, crashlyticsCore)
     }
 
     private fun setupFirebase() {
