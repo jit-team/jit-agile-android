@@ -111,7 +111,7 @@ class DailyViewModel(
             .withIndex()
             .associate { it.value to it.index }
         return users.asSequence()
-            .filter { queue.contains(it.id) }
+            .filter { it.active }
             .sortedBy { orderById[it.id] }
             .map { user ->
                 val currentUserId = queue[0]

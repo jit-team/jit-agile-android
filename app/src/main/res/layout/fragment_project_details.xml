@@ -35,8 +35,7 @@
                 app:bindProjectDetailsBackArrowVisibility="@{true}"
                 app:bindProjectDetailsToolbarColor="@{viewModel.active}"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:title="Details"
-                tools:title="Example project" />
+                app:title="@string/project_details_screen_title" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
