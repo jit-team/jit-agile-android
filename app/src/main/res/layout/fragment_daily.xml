@@ -41,6 +41,7 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <View
+                android:id="@+id/daily_project_info_background"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="@color/daily_card_inactive_color"
@@ -66,14 +67,16 @@
                 android:id="@+id/daily_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/daily_screen_running"
+                android:text="@string/daily_screen_status_running"
                 android:textColor="@color/daily_status_text_color"
                 android:textSize="18sp"
+                app:bindDailyStatus="@{viewModel.dailyState}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/daily_project_name" />
 
             <ImageView
+                android:id="@+id/daily_icon_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="15dp"
@@ -113,6 +116,7 @@
 
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/daily_card_quotation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
@@ -125,6 +129,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_margin="16dp"
+                    android:fontFamily="sans-serif-light"
                     android:gravity="center_horizontal"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
@@ -138,53 +143,62 @@
                 android:id="@+id/daily_bottom_buttons"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
+                android:layout_marginBottom="20dp"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal"
+                android:weightSum="1"
                 app:layout_constraintBottom_toBottomOf="parent">
 
                 <com.google.android.material.button.MaterialButton
-                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-                    android:layout_width="match_parent"
+                    android:layout_width="220dp"
                     android:layout_height="match_parent"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
                     android:onClick="@{() -> viewModel.quitDaily()}"
                     android:text="@string/daily_screen_quit_button_text"
-                    android:textSize="22sp"
-                    android:visibility="visible"
+                    android:textSize="18sp"
+                    android:visibility="gone"
                     app:bindDailyQuitVisibility="@{viewModel.dailyState}"
-                    app:bindDailyViewEnabled="@{viewModel.state}"/>
+                    app:bindDailyViewEnabled="@{viewModel.state}"
+                    tools:visibility="visible" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/daily_button_1"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:textColor="#F00"
-                    android:textSize="22sp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="0.5"
+                    android:backgroundTint="#717171"
+                    android:textSize="18sp"
+                    android:visibility="gone"
                     app:bindDailyEnd="@{viewModel}"
                     app:bindDailyEndVisibility="@{viewModel.dailyState}"
                     app:bindDailyViewEnabled="@{viewModel.state}"
-                    app:cornerRadius="0dp"
-                    tools:text="end" />
+                    tools:text="end"
+                    tools:visibility="visible" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/daily_button_2"
-                    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="0.5"
                     android:onClick="@{() -> viewModel.nextTurn()}"
-                    android:textSize="22sp"
+                    android:textSize="18sp"
+                    android:visibility="visible"
                     app:bindDailyNextTurnButton="@{viewModel.dailyState}"
                     app:bindDailyViewEnabled="@{viewModel.state}"
-                    app:cornerRadius="0dp"
                     tools:text="next" />
 
             </LinearLayout>
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/daily_view_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                app:bindDailyGroupVisibility="@{viewModel.state}"
+                app:constraint_referenced_ids="daily_project_info_background,
+                daily_card_quotation,daily_bottom_buttons,count_down,daily_project_name,daily_status,daily_icon_time" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
