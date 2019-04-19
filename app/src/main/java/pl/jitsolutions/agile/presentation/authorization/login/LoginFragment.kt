@@ -29,7 +29,7 @@ class LoginFragment : BaseFragment() {
             false
         )
         binding.viewModel = viewModel
-        binding.setLifecycleOwner(this)
+        binding.lifecycleOwner = this
         return binding.root
     }
 }

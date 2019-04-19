@@ -1,15 +1,12 @@
 package pl.jitsolutions.agile.presentation.authorization.registration
 
-import android.content.ContextWrapper
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.databinding.BindingAdapter
 import com.google.android.material.textfield.TextInputLayout
-import pl.jitsolutions.agile.common.Error
 import pl.jitsolutions.agile.R
+import pl.jitsolutions.agile.common.Error
 
 @BindingAdapter("bindRegistrationUsernameError")
 fun bindRegistrationUsernameError(
@@ -74,18 +71,6 @@ fun bindRegistrationProgressVisibility(
         RegistrationViewModel.State.InProgress -> View.VISIBLE
         is RegistrationViewModel.State.Fail -> View.INVISIBLE
         RegistrationViewModel.State.Success -> View.INVISIBLE
-    }
-}
-
-@BindingAdapter("bindRegistrationBackArrowVisibility")
-fun bindRegistrationBackArrowVisibility(view: View, bind: Boolean) {
-    if (bind) {
-        val wrapper = view.context as? ContextWrapper
-        val activity = wrapper?.baseContext as? AppCompatActivity
-        activity?.apply {
-            setSupportActionBar(view as? Toolbar)
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        }
     }
 }
 

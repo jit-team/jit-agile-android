@@ -1,15 +1,15 @@
-package pl.jitsolutions.agile.presentation.authorization.registrationSuccessful
+package pl.jitsolutions.agile.presentation.common
 
-import android.view.ContextThemeWrapper
+import android.content.ContextWrapper
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.BindingAdapter
 
-@BindingAdapter("bindRegistrationSuccessFulBackArrowVisibility")
-fun registrationSuccessfulBackArrowVisibilityBindingAdapter(view: View, bind: Boolean) {
+@BindingAdapter("bindBackArrowVisibility")
+fun bindBackArrowVisibility(view: View, bind: Boolean) {
     if (bind) {
-        val wrapper = view.context as? ContextThemeWrapper
+        val wrapper = view.context as? ContextWrapper
         val activity = wrapper?.baseContext as? AppCompatActivity
         activity?.apply {
             setSupportActionBar(view as? Toolbar)

@@ -44,12 +44,15 @@ abstract class BaseActivity : AppCompatActivity(), KodeinAware {
             .commit()
     }
 
-    override fun onSupportNavigateUp() = findNavController(this, android.R.id.content).navigateUp()
+    override fun onSupportNavigateUp(): Boolean {
+        if (getTopFragment().onBackPressed()) {
+            return false
+        }
+        return findNavController(this, android.R.id.content).navigateUp()
+    }
 
     override fun onBackPressed() {
-        val navHost = supportFragmentManager.findFragmentByTag("NavHostFragment")!!
-        val topFragment = navHost.childFragmentManager.fragments.last() as FragmentNavigation
-
+        val topFragment = getTopFragment()
         if (topFragment.onBackPressed()) {
             return
         }
@@ -58,6 +61,11 @@ abstract class BaseActivity : AppCompatActivity(), KodeinAware {
             super.onBackPressed()
         }
     }
+
+    private fun getTopFragment() =
+        supportFragmentManager.findFragmentByTag("NavHostFragment")!!.let {
+            it.childFragmentManager.fragments.last() as FragmentNavigation
+        }
 
     private fun registerNotificationChannel(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

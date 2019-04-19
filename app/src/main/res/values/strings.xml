@@ -55,6 +55,7 @@
 
     <string name="list_item_project_join">Join daily</string>
 
+    <string name="project_details_screen_title">Details</string>
     <string name="project_details_screen_empty_state_label">No participants</string>
     <string name="project_details_screen_menu_leave_project">Leave</string>
     <string name="project_details_screen_menu_delete_project">Delete</string>
@@ -124,7 +125,8 @@
     <string name="project_joining_screen_error_network">Network error</string>
     <string name="project_joining_screen_success_message">Join to project successful</string>
 
-    <string name="daily_screen_start_button_text">Start</string>
+    <string name="daily_screen_title">Daily</string>
+    <string name="daily_screen_start_button_text">Start daily</string>
     <string name="daily_screen_next_button_text">Next</string>
     <string name="daily_screen_skip_button_text">Skip</string>
     <string name="daily_screen_end_button_text">End</string>
@@ -140,6 +142,9 @@
     <string name="daily_screen_end_confirmation_message">Are you sure you want to end the daily?</string>
     <string name="daily_screen_end_confirmation_positive_button_text">End</string>
     <string name="daily_screen_end_confirmation_negative_button_text">Cancel</string>
+    <string name="daily_screen_status_running">Daily is running…</string>
+    <string name="daily_screen_status_preparing">Waiting for other team members…</string>
+    <string name="daily_screen_status_end">Daily is over!</string>
 
     <string-array name="daily_screen_quota">
         <item name="daily_screen_quota1">“Learn from yesterday, live for today, hope for tomorrow. The important thing is not to stop questioning.” – Albert Einstein</item>

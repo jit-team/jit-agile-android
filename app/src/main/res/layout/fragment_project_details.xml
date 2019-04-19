@@ -32,11 +32,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/details_toolbar_inactive_color"
-                app:bindProjectDetailsBackArrowVisibility="@{true}"
+                app:bindBackArrowVisibility="@{true}"
                 app:bindProjectDetailsToolbarColor="@{viewModel.active}"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:title="Details"
-                tools:title="Example project" />
+                app:title="@string/project_details_screen_title" />
 
         </com.google.android.material.appbar.AppBarLayout>
 

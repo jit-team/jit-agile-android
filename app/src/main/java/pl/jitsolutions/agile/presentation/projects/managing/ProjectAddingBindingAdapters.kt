@@ -1,9 +1,6 @@
 package pl.jitsolutions.agile.presentation.projects.managing
 
-import android.content.ContextWrapper
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.databinding.BindingAdapter
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
@@ -20,18 +17,6 @@ fun bindViewPagerToTabs(viewPager: ViewPager, tabLayout: TabLayout) {
         supportFragmentManager?.apply {
             viewPager.adapter = ProjectAddingPagerAdapter(titles, this)
             tabLayout.setupWithViewPager(viewPager)
-        }
-    }
-}
-
-@BindingAdapter("bindProjectAddingBackArrowVisibility")
-fun bindProjectAddingBackArrowVisibility(view: View, bind: Boolean) {
-    if (bind) {
-        val wrapper = view.context as? ContextWrapper
-        val activity = wrapper?.baseContext as? AppCompatActivity
-        activity?.apply {
-            setSupportActionBar(view as? Toolbar)
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
     }
 }

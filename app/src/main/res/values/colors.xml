@@ -26,14 +26,22 @@
     <color name="item_daily_inactive">#414141</color>
     <color name="item_daily_active">#FFCB3A</color>
     <color name="item_daily_text_color">#FFF</color>
+    <color name="daily_toolbar_active_color">#E5B736</color>
+    <color name="daily_toolbar_inactive_color">#414141</color>
+    <color name="daily_card_active_color">#FFCB3A</color>
+    <color name="daily_card_inactive_color">#717171</color>
+    <color name="daily_status_text_color">#CCFFFFFF</color>
+    <color name="daily_status_dot_current_user_color">@android:color/holo_green_dark</color>
+    <color name="daily_status_dot_active_user_color">#FFCB3A</color>
+    <color name="daily_status_dot_inactive_user_color">#969696</color>
 
     <color name="daily_current_user_text">@color/light_text_color</color>
     <color name="daily_current_user_background">@color/colorPrimary</color>
     <color name="daily_active_user_text">#30b300</color>
-    <color name="daily_active_user_background">@android:color/transparent</color>
+    <color name="daily_active_user_background">@android:color/white</color>
     <color name="daily_other_user">@color/dark_text_color</color>
     <color name="daily_other_user_background">@android:color/transparent</color>
-    <color name="daily_countdown_timer_default_text">@android:color/black</color>
+    <color name="daily_countdown_timer_default_text">@android:color/white</color>
     <color name="daily_countdown_timer_negative_text">@color/red_600</color>
 
     <color name="poker_card_text_color">@color/colorPrimaryDark</color>

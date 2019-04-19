@@ -1,9 +1,5 @@
 package pl.jitsolutions.agile.presentation.planningpoker
 
-import android.content.ContextWrapper
-import android.view.View
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.databinding.BindingAdapter
 import androidx.viewpager.widget.ViewPager
 import pl.jitsolutions.agile.R
@@ -34,17 +30,5 @@ private fun ViewPager.setZoomAnimation() {
         val scale = 1.1026785f - Math.abs(position)
         val scaleElevation = scale * 20f
         view.elevation = scaleElevation
-    }
-}
-
-@BindingAdapter("bindPlanningPokerBackArrowVisibility")
-fun bindPlanningPokerBackArrowVisibility(view: View, bind: Boolean) {
-    if (bind) {
-        val wrapper = view.context as? ContextWrapper
-        val activity = wrapper?.baseContext as? AppCompatActivity
-        activity?.apply {
-            setSupportActionBar(view as? Toolbar)
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        }
     }
 }

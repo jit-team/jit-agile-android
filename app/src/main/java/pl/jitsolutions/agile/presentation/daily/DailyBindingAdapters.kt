@@ -1,15 +1,15 @@
 package pl.jitsolutions.agile.presentation.daily
 
-import android.animation.ArgbEvaluator
-import android.animation.ValueAnimator
-import android.graphics.drawable.ColorDrawable
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.media.MediaPlayer
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
-import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.Group
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -45,6 +45,7 @@ fun bindDailyEnd(
     val buttonVisibility = when (dailyState) {
         DailyViewModel.DailyState.End,
         DailyViewModel.DailyState.LastTurn,
+        DailyViewModel.DailyState.Prepare,
         DailyViewModel.DailyState.LastWait -> View.GONE
         else -> View.VISIBLE
     }
@@ -98,63 +99,10 @@ fun bindDailyNextTurnButton(button: Button, dailyState: DailyViewModel.DailyStat
     }
 }
 
-@BindingAdapter("bindDailyBackgroundColor")
-fun bindBackgroundColor(
-    coordinatorLayout: CoordinatorLayout,
-    dailyState: DailyViewModel.DailyState
-) {
-    when (dailyState) {
-        DailyViewModel.DailyState.Prepare -> {
-            val colorFrom = (coordinatorLayout.background as ColorDrawable).color
-            val colorTo = ContextCompat.getColor(coordinatorLayout.context, R.color.daily_prepare)
-            transform(coordinatorLayout, colorFrom, colorTo)
-        }
-        DailyViewModel.DailyState.Wait, DailyViewModel.DailyState.LastWait -> {
-            val colorFrom = (coordinatorLayout.background as ColorDrawable).color
-            val colorTo = ContextCompat.getColor(coordinatorLayout.context, R.color.daily_wait)
-            transform(coordinatorLayout, colorFrom, colorTo)
-        }
-        DailyViewModel.DailyState.Turn, DailyViewModel.DailyState.LastTurn -> {
-            val colorFrom = (coordinatorLayout.background as ColorDrawable).color
-            val colorTo = ContextCompat.getColor(coordinatorLayout.context, R.color.daily_turn)
-            transform(coordinatorLayout, colorFrom, colorTo)
-        }
-        DailyViewModel.DailyState.End -> {
-            val colorFrom = (coordinatorLayout.background as ColorDrawable).color
-            val colorTo = ContextCompat.getColor(coordinatorLayout.context, R.color.daily_end)
-            transform(coordinatorLayout, colorFrom, colorTo)
-        }
-    }
-}
-
-private fun transform(coordinatorLayout: CoordinatorLayout, fromColor: Int, toColor: Int) {
-    val colorAnimation = ValueAnimator.ofObject(ArgbEvaluator(), fromColor, toColor)
-    colorAnimation.duration = 800
-    colorAnimation.addUpdateListener { animator ->
-        coordinatorLayout.setBackgroundColor(
-            animator.animatedValue as Int
-        )
-    }
-    colorAnimation.start()
-}
-
 @BindingAdapter("bindDailyUser")
 fun bindDailyUser(textView: TextView, user: User) {
-    val textColor = when {
-        user.current -> R.color.daily_current_user_text
-        user.active -> R.color.daily_active_user_text
-        else -> R.color.daily_other_user
-    }
-    val backgroundColor = when {
-        user.current -> R.color.daily_current_user_background
-        user.active -> R.color.daily_active_user_background
-        else -> R.color.daily_other_user_background
-    }
-
     with(textView) {
         text = if (user.name.isBlank()) user.email else user.name
-        setTextColor(ContextCompat.getColor(textView.context, textColor))
-        setBackgroundColor(ContextCompat.getColor(textView.context, backgroundColor))
     }
 }
 
@@ -164,18 +112,6 @@ fun bindDailyProgressVisibility(view: View, state: DailyViewModel.State) {
         DailyViewModel.State.Idle -> View.GONE
         DailyViewModel.State.InProgress -> View.VISIBLE
         DailyViewModel.State.Success -> View.GONE
-    }
-}
-
-@BindingAdapter(value = ["bindDailyLeave", "bindDailyLeaveVisibility"], requireAll = false)
-fun bindDailyLeave(view: View, onLeaveListener: () -> Unit, dailyState: DailyViewModel.DailyState) {
-    val visibility = when (dailyState) {
-        DailyViewModel.DailyState.End -> View.INVISIBLE
-        else -> View.VISIBLE
-    }
-    view.visibility = visibility
-    view.setOnClickListener {
-        showDailyLeaveConfirmation(view, onLeaveListener)
     }
 }
 
@@ -209,6 +145,69 @@ fun bindDailySound(view: View, playSound: Boolean) {
     if (playSound) {
         val mp = MediaPlayer.create(view.context, R.raw.start_daily_sound)
         mp.start()
+    }
+}
+
+@BindingAdapter("bindDailyUserBackground")
+fun bindDailyUserBackground(layout: CardView, user: User) {
+    val backgroundColor = when {
+        user.current -> ContextCompat.getColor(layout.context, R.color.daily_active_user_background)
+        else -> Color.TRANSPARENT
+    }
+    val elevation = when {
+        user.current -> layout.context.resources.getDimension(R.dimen.daily_item_user_elevation)
+        else -> 0f
+    }
+
+    with(layout) {
+        setCardBackgroundColor(backgroundColor)
+        this.elevation = elevation
+    }
+}
+
+@BindingAdapter("bindDailyUserStatus")
+fun bindDailyUserStatus(view: View, user: User) {
+    val color = when {
+        user.current -> R.color.daily_status_dot_current_user_color
+        user.active -> R.color.daily_status_dot_active_user_color
+        else -> R.color.daily_status_dot_inactive_user_color
+    }
+    view.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(view.context, color))
+}
+
+@BindingAdapter("bindDailyProjectInfoBackground")
+fun bindDailyProjectInfoBackground(view: View, state: DailyViewModel.DailyState) {
+    val backgroundColor = when (state) {
+        DailyViewModel.DailyState.Prepare -> R.color.daily_card_inactive_color
+        DailyViewModel.DailyState.End -> R.color.daily_card_inactive_color
+        else -> R.color.daily_card_active_color
+    }
+    view.setBackgroundColor(ContextCompat.getColor(view.context, backgroundColor))
+}
+
+@BindingAdapter("bindDailyUserAlpha")
+fun bindDailyUserAlpha(view: View, user: User) {
+    val alpha = when {
+        !user.active -> 0.8f
+        else -> 1f
+    }
+    view.alpha = alpha
+}
+
+@BindingAdapter("bindDailyStatus")
+fun bindDailyStatus(textView: TextView, state: DailyViewModel.DailyState) {
+    val textId = when (state) {
+        DailyViewModel.DailyState.Prepare -> R.string.daily_screen_status_preparing
+        DailyViewModel.DailyState.End -> R.string.daily_screen_status_end
+        else -> R.string.daily_screen_status_running
+    }
+    textView.text = textView.context.getString(textId)
+}
+
+@BindingAdapter("bindDailyGroupVisibility")
+fun bindDailyGroupVisibility(group: Group, state: DailyViewModel.State) {
+    when (state) {
+        DailyViewModel.State.Success -> group.visibility = View.VISIBLE
     }
 }
 
