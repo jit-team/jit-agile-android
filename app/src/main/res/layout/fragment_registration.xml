@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
-                app:bindRegistrationBackArrowVisibility="@{true}"
+                app:bindBackArrowVisibility="@{true}"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
                 app:title="@string/registration_screen_title" />
 

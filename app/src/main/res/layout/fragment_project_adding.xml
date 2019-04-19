@@ -17,7 +17,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
-                app:bindProjectAddingBackArrowVisibility="@{true}"
+                app:bindBackArrowVisibility="@{true}"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
                 app:title="@string/project_adding_screen_title" />
 

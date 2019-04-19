@@ -1,13 +1,11 @@
 package pl.jitsolutions.agile.presentation.projects.details
 
-import android.content.ContextWrapper
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
@@ -16,18 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import pl.jitsolutions.agile.R
 import pl.jitsolutions.agile.common.Error
 import pl.jitsolutions.agile.domain.User
-
-@BindingAdapter("bindProjectDetailsBackArrowVisibility")
-fun bindProjectDetailsBackArrowVisibility(view: View, bind: Boolean) {
-    if (bind) {
-        val wrapper = view.context as? ContextWrapper
-        val activity = wrapper?.baseContext as? AppCompatActivity
-        activity?.apply {
-            setSupportActionBar(view as? Toolbar)
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        }
-    }
-}
 
 @BindingAdapter("bindProjectDetailsListOfUsers")
 fun bindProjectDetailsListOfUsers(recyclerView: RecyclerView, users: List<User>?) {
