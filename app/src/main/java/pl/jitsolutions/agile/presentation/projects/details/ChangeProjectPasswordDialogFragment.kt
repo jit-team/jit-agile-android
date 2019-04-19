@@ -43,7 +43,7 @@ class ChangeProjectPasswordDialogFragment : BaseDialogFragment() {
             val viewModel = getViewModel()
 
             binding.viewModel = viewModel
-            binding.setLifecycleOwner(it)
+            binding.lifecycleOwner = it
 
             dialog.setOnShowListener {
                 binding.dialog = dialog

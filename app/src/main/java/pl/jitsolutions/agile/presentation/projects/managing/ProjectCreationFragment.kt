@@ -29,7 +29,7 @@ class ProjectCreationFragment : BaseFragment() {
         val binding: FragmentProjectCreationBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_project_creation, container, false)
         binding.viewModel = viewModel
-        binding.setLifecycleOwner(this)
+        binding.lifecycleOwner = this
         viewModel.state.observe(this, Observer {
             if (it == ProjectCreationViewModel.State.Success) {
                 Toast.makeText(

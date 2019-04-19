@@ -63,6 +63,7 @@
                 style="@style/AppTheme.EditTextInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/login_screen_email_label"
                 android:nextFocusDown="@+id/login_layout_password"
                 app:bindLoginEmailError="@{viewModel.state}"
                 app:bindLoginViewEnabled="@{viewModel.state}"
@@ -73,11 +74,8 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/login_email"
-                    style="@style/AppTheme.EditTextInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_mail"
-                    android:hint="@string/login_screen_email_label"
                     android:inputType="textEmailAddress"
                     android:text="@={viewModel.email}" />
 
@@ -89,7 +87,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/ic_test_shape"
+                android:hint="@string/login_screen_password_label"
                 android:nextFocusUp="@+id/login_layout_email"
                 app:bindLoginPasswordError="@{viewModel.state}"
                 app:bindLoginViewEnabled="@{viewModel.state}"
@@ -102,8 +100,6 @@
                     style="@style/AppTheme.EditTextInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_password"
-                    android:hint="@string/login_screen_password_label"
                     android:inputType="textPassword"
                     android:text="@={viewModel.password}" />
 
