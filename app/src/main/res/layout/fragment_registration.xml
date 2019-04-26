@@ -155,7 +155,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="@color/registration_screen_error_text"
                 app:bindRegistrationUnknownErrorVisibility="@{viewModel.state}"
-                app:layout_constraintTop_toBottomOf="@id/registration_layout_password" />
+                app:layout_constraintTop_toBottomOf="@id/registration_app_description" />
 
             <androidx.core.widget.ContentLoadingProgressBar
                 android:id="@+id/registration_progress"

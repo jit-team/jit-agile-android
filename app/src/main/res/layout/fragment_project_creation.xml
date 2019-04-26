@@ -16,18 +16,6 @@
         android:padding="16dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <TextView
-            android:id="@+id/project_creation_project_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="@string/project_creation_screen_project_label"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/project_creation_project_layout"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/project_creation_project_layout"
@@ -35,12 +23,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:hint="@string/project_creation_screen_project_label"
             app:bindProjectCreationEditingEnabled="@{viewModel.state}"
             app:bindProjectCreationNameError="@{viewModel.state}"
             app:bindProjectCreationViewEnabled="@{viewModel.state}"
-            app:layout_constraintBottom_toTopOf="@id/project_creation_password_label"
+            app:layout_constraintBottom_toTopOf="@id/project_creation_password_layout"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/project_creation_project_label">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -49,18 +39,6 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/project_creation_password_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
-            android:text="@string/project_creation_screen_password_label"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/project_creation_password_layout"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/project_creation_project_layout" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/project_creation_password_layout"
@@ -72,13 +50,13 @@
             app:bindProjectCreationPasswordError="@{viewModel.state}"
             app:bindProjectCreationViewEnabled="@{viewModel.state}"
             app:layout_constraintBottom_toTopOf="@id/project_create"
-            app:layout_constraintTop_toBottomOf="@id/project_creation_password_label"
+            android:hint="@string/project_creation_screen_password_label"
+            app:layout_constraintTop_toBottomOf="@id/project_creation_project_layout"
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_password"
                 android:inputType="textPassword"
                 android:text="@={viewModel.password}" />
 

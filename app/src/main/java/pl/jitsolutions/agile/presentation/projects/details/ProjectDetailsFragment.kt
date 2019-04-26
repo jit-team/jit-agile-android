@@ -47,7 +47,7 @@ class ProjectDetailsFragment : BaseFragment() {
         val viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(ProjectDetailsViewModel::class.java)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         viewModel.state.observe(this, Observer {
             setMenuVisibility(it !is ProjectDetailsViewModel.State.InProgress)
         })
