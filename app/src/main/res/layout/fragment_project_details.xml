@@ -86,8 +86,7 @@
                 android:onClick="@{() -> viewModel.joinDaily()}"
                 app:bindProjectDetailsDailyCardColor="@{viewModel.active}"
                 app:cardBackgroundColor="@color/details_card_inactive_color"
-                app:layout_constraintEnd_toStartOf="@id/details_card_poker"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/center_guideline"
                 app:layout_constraintTop_toBottomOf="@id/details_user_list"
                 app:layout_constraintWidth_percent="0.45">
 
@@ -130,8 +129,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="@{() -> viewModel.planningPoker()}"
                 app:cardBackgroundColor="@color/details_card_inactive_color"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/details_card_daily"
+                app:layout_constraintStart_toEndOf="@id/center_guideline"
                 app:layout_constraintTop_toBottomOf="@id/details_user_list"
                 app:layout_constraintWidth_percent="0.45">
 
@@ -171,8 +169,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="@color/details_card_inactive_color"
-                app:layout_constraintStart_toEndOf="@id/details_card_daily"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/center_guideline"
                 app:layout_constraintTop_toBottomOf="@id/details_card_daily"
                 app:layout_constraintWidth_percent="0.45">
 
@@ -211,6 +208,14 @@
                 android:layout_height="wrap_content"
                 app:bindProjectDetailsViewsVisibility="@{viewModel.state}"
                 app:constraint_referenced_ids="details_project_name,details_user_list,details_card_retro,details_card_poker,details_card_daily" />
+
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/center_guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
