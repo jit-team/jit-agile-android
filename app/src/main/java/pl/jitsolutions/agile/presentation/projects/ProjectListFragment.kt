@@ -35,7 +35,7 @@ class ProjectListFragment : BaseFragment() {
                 onProjectClick = { projectWithDaily -> viewModel.showProjectDetails(projectWithDaily.project.id, projectWithDaily.daily != null) }
             )
 
-        binding.setLifecycleOwner(viewLifecycleOwner)
+        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 
