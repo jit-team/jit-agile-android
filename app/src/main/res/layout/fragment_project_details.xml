@@ -39,180 +39,193 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <TextView
-                android:id="@+id/details_project_name"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:background="@color/details_inactive_color"
-                android:gravity="center"
-                android:text="@{viewModel.project.name}"
-                android:textColor="@color/light_text_color"
-                android:textSize="46sp"
-                app:bindProjectDetailsStateColor="@{viewModel.active}"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="WeJIT" />
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingBottom="10dp">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="@color/details_inactive_color"
-                app:bindProjectDetailsStateColor="@{viewModel.active}"
-                app:layout_constraintBottom_toBottomOf="@id/details_user_list"
-                app:layout_constraintTop_toTopOf="@id/details_user_list" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/details_user_list"
-                android:layout_width="wrap_content"
-                android:layout_height="80dp"
-                android:orientation="horizontal"
-                android:overScrollMode="never"
-                android:scrollbars="none"
-                app:bindProjectDetailsListOfUsers="@{viewModel.users}"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/details_project_name" />
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/details_card_daily"
-                style="@style/AppTheme.DetailsCardView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.joinDaily()}"
-                app:bindProjectDetailsDailyCardColor="@{viewModel.active}"
-                app:cardBackgroundColor="@color/details_card_inactive_color"
-                app:layout_constraintEnd_toStartOf="@id/details_card_poker"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/details_user_list"
-                app:layout_constraintWidth_percent="0.45">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <TextView
+                    android:id="@+id/details_project_name"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="100dp"
+                    android:background="@color/details_inactive_color"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:text="@{viewModel.project.name}"
+                    android:textColor="@color/light_text_color"
+                    android:textSize="46sp"
+                    app:bindProjectDetailsStateColor="@{viewModel.active}"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="WeJIT" />
 
-                    <ImageView
-                        android:id="@+id/icon_daily"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
-                        android:src="@drawable/ic_daily_dark"
-                        app:bindProjectDetailsDailyCardIcon="@{viewModel.active}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintWidth_percent="0.55" />
-
-                    <TextView
-                        style="@style/AppTheme.DetailsCardText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:text="@string/project_details_screen_daily_label"
-                        app:bindProjectDetailsDailyCardTextColor="@{viewModel.active}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/icon_daily" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/details_card_poker"
-                style="@style/AppTheme.DetailsCardView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.planningPoker()}"
-                app:cardBackgroundColor="@color/details_card_inactive_color"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/details_card_daily"
-                app:layout_constraintTop_toBottomOf="@id/details_user_list"
-                app:layout_constraintWidth_percent="0.45">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:layout_height="0dp"
+                    android:background="@color/details_inactive_color"
+                    app:bindProjectDetailsStateColor="@{viewModel.active}"
+                    app:layout_constraintBottom_toBottomOf="@id/details_user_list"
+                    app:layout_constraintTop_toTopOf="@id/details_user_list" />
 
-                    <ImageView
-                        android:id="@+id/icon_poker"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
-                        android:src="@drawable/ic_poker"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintWidth_percent="0.55" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/details_user_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    android:scrollbars="none"
+                    app:bindProjectDetailsListOfUsers="@{viewModel.users}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/details_project_name" />
 
-                    <TextView
-                        style="@style/AppTheme.DetailsCardText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:text="@string/project_details_screen_planning_poker_label"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/icon_poker" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/details_card_daily"
+                    style="@style/AppTheme.DetailsCardView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{() -> viewModel.joinDaily()}"
+                    app:bindProjectDetailsDailyCardColor="@{viewModel.active}"
+                    app:cardBackgroundColor="@color/details_card_inactive_color"
+                    app:layout_constraintEnd_toStartOf="@id/center_guideline"
+                    app:layout_constraintTop_toBottomOf="@id/details_user_list"
+                    app:layout_constraintWidth_percent="0.45">
 
-            </androidx.cardview.widget.CardView>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/details_card_retro"
-                style="@style/AppTheme.DetailsCardView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:cardBackgroundColor="@color/details_card_inactive_color"
-                app:layout_constraintStart_toEndOf="@id/details_card_daily"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/details_card_daily"
-                app:layout_constraintWidth_percent="0.45">
+                        <ImageView
+                            android:id="@+id/icon_daily"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/ic_daily_dark"
+                            app:bindProjectDetailsDailyCardIcon="@{viewModel.active}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintWidth_percent="0.55" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                        <TextView
+                            style="@style/AppTheme.DetailsCardText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:text="@string/project_details_screen_daily_label"
+                            app:bindProjectDetailsDailyCardTextColor="@{viewModel.active}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/icon_daily" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <ImageView
-                        android:id="@+id/icon_retro"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
-                        android:src="@drawable/ic_retrobox"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintWidth_percent="0.55" />
+                </androidx.cardview.widget.CardView>
 
-                    <TextView
-                        style="@style/AppTheme.DetailsCardText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:text="@string/project_details_screen_retrobox_label"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/icon_retro" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/details_card_poker"
+                    style="@style/AppTheme.DetailsCardView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{() -> viewModel.planningPoker()}"
+                    app:cardBackgroundColor="@color/details_card_inactive_color"
+                    app:layout_constraintStart_toEndOf="@id/center_guideline"
+                    app:layout_constraintTop_toBottomOf="@id/details_user_list"
+                    app:layout_constraintWidth_percent="0.45">
 
-            </androidx.cardview.widget.CardView>
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
 
-            <androidx.constraintlayout.widget.Group
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:bindProjectDetailsViewsVisibility="@{viewModel.state}"
-                app:constraint_referenced_ids="details_project_name,details_user_list,details_card_retro,details_card_poker,details_card_daily" />
+                        <ImageView
+                            android:id="@+id/icon_poker"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/ic_poker"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintWidth_percent="0.55" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                        <TextView
+                            style="@style/AppTheme.DetailsCardText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:text="@string/project_details_screen_planning_poker_label"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/icon_poker" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/details_card_retro"
+                    style="@style/AppTheme.DetailsCardView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    app:cardBackgroundColor="@color/details_card_inactive_color"
+                    app:layout_constraintEnd_toStartOf="@id/center_guideline"
+                    app:layout_constraintTop_toBottomOf="@id/details_card_daily"
+                    app:layout_constraintWidth_percent="0.45">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/icon_retro"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/ic_retrobox"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintWidth_percent="0.55" />
+
+                        <TextView
+                            style="@style/AppTheme.DetailsCardText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:text="@string/project_details_screen_retrobox_label"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/icon_retro" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.constraintlayout.widget.Group
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:bindProjectDetailsViewsVisibility="@{viewModel.state}"
+                    app:constraint_referenced_ids="details_project_name,details_user_list,details_card_retro,details_card_poker,details_card_daily" />
+
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/center_guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
 
         <TextView
             android:layout_width="wrap_content"

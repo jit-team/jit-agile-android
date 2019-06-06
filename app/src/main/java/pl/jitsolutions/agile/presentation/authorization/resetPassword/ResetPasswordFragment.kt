@@ -35,7 +35,7 @@ class ResetPasswordFragment : BaseFragment() {
             false
         )
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this
+        binding.setLifecycleOwner(viewLifecycleOwner)
         viewModel.state.observe(this, Observer {
             if (it is ResetPasswordViewModel.State.Success) {
                 showResetPasswordSuccessfulDialog()

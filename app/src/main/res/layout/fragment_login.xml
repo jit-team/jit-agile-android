@@ -156,7 +156,7 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="@color/login_screen_error_text"
                 app:bindLoginUnknownErrorVisibility="@{viewModel.state}"
-                app:layout_constraintTop_toBottomOf="@id/login_layout_password"
+                app:layout_constraintTop_toBottomOf="@id/login_app_description"
                 tools:visibility="visible" />
 
             <TextView

@@ -29,7 +29,7 @@ class RegistrationFragment : BaseFragment() {
             false
         )
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this
+        binding.setLifecycleOwner(viewLifecycleOwner)
         return binding.root
     }
 }

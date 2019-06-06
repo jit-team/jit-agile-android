@@ -24,7 +24,7 @@ class PlanningPokerFragment : BaseFragment() {
                 false
             )
         binding.adapter = PokerCardAdapter()
-        binding.lifecycleOwner = this
+        binding.setLifecycleOwner(viewLifecycleOwner)
         return binding.root
     }
 }
