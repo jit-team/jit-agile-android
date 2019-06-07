@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="adapter"
+            type="pl.jitsolutions.agile.presentation.projects.ProjectListAdapter" />
+
+        <variable
+            name="menuItemId"
+            type="int" />
+
+        <variable
+            name="viewModel"
+            type="pl.jitsolutions.agile.presentation.projects.ProjectListViewModel" />
+    </data>
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/project_list_drawer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:bindProjectListMenuItemSelected="@{menuItemId}">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/AppTheme.AppBarOverlay">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/project_list_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="?attr/colorPrimary"
+                    app:bindProjectListNavigationIconVisibility="@{true}"
+                    app:popupTheme="@style/AppTheme.PopupOverlay"
+                    app:title="@string/project_list_screen_title" />
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="?attr/actionBarSize">
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Large"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/project_list_screen_empty_list_label"
+                    app:bindProjectListEmptyList="@{viewModel.state}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@string/project_list_screen_empty_list_label" />
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Large"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/project_list_screen_error_text"
+                    app:bindProjectListError="@{viewModel.state}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@string/project_list_screen_error_unknown" />
+
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:bindProjectListRefreshListener="@{viewModel}"
+                    app:bindProjectListRefreshState="@{viewModel.state}">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:bindProjectListAdapter="@{adapter}"
+                        app:bindProjectListProjectsWithDaily="@{viewModel.projects}"
+                        app:bindRecyclerViewHasFixedSize="@{true}"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_margin="16dp"
+                android:onClick="@{() -> viewModel.createProject()}"
+                android:visibility="invisible"
+                bindProjectListFab="@{viewModel.state}"
+                app:srcCompat="@drawable/ic_add" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/navigationView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:bindProjectListLogoutListener="@{() -> viewModel.logout()}"
+            app:bindProjectListUserProfile="@{viewModel.user}"
+            app:headerLayout="@layout/layout_drawer_profile"
+            app:menu="@menu/menu_project_list_drawer">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|start"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:textColor="@color/dark_text_color"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                app:bindProjectListVersion="@{viewModel.version}"
+                tools:text="Ver. 1.0.0" />
+
+        </com.google.android.material.navigation.NavigationView>
+
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+</layout>

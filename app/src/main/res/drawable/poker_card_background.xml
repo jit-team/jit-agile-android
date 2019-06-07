@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <solid android:color="@color/poker_card_background_solid" />
+    <corners android:radius="20dp" />
+
+    <stroke
+        android:width="7dp"
+        android:color="@color/poker_card_background_stroke" />
+</shape>

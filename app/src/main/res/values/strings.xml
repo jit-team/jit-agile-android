@@ -1,0 +1,167 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="application_name">JIT Agile</string>
+
+    <string name="splash_screen_logo_placeholder">JIT Team</string>
+    <string name="splash_screen_version">Ver. %s</string>
+
+    <string name="login_screen_title">Welcome</string>
+    <string name="login_screen_email_label">Email</string>
+    <string name="login_screen_password_label">Password</string>
+    <string name="login_screen_login_button_text">log in</string>
+    <string name="login_screen_register_button_text">register</string>
+    <string name="login_screen_error_invalid_email">Invalid email address</string>
+    <string name="login_screen_error_empty_email">Empty email address</string>
+    <string name="login_screen_error_email_not_found">Email not found</string>
+    <string name="login_screen_error_unknown">Unknown error</string>
+    <string name="login_screen_error_invalid_password">Invalid password</string>
+    <string name="login_screen_error_empty_password">Empty password</string>
+    <string name="login_screen_error_network">Network error</string>
+    <string name="login_screen_forgot_password_label">Forgot your password?</string>
+
+    <string name="registration_screen_title">Register</string>
+    <string name="registration_screen_username_label">Username</string>
+    <string name="registration_screen_email_label">Email</string>
+    <string name="registration_screen_password_label">Password</string>
+    <string name="registration_screen_register_button_text">Register</string>
+    <string name="registration_screen_successful_toast_text">Register successful</string>
+    <string name="registration_screen_error_invalid_email">Invalid email address</string>
+    <string name="registration_screen_error_empty_email">Empty email</string>
+    <string name="registration_screen_error_user_exists">User already exist</string>
+    <string name="registration_screen_error_invalid_username">Invalid username</string>
+    <string name="registration_screen_error_empty_username">Empty username</string>
+    <string name="registration_screen_error_invalid_password">Invalid password</string>
+    <string name="registration_screen_error_weak_password">Weak password</string>
+    <string name="registration_screen_error_empty_password">Empty password</string>
+    <string name="registration_screen_error_unknown">Unknown error</string>
+    <string name="registration_screen_error_network">Network error</string>
+
+    <string name="registration_successful_screen_title">Success</string>
+    <string name="registration_successful_screen_welcome_label">welcome to JIT Agile</string>
+    <string name="registration_successful_screen_success_label">Register successful</string>
+    <string name="registration_successful_screen_start_button_text">Let\'s start</string>
+
+    <string name="project_list_screen_title">Projects</string>
+    <string name="project_list_screen_drawer_menu_log_out">Log Out</string>
+    <string name="project_list_screen_drawer_version">Ver. %s</string>
+    <string name="project_list_screen_drawer_logo_placeholder">JIT AGILE</string>
+    <string name="project_list_screen_logout_confirmation_title">Logout confirmation</string>
+    <string name="project_list_screen_logout_confirmation_message">Are you sure you want to logout?</string>
+    <string name="project_list_screen_logout_confirmation_positive_button_text">Logout</string>
+    <string name="project_list_screen_logout_confirmation_negative_button_text">Cancel</string>
+    <string name="project_list_screen_empty_list_label">List is empty, add a project!</string>
+    <string name="project_list_screen_error_unknown">Unknown error</string>
+    <string name="project_list_screen_error_user_not_found">User not found</string>
+    <string name="project_list_screen_error_connection">Server connection error</string>
+
+    <string name="list_item_project_join">Join daily</string>
+
+    <string name="project_details_screen_title">Details</string>
+    <string name="project_details_screen_empty_state_label">No participants</string>
+    <string name="project_details_screen_menu_leave_project">Leave</string>
+    <string name="project_details_screen_menu_delete_project">Delete</string>
+    <string name="project_details_screen_menu_show_project_password">Show Password</string>
+    <string name="project_details_screen_menu_change_project_password">Change Password</string>
+    <string name="project_details_screen_leave_confirmation_title">Leave confirmation</string>
+    <string name="project_details_screen_leave_confirmation_message">Are you sure you want to leave the project?</string>
+    <string name="project_details_screen_leave_confirmation_positive_button_text">Leave</string>
+    <string name="project_details_screen_leave_confirmation_negative_button_text">Cancel</string>
+    <string name="project_details_screen_delete_confirmation_title">Delete confirmation</string>
+    <string name="project_details_screen_delete_confirmation_message">Are you sure you want to delete the project?</string>
+    <string name="project_details_screen_delete_confirmation_positive_button_text">Delete</string>
+    <string name="project_details_screen_delete_confirmation_negative_button_text">Cancel</string>
+    <string name="project_details_screen_error_connection">Server connection problem, please try again.</string>
+    <string name="project_details_screen_error_project_not_found">Selected project not found.</string>
+    <string name="project_details_screen_error_unknown">Something goes wrong…</string>
+    <string name="project_details_screen_show_password_title">Password: %s</string>
+    <string name="project_details_screen_show_password_positive_button_text">OK</string>
+    <string name="project_details_screen_change_password_title">Change password</string>
+    <string name="project_details_screen_change_password_positive_button_text">Change</string>
+    <string name="project_details_screen_change_password_negative_button_text">Cancel</string>
+    <string name="project_details_screen_change_password_new_password_label">New password</string>
+    <string name="project_details_screen_change_password_error_empty_password">Empty password</string>
+    <string name="project_details_screen_change_password_success_message">Password has been changed</string>
+    <string name="project_details_screen_start_daily_button_text">Start daily</string>
+    <string name="project_details_screen_planning_poker_label">Planning poker</string>
+    <string name="project_details_screen_daily_label">Daily</string>
+    <string name="project_details_screen_retrobox_label">Retrobox</string>
+
+    <string name="reset_password_screen_title">Reset password</string>
+    <string name="reset_password_screen_email_label">Email</string>
+    <string name="reset_password_screen_reset_button_text">Reset password</string>
+    <string name="reset_password_screen_error_invalid_email">Invalid email</string>
+    <string name="reset_password_screen_error_empty_email">Empty email</string>
+    <string name="reset_password_screen_user_not_found">User not found</string>
+    <string name="reset_password_screen_error_network">Network error</string>
+    <string name="reset_password_screen_error_unknown">Unknown error</string>
+    <string name="reset_password_screen_dialog_email_sent_text">Reset link has been sent. Check your mailbox</string>
+    <string name="reset_password_screen_dialog_positive_text">OK</string>
+
+    <string name="project_creation_screen_project_label">Project name</string>
+    <string name="project_creation_screen_password_label">Password</string>
+    <string name="project_creation_screen_create_button_text">Create project</string>
+    <string name="project_creation_screen_error_invalid_project_name">Invalid project name</string>
+    <string name="project_creation_screen_error_project_already_exist">Project already exist</string>
+    <string name="project_creation_screen_error_empty_project_name">Empty project name</string>
+    <string name="project_creation_screen_error_invalid_password">Invalid password</string>
+    <string name="project_creation_screen_error_empty_password">Empty password</string>
+    <string name="project_creation_screen_error_weak_password">Weak password</string>
+    <string name="project_creation_screen_error_network">Network error</string>
+    <string name="project_creation_screen_error_unknown">Unknown error</string>
+    <string name="project_creation_screen_success_message">Project has been created</string>
+
+    <string name="project_adding_screen_title">Add project</string>
+    <string name="project_adding_screen_tab_create_text">Create</string>
+    <string name="project_adding_screen_tab_join_text">Join</string>
+
+    <string name="project_joining_screen_project_label">Project name</string>
+    <string name="project_joining_screen_password_label">Password</string>
+    <string name="project_joining_screen_join_button_text">Join project</string>
+    <string name="project_joining_screen_error_invalid_project_name">Invalid project name</string>
+    <string name="project_joining_screen_error_empty_project_name">Empty project name</string>
+    <string name="project_joining_screen_error_project_not_found">Project not found</string>
+    <string name="project_joining_screen_error_empty_password">Empty password</string>
+    <string name="project_joining_screen_error_invalid_password">Invalid password</string>
+    <string name="project_joining_screen_error_unknown">Unknown error</string>
+    <string name="project_joining_screen_error_network">Network error</string>
+    <string name="project_joining_screen_success_message">Join to project successful</string>
+
+    <string name="daily_screen_title">Daily</string>
+    <string name="daily_screen_start_button_text">Start daily</string>
+    <string name="daily_screen_next_button_text">Next</string>
+    <string name="daily_screen_skip_button_text">Skip</string>
+    <string name="daily_screen_end_button_text">End</string>
+    <string name="daily_screen_end_daily_button_text">End daily</string>
+    <string name="daily_screen_quit_button_text">Quit</string>
+    <string name="daily_screen_duration_label" tools:ignore="ExtraTranslation">15:00</string>
+    <string name="daily_screen_duration_minus_char" tools:ignore="ExtraTranslation">-</string>
+    <string name="daily_screen_leave_confirmation_title">Leave confirmation</string>
+    <string name="daily_screen_leave_confirmation_message">Are you sure you want to leave the daily?</string>
+    <string name="daily_screen_leave_confirmation_positive_button_text">Leave</string>
+    <string name="daily_screen_leave_confirmation_negative_button_text">Cancel</string>
+    <string name="daily_screen_end_confirmation_title">End confirmation</string>
+    <string name="daily_screen_end_confirmation_message">Are you sure you want to end the daily?</string>
+    <string name="daily_screen_end_confirmation_positive_button_text">End</string>
+    <string name="daily_screen_end_confirmation_negative_button_text">Cancel</string>
+    <string name="daily_screen_status_running">Daily is running…</string>
+    <string name="daily_screen_status_preparing">Waiting for other team members…</string>
+    <string name="daily_screen_status_end">Daily is over!</string>
+
+    <string-array name="daily_screen_quota">
+        <item name="daily_screen_quota1">“Learn from yesterday, live for today, hope for tomorrow. The important thing is not to stop questioning.” – Albert Einstein</item>
+        <item name="daily_screen_quota2">“Perfection is not attainable, but if we chase perfection we can catch excellence.” – Vince Lombardi</item>
+        <item name="daily_screen_quota3">“Unless someone like you cares a whole awful lot, nothing is going to get better.It’s not.” – Dr. Seuss</item>
+        <item name="daily_screen_quota4">“Service to others is the rent you pay for your room here on earth.” – Muhammad Ali</item>
+        <item name="daily_screen_quota5">“You simply have to put one foot in front of the other and keep going. Put blinders on and plow right ahead.” – George Lucas</item>
+        <item name="daily_screen_quota6">“It does not matter how slowly you go as long as you do not stop.”– Confucius</item>
+        <item name="daily_screen_quota7">“We may encounter many defeats but we must not be defeated.”– Maya Angelou</item>
+    </string-array>
+
+    <string name="notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="notification_channel_name" translatable="false">JIT Team</string>
+    <string name="notification_daily_started">Daily has been started</string>
+
+    <string name="planning_poker_title">Planning poker</string>
+
+    <string name="account_screens_app_name">JIT Agile</string>
+    <string name="account_screens_app_description">To help teams work together</string>
+</resources>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="listItem"
+            type="pl.jitsolutions.agile.domain.User" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:bindDailyUserBackground="@{listItem}">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/initials"
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                android:layout_marginStart="40dp"
+                android:background="@drawable/rounded_icon"
+                android:text="@{listItem.name.substring(0,2).toUpperCase()}"
+                android:textColor="@color/light_text_color"
+                app:bindDailyUserAlpha="@{listItem}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="MK" />
+
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:padding="4dp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                app:bindDailyUser="@{listItem}"
+                app:bindDailyUserAlpha="@{listItem}"
+                app:layout_constraintBottom_toBottomOf="@id/initials"
+                app:layout_constraintStart_toEndOf="@id/initials"
+                app:layout_constraintTop_toTopOf="@id/initials"
+                tools:text="User Name" />
+
+            <View
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginEnd="40dp"
+                android:background="@drawable/ic_dot"
+                app:bindDailyUserAlpha="@{listItem}"
+                app:bindDailyUserStatus="@{listItem}"
+                app:layout_constraintBottom_toBottomOf="@id/username"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/username" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

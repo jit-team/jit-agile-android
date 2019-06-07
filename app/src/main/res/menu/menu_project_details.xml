@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_project_details_leave_project"
+        android:icon="@drawable/ic_logout_white"
+        android:title="@string/project_details_screen_menu_leave_project"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_project_details_delete_project"
+        android:title="@string/project_details_screen_menu_delete_project"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_project_details_show_project_password"
+        android:title="@string/project_details_screen_menu_show_project_password"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_project_details_change_project_password"
+        android:title="@string/project_details_screen_menu_change_project_password"
+        app:showAsAction="never" />
+
+</menu>
